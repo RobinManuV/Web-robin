@@ -1,7 +1,8 @@
 // Se ejecuta después de `astro build`.
 // Genera dist/_redirects con:
-//  1. El portal del alumno: /login y /portal/* se sirven desde el sitio de
-//     Netlify del portal (variable PORTAL_ORIGIN), igual que hoy hace Cloudflare.
+//  1. (Opcional) El portal del alumno: si se define PORTAL_ORIGIN, /login y /portal/*
+//     se sirven desde ese sitio de Netlify. Si no, el botón Log In apunta a
+//     https://project-robin.com/login, que hoy resuelve Cloudflare.
 //  2. Redirecciones 301 de URLs antiguas de WordPress que no deben dar 404.
 import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 
@@ -18,11 +19,6 @@ if (origin) {
     `/portal/*     ${origin}/portal/:splat   200!`,
     '',
   );
-} else {
-  console.warn(
-    '\n⚠️  PORTAL_ORIGIN no está definida: /login no llevará al portal del alumno.\n' +
-      '   Añádela en Netlify → Site configuration → Environment variables.\n',
-  );
 }
 
 lines.push(
@@ -31,7 +27,7 @@ lines.push(
   '/feed                /blog/                 301',
   '/comments/feed/*     /blog/                 301',
   '/wp-admin/*          /                      301',
-  '/wp-login.php        /login/                301',
+  '/wp-login.php        https://project-robin.com/login   301',
   '/author/*            /sobre-nosotros/       301',
   '/category/*          /blog/                 301',
   '/servicios/pack-llegada/  /servicios/asesoramiento-completo/  301',

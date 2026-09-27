@@ -13,7 +13,7 @@ export const SITE = {
   gtmId: 'GTM-WVLVH4GQ',
   logo: '/wp-content/uploads/2024/12/Estudia-en-holanda-project-robin-logo.png',
   logoLight: '/wp-content/uploads/2026/04/Copy-of-Logo-en-blanco-con-fondo-transparente.png',
-  loginUrl: '/login/',
+  loginUrl: 'https://project-robin.com/login', // portal del alumno
 };
 
 export const CONTACT = {

@@ -1,14 +1,15 @@
 // Acceso a Google Calendar con una cuenta de servicio de Google Workspace
 // con "delegación de todo el dominio" (domain-wide delegation).
-// Así la web puede leer la disponibilidad de Noel, María y Manuel y crear
-// la reunión (con Google Meet) directamente en el calendario de quien la atiende.
+// Así la web puede leer la disponibilidad de hello@project-robin.com y crear
+// la reunión (con Google Meet) directamente en ese calendario.
 import { JWT } from 'google-auth-library';
 
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 
 export function getHosts() {
-  // BOOKING_HOSTS="Noel:noel@project-robin.com,María:maria@project-robin.com,Manuel:manuel@project-robin.com"
-  const raw = process.env.BOOKING_HOSTS || '';
+  // Por defecto las reuniones van al calendario de hello@project-robin.com.
+  // Para usar otro (o varios), define BOOKING_HOSTS="Nombre:email,Nombre:email"
+  const raw = process.env.BOOKING_HOSTS || 'Project Robin:hello@project-robin.com';
   return raw
     .split(',')
     .map((s) => s.trim())

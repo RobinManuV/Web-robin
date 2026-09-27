@@ -45,8 +45,8 @@ Además, cada envío lanza el evento `lead_submit` (con `lead_tag`) y cada reser
 
 El reservador (`src/components/BookingWidget.astro`) usa dos funciones:
 
-- `GET /api/availability`: huecos libres de las próximas 2 semanas. Un hueco sale si **al menos uno** de Noel, María o Manuel está libre.
-- `POST /api/book`: vuelve a comprobar que el hueco sigue libre, crea el evento con **Google Meet** en el calendario de la persona libre con menos reuniones ese día, invita al alumno por email y crea el lead en Notion (con la fecha en la columna *Meeting* y el *responsable*).
+- `GET /api/availability`: huecos libres de las próximas 2 semanas en el calendario de **hello@project-robin.com**, de **lunes a sábado de 17:00 a 21:00** (hora de Madrid). Los domingos no.
+- `POST /api/book`: vuelve a comprobar que el hueco sigue libre, crea el evento con **Google Meet** en el calendario de hello@project-robin.com, invita al alumno por email y crea el lead en Notion (con la fecha en la columna *Meeting*).
 
 ### Configuración de Google (una sola vez, la hace un admin de Google Workspace)
 
@@ -65,11 +65,11 @@ El reservador (`src/components/BookingWidget.astro`) usa dos funciones:
 |---|---|---|
 | `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Sí | `client_email` del JSON de la cuenta de servicio |
 | `GOOGLE_PRIVATE_KEY` | Sí | `private_key` del JSON, entera, con `-----BEGIN PRIVATE KEY-----` |
-| `BOOKING_HOSTS` | Sí | `Noel:noel@project-robin.com,María:maria@project-robin.com,Manuel:manuel@project-robin.com` (con los emails reales) |
+| `BOOKING_HOSTS` | No | Por defecto `Project Robin:hello@project-robin.com`. Solo si algún día quieres usar otro calendario (o varios, separados por comas) |
 | `NOTION_TOKEN` | Sí | Token de una integración interna de Notion (notion.so/my-integrations) |
 | `NOTION_DATABASE_ID` | Sí | `1eb069542601804c8f6fc22553255077` (Main Database) |
-| `PORTAL_ORIGIN` | Sí | URL del sitio de Netlify del portal del alumno, p. ej. `https://xxxx.netlify.app` |
-| `BOOKING_SCHEDULE` | No | Horario en JSON. Por defecto lunes a viernes 10:00–20:00: `{"1":[["10:00","20:00"]],"2":[["10:00","20:00"]],"3":[["10:00","20:00"]],"4":[["10:00","20:00"]],"5":[["10:00","20:00"]]}` |
+| `PORTAL_ORIGIN` | No | Solo si quieres que este sitio sirva `/login` por proxy desde el sitio de Netlify del portal (`https://xxxx.netlify.app`) |
+| `BOOKING_SCHEDULE` | No | Horario en JSON (1 = lunes … 7 = domingo). Por defecto lunes a sábado 17:00–21:00: `{"1":[["17:00","21:00"]],"2":[["17:00","21:00"]],"3":[["17:00","21:00"]],"4":[["17:00","21:00"]],"5":[["17:00","21:00"]],"6":[["17:00","21:00"]]}` |
 | `BOOKING_MIN_NOTICE_HOURS` | No | Antelación mínima para reservar (por defecto `12`) |
 | `BOOKING_DAYS_AHEAD` | No | Días que se muestran (por defecto `14`) |
 | `BOOKING_BUFFER_MINUTES` | No | Margen libre entre reuniones (por defecto `0`) |
@@ -79,9 +79,10 @@ En Notion, comparte la **Main Database** con la integración (menú `···` →
 
 Los avisos por email de cada formulario se configuran en Netlify: *Forms → Form notifications → Email notification*.
 
-## Portal del alumno (`/login`)
+## Portal del alumno (Log In)
 
-`/login` y `/portal/*` se sirven desde el sitio de Netlify del portal (variable `PORTAL_ORIGIN`) mediante un proxy: la URL se queda en `project-robin.com/login`. Las reglas se generan en `dist/_redirects` al hacer el build (`scripts/postbuild.mjs`).
+El botón **Log In** lleva a `https://project-robin.com/login` (definido en `src/data/site.js`). Hoy esa ruta la resuelve Cloudflare hacia el portal.
+**Al cambiar el dominio a este sitio de Netlify**, comprueba que la regla de Cloudflare para `/login` y `/portal/*` sigue activa; si no, define `PORTAL_ORIGIN` con la URL de Netlify del portal y este sitio hará de proxy (reglas en `dist/_redirects`, generadas por `scripts/postbuild.mjs`).
 
 ## Desarrollo en local
 

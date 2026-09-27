@@ -1,5 +1,5 @@
 // POST /api/book → crea la reunión en Google Calendar (con Meet) en el
-// calendario de la persona libre, invita al alumno y guarda el lead en Notion.
+// calendario de hello@project-robin.com, invita al alumno y guarda el lead en Notion.
 import { getHosts, busyByHost, createMeeting } from '../lib/google-calendar.mjs';
 import { candidateSlots, freeSlots, pickHost, config } from '../lib/slots.mjs';
 import { createLead } from '../lib/notion.mjs';
@@ -94,5 +94,5 @@ export default async (req) => {
     console.error('[book] Notion:', err.message);
   }
 
-  return Response.json({ ok: true, host: host.name.split(' ')[0], start: startDate.toISOString(), meetingLink });
+  return Response.json({ ok: true, host: hosts.length > 1 ? host.name.split(' ')[0] : null, start: startDate.toISOString(), meetingLink });
 };

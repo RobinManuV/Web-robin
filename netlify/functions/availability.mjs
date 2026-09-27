@@ -1,11 +1,11 @@
 // GET /api/availability → huecos libres de los próximos días.
-// Un hueco aparece si al menos una persona del equipo está libre.
+// Solo aparecen huecos en los que el calendario de hello@project-robin.com está libre.
 import { getHosts, busyByHost } from '../lib/google-calendar.mjs';
 import { candidateSlots, freeSlots, config } from '../lib/slots.mjs';
 
 export default async () => {
   const hosts = getHosts();
-  if (!hosts.length || !process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) {
+  if (!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) {
     return Response.json({ error: 'Reservas sin configurar' }, { status: 503 });
   }
   try {
