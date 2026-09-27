@@ -1,0 +1,20 @@
+---
+import UniversityPage from '../../components/UniversityPage.astro';
+import { UNIVERSIDADES } from '../../data/universidades.js';
+
+export function getStaticPaths() {
+  return UNIVERSIDADES.map((u) => ({ params: { slug: u.slug }, props: { u } }));
+}
+const { u } = Astro.props;
+const multi = u.group === 'multicampus';
+---
+
+<UniversityPage
+  u={u}
+  tag={multi ? `multicampus-${u.slug}` : `espana-${u.slug}`}
+  back={multi
+    ? { label: '« Volver a Universidades Multicampus', href: '/the-european-experience/' }
+    : { label: '« Volver a Universidades en España', href: '/estudiar-universidad-espana/' }}
+  contactHref={multi ? '/contacto/' : '/contacto-estudiar-en-espana/'}
+  whyRobin={multi}
+/>

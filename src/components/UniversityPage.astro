@@ -1,0 +1,330 @@
+---
+// Plantilla de universidad (España, multicampus y The European Experience).
+import Base from '../layouts/Base.astro';
+import ContactSection from './ContactSection.astro';
+
+const {
+  u,
+  back = { label: '« Volver a Universidades en España', href: '/estudiar-universidad-espana/' },
+  contactHref = '/contacto-estudiar-en-espana/',
+  tag,
+  whyRobin = false,
+  canonicalPath,
+} = Astro.props;
+
+const url = `https://project-robin.com${canonicalPath || Astro.url.pathname}`;
+const bookHref = `${contactHref}?origen=${tag}`;
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollegeOrUniversity',
+    name: u.name,
+    description: u.intro,
+    url,
+    ...(u.city ? { address: { '@type': 'PostalAddress', addressLocality: u.city, addressCountry: 'ES' } } : {}),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://project-robin.com/' },
+      { '@type': 'ListItem', position: 2, name: back.label.replace('« Volver a ', ''), item: `https://project-robin.com${back.href}` },
+      { '@type': 'ListItem', position: 3, name: u.name, item: url },
+    ],
+  },
+];
+
+const why = [
+  { title: 'Programas acreditados', text: 'Programas oficiales de universidades europeas seleccionadas dentro de The European Experience, con bachelors reconocidos internacionalmente.' },
+  { title: 'Visión independiente', text: 'No trabajamos para una sola universidad. Te ayudamos a comparar opciones dentro de The European Experience y te recomendamos dónde encajas mejor, incluso si la respuesta es “otra ruta”.' },
+  { title: 'Asesorías personalizadas', text: 'Acompañamiento 1:1 para elegir entre Forward College, ESCP y Albert School según tu perfil, tu presupuesto y el tipo de vida que quieres en Europa.', feature: true },
+  { title: 'Expertos en Europa multicampus', text: 'Conocemos en profundidad los modelos de estudio en varias ciudades y te explicamos, sin tecnicismos, cómo es vivir un bachelor moviéndote de campus por Europa.' },
+  { title: 'Acompañamiento en todo el proceso', text: 'Desde la primera idea de estudiar fuera hasta los siguientes pasos con la universidad elegida, resolvemos tus dudas clave y te damos claridad en cada fase.' },
+];
+const icons = ['Icon-1_.svg', 'Icon-2_.svg', 'Icon-3_.svg', 'Icon-4.svg', 'Icon-5.svg', 'Icon-6.svg'];
+---
+
+<Base title={u.seoTitle} description={u.seoDesc} image={u.heroImg} type="article" schema={schema}>
+  <section class="hero container">
+    <div class="hero-text">
+      <a class="link-back" href={back.href}>{back.label}</a>
+      <h1 class="display-xl">{u.name}</h1>
+      {u.tagline && <p class="tagline">{u.tagline}</p>}
+      <p class="lead">{u.intro}</p>
+      <ul class="check-list bullets">
+        {u.bullets.map((b) => <li>{b}</li>)}
+      </ul>
+      <div class="btn-row">
+        <a class="btn" href="#reserva">Reservar entrevista</a>
+        <a class="btn btn-outline" href="#como-es">Quiero saber más</a>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src={u.heroImg} alt={`Campus de ${u.name}`} width="732" height="844" />
+    </div>
+  </section>
+
+  <section class="fit bg-cream">
+    <div class="container">
+      <p class="eyebrow center">Autoevaluación</p>
+      <h2 class="display-md center">Averigua si {u.name} es tu universidad ideal</h2>
+      <p class="text center fit-intro">{u.fitIntro}</p>
+      <div class="fit-grid">
+        <div class="fit-box">
+          <h3>Esta universidad es para ti si…</h3>
+          <ul class="check-list">
+            {u.paraTi.map((x) => <li>{x}</li>)}
+          </ul>
+        </div>
+        <div class="fit-box">
+          <h3>Esta universidad no es para ti si…</h3>
+          <ul class="check-list is-cross">
+            {u.noParaTi.map((x) => <li>{x}</li>)}
+          </ul>
+        </div>
+      </div>
+      <p class="center" style="margin-top:34px"><a class="btn" href="#reserva">Reservar entrevista</a></p>
+    </div>
+  </section>
+
+  <section class="section" id="como-es">
+    <div class="container">
+      {u.logo && <img class="logo" src={u.logo} alt={`Logo de ${u.name}`} loading="lazy" />}
+      <p class="eyebrow center">Tu futuro en Europa</p>
+      <h2 class="display-md center">Cómo es estudiar en {u.name}</h2>
+      <ol class="cards">
+        {
+          u.cards.map((c, i) => (
+            <li>
+              <img src={`/wp-content/uploads/2026/05/${icons[i % 6]}`} alt="" width="44" height="44" loading="lazy" />
+              <h3>{c.title}</h3>
+              <p>{c.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="pack">
+        <div>
+          <h3>¿Ya te han aceptado en {u.name} y quieres llegar de la mejor manera?</h3>
+          <p>Te recogemos en el aeropuerto, te ayudamos con el alojamiento y con las primeras semanas en la ciudad.</p>
+        </div>
+        <a class="btn" href={`/contacto/?origen=pack-llegada-${u.slug}&servicio=Pack%20Llegada`}>Descubre el Pack Llegada</a>
+      </div>
+    </div>
+  </section>
+
+  {
+    whyRobin && (
+      <section class="why section-sm">
+        <div class="container">
+          <h2 class="display-md center">¿Por qué cientos eligen Robin para su educación?</h2>
+          <div class="why-grid">
+            {why.map((w) => (
+              <article class:list={['why-card', { feature: w.feature }]}>
+                <h3>{w.title}</h3>
+                <p>{w.text}</p>
+                {w.feature && <img src="/wp-content/uploads/2025/12/noel-the-experience.png" alt="Noel Cortés, cofundador de Project Robin" loading="lazy" />}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="interest">
+    <h2 class="display-md">¿Te interesa {u.name}?</h2>
+    <p class="lead">Consulta gratis de 30 minutos. Te decimos si encaja contigo o si hay opciones mejores para tu perfil.</p>
+    <a class="btn" href="#reserva">Reservar entrevista</a>
+  </section>
+
+  <ContactSection tag={tag} />
+</Base>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 50px;
+    align-items: center;
+    padding-block: 60px 70px;
+  }
+  .hero-text {
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+  }
+  .tagline {
+    font-size: clamp(20px, 2vw, 26px);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.15;
+  }
+  .hero .lead {
+    font-size: 20px;
+  }
+  .bullets {
+    font-size: 16px;
+  }
+  .hero-img img {
+    width: 100%;
+    max-width: 560px;
+    margin-left: auto;
+  }
+  .fit {
+    padding-block: 80px;
+  }
+  .fit h2 {
+    margin: 14px auto 20px;
+    max-width: 900px;
+  }
+  .fit-intro {
+    max-width: 760px;
+    margin: 0 auto 40px;
+  }
+  .fit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .fit-box {
+    background: #f6f3ec;
+    border-radius: 14px;
+    padding: 28px;
+  }
+  .fit-box h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+  .fit-box .check-list {
+    font-size: 16px;
+    gap: 16px;
+  }
+  .logo {
+    width: 120px;
+    margin: 0 auto 30px;
+  }
+  #como-es h2 {
+    margin: 14px 0 50px;
+  }
+  .cards {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .cards li {
+    background: var(--cream-2);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .cards img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 14px;
+  }
+  .cards h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .cards p {
+    font-size: 15px;
+  }
+  .pack {
+    max-width: 1100px;
+    margin: 40px auto 0;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--cream-2);
+    border-radius: 12px;
+    padding: 24px 30px;
+  }
+  .pack h3 {
+    font-size: 19px;
+    font-weight: 700;
+  }
+  .pack p {
+    font-size: 15px;
+    margin-top: 4px;
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .why-card {
+    background: #eceef3;
+    border-radius: 12px;
+    padding: 24px;
+  }
+  .why-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .why-card.feature {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    background: var(--navy);
+    color: var(--cream);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .why-card.feature img {
+    margin-top: auto;
+    width: 70%;
+    align-self: center;
+  }
+  .interest {
+    margin: 30px var(--gutter) 0;
+    background: #626d91;
+    color: var(--cream);
+    border-radius: 24px;
+    padding: 120px var(--gutter);
+    text-align: center;
+    display: grid;
+    justify-items: center;
+    gap: 18px;
+  }
+  @media (max-width: 950px) {
+    .hero,
+    .fit-grid {
+      grid-template-columns: 1fr;
+    }
+    .cards {
+      grid-template-columns: 1fr 1fr;
+    }
+    .why-grid {
+      grid-template-columns: 1fr;
+    }
+    .why-card.feature {
+      grid-column: auto;
+      grid-row: auto;
+    }
+    .pack {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  @media (max-width: 560px) {
+    .cards {
+      grid-template-columns: 1fr;
+    }
+    .interest {
+      padding: 70px var(--gutter);
+    }
+  }
+</style>

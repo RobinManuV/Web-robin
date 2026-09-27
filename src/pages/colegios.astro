@@ -1,0 +1,218 @@
+---
+import Base from '../layouts/Base.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { CONTACT } from '../data/site.js';
+
+// Solo los colegios con nombre real. Los "Colegio 1, 2…" de la web antigua eran huecos de relleno.
+const colegios = ['Colegio International de Torrequebrada', 'Instituto Jorge Manrique', 'Colegio Voramar', 'Colegio Alemán de Madrid'];
+const pasos = [
+  { t: 'Kick-off', d: 'Reunión con orientación para adaptar contenidos a vuestro perfil de alumnos.' },
+  { t: 'Charlas', d: 'Sesiones para alumnos y para familias — presencial o online.' },
+  { t: 'Tutorías', d: '1:1 con los alumnos interesados. Plan individual de candidatura.' },
+  { t: 'Seguimiento', d: 'Reporte anual al colegio. Resultados medibles (admisiones, ciudades, becas).' },
+];
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Orientación universitaria internacional para colegios',
+  provider: { '@id': 'https://project-robin.com/#organization' },
+  audience: { '@type': 'EducationalAudience', educationalRole: 'school' },
+  areaServed: 'ES',
+  description: 'Charlas, talleres y tutorías 1:1 de orientación universitaria internacional para alumnos de Bachillerato y sus familias.',
+};
+---
+
+<Base
+  title="Orientación universitaria para colegios | Project Robin"
+  description="Charlas, talleres y tutorías 1:1 de orientación universitaria internacional para alumnos de Bachillerato y sus familias. Partner oficial de tu colegio."
+  schema={schema}
+>
+  <section class="hero bg-navy">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow text-accent">Colegios Robin</p>
+        <h1 class="display-xl">Partner oficial de tu colegio</h1>
+        <p class="text">Acompañamos a los alumnos de Bachillerato en la decisión más importante de su vida académica. Charlas, talleres y tutorías 1:1 — a los padres también.</p>
+        <ul class="tick-list">
+          <li>Orientación universitaria internacional sin sesgos comerciales.</li>
+          <li>Alineado con el Bachillerato (nacional, IB, A-Levels, Abitur).</li>
+          <li>Sesiones para alumnos y para familias.</li>
+        </ul>
+        <a class="btn" href="#formulario-colegios">Contactar para mi colegio</a>
+      </div>
+      <img src="/wp-content/uploads/2026/05/tree-with-green-leaves-four-young-students-in-cas-2026-03-24-03-52-10-utc.jpg" alt="Alumnos de Bachillerato hablando sobre la universidad" />
+    </div>
+  </section>
+
+  <section class="section container center">
+    <p class="eyebrow">Método Robin</p>
+    <h2 class="display-md" style="margin:14px 0 12px">Así trabajamos con tu colegio</h2>
+    <p class="text">Un calendario claro, sesiones acotadas y entregables concretos. Cero ruido extra para el equipo docente.</p>
+    <ol class="pasos">
+      {
+        pasos.map((p, i) => (
+          <li>
+            <span class="n">{i + 1}</span>
+            <h3>{p.t}</h3>
+            <p>{p.d}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="section-sm bg-cream">
+    <div class="container center">
+      <p class="eyebrow">Colegios Robin</p>
+      <h2 class="display-md" style="margin:14px 0 12px">Centros que ya confían en nosotros</h2>
+      <p class="text">Colegios e institutos en España y LATAM que colaboran con Robin para orientar a sus alumnos hacia universidades europeas.</p>
+      <ul class="cols">
+        {colegios.map((c) => <li>{c}</li>)}
+        <li class="next">+ Tu cole pronto</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-navy talk" id="formulario-colegios">
+    <div class="container talk-grid">
+      <div>
+        <p class="eyebrow text-accent">Para el colegio</p>
+        <h2 class="display-md">¿Hablamos?</h2>
+        <p class="text">Diseñamos el plan específico para vuestro centro. Primera reunión sin coste — presencial en Madrid o online.</p>
+        <p class="lbl">Email colegios</p>
+        <p><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></p>
+        <p class="lbl">Teléfono directo</p>
+        <p><a href={`tel:${CONTACT.phoneColegios.replace(/\s/g, '')}`}>{CONTACT.phoneColegios}</a></p>
+      </div>
+      <div class="form-card">
+        <h3>Formulario colegios</h3>
+        <p class="small">Respondemos en menos de 24h laborables.</p>
+        <LeadForm form="colegios" tag="colegios" submitLabel="Enviar solicitud" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: 70px 80px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+  }
+  .hero-text {
+    display: grid;
+    gap: 20px;
+    justify-items: start;
+  }
+  .hero .display-xl {
+    color: var(--cream);
+    font-size: clamp(44px, 5.4vw, 80px);
+  }
+  .hero .tick-list {
+    font-size: 19px;
+  }
+  .hero img {
+    border-radius: 16px;
+  }
+  .pasos {
+    list-style: none;
+    padding: 0;
+    margin: 50px 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 26px;
+  }
+  .pasos .n {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 3px solid var(--navy);
+    background: var(--accent);
+    display: grid;
+    place-items: center;
+    margin: 0 auto 14px;
+    font-weight: 700;
+    font-size: 22px;
+  }
+  .pasos h3 {
+    font-size: 22px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .pasos p {
+    font-size: 16px;
+  }
+  .cols {
+    list-style: none;
+    padding: 0;
+    margin: 40px auto 0;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .cols li {
+    border: 2px solid #d5d9e6;
+    border-radius: 10px;
+    padding: 28px 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 16px;
+    display: grid;
+    place-items: center;
+    background: #fff;
+  }
+  .cols .next {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #fdf6e9;
+  }
+  .talk {
+    padding-block: 80px;
+  }
+  .talk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+  }
+  .talk .display-md {
+    color: var(--cream);
+    margin: 12px 0;
+  }
+  .talk .lbl {
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 26px;
+  }
+  .talk-grid > div:first-child a {
+    color: var(--cream);
+  }
+  .form-card {
+    background: #fff;
+    color: var(--navy);
+    border-radius: 12px;
+    padding: 28px;
+  }
+  .form-card h3 {
+    font-size: 22px;
+    text-transform: uppercase;
+  }
+  .form-card .small {
+    margin: 4px 0 18px;
+  }
+  @media (max-width: 900px) {
+    .hero-grid,
+    .talk-grid {
+      grid-template-columns: 1fr;
+    }
+    .pasos {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

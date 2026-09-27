@@ -1,0 +1,53 @@
+---
+import HubPage from '../components/HubPage.astro';
+import { UNIVERSIDADES_ESPANA } from '../data/universidades.js';
+
+const order = [
+  'universidad-pontificia-comillas-icai-icade',
+  'universidad-politecnica-de-madrid-upm',
+  'universidad-de-deusto',
+  'universidad-de-navarra-unav',
+  'universitat-politecnica-de-catalunya-upc',
+  'esade',
+  'universidad-complutense-de-madrid-ucm',
+  'universidad-carlos-iii-de-madrid-uc3m',
+  'universidad-alfonso-x-el-sabio-uax',
+  'ie-university',
+];
+const unis = order.map((s) => UNIVERSIDADES_ESPANA.find((u) => u.slug === s)).filter(Boolean);
+const short = { esade: 'ESADE', 'ie-university': 'IE University', 'universidad-alfonso-x-el-sabio-uax': 'UAX', 'universidad-carlos-iii-de-madrid-uc3m': 'UC3M', 'universidad-complutense-de-madrid-ucm': 'UCM', 'universidad-de-deusto': 'Deusto', 'universidad-de-navarra-unav': 'UNAV', 'universidad-politecnica-de-madrid-upm': 'UPM', 'universidad-pontificia-comillas-icai-icade': 'ICAI / ICADE', 'universitat-politecnica-de-catalunya-upc': 'UPC' };
+
+const h = {
+  tag: 'espana',
+  seoTitle: 'Estudiar en una universidad en España | Project Robin',
+  seoDesc: 'Te ayudamos a elegir universidad en España, preparar la admisión y tomar decisiones académicas con orientación personalizada.',
+  h1: 'Estudiar en España',
+  heroBg: '/wp-content/uploads/2026/04/Gemini_Generated_Image_kxkvynkxkvynkxkv-1.webp',
+  bandBg: '/wp-content/uploads/2026/06/Gemini_Generated_Image_n76sq6n76sq6n76s.webp',
+  intro:
+    'En Robin te ayudamos a entrar en universidades españolas de referencia — públicas y privadas — y te acompañamos en todo el proceso de selección y admisión. Estudia en ciudades como Madrid o Barcelona y convierte España en tu trampolín hacia Europa.',
+  heroBullets: [
+    'Universidades top en España: opciones públicas y privadas',
+    'Programas en español e inglés (según universidad) + enfoque internacional',
+    'Acompañamiento 1:1 en elección, requisitos y admisión',
+  ],
+  whyEyebrow: 'Tu futuro en Europa',
+  whyTitle: '¿Por qué elegir España?',
+  whyText: 'Te acompañamos en cada paso del camino para que accedas a las mejores instituciones de España con total seguridad, sin complicaciones ni estrés administrativo.',
+  why: [
+    { icon: 'cap', title: 'Excelencia académica', text: 'Accede a instituciones de prestigio internacional con programas líderes en Europa y el mundo.' },
+    { icon: 'globe', title: 'Cultura y redes', text: 'Conecta con una comunidad global, domina el idioma y expande tu red de contactos profesionales.' },
+    { icon: 'heart', title: 'Calidad de vida', text: 'Disfruta de un entorno seguro, un clima privilegiado y una experiencia cultural inigualable mientras estudias.' },
+  ],
+  listTitle: 'Conecta con las instituciones líderes del país',
+  listText: 'Colaboramos estrechamente con los centros universitarios más prestigiosos y exigentes de España para garantizar que tu perfil destaque en sus procesos de selección.',
+  paso2: 'Seleccionamos el itinerario y los grados que mejor se adaptan a tu perfil y presupuesto.',
+  unis,
+  mapImg: '/wp-content/uploads/2025/12/estudiar-en-espana-con-project-robin.webp',
+  mapTitle: 'Estudia en España',
+  mapText: 'Gozamos de una meticulosa selección de universidades para ofrecerte solo lo mejor.',
+  footerExtra: { title: 'Universidades', links: unis.map((u) => ({ label: short[u.slug] || u.name, href: `/universidades/${u.slug}/` })) },
+};
+---
+
+<HubPage h={h} />

@@ -1,0 +1,230 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import BlogCard from '../components/BlogCard.astro';
+import YouTube from '../components/YouTube.astro';
+import { TESTIMONIOS } from '../data/site.js';
+
+const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) => b.data.date - a.data.date).slice(0, 6);
+const tienda = [
+  { name: 'Pack del Estudiante', text: 'Camiseta + sudadera + tote bag + sticker pack + botella. Todo lo que necesitas para empezar.', price: '79 €', color: 'var(--navy)' },
+  { name: 'Sudadera Robin', text: 'Heavy hoodie 400 gsm, bordado grande detrás. Para sobrevivir al invierno holandés.', price: '45 €', color: 'var(--accent)' },
+  { name: 'Camiseta Robin', text: 'Algodón orgánico 100%, print del logo en pecho. Para el día a día universitario.', price: '23 €', color: 'var(--sky)' },
+];
+const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+
+<Base
+  title="Comunidad de estudiantes internacionales | Project Robin"
+  description="Testimonios reales, consejos y recursos de estudiantes internacionales en Europa. Historias sin filtro de quienes ya dieron el paso."
+>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow text-accent">Comunidad Robin</p>
+        <h1 class="display-md">Bienvenido a la mejor comunidad de estudiantes internacionales en Europa</h1>
+        <p class="text">Historias, consejos y recursos para estudiantes internacionales. Aquí encontrarás testimonios reales, inspiración y contenido creado para ayudarte a irte a estudiar fuera sin rodeos.</p>
+        <div class="btn-row">
+          <a class="btn btn-sm" href="#testimonios">Ver testimonios</a>
+          <a class="btn btn-sm btn-outline-light" href="#tienda">Sé un Robin</a>
+        </div>
+      </div>
+      <div class="robins">
+        <img src="/wp-content/uploads/2026/04/Robin-en-Bici.png" alt="" width="120" />
+        <p class="robins-title">Nuestros Robins</p>
+        <ul class="tick-list">
+          <li>Cómo es realmente irse a estudiar fuera.</li>
+          <li>Adaptación, cultura y vida universitaria.</li>
+          <li>Dificultades reales… y cómo superarlas.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-cream" id="testimonios">
+    <div class="container">
+      <p class="eyebrow center">Testimonios</p>
+      <h2 class="display-md center" style="margin:14px 0 12px">Sin guión, sin filtro</h2>
+      <p class="text center" style="max-width:640px;margin:0 auto 40px">Nuestros Robins contando qué esperaban, qué se encontraron y qué cambiarían.</p>
+      <div class="t-grid">
+        <div class="t-video">
+          <YouTube url="https://youtu.be/psjEcd2yAeg" poster="/wp-content/uploads/2026/05/a6f1b0f7b8b6e609fb8387ac02dc8ff3.webp" title="Voces de nuestros Robins" />
+        </div>
+        {
+          TESTIMONIOS.map((t) => (
+            <figure class="t-card">
+              <img src={t.photo} alt={t.name} width="64" height="64" loading="lazy" />
+              <figcaption>
+                <strong>{t.name}</strong>
+                <span>{t.program}</span>
+              </figcaption>
+              <blockquote>{t.text}</blockquote>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section container" id="tienda">
+    <p class="eyebrow center">Sé un Robin</p>
+    <h2 class="display-md center" style="margin:14px 0 12px">Viste el estilo Robin</h2>
+    <p class="text center" style="max-width:600px;margin:0 auto 40px">Nuestra colección exclusiva. Perfecta para estudiantes internacionales que sienten orgullo de formar parte de la comunidad.</p>
+    <div class="shop">
+      {
+        tienda.map((p) => (
+          <article class="prod">
+            <div class="prod-top" style={`background:${p.color}`} />
+            <h3>{p.name}</h3>
+            <p class="small">{p.text}</p>
+            <div class="prod-foot">
+              <strong>{p.price}</strong>
+              <a class="btn btn-sm" href={`/contacto/?origen=tienda-${slug(p.name)}&servicio=Otro`}>
+                Lo quiero →
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section bg-cream">
+    <div class="container" style="max-width:1000px">
+      <p class="eyebrow center">Blog Robin</p>
+      <h2 class="display-md center" style="margin:14px 0 12px">Lo que nos hubiera gustado leer</h2>
+      <p class="text center" style="max-width:600px;margin:0 auto 40px">Artículos honestos sobre becas, costes, decisiones, burocracia y vida universitaria. Escritos por gente que ya hizo este camino.</p>
+      <div class="blog">{posts.map((p) => <BlogCard post={p} />)}</div>
+      <p class="center" style="margin-top:30px"><a class="btn" href="/blog/">Ver todos los artículos</a></p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    color: #fff;
+    background: linear-gradient(90deg, rgba(45, 58, 100, 0.92), rgba(45, 58, 100, 0.6)), url('/wp-content/uploads/2026/06/bernie-almanzar-CUzEBQz4ThE-unsplash.webp') center / cover;
+    border-radius: 0 0 24px 24px;
+    padding-block: 80px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 50px;
+    align-items: center;
+  }
+  .hero-text {
+    display: grid;
+    gap: 16px;
+  }
+  .hero .display-md {
+    color: #fff;
+  }
+  .robins {
+    background: var(--accent);
+    border-radius: 6px;
+    padding: 30px;
+    text-align: center;
+  }
+  .robins img {
+    margin: 0 auto 8px;
+  }
+  .robins-title {
+    font-size: 34px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .robins .tick-list {
+    text-align: left;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .robins .tick-list li::before {
+    filter: brightness(0) invert(1);
+  }
+  .t-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+  .t-video {
+    grid-column: span 2;
+  }
+  .t-card {
+    margin: 0;
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
+  }
+  .t-card img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    float: left;
+    margin-right: 12px;
+  }
+  .t-card figcaption {
+    display: grid;
+    min-height: 56px;
+    align-content: center;
+  }
+  .t-card span {
+    font-size: 14px;
+  }
+  .t-card blockquote {
+    clear: both;
+    margin: 14px 0 0;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  .shop {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .prod {
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px 14px 20px;
+    box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
+    display: grid;
+    gap: 10px;
+  }
+  .prod-top {
+    height: 140px;
+    border-radius: 8px;
+  }
+  .prod h3 {
+    font-size: 20px;
+    margin-top: 8px;
+  }
+  .prod-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+  }
+  .blog {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 900px) {
+    .hero-grid,
+    .t-grid,
+    .shop,
+    .blog {
+      grid-template-columns: 1fr;
+    }
+    .t-video {
+      grid-column: auto;
+    }
+  }
+</style>

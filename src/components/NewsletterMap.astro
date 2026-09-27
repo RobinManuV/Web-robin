@@ -84,10 +84,15 @@ const { tag, mapImg, title, text, logos = [] } = Astro.props;
     left: 50%;
     top: -170px;
     transform: translateX(-50%);
-    width: min(520px, 80%);
+    width: min(380px, 70%);
+  }
+  .logos {
+    position: relative;
+    z-index: 1;
   }
   .map-body {
     position: relative;
+    z-index: 1;
     padding-bottom: 50px;
   }
   .map-body h2 {

@@ -1,0 +1,64 @@
+---
+const { post } = Astro.props;
+const fmt = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' });
+---
+
+<article class="bc">
+  <a href={`/blog/${post.id}/`}>
+    <img src={post.data.image} alt={post.data.title} loading="lazy" />
+    <div class="bc-body">
+      <span class="bc-cat">{post.data.category}</span>
+      <time datetime={post.data.date.toISOString().slice(0, 10)}>{fmt.format(post.data.date)}</time>
+      <h3>{post.data.title}</h3>
+    </div>
+  </a>
+</article>
+
+<style>
+  .bc {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .bc:hover {
+    transform: translateY(-3px);
+  }
+  .bc a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 14px;
+  }
+  .bc img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  .bc-body {
+    padding: 14px 4px 6px;
+    display: grid;
+    gap: 6px;
+    justify-items: start;
+  }
+  .bc-cat {
+    background: var(--navy);
+    color: var(--cream);
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  time {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.7;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+</style>

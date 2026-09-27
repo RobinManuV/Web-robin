@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import BlogCard from '../../components/BlogCard.astro';
+const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) => b.data.date - a.data.date);
+---
+
+<Base
+  title="Blog para estudiar en Holanda | Project Robin"
+  description="Guías honestas sobre estudiar en Holanda: universidades HBO y WO, método PBL, alojamiento, trabajo y vida universitaria. Escritas por quienes ya hicieron el camino."
+>
+  <section class="container blog">
+    <p class="eyebrow center">Blog Robin</p>
+    <h1 class="display center">Lo que nos hubiera gustado leer</h1>
+    <p class="lead center intro">Artículos honestos sobre becas, costes, decisiones, burocracia y vida universitaria. Escritos por gente que ya hizo este camino.</p>
+    <div class="grid">
+      {posts.map((p) => <BlogCard post={p} />)}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .blog {
+    padding-block: 70px 110px;
+    max-width: 1000px;
+  }
+  .display {
+    margin: 14px 0 18px;
+  }
+  .intro {
+    max-width: 600px;
+    margin: 0 auto 50px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 800px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

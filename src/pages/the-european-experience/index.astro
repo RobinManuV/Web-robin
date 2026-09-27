@@ -1,0 +1,41 @@
+---
+import HubPage from '../../components/HubPage.astro';
+import { UNIVERSIDADES_MULTICAMPUS } from '../../data/universidades.js';
+
+const order = ['forward-college', 'escp-business-school', 'albert-school'];
+const unis = order.map((s) => UNIVERSIDADES_MULTICAMPUS.find((u) => u.slug === s)).filter(Boolean);
+
+const h = {
+  tag: 'multicampus',
+  seoTitle: 'The European Experience: universidades en Europa | Project Robin',
+  seoDesc: 'Explora universidades y programas internacionales en Europa con orientación para elegir opción, preparar la admisión y organizar tu experiencia.',
+  h1: 'The European Experience',
+  heroBg: '/wp-content/uploads/2026/06/Gemini_Generated_Image_bin1i9bin1i9bin1.webp',
+  bandBg: '/wp-content/uploads/2026/06/Gemini_Generated_Image_xsctwixsctwixsct.webp',
+  intro:
+    'En Robin te abrimos la puerta a bachelors multicampus en 3 universidades europeas. Un grado oficial, hasta 3 países diferentes y una experiencia internacional real, más allá del típico intercambio universitario.',
+  heroBullets: [
+    'Mismo bachelor, distintos campus según el año',
+    'Acompañamiento completo en la elección y admisión',
+    'Opciones para perfiles muy ambiciosos y con capacidad económica',
+  ],
+  whyEyebrow: 'Experiencia internacional',
+  whyTitle: '¿Por qué elegir The European Experience?',
+  whyText: 'No es solo estudiar fuera de casa, es aprender a moverte en un mundo sin fronteras mientras construyes la marca personal y la empleabilidad que te abrirán las puertas globales.',
+  why: [
+    { icon: 'briefcase', title: 'Impacto profesional', text: 'Este programa está diseñado para conectar directamente con el mercado laboral europeo a través de prácticas reales, aumentando de inmediato tu valor de mercado antes de graduarte.' },
+    { icon: 'compass', title: 'Autonomía real', text: 'Vivir el día a día en una cultura distinta te obliga a madurar a otra velocidad: desarrollarás resiliencia, flexibilidad mental y seguridad en ti mismo que ninguna clase teórica puede enseñar.' },
+    { icon: 'people', title: 'Contactos clave', text: 'Tu clase será un ecosistema internacional. Construirás una red duradera con futuros profesionales y líderes de todo el continente, abriéndote puertas en múltiples países de por vida.' },
+  ],
+  video: 'https://www.youtube.com/shorts/Iojq9BN4oaY',
+  listTitle: 'Conecta con las instituciones líderes de Europa',
+  paso2: 'Seleccionamos el itinerario multicampus y los grados que mejor se adaptan a tu perfil y presupuesto.',
+  unis,
+  mapImg: '/wp-content/uploads/2025/12/estudia-en-europa-con-project-robin.webp',
+  mapTitle: 'Estudia en Europa',
+  mapText: 'Gozamos de una meticulosa selección de universidades para ofrecerte solo lo mejor.',
+  footerExtra: { title: 'Universidades', links: unis.map((u) => ({ label: u.name, href: `/universidades/${u.slug}/` })) },
+};
+---
+
+<HubPage h={h} />

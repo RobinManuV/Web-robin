@@ -1,0 +1,261 @@
+---
+import Base from '../layouts/Base.astro';
+import YouTube from '../components/YouTube.astro';
+import { EQUIPO } from '../data/site.js';
+
+const fotos = [
+  '/wp-content/uploads/2026/05/d7ed3b562ab2781c4c0674a1da19ee84.webp',
+  '/wp-content/uploads/2026/05/438c8c8e556189a826ba8ff9eba1dafa.webp',
+  '/wp-content/uploads/2026/05/0f4f5067744817baf312cc3460fdbe03.webp',
+];
+const bios = [
+  'Graduado en Economía y Business en Maastricht University. Master Analyst en Deloitte.',
+  'Graduada en International Business en Maastricht University. Master en Marketing en Londres.',
+  'Graduado en Economía y Business en Maastricht. Actualmente cursando Master in Management en ESCP.',
+];
+const prensa = [
+  {
+    medio: 'Intereconomía',
+    sub: 'Programa “Empresas con futuro”',
+    kicker: 'Nos entrevistó Intereconomía',
+    title: '¿Qué es Project Robin y por qué lo creamos?',
+    text: 'Conocemos un poco más a fondo con esta entrevista cómo nació Project Robin y cuáles son nuestros próximos pasos para seguir a futuros estudiantes.',
+    cta: 'Ver en YouTube',
+    url: 'https://www.youtube.com/watch?v=pRzMKQlHam4',
+  },
+  {
+    medio: 'Onda Cero',
+    sub: 'Radio nacional',
+    kicker: 'Nos entrevistó Onda Cero',
+    title: 'Oportunidades internacionales reales para jóvenes',
+    text: 'En esta charla revelamos nuestro propósito: la forma en que conectamos jóvenes con oportunidades internacionales reales, no promesas.',
+    cta: 'Escuchar podcast',
+    url: 'https://www.youtube.com/watch?v=F6SGl-fiVyo',
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'Sobre Project Robin',
+  url: 'https://project-robin.com/sobre-nosotros/',
+  mainEntity: {
+    '@id': 'https://project-robin.com/#organization',
+    founder: EQUIPO.map((m) => ({ '@type': 'Person', name: m.name, sameAs: m.linkedin, alumniOf: 'Maastricht University' })),
+  },
+};
+---
+
+<Base
+  title="Sobre Project Robin | Equipo y experiencia"
+  description="Conoce al equipo de Project Robin y cómo acompañamos a estudiantes y familias en la elección de universidad y la preparación de su experiencia."
+  schema={schema}
+>
+  <section class="intro bg-cream">
+    <div class="container-narrow center">
+      <p class="eyebrow">Sobre nosotros</p>
+      <h1 class="display">Tus compañeros en la aventura de estudiar en el extranjero</h1>
+      <p class="text">
+        En Project Robin combinamos experiencia real y acompañamiento cercano para que estudiar en el extranjero deje de ser un sueño y se convierta en un plan. Te lo contamos a ti, como nos hubiera gustado que nos lo contaran a nosotros.
+      </p>
+    </div>
+  </section>
+
+  <section class="container story">
+    <div class="story-card">
+      <p class="eyebrow text-accent">Nuestra historia</p>
+      <h2 class="display-md">Hicimos este camino antes que tú</h2>
+      <p>
+        Hace unos años tomamos una de las decisiones más importantes e ilusionantes de nuestras vidas: irnos a estudiar al extranjero, concretamente a los Países Bajos.
+      </p>
+      <p>
+        Por aquel entonces, sentimos la falta de una guía clara y cercana. Una consultoría nos costaba miles de euros y los “agentes comerciales” vendían humo. Sentimos que nadie nos hablaba como a personas — solo como a leads.
+      </p>
+      <p>
+        En <strong class="text-accent">Project Robin</strong>, combinamos nuestro mejor recurso, nuestra experiencia, con el contacto que hubiésemos necesitado: cercano, honesto y con <strong class="text-accent">skin in the game</strong>.
+      </p>
+      <p>Por último, pero no menos importante, lo hacemos con motivación y ganas. Vamos a triunfar.</p>
+    </div>
+    <div class="team">
+      <p class="eyebrow">El equipo fundador</p>
+      <h2 class="display-md">Tres Robins. Un objetivo.</h2>
+      <p class="text">Estudiamos fuera. Tropezamos con las mismas piedras que tropezarás tú. Por eso te las vamos a contar antes.</p>
+      <ul>
+        {
+          EQUIPO.map((m, i) => (
+            <li>
+              <img src={fotos[i]} alt={m.name} width="80" height="80" loading="lazy" />
+              <div>
+                <h3>
+                  <a href={m.linkedin} target="_blank" rel="noopener">
+                    {m.name}
+                  </a>
+                </h3>
+                <p class="role">{m.role}</p>
+                <p>{bios[i]}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="press bg-cream">
+    <div class="container">
+      <p class="eyebrow center">Nos entrevistaron</p>
+      <h2 class="display-md center">Por qué cientos de estudiantes se fían de nosotros, descúbrelo</h2>
+      <p class="text center">Conversaciones a fondo con medios nacionales sobre Project Robin y lo que hacemos.</p>
+      <div class="press-grid">
+        {
+          prensa.map((p) => (
+            <article class="press-card">
+              <div class="press-media">
+                <YouTube url={p.url} title={`${p.medio}: ${p.title}`} rounded={false} />
+              </div>
+              <div class="press-body">
+                <p class="medio">
+                  {p.medio} · <em>{p.sub}</em>
+                </p>
+                <p class="kicker">{p.kicker}</p>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+                <a class="btn btn-sm" href={p.url} target="_blank" rel="noopener">
+                  {p.cta}
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="world bg-navy center">
+    <h2 class="display-md">The world is your campus</h2>
+    <p class="text">Somos un equipo que transforma el sueño de estudiar fuera en un plan real. Tan prácticos como tus padres, tan acompañantes como tus amigos y tan ambiciosos como tú.</p>
+    <a class="btn" href="/contacto/?origen=sobre-nosotros">Reserva tu consulta gratuita</a>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-block: 60px 60px;
+  }
+  .intro .display {
+    margin: 16px 0 20px;
+  }
+  .story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    padding-block: 60px;
+    align-items: start;
+  }
+  .story-card {
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 36px 28px;
+    display: grid;
+    gap: 16px;
+    font-size: 16px;
+  }
+  .story-card .display-md {
+    color: var(--cream);
+  }
+  .team ul {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0 0;
+    display: grid;
+    gap: 14px;
+  }
+  .team .display-md {
+    margin: 12px 0;
+  }
+  .team li {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 16px;
+    align-items: center;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
+    padding: 18px;
+  }
+  .team img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .team h3 {
+    font-size: 22px;
+  }
+  .team h3 a {
+    text-decoration: none;
+  }
+  .role {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 2px 0 4px;
+  }
+  .team li p:last-child {
+    font-size: 15px;
+  }
+  .press {
+    padding-block: 70px;
+  }
+  .press h2 {
+    margin: 14px auto;
+    max-width: 900px;
+  }
+  .press-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 40px;
+  }
+  .press-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
+  }
+  .press-body {
+    padding: 26px;
+    display: grid;
+    gap: 10px;
+    justify-items: start;
+  }
+  .medio {
+    font-size: 14px;
+  }
+  .kicker {
+    font-size: 26px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.1;
+  }
+  .press-body h3 {
+    font-size: 17px;
+  }
+  .world {
+    padding: 80px var(--gutter);
+    display: grid;
+    justify-items: center;
+    gap: 18px;
+  }
+  .world .text {
+    max-width: 760px;
+  }
+  @media (max-width: 900px) {
+    .story,
+    .press-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

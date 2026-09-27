@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+const posts = (await getCollection('blog', (p) => !p.data.draft && p.data.category === 'Estudiar en Holanda')).sort((a, b) => b.data.date - a.data.date);
+---
+
+<Base
+  title="Estudiar en Holanda: artículos y guías | Project Robin"
+  description="Todos nuestros artículos sobre estudiar en Holanda: universidades, método de estudio, alojamiento, trabajo y vida de estudiante."
+>
+  <section class="container" style="padding-block:70px 110px;max-width:1000px">
+    <p class="eyebrow center">Categoría</p>
+    <h1 class="display center" style="margin:14px 0 40px">Estudiar en Holanda</h1>
+    <div class="grid">{posts.map((p) => <BlogCard post={p} />)}</div>
+  </section>
+</Base>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+  }
+</style>

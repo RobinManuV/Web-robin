@@ -1,0 +1,365 @@
+---
+// Página "hub" de España y de The European Experience.
+import Base from '../layouts/Base.astro';
+import Icon from './Icon.astro';
+import YouTube from './YouTube.astro';
+import NewsletterMap from './NewsletterMap.astro';
+
+const { h } = Astro.props;
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: h.listTitle,
+    itemListElement: h.unis.map((u, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: u.name,
+      url: `https://project-robin.com/universidades/${u.slug}/`,
+    })),
+  },
+];
+const pasos = [
+  { title: 'Entendemos tu perfil', text: 'Evaluamos tus intereses académicos, notas y metas para diseñar una estrategia personalizada.' },
+  { title: 'Definimos tu ruta', text: h.paso2 },
+  { title: 'Acompañamiento', text: 'Te guiamos paso a paso en el proceso de admisión, preparación de documentos y trámites de estancia.' },
+];
+const contact = `/contacto${h.tag === 'espana' ? '-estudiar-en-espana' : ''}/?origen=${h.tag}`;
+---
+
+<Base title={h.seoTitle} description={h.seoDesc} image={h.heroBg} schema={schema} footerExtra={h.footerExtra}>
+  <section class="hero" style={`--bg:url('${h.heroBg}')`}>
+    <div class="hero-inner">
+      <p class="eyebrow">Tu próximo destino</p>
+      <h1 class="display-xl">{h.h1}</h1>
+      <p class="lead">{h.intro}</p>
+      <ul class="tick-list hero-list">
+        {h.heroBullets.map((b) => <li>{b}</li>)}
+      </ul>
+      <div class="btn-row">
+        <a class="btn" href={contact}>Reserva tu consulta online</a>
+        <a class="btn btn-outline-light" href="#pasos">Cómo funciona</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="why bg-navy">
+    <div class="container center">
+      <p class="eyebrow">{h.whyEyebrow}</p>
+      <h2 class="display-md why-title">{h.whyTitle}</h2>
+      <p class="text why-text">{h.whyText}</p>
+      <div class="why-grid">
+        {
+          h.why.map((w, i) => (
+            <article class:list={['why-card', { mid: i === 1 }]}>
+              <Icon name={w.icon} size={30} />
+              <h3>{w.title}</h3>
+              <p>{w.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    h.video && (
+      <section class="section container video">
+        <div class="stack" style="--stack:20px">
+          <p class="eyebrow">Experiencia real</p>
+          <h2 class="display-md">Más que una carrera universitaria</h2>
+          <p class="text">Te lo contamos sin filtros ni discursos de marketing: así es de verdad vivir y estudiar dentro de The European Experience, paso a paso y sin letra pequeña.</p>
+          <a class="btn" href={contact}>Reservar entrevista</a>
+        </div>
+        <YouTube url={h.video} title="The European Experience" ratio="9 / 16" />
+      </section>
+    )
+  }
+
+  <section class="section bg-cream">
+    <div class="container">
+      <p class="eyebrow center">Nuestra red académica</p>
+      <h2 class="display-md center net-title">{h.listTitle}</h2>
+      {h.listText && <p class="text center net-text">{h.listText}</p>}
+      <ul class="unis">
+        {
+          h.unis.map((u) => (
+            <li class="uni">
+              <a href={`/universidades/${u.slug}/`} class="uni-link">
+                <div class="uni-img" style={u.cardImg ? `background-image:url('${u.cardImg}')` : ''}>
+                  {u.city && <span class="uni-city">{u.city}</span>}
+                </div>
+                {u.cardLogo && <img class="uni-logo" src={u.cardLogo} alt={`Logo de ${u.name}`} loading="lazy" />}
+                <h3>{u.name}</h3>
+                {u.type && <p class="uni-type">{u.type}</p>}
+                <p class="uni-text">{u.cardText}</p>
+              </a>
+              <a class="btn btn-sm" href={`/universidades/${u.slug}/`}>
+                Saber más
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section container steps" id="pasos">
+    <h2 class="display-md center">Diseñamos tu camino en tres sencillos pasos</h2>
+    <div class="steps-grid">
+      <ol>
+        {
+          pasos.map((p, i) => (
+            <li>
+              <span class="n">{i + 1}</span>
+              <div>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <img src="/wp-content/uploads/2026/04/Grupo-254.png" alt="" loading="lazy" />
+    </div>
+    <p class="center"><a class="btn" href={contact}>Reservar entrevista</a></p>
+  </section>
+
+  <section class="band" style={`--bg:url('${h.bandBg}')`}>
+    <p class="eyebrow">Mucho más que estudiar</p>
+    <p class="display-md">Vive la aventura que transformará tu futuro personal y profesional</p>
+    <a class="btn" href={contact}>Reserva tu consulta online</a>
+  </section>
+
+  <NewsletterMap tag={`newsletter-${h.tag}`} mapImg={h.mapImg} title={h.mapTitle} text={h.mapText} logos={h.unis.map((u) => ({ src: u.cardLogo || u.logo, alt: u.name }))} />
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 620px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    background: var(--bg) center / cover no-repeat, var(--navy);
+    border-radius: 0 0 24px 24px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(20, 26, 50, 0.75), rgba(20, 26, 50, 0.3) 60%, rgba(20, 26, 50, 0.05));
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 760px;
+    padding: 80px var(--gutter);
+    display: grid;
+    gap: 16px;
+  }
+  .hero .lead {
+    font-size: 20px;
+  }
+  .hero-list {
+    font-size: 17px;
+    font-weight: 700;
+  }
+  .why {
+    padding-block: 70px 80px;
+  }
+  .why-title {
+    margin: 14px 0 12px;
+  }
+  .why-text {
+    max-width: 900px;
+    margin: 0 auto 40px;
+    font-size: 16px;
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    text-align: left;
+  }
+  .why-card {
+    background: var(--cream-text);
+    color: var(--navy);
+    border-radius: 12px;
+    padding: 30px 28px;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+  .why-card.mid {
+    background: var(--accent);
+  }
+  .why-card h3 {
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .why-card p {
+    font-size: 15px;
+  }
+  .video {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+  }
+  .video :global(.yt) {
+    max-width: 340px;
+    margin-inline: auto;
+  }
+  .net-title {
+    margin: 14px 0 16px;
+    text-transform: none;
+  }
+  .net-text {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 16px;
+  }
+  .unis {
+    list-style: none;
+    padding: 0;
+    margin: 50px 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .uni {
+    background: var(--white);
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 24px;
+  }
+  .uni-link {
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .uni-img {
+    position: relative;
+    height: 160px;
+    background: var(--sky) center / cover no-repeat;
+  }
+  .uni-city {
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    color: #fff;
+    font-size: 13px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  }
+  .uni-logo {
+    width: 76px;
+    height: 76px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 14px;
+    padding: 10px;
+    margin: -38px auto 0;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  }
+  .uni h3 {
+    font-size: 19px;
+    font-weight: 700;
+    margin: 18px 22px 6px;
+  }
+  .uni-type {
+    margin: 0 22px 10px;
+    font-size: 13px;
+    opacity: 0.8;
+  }
+  .uni-text {
+    margin: 0 22px 18px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .uni .btn {
+    align-self: flex-start;
+    margin-left: 22px;
+  }
+  .steps h2 {
+    text-transform: none;
+  }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    margin: 50px 0 40px;
+  }
+  .steps ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 34px;
+  }
+  .steps li {
+    display: grid;
+    grid-template-columns: 54px 1fr;
+    gap: 18px;
+    align-items: center;
+  }
+  .n {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+  }
+  .steps h3 {
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .steps p {
+    font-size: 15px;
+  }
+  .steps-grid img {
+    border-radius: 6px;
+  }
+  .band {
+    color: #fff;
+    text-align: center;
+    display: grid;
+    justify-items: center;
+    gap: 18px;
+    padding: 150px var(--gutter);
+    background: linear-gradient(rgba(20, 26, 50, 0.55), rgba(20, 26, 50, 0.55)), var(--bg) center / cover no-repeat, #6b6b6b;
+    border-radius: 24px;
+  }
+  .band .display-md {
+    max-width: 1000px;
+  }
+  @media (max-width: 950px) {
+    .why-grid,
+    .video,
+    .steps-grid {
+      grid-template-columns: 1fr;
+    }
+    .unis {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .unis {
+      grid-template-columns: 1fr;
+    }
+    .band {
+      padding: 90px var(--gutter);
+    }
+  }
+</style>
