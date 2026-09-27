@@ -1,0 +1,121 @@
+---
+// Bloque final reutilizable: newsletter + mapa "Estudia en X" + logos de universidades
+// (aparece en /destinos/, /estudiar-universidad-espana/ y /the-european-experience/).
+import LeadForm from './LeadForm.astro';
+const { tag, mapImg, title, text, logos = [] } = Astro.props;
+---
+
+<section class="nl">
+  <div class="nl-head">
+    <h2>Suscríbete a nuestra newsletter</h2>
+    <p><strong>Únete sin miedo.</strong><br />No llenamos tu buzón, solo te contamos lo realmente importante.</p>
+    <div class="nl-form">
+      <LeadForm form="newsletter" tag={tag} submitLabel="Suscribirse" />
+      <p class="small center">Tu privacidad es importante. Puedes darte de baja en cualquier momento.</p>
+    </div>
+  </div>
+
+  <div class="map-card">
+    {mapImg && <img class="map" src={mapImg} alt="" loading="lazy" />}
+    <div class="map-body">
+      <h2>{title}</h2>
+      <p>{text}</p>
+    </div>
+    {
+      logos.length > 0 && (
+        <ul class="logos">
+          {logos.map((l) => (
+            <li>
+              <img src={l.src} alt={l.alt} loading="lazy" />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .nl {
+    background: #dfe3f0;
+    padding: 90px var(--gutter) 70px;
+  }
+  .nl-head {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .nl-head h2 {
+    font-size: clamp(32px, 4.5vw, 64px);
+    font-weight: 700;
+    line-height: 1.05;
+  }
+  .nl-head > p {
+    margin: 14px 0 20px;
+    font-size: 18px;
+  }
+  .nl-form {
+    text-align: left;
+  }
+  .nl-form :global(.btn) {
+    background: linear-gradient(90deg, var(--navy), #5a5bd8);
+    border: 0;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 8px;
+  }
+  .nl-form .small {
+    margin-top: 8px;
+    font-size: 13px;
+  }
+  .map-card {
+    position: relative;
+    max-width: 1340px;
+    margin: 200px auto 0;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 14px;
+    padding: 150px 24px 24px;
+    text-align: center;
+  }
+  .map {
+    position: absolute;
+    left: 50%;
+    top: -170px;
+    transform: translateX(-50%);
+    width: min(520px, 80%);
+  }
+  .map-body {
+    position: relative;
+    padding-bottom: 50px;
+  }
+  .map-body h2 {
+    font-size: clamp(36px, 4.5vw, 66px);
+    font-weight: 700;
+  }
+  .map-body p {
+    margin-top: 12px;
+    font-size: 17px;
+  }
+  .logos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  .logos li {
+    background: var(--cream);
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    padding: 18px;
+    min-height: 90px;
+  }
+  .logos img {
+    max-height: 56px;
+    width: auto;
+  }
+</style>

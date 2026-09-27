@@ -1,0 +1,187 @@
+---
+// Banner de cookies con los mismos textos y categorías que el CookieYes actual.
+// Actualiza Google Consent Mode v2 (lo que GTM usa para decidir qué etiquetas se disparan).
+---
+
+<div class="cky" data-cookie-banner hidden>
+  <div class="panel" role="dialog" aria-labelledby="cky-title" aria-live="polite">
+    <p class="title" id="cky-title">Tu privacidad en Robin</p>
+    <p class="desc">
+      Usamos cookies necesarias para que la web funcione y, si lo aceptas, cookies de analítica para medir visitas y consultas,
+      y de publicidad de Meta para medir campañas. Puedes aceptar, rechazar o personalizar tu elección y cambiarla cuando quieras.
+      <a href="/politica-de-cookies/">Política de cookies</a>.
+    </p>
+
+    <div class="prefs" data-prefs hidden>
+      <p class="pref-intro">
+        Las cookies necesarias permiten el funcionamiento de la web y recordar tu elección. Las demás categorías están desactivadas hasta que las aceptes.
+      </p>
+      <label class="pref">
+        <span><strong>Necesarias</strong><small>Siempre activas</small></span>
+        <input type="checkbox" checked disabled />
+      </label>
+      <label class="pref">
+        <span><strong>Analítica</strong><small>Medir visitas y consultas.</small></span>
+        <input type="checkbox" data-cat="analytics" />
+      </label>
+      <label class="pref">
+        <span><strong>Publicidad</strong><small>Permite a Meta medir los resultados de las campañas.</small></span>
+        <input type="checkbox" data-cat="ads" />
+      </label>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="b b-ghost" data-action="customize">Personalizar</button>
+      <button type="button" class="b b-ghost" data-action="reject">Rechazar todas</button>
+      <button type="button" class="b b-ghost" data-action="save" hidden>Guardar preferencias</button>
+      <button type="button" class="b b-main" data-action="accept">Aceptar todas</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const KEY = 'robin-consent';
+  const banner = document.querySelector('[data-cookie-banner]');
+  const prefs = banner.querySelector('[data-prefs]');
+  const saveBtn = banner.querySelector('[data-action="save"]');
+  const customizeBtn = banner.querySelector('[data-action="customize"]');
+
+  function apply(choice) {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({ ...choice, date: new Date().toISOString() }));
+    } catch (e) {}
+    const g = (v) => (v ? 'granted' : 'denied');
+    window.gtag?.('consent', 'update', {
+      analytics_storage: g(choice.analytics),
+      ad_storage: g(choice.ads),
+      ad_user_data: g(choice.ads),
+      ad_personalization: g(choice.ads),
+      functionality_storage: 'granted',
+      personalization_storage: g(choice.analytics),
+    });
+    window.dataLayer?.push({ event: 'cookie_consent_update', consent_analytics: choice.analytics, consent_ads: choice.ads });
+    banner.hidden = true;
+  }
+
+  function open(showPrefs = false) {
+    let saved = null;
+    try {
+      saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+    } catch (e) {}
+    banner.querySelector('[data-cat="analytics"]').checked = !!saved?.analytics;
+    banner.querySelector('[data-cat="ads"]').checked = !!saved?.ads;
+    prefs.hidden = !showPrefs;
+    saveBtn.hidden = !showPrefs;
+    customizeBtn.hidden = showPrefs;
+    banner.hidden = false;
+  }
+
+  banner.addEventListener('click', (e) => {
+    const action = e.target.closest('[data-action]')?.dataset.action;
+    if (action === 'accept') apply({ analytics: true, ads: true });
+    if (action === 'reject') apply({ analytics: false, ads: false });
+    if (action === 'customize') open(true);
+    if (action === 'save')
+      apply({
+        analytics: banner.querySelector('[data-cat="analytics"]').checked,
+        ads: banner.querySelector('[data-cat="ads"]').checked,
+      });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-open-cookies]')) open(true);
+  });
+
+  let hasChoice = false;
+  try {
+    hasChoice = !!localStorage.getItem(KEY);
+  } catch (e) {}
+  if (!hasChoice) open(false);
+</script>
+
+<style>
+  .cky {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 999;
+    max-width: 440px;
+    width: calc(100% - 40px);
+  }
+  .cky[hidden] {
+    display: none;
+  }
+  .panel {
+    background: #fff;
+    color: #212121;
+    border: 1px solid #f4f4f4;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+  .title {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  .desc a {
+    color: #1863dc;
+  }
+  .prefs {
+    margin-top: 14px;
+    display: grid;
+    gap: 10px;
+  }
+  .pref-intro {
+    font-size: 13px;
+  }
+  .pref {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+  }
+  .pref span {
+    display: grid;
+  }
+  .pref small {
+    color: #666;
+  }
+  .pref input {
+    width: 18px;
+    height: 18px;
+    accent-color: #1863dc;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .b {
+    flex: 1 1 auto;
+    padding: 9px 14px;
+    border-radius: 4px;
+    border: 2px solid #1863dc;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .b-ghost {
+    background: transparent;
+    color: #1863dc;
+  }
+  .b-main {
+    background: #1863dc;
+    color: #fff;
+    flex-basis: 100%;
+  }
+  .b[hidden] {
+    display: none;
+  }
+</style>

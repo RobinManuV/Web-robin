@@ -1,0 +1,32 @@
+---
+// Iconos simples en línea (sin librerías externas)
+const { name, size = 28 } = Astro.props;
+const paths = {
+  doc: 'M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm6 1.5V9h4.5M9 13h7M9 17h7',
+  cal: 'M5 5h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm-1 5h16M8 3v4M16 3v4M9 14h2v2H9z',
+  home: 'M5 21V9l7-5 7 5v12M10 21v-6h4v6M3 21h18',
+  chat: 'M4 5h16v11H9l-5 4V5zm4 5h8M8 13h5',
+  user: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm-7 9a7 7 0 0 1 14 0',
+  compass: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zm3.5-12.5-2 5-5 2 2-5 5-2z',
+  briefcase: 'M4 8h16v11H4zM9 8V5h6v3M4 13h16',
+  people: 'M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm8 0a2.5 2.5 0 1 0 0-5M3 20a6 6 0 0 1 12 0M16 14a5 5 0 0 1 5 6',
+  cap: 'M2 9l10-5 10 5-10 5L2 9zm4 2v5c3 2.5 9 2.5 12 0v-5',
+  globe: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18',
+  heart: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',
+};
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.8"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  class="icon"
+>
+  <path d={paths[name] || paths.doc}></path>
+</svg>

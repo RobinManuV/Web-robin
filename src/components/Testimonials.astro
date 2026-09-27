@@ -1,0 +1,169 @@
+---
+// Carrusel de testimonios (mismo formato que la home actual).
+import { TESTIMONIOS } from '../data/site.js';
+const { items = TESTIMONIOS } = Astro.props;
+---
+
+<div class="tst" data-carousel>
+  <button type="button" class="arrow prev" aria-label="Testimonio anterior" data-prev>‹</button>
+  <div class="viewport">
+    <ul class="track" data-track>
+      {
+        items.map((t) => (
+          <li class="slide">
+            <figure class="card-t">
+              <figcaption>
+                <p class="name">{t.name}</p>
+                <p class="prog">{t.program}</p>
+              </figcaption>
+              <blockquote>{t.text}</blockquote>
+              <p class="stars" aria-label="5 de 5 estrellas">★★★★★</p>
+            </figure>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <button type="button" class="arrow next" aria-label="Siguiente testimonio" data-next>›</button>
+  <div class="dots" data-dots></div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-carousel]').forEach((root) => {
+    const track = root.querySelector('[data-track]');
+    const slides = track.children;
+    const dots = root.querySelector('[data-dots]');
+    let i = 0;
+    let timer;
+    [...slides].forEach((_, k) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', `Ir al testimonio ${k + 1}`);
+      b.addEventListener('click', () => go(k, true));
+      dots.appendChild(b);
+    });
+    function go(n, user) {
+      i = (n + slides.length) % slides.length;
+      track.style.transform = `translateX(-${i * 100}%)`;
+      [...dots.children].forEach((d, k) => d.classList.toggle('on', k === i));
+      if (user) restart();
+    }
+    function restart() {
+      clearInterval(timer);
+      timer = setInterval(() => go(i + 1), 7000);
+    }
+    root.querySelector('[data-prev]').addEventListener('click', () => go(i - 1, true));
+    root.querySelector('[data-next]').addEventListener('click', () => go(i + 1, true));
+    root.addEventListener('mouseenter', () => clearInterval(timer));
+    root.addEventListener('mouseleave', restart);
+    go(0);
+    restart();
+  });
+</script>
+
+<style>
+  .tst {
+    position: relative;
+    display: grid;
+    grid-template-columns: 56px 1fr 56px;
+    align-items: center;
+    gap: 24px;
+  }
+  .viewport {
+    overflow: hidden;
+  }
+  .track {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    transition: transform 0.5s ease;
+  }
+  .slide {
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .card-t {
+    margin: 0;
+    background: var(--cream);
+    color: var(--navy);
+    border-radius: 24px;
+    padding: 40px 46px;
+    width: 100%;
+    max-width: 630px;
+  }
+  .name {
+    text-align: center;
+    font-size: 34px;
+    font-weight: 600;
+  }
+  .prog {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 6px;
+  }
+  blockquote {
+    margin: 42px 0 0;
+    font-size: 21px;
+    line-height: 1.5;
+  }
+  .stars {
+    margin-top: 28px;
+    font-size: 26px;
+    letter-spacing: 4px;
+  }
+  .arrow {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--cream);
+    background: transparent;
+    color: var(--cream);
+    font-size: 30px;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+  }
+  .arrow:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .dots {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .dots :global(button) {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 0;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.4);
+  }
+  .dots :global(button.on) {
+    background: #fff;
+  }
+  @media (max-width: 700px) {
+    .tst {
+      grid-template-columns: 1fr;
+    }
+    .arrow {
+      display: none;
+    }
+    .card-t {
+      padding: 28px 22px;
+    }
+    .name {
+      font-size: 26px;
+    }
+    .prog {
+      font-size: 18px;
+    }
+    blockquote {
+      font-size: 17px;
+      margin-top: 24px;
+    }
+  }
+</style>

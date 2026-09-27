@@ -1,0 +1,258 @@
+---
+import Base from '../../layouts/Base.astro';
+import NewsletterMap from '../../components/NewsletterMap.astro';
+import { DESTINOS, LOGOS_HOLANDA } from '../../data/destinos.js';
+
+const title = 'Estudiar en Holanda: 11 ciudades universitarias | Project Robin';
+const description =
+  'Compara Ámsterdam, Maastricht, Delft, Groningen y 7 ciudades más para estudiar en Holanda: universidades, ambiente y coste real. Guía para familias.';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Ciudades para estudiar en Holanda',
+    itemListElement: DESTINOS.map((d, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: `Estudiar en ${d.name}`,
+      url: `https://project-robin.com/destinos/${d.slug}/`,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://project-robin.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Estudiar en Holanda', item: 'https://project-robin.com/destinos/' },
+    ],
+  },
+];
+
+const footerExtra = {
+  title: 'Destinos',
+  links: [...DESTINOS].sort((a, b) => a.name.localeCompare(b.name, 'es')).map((d) => ({ label: d.name, href: `/destinos/${d.slug}/` })),
+};
+---
+
+<Base title={title} description={description} image="/wp-content/uploads/2026/05/b45b3c027f2f7b146d546b7c9d8fc598.webp" schema={schema} footerExtra={footerExtra}>
+  <section class="hero">
+    <img class="hero-img" src="/wp-content/uploads/2026/07/estudia-en-holanda-con-project-robin-1.webp" alt="" aria-hidden="true" />
+    <div class="hero-inner">
+      <p class="eyebrow">Guía de ciudades universitarias</p>
+      <h1 class="display-xl">Estudiar en Holanda</h1>
+      <p class="lead">
+        Una carrera en Holanda cuesta unos 2.700 € de matrícula al año, y vivir allí sale por un precio parecido a mandar a tu hijo a estudiar a
+        Madrid desde otra ciudad. Te contamos cómo es de verdad cada ciudad universitaria para que elijáis juntos, con datos y sin rodeos.
+      </p>
+      <div class="btn-row">
+        <a class="btn" href="#reserva-destinos">Reserva tu consulta online</a>
+        <a class="btn btn-outline-light" href="/servicios/asesoramiento-completo/">Cómo funciona</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-cream list-section">
+    <div class="container">
+      <div class="intro center">
+        <img class="mill" src="/wp-content/uploads/2026/05/Grupo-162.png" alt="" width="271" height="385" loading="lazy" />
+        <p class="eyebrow">Explora las opciones</p>
+        <h2 class="display">Ciudades para estudiar en Holanda</h2>
+        <p class="text">
+          No todas las ciudades universitarias de los Países Bajos son iguales. Cada una tiene sus universidades, su ritmo y su coste de vida. Aquí
+          tienes una radiografía directa de las 11 ciudades en las que acompañamos a estudiantes, para ver cuál encaja con el perfil académico de tu
+          hijo, su forma de ser y vuestro presupuesto.
+        </p>
+      </div>
+
+      <ul class="cards">
+        {
+          DESTINOS.map((d) => (
+            <li class="card-d">
+              <a class="card-link" href={`/destinos/${d.slug}/`}>
+                <div class="card-img">
+                  <img class="stamp" src={d.cardImg} alt={`Estudiar en ${d.name}`} loading="lazy" />
+                  <h3>{d.name}</h3>
+                </div>
+                <p class="card-sub">{d.subtitle}</p>
+                <p class="card-text">{d.intro}</p>
+              </a>
+              <a class="btn btn-sm" href={`/destinos/${d.slug}/`}>
+                Estudiar en {d.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="cta-band" id="reserva-destinos">
+    <p class="eyebrow">Tu próximo gran paso</p>
+    <p class="display-md">Diseña la aventura que definirá tu futuro</p>
+    <a class="btn" href="/contacto/?origen=holanda">Reserva tu consulta online</a>
+  </section>
+
+  <NewsletterMap
+    tag="newsletter-holanda"
+    mapImg="/wp-content/uploads/2026/07/estudia-en-holanda-con-project-robin-1.webp"
+    title="Estudia en Holanda"
+    text="Gozamos de una meticulosa selección de destinos para ofrecerte solo lo mejor."
+    logos={LOGOS_HOLANDA.slice(0, 6)}
+  />
+</Base>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 700px;
+    display: flex;
+    align-items: center;
+    background: url('/wp-content/uploads/2026/05/Grupo-250.png') center / cover no-repeat, var(--navy);
+    border-radius: 0 0 24px 24px;
+    overflow: hidden;
+    color: #fff;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(20, 26, 50, 0.72), rgba(20, 26, 50, 0.25) 60%, rgba(20, 26, 50, 0.05));
+  }
+  .hero-img {
+    display: none;
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 780px;
+    padding: 80px var(--gutter);
+  }
+  .hero h1 {
+    margin: 14px 0 20px;
+  }
+  .hero .lead {
+    margin-bottom: 28px;
+    font-size: clamp(18px, 1.7vw, 23px);
+  }
+  .list-section {
+    padding: 80px 0 120px;
+  }
+  .intro {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto 80px;
+  }
+  .intro .display {
+    margin: 22px 0 26px;
+  }
+  .intro .text {
+    max-width: 770px;
+    margin-inline: auto;
+  }
+  .mill {
+    position: absolute;
+    left: -260px;
+    top: 90px;
+    width: 180px;
+  }
+  .cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px 40px;
+  }
+  .card-d {
+    background: var(--cream-2);
+    border: 2px solid var(--navy);
+    border-radius: 16px;
+    padding: 26px 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card-link {
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+  }
+  .card-img {
+    position: relative;
+  }
+  .card-img img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+  .card-link:hover img {
+    transform: scale(1.02);
+  }
+  .card-img h3 {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: var(--cream-text);
+    font-size: clamp(26px, 2.4vw, 36px);
+    font-weight: 700;
+    text-transform: uppercase;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  }
+  .card-sub {
+    margin-top: 18px;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .card-text {
+    margin-top: 8px;
+    font-size: 17px;
+  }
+  .card-d .btn {
+    align-self: center;
+  }
+  .cta-band {
+    text-align: center;
+    padding: 150px var(--gutter);
+    display: grid;
+    justify-items: center;
+    gap: 22px;
+    color: #fff;
+    background: url('/wp-content/uploads/2026/05/Grupo-252.png') center / cover no-repeat, var(--navy);
+    border-radius: 24px;
+  }
+  @media (max-width: 1400px) {
+    .mill {
+      left: -180px;
+      width: 140px;
+    }
+  }
+  @media (max-width: 1250px) {
+    .mill {
+      display: none;
+    }
+  }
+  @media (max-width: 1000px) {
+    .cards {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+  }
+  @media (max-width: 640px) {
+    .hero {
+      min-height: 560px;
+      background-position: 70% center;
+    }
+    .cards {
+      grid-template-columns: 1fr;
+    }
+    .list-section {
+      padding: 60px 0 70px;
+    }
+    .intro {
+      margin-bottom: 40px;
+    }
+  }
+</style>

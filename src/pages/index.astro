@@ -1,0 +1,674 @@
+---
+import Base from '../layouts/Base.astro';
+import YouTube from '../components/YouTube.astro';
+import Testimonials from '../components/Testimonials.astro';
+import DescubreHolanda from '../components/DescubreHolanda.astro';
+import ContactSection from '../components/ContactSection.astro';
+import { EQUIPO, CIFRAS } from '../data/site.js';
+
+const paquetes = [
+  {
+    title: 'España',
+    popular: true,
+    img: '/wp-content/uploads/2026/05/46c3c403c37f85f32d0b79f4d054d084.webp',
+    stamped: true,
+    bullets: ['Opciones académicas en distintas ciudades.', 'Programas adaptados a tu perfil.', 'Orientación para elegir el mejor destino.'],
+    text: 'Explora alternativas de estudio en España con una propuesta clara para ayudarte a valorar ciudades, campus y oportunidades disponibles.',
+    cta: 'Estudia en España',
+    href: '/estudiar-universidad-espana/',
+  },
+  {
+    title: 'Multicampus',
+    img: '/wp-content/uploads/2026/05/d79ba2af1559ff1148830b83eea1fead.webp',
+    stamped: true,
+    bullets: ['Compara campus y destinos disponibles.', 'Más flexibilidad para tu plan de estudios.', 'Encuentra la opción que mejor se adapte a ti.'],
+    text: 'Una opción pensada para quienes buscan flexibilidad y quieren valorar diferentes campus antes de tomar una decisión final.',
+    cta: 'Estudia en Multicampus',
+    href: '/the-european-experience/',
+  },
+  {
+    title: 'Holanda',
+    img: '/wp-content/uploads/2026/05/amsterdam-cityscape-view-2026-03-20-01-59-27-utc-1024x683.jpg',
+    stamped: false,
+    bullets: ['Universidades y programas en Holanda.', 'Información sobre requisitos y admisión.', 'Acompañamiento durante el proceso.'],
+    text: 'Descubre opciones de estudio en Holanda y encuentra el destino que mejor encaja con tu perfil, tus objetivos y tu forma de estudiar.',
+    cta: 'Estudia en Holanda',
+    href: '/destinos/',
+  },
+];
+
+const pasos = [
+  { img: '/wp-content/uploads/2026/06/RobinTelescopio.webp', title: 'Asesoramiento y elección de carreras', text: 'Analizamos tu perfil y te recomendamos las Universidades más compatibles.' },
+  { img: '/wp-content/uploads/2026/06/Robin-Carpetas.webp', title: 'Aplicación y preparación', text: 'Nos encargamos de preparar tu perfil, revisar documentación y guiarte durante todo el proceso de aplicación.' },
+  { img: '/wp-content/uploads/2026/06/RobinHouse.webp', title: 'Housing y llegada', text: 'Te ayudamos a encontrar alojamiento, preparar tu mudanza y llegar con todo organizado desde el primer día.' },
+  { img: '/wp-content/uploads/2026/06/RobinGraduated.webp', title: 'Acompañamiento final', text: 'Estamos contigo hasta el final para resolver dudas, preparar los últimos pasos y empezar tu nueva etapa con confianza.' },
+];
+
+const servicios = [
+  { title: 'Selección de Carreras', text: 'Te ayudamos a tomar decisiones informadas sobre qué universidades y carreras encajan mejor contigo.', dark: true },
+  { title: 'Proceso de aplicación', text: 'Te asesoramos en la preparación de todos los requisitos, desde cartas de motivación hasta la organización de documentos legales necesarios para tu admisión.', dark: false },
+  { title: 'Housing', text: '¿Es difícil encontrar alojamiento en Holanda? Habiendo vivido allí, contamos con las herramientas necesarias para conseguirlo.', dark: false },
+  { title: 'Ayudas Económicas', text: 'Te asesoramos con todos los programas de ayuda al estudiante ofrecidos por el gobierno holandés.', dark: true },
+];
+
+const equipoFotos = [
+  '/wp-content/uploads/2026/05/d7ed3b562ab2781c4c0674a1da19ee84.webp',
+  '/wp-content/uploads/2026/05/438c8c8e556189a826ba8ff9eba1dafa.webp',
+  '/wp-content/uploads/2026/05/0f4f5067744817baf312cc3460fdbe03.webp',
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Project Robin',
+  url: 'https://project-robin.com/',
+  inLanguage: 'es-ES',
+  publisher: { '@id': 'https://project-robin.com/#organization' },
+};
+---
+
+<Base title="Estudiar en Holanda con acompañamiento | Project Robin" schema={schema}>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true"></div>
+    <div class="hero-inner container">
+      <p class="eyebrow text-cream">The world is your campus</p>
+      <h1 class="display-xl hero-title">Más cerca de tu sueño, estudia en el extranjero</h1>
+      <p class="lead hero-lead">
+        Hablamos sin rodeos, costes, becas, riesgos y beneficios.<br />
+        Te guiamos desde ¿y si me voy? hasta tu primera clase en Europa
+      </p>
+      <div class="btn-row">
+        <a class="btn" href="#reserva">Reserva tu consulta online</a>
+        <a class="btn btn-outline-light" href="#como-funciona">Cómo funciona</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="bg-cream section" id="como-funciona">
+    <div class="container voices">
+      <div class="stack" style="--stack:34px">
+        <p class="eyebrow">Cómo funciona</p>
+        <h2 class="display-md">Voces de nuestros Robins: de estudiante a estudiante</h2>
+        <p class="lead">Conoce la verdad de quiénes ya volaron a Holanda y hoy te ayudan a que tu propio viaje sea claro, posible y transformador.</p>
+        <a class="btn" href="/sobre-nosotros/">Nosotros</a>
+      </div>
+      <YouTube url="https://youtu.be/psjEcd2yAeg" poster="/wp-content/uploads/2026/05/a6f1b0f7b8b6e609fb8387ac02dc8ff3.webp" title="Voces de nuestros Robins" />
+    </div>
+  </section>
+
+  <!-- PAQUETES -->
+  <section class="bg-cream section packs-section">
+    <div class="container">
+      <div class="center stack" style="--stack:18px">
+        <p class="eyebrow">Nuestros paquetes</p>
+        <h2 class="display">Elige tu aventura</h2>
+        <p class="lead packs-lead">Tres caminos, un equipo detrás. Te acompañamos donde tiene sentido ir: Holanda, España o un grado europeo multicampus.</p>
+      </div>
+      <div class="packs">
+        <img class="packs-bird" src="/wp-content/uploads/2026/05/a711e425cce1f3a3c8c74cb6f495f1f4.webp" alt="" width="257" height="256" loading="lazy" />
+        {
+          paquetes.map((p) => (
+            <article class="pack">
+              {p.popular && <p class="pack-badge">Más popular</p>}
+              <div class="pack-img">
+                <img class:list={{ stamp: !p.stamped }} src={p.img} alt={`Estudiar en ${p.title}`} width="401" height="296" loading="lazy" />
+                <h3>{p.title}</h3>
+              </div>
+              <ul class="tick-list pack-list">
+                {p.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+              <p class="pack-text">{p.text}</p>
+              <a class="btn btn-sm" href={p.href}>{p.cta}</a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- MÉTODO ROBIN -->
+  <section class="section">
+    <div class="container center stack" style="--stack:20px">
+      <p class="eyebrow">Método Robin</p>
+      <h2 class="display">Te guiamos de principio a fin</h2>
+      <p class="lead">Sin falsas promesas. Un proceso claro, transparente y probado. Paso a paso</p>
+    </div>
+    <div class="container">
+      <ol class="steps">
+        {
+          pasos.map((p, i) => (
+            <li class="step">
+              <span class="step-n">{i + 1}</span>
+              <img src={p.img} alt="" loading="lazy" width="220" height="220" />
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="btn-row" style="justify-content:center">
+        <a class="btn" href="/servicios/asesoramiento-completo/">Pack Llegada</a>
+        <a class="btn btn-outline" href="/servicios/mentoria/">Mentoría 90 minutos</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="testi rounded-block">
+    <div class="container testi-grid">
+      <div class="stack" style="--stack:24px">
+        <p class="eyebrow text-cream">Lo que dicen nuestros Robins</p>
+        <h2 class="display-md text-cream">Historias reales, sin filtros.</h2>
+        <p class="text text-cream">Conoce la verdad de quiénes ya volaron a Holanda y hoy te ayudan a que tu propio viaje sea claro, posible y transformador.</p>
+        <a class="btn" href="/comunidad/">Ver todos los testimonios</a>
+      </div>
+      <Testimonials />
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section class="section">
+    <div class="tiles container-narrow">
+      {
+        servicios.map((s) => (
+          <article class:list={['tile', { dark: s.dark }]}>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- CIFRAS -->
+  <section class="stats">
+    <div class="stats-img">
+      <img src="/wp-content/uploads/2026/05/shot-of-two-young-women-studying-together-at-colle-2026-01-09-10-58-49-utc.jpg" alt="Estudiantes internacionales estudiando juntas en Holanda" loading="lazy" />
+    </div>
+    <div class="stats-box">
+      <p class="eyebrow">Experiencia</p>
+      <h2 class="display-md">Los números nos avalan</h2>
+      <p class="lead">No solo se trata de estadísticas, se trata de historias de éxito, sueños cumplidos y metas alcanzadas.</p>
+      <dl class="counters">
+        {
+          CIFRAS.map((c) => (
+            <div>
+              <dt class="sr-only">{c.label}</dt>
+              <dd>
+                <span class="num" data-count={c.value}>{c.value}</span>
+                {c.suffix}
+              </dd>
+              <dd class="lbl" aria-hidden="true">
+                {c.label}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <!-- EQUIPO -->
+  <section class="section">
+    <div class="container-narrow center stack" style="--stack:24px">
+      <p class="eyebrow">El equipo Robin</p>
+      <h2 class="display-md">Estuvimos en tu silla, por eso estamos en la nuestra</h2>
+      <p class="lead">
+        Hace unos años tomamos una de las decisiones más importantes e ilusionantes de nuestras vidas: ir a estudiar al extranjero. Por aquel entonces, sentimos la falta de una guía clara y cercana. Impulsados por esa experiencia, decidimos crear lo que nos faltó en su momento: Robin.
+      </p>
+      <a class="btn" href="/sobre-nosotros/">Conoce al equipo</a>
+    </div>
+    <div class="team container">
+      {
+        EQUIPO.map((m, i) => (
+          <article class="member" style={`background-image:url('${equipoFotos[i]}')`}>
+            <div class="member-info">
+              <h3>{m.name}</h3>
+              <p>{m.bio}</p>
+              <a href={m.linkedin} target="_blank" rel="noopener">
+                LinkedIn
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- DESCUBRE HOLANDA -->
+  <div class="container">
+    <DescubreHolanda />
+  </div>
+
+  <ContactSection tag="general" />
+</Base>
+
+<script>
+  // Animación de los contadores (el número real ya está escrito en el HTML)
+  const nums = document.querySelectorAll('[data-count]');
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const to = Number(el.dataset.count);
+        const t0 = performance.now();
+        const tick = (t) => {
+          const p = Math.min(1, (t - t0) / 1400);
+          el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3))));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        io.unobserve(el);
+      });
+    },
+    { threshold: 0.6 },
+  );
+  nums.forEach((n) => io.observe(n));
+</script>
+
+<style>
+  /* HERO */
+  .hero {
+    position: relative;
+    background: var(--navy);
+    border-radius: 0 0 24px 24px;
+    overflow: hidden;
+    min-height: 715px;
+    display: flex;
+    align-items: center;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('/wp-content/uploads/2026/07/hero-global-wide-spain-corrected-animated.gif') right center / auto 92% no-repeat;
+  }
+  .hero-inner {
+    position: relative;
+    padding-block: 80px;
+  }
+  .hero-title {
+    color: var(--cream-text);
+    max-width: 820px;
+    margin: 14px 0 22px;
+  }
+  .hero-lead {
+    color: var(--cream-text);
+    max-width: 700px;
+    font-size: clamp(18px, 1.6vw, 22px);
+    margin-bottom: 26px;
+  }
+  .hero .btn {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+
+  /* VOCES */
+  .voices {
+    display: grid;
+    grid-template-columns: 1fr 1.9fr;
+    gap: 70px;
+    align-items: center;
+  }
+  .voices .display-md {
+    font-size: clamp(34px, 3.9vw, 56px);
+  }
+
+  /* PAQUETES */
+  .packs-section {
+    padding-top: 0;
+  }
+  .packs-lead {
+    max-width: 700px;
+    margin-inline: auto;
+  }
+  .packs {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 372px));
+    justify-content: center;
+    gap: 80px;
+    margin-top: 150px;
+  }
+  .packs-bird {
+    position: absolute;
+    right: calc(50% - 600px);
+    top: -130px;
+    width: 180px;
+  }
+  .pack {
+    position: relative;
+    background: var(--grey);
+    border: 2px solid var(--navy);
+    border-radius: 16px;
+    padding: 96px 32px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .pack-badge {
+    position: absolute;
+    top: -58px;
+    left: 34px;
+    right: 34px;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 12px 12px 0 0;
+    text-align: center;
+    padding: 16px 10px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .pack-img {
+    position: relative;
+  }
+  .pack-img img {
+    width: 100%;
+    aspect-ratio: 401 / 296;
+    object-fit: cover;
+  }
+  .pack-img h3 {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: var(--cream-text);
+    font-size: clamp(30px, 3vw, 42px);
+    font-weight: 800;
+    text-transform: uppercase;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  }
+  .pack-list {
+    font-size: 17px;
+  }
+  .pack-text {
+    font-size: 17px;
+    flex: 1;
+  }
+  .pack .btn {
+    align-self: center;
+  }
+
+  /* MÉTODO */
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 60px 0 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+  }
+  .step {
+    position: relative;
+    background: var(--sky);
+    border-radius: 16px;
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .step-n {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--cream);
+    display: grid;
+    place-items: center;
+    font-size: 26px;
+    font-weight: 700;
+  }
+  .step img {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    width: 88px;
+    height: auto;
+  }
+  .step h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 12px;
+  }
+  .step p {
+    font-size: 16px;
+  }
+
+  /* TESTIMONIOS */
+  .testi {
+    background: var(--navy);
+    padding-block: clamp(70px, 10vw, 170px);
+  }
+  .testi-grid {
+    display: grid;
+    grid-template-columns: 0.75fr 2fr;
+    gap: 50px;
+    align-items: center;
+    max-width: 1280px;
+  }
+  .testi .eyebrow {
+    font-size: 22px;
+  }
+  .testi .text {
+    font-size: 18px;
+  }
+  .testi .btn {
+    font-size: 16px;
+  }
+
+  /* SERVICIOS */
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 470px));
+    justify-content: center;
+    gap: 52px;
+  }
+  .tile {
+    background: var(--peach);
+    color: var(--navy);
+    border-radius: 16px;
+    padding: 130px 45px 80px;
+  }
+  .tile.dark {
+    background: var(--navy);
+    color: var(--accent);
+  }
+  .tile h3 {
+    font-size: 32px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.09;
+    margin-bottom: 36px;
+  }
+  .tile p {
+    font-size: 25px;
+    line-height: 1.1;
+  }
+
+  /* CIFRAS */
+  .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+  .stats-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .stats-box {
+    background: var(--sky);
+    padding: 50px 48px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+  }
+  .stats-box .lead {
+    max-width: 380px;
+  }
+  .counters {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    margin: 30px 0 0;
+    background: var(--cream);
+    padding: 30px 30px 40px;
+    margin-inline: -48px;
+    margin-bottom: -60px;
+  }
+  .counters dd {
+    margin: 0;
+  }
+  .counters dd:first-of-type {
+    font-size: 46px;
+    font-weight: 700;
+    line-height: 1;
+    border-bottom: 2px solid var(--navy);
+    padding-bottom: 10px;
+  }
+  .counters .lbl {
+    margin-top: 10px;
+    font-size: 16px;
+  }
+
+  /* EQUIPO */
+  .team {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 70px;
+    align-items: start;
+  }
+  .member {
+    aspect-ratio: 710 / 947;
+    max-height: 560px;
+    background-size: cover;
+    background-position: center top;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
+  .member:nth-child(2) {
+    margin-top: 40px;
+  }
+  .member-info {
+    width: 100%;
+    padding: 70px 22px 20px;
+    background: linear-gradient(to top, rgba(45, 58, 100, 0.95), rgba(45, 58, 100, 0.7) 60%, rgba(45, 58, 100, 0));
+    color: var(--cream);
+  }
+  .member h3 {
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .member p {
+    font-size: 15px;
+    margin-top: 8px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .member a {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--accent);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .member:hover p,
+  .member:focus-within p {
+    max-height: 200px;
+  }
+  .member:hover a,
+  .member:focus-within a {
+    max-height: 40px;
+  }
+
+  @media (max-width: 1100px) {
+    .packs {
+      gap: 30px;
+    }
+    .packs-bird {
+      right: 20px;
+    }
+    .steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      min-height: 640px;
+      align-items: flex-end;
+    }
+    .hero-bg {
+      background-position: center 30px;
+      background-size: 150% auto;
+      opacity: 0.55;
+    }
+    .voices,
+    .testi-grid,
+    .stats {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .packs {
+      grid-template-columns: minmax(0, 420px);
+      gap: 90px;
+      margin-top: 120px;
+    }
+    .packs-bird {
+      width: 130px;
+      top: -110px;
+    }
+    .tiles {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .tile {
+      padding: 50px 30px;
+    }
+    .tile p {
+      font-size: 20px;
+    }
+    .stats-img {
+      max-height: 340px;
+      overflow: hidden;
+    }
+    .stats-box {
+      padding: 40px 20px 50px;
+    }
+    .counters {
+      grid-template-columns: repeat(2, 1fr);
+      margin-inline: -20px;
+      margin-bottom: -50px;
+    }
+    .team {
+      grid-template-columns: 1fr;
+      max-width: 420px;
+    }
+    .member:nth-child(2) {
+      margin-top: 0;
+    }
+    .member p,
+    .member a {
+      max-height: none;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

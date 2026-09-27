@@ -1,0 +1,177 @@
+---
+import { FOOTER, CONTACT, SITE } from '../data/site.js';
+const { extra = null } = Astro.props;
+const columns = extra ? [FOOTER.columns[0], extra, ...FOOTER.columns.slice(1)] : FOOTER.columns;
+const year = new Date().getFullYear();
+const path = Astro.url.pathname;
+---
+
+<footer class="site-footer">
+  <div class="inner" style={`--cols:${columns.length}`}>
+    <div class="brand">
+      <a href="/" aria-label="Project Robin, inicio">
+        <img src="/wp-content/uploads/2026/04/Copy-of-Logo-en-blanco-con-fondo-transparente-768x626.png" alt="Project Robin" width="300" height="245" />
+      </a>
+      <p class="tagline">{FOOTER.tagline}</p>
+      <p class="subtitle">{FOOTER.subtitle}</p>
+    </div>
+
+    {
+      columns.map((col) => (
+        <nav class="col" aria-label={col.title}>
+          <p class="col-title">{col.title}</p>
+          <ul>
+            {col.links.map((l) => (
+              <li>
+                <a href={l.href} class:list={{ current: path === l.href }}>
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+
+    <div class="col contact">
+      <p class="col-title">¡Contactanos!</p>
+      <p class="label">Email</p>
+      <p><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a><br /><a href={`mailto:${CONTACT.emailInfo}`}>{CONTACT.emailInfo}</a></p>
+      <p class="label">Teléfono</p>
+      <p>
+        <a href={`tel:${CONTACT.phone.replace(/\s/g, '')}`}>{CONTACT.phone}</a><br />
+        <a href={`tel:${CONTACT.phone2.replace(/\s/g, '')}`}>{CONTACT.phone2}</a>
+      </p>
+      <p class="city">{CONTACT.city}</p>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <a class="social" href={CONTACT.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn de Project Robin">
+      <svg viewBox="0 0 448 512" aria-hidden="true"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"></path></svg>
+    </a>
+    <p>Copyright © {year} Project Robin</p>
+    <button type="button" class="cookie-link" data-open-cookies>Preferencias de cookies</button>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 70px 48px 30px;
+  }
+  .inner {
+    display: grid;
+    grid-template-columns: 1.6fr repeat(var(--cols, 3), 1fr) 1.1fr;
+    gap: 32px;
+  }
+  .brand img {
+    width: 300px;
+    max-width: 100%;
+    height: auto;
+  }
+  .tagline {
+    margin-top: 14px;
+    font-family: var(--font-din);
+    font-size: 22px;
+    letter-spacing: 0.01em;
+  }
+  .subtitle {
+    font-size: 16px;
+    line-height: 1.25;
+    max-width: 330px;
+  }
+  .col-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 26px;
+  }
+  .col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 18px;
+  }
+  .col a {
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .col a:hover,
+  .col a.current {
+    color: var(--accent);
+  }
+  .contact p {
+    font-size: 17px;
+    line-height: 1.2;
+  }
+  .contact .label {
+    font-weight: 700;
+    font-size: 18px;
+    margin: 0 0 8px;
+  }
+  .contact p + .label {
+    margin-top: 26px;
+  }
+  .contact a {
+    font-weight: 500;
+    font-size: 17px;
+    word-break: break-word;
+  }
+  .city {
+    margin-top: 26px;
+    font-size: 20px !important;
+  }
+  .bottom {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 34px;
+    font-size: 13px;
+  }
+  .bottom p {
+    margin-left: auto;
+  }
+  .social {
+    color: var(--cream);
+    width: 22px;
+  }
+  .cookie-link {
+    background: none;
+    border: 0;
+    color: var(--cream);
+    text-decoration: underline;
+    font-size: 13px;
+    padding: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .inner {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 560px) {
+    .site-footer {
+      padding: 50px 20px 26px;
+    }
+    .inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px 20px;
+    }
+    .brand img {
+      width: 200px;
+    }
+    .bottom {
+      flex-wrap: wrap;
+    }
+    .bottom p {
+      margin-left: 0;
+    }
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+// Página de contacto: formulario (con etiqueta de origen) + reservador de Google Calendar.
+import Base from '../layouts/Base.astro';
+import LeadForm from './LeadForm.astro';
+import BookingWidget from './BookingWidget.astro';
+const { title, description, tag, servicio = 'Asesoramiento Completo', heading = '¿Tienes dudas? No dudes en contactarnos' } = Astro.props;
+---
+
+<Base title={title} description={description}>
+  <section class="form-sec">
+    <div class="inner">
+      <p class="eyebrow center">Contacto</p>
+      <h1 class="display-md center">{heading}</h1>
+      <LeadForm form="contacto" tag={tag} servicio={servicio} allowUrlTag />
+    </div>
+  </section>
+
+  <section class="book-sec" id="reserva">
+    <div class="inner">
+      <p class="eyebrow center">Bookings</p>
+      <h2 class="display-md center">¿Prefieres llamarnos? No dudes en agendar una llamada</h2>
+      <div class="widget">
+        <BookingWidget tag={tag} />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .form-sec {
+    padding: 90px var(--gutter) 110px;
+  }
+  .inner {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .form-sec h1 {
+    margin: 14px 0 40px;
+  }
+  .book-sec {
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 24px 24px 0 0;
+    padding: 110px var(--gutter);
+  }
+  .book-sec h2 {
+    margin: 14px 0 44px;
+  }
+  .widget {
+    color: var(--navy);
+    max-width: 620px;
+    margin: 0 auto;
+  }
+</style>

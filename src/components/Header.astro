@@ -1,0 +1,309 @@
+---
+import { NAV, SITE } from '../data/site.js';
+const path = Astro.url.pathname;
+const isActive = (item) =>
+  path === item.href ||
+  (item.href !== '/' && path.startsWith(item.href)) ||
+  (item.children || []).some((c) => path.startsWith(c.href));
+---
+
+<header class="site-header" data-header>
+  <div class="bar">
+    <a class="logo" href="/" aria-label="Project Robin, inicio">
+      <img src={SITE.logo} alt="Project Robin" width="80" height="40" />
+    </a>
+
+    <nav class="nav" aria-label="Menú principal">
+      <ul class="menu">
+        {
+          NAV.map((item) => (
+            <li class:list={['item', { 'has-sub': item.children, active: isActive(item) }]}>
+              <a href={item.href} class="top-link">
+                {item.label}
+                {item.children && (
+                  <svg class="caret" viewBox="0 0 10 6" aria-hidden="true">
+                    <path d="M0 0l5 6 5-6z" fill="currentColor" />
+                  </svg>
+                )}
+              </a>
+              {item.children && (
+                <button class="sub-toggle" type="button" aria-expanded="false" aria-label={`Abrir ${item.label}`}>
+                  <svg viewBox="0 0 10 6" aria-hidden="true">
+                    <path d="M0 0l5 6 5-6z" fill="currentColor" />
+                  </svg>
+                </button>
+              )}
+              {item.children && (
+                <ul class="sub">
+                  {item.children.map((c) => (
+                    <li>
+                      <a href={c.href} class:list={{ current: path === c.href }}>
+                        {c.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mobile-ctas">
+        <a class="btn" href="/contacto/?origen=cabecera">Consulta Gratis</a>
+        <a class="btn btn-outline" href={SITE.loginUrl}>Log In</a>
+      </div>
+    </nav>
+
+    <div class="ctas">
+      <a class="btn cta-main" href="/contacto/?origen=cabecera">Consulta Gratis</a>
+      <a class="btn btn-outline cta-login" href={SITE.loginUrl}>Log In</a>
+    </div>
+
+    <button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false" data-burger>
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector('[data-header]');
+  const burger = header?.querySelector('[data-burger]');
+  burger?.addEventListener('click', () => {
+    const open = header.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  header?.querySelectorAll('.sub-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const li = btn.closest('.item');
+      const open = li.classList.toggle('sub-open');
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  });
+  window.addEventListener('scroll', () => header?.classList.toggle('is-scrolled', window.scrollY > 8), { passive: true });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--white);
+    transition: box-shadow 0.2s;
+  }
+  .site-header.is-scrolled {
+    box-shadow: 0 4px 20px rgba(45, 58, 100, 0.08);
+  }
+  .bar {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding-inline: 20px;
+  }
+  .logo img {
+    height: 42px;
+    width: auto;
+  }
+  .nav {
+    flex: 1;
+  }
+  .menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .item {
+    position: relative;
+  }
+  .top-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--navy);
+    transition: color 0.2s;
+  }
+  .top-link:hover,
+  .item.active > .top-link {
+    color: var(--accent);
+  }
+  .caret {
+    width: 9px;
+    height: 6px;
+  }
+  .sub-toggle {
+    display: none;
+  }
+  .sub {
+    position: absolute;
+    top: 100%;
+    left: -16px;
+    min-width: 260px;
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 16px 40px rgba(45, 58, 100, 0.14);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+  }
+  .item:hover > .sub,
+  .item:focus-within > .sub {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .sub a {
+    display: block;
+    padding: 9px 18px;
+    font-size: 15px;
+    text-decoration: none;
+    color: var(--navy);
+  }
+  .sub a:hover,
+  .sub a.current {
+    background: var(--sky);
+    color: var(--navy);
+  }
+  .ctas {
+    display: flex;
+    gap: 12px;
+    margin-left: auto;
+  }
+  .ctas .btn {
+    padding: 11px 24px;
+    border-radius: 6px;
+  }
+  .cta-login {
+    border-color: var(--navy);
+  }
+  .mobile-ctas {
+    display: none;
+  }
+  .burger {
+    display: none;
+    margin-left: auto;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: none;
+    padding: 10px;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .burger span {
+    display: block;
+    height: 2.5px;
+    border-radius: 2px;
+    background: var(--navy);
+    transition: transform 0.25s, opacity 0.25s;
+  }
+
+  @media (max-width: 1100px) {
+    .bar {
+      gap: 24px;
+    }
+    .menu {
+      gap: 16px;
+    }
+    .top-link {
+      font-size: 15px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    :root {
+      --header-h: 72px;
+    }
+    .ctas {
+      display: none;
+    }
+    .burger {
+      display: flex;
+    }
+    .nav {
+      position: fixed;
+      inset: var(--header-h) 0 0 0;
+      background: var(--white);
+      padding: 16px 20px 40px;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.28s ease;
+    }
+    .is-open .nav {
+      transform: translateX(0);
+    }
+    .is-open .burger span:nth-child(1) {
+      transform: translateY(8.5px) rotate(45deg);
+    }
+    .is-open .burger span:nth-child(2) {
+      opacity: 0;
+    }
+    .is-open .burger span:nth-child(3) {
+      transform: translateY(-8.5px) rotate(-45deg);
+    }
+    .menu {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+    .item {
+      border-bottom: 1px solid var(--grey);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .top-link {
+      flex: 1;
+      padding: 16px 0;
+      font-size: 18px;
+    }
+    .top-link .caret {
+      display: none;
+    }
+    .sub-toggle {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border: 0;
+      background: none;
+      color: var(--navy);
+    }
+    .sub-toggle svg {
+      width: 12px;
+      transition: transform 0.2s;
+    }
+    .sub-open .sub-toggle svg {
+      transform: rotate(180deg);
+    }
+    .sub {
+      position: static;
+      width: 100%;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      box-shadow: none;
+      padding: 0 0 12px;
+      display: none;
+    }
+    .sub-open .sub {
+      display: block;
+    }
+    .mobile-ctas {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+  }
+</style>

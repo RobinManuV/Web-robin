@@ -1,0 +1,213 @@
+---
+// Formulario conectado a Netlify Forms.
+// Cada formulario lleva un campo oculto "tag" con el origen del lead
+// (general, pack-llegada, colegios, espana, holanda-maastricht…).
+// Netlify guarda el envío, avisa por email y una función lo manda a Notion.
+//
+// Props:
+//   form: 'contacto' | 'colegios' | 'newsletter'
+//   tag:  etiqueta del origen (se puede sobrescribir con ?origen= en la URL)
+//   allowUrlTag: si true, usa ?origen= de la URL (página de contacto)
+//   servicio: valor preseleccionado del desplegable Servicio
+const {
+  form = 'contacto',
+  tag = 'general',
+  allowUrlTag = false,
+  servicio = 'Asesoramiento Completo',
+  submitLabel = 'Enviar',
+  dark = false,
+} = Astro.props;
+const id = `${form}-${tag}`.replace(/[^a-z0-9-]/gi, '');
+const SERVICIOS = ['Asesoramiento Completo', 'Pack Llegada', 'Mentoría', 'Erasmus', 'Estudiar en España', 'Multicampus', 'Otro'];
+---
+
+<form
+  class:list={['lead-form', { dark }]}
+  name={form}
+  method="POST"
+  action="/gracias/"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  data-lead-form
+  data-allow-url-tag={allowUrlTag ? '1' : undefined}
+>
+  <input type="hidden" name="form-name" value={form} />
+  <input type="hidden" name="tag" value={tag} />
+  <input type="hidden" name="pagina" value={Astro.url.pathname} />
+  <p class="hp"><label>No rellenar: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+
+  {
+    form === 'contacto' && (
+      <div class="form-grid">
+        <div class="field full">
+          <label for={`${id}-name`}>Nombre <span class="req">*</span></label>
+          <input id={`${id}-name`} name="nombre" placeholder="Nombre" autocomplete="name" required />
+        </div>
+        <div class="field full">
+          <label for={`${id}-email`}>Correo electrónico <span class="req">*</span></label>
+          <input id={`${id}-email`} type="email" name="email" placeholder="Correo electrónico" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for={`${id}-tel`}>Teléfono <span class="req">*</span></label>
+          <input id={`${id}-tel`} type="tel" name="telefono" placeholder="Número de Teléfono" autocomplete="tel" required />
+        </div>
+        <div class="field">
+          <label for={`${id}-srv`}>Servicio <span class="req">*</span></label>
+          <select id={`${id}-srv`} name="servicio" required data-servicio>
+            {SERVICIOS.map((s) => (
+              <option value={s} selected={s === servicio}>
+                {s}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div class="field full">
+          <label for={`${id}-msg`}>Mensaje <span class="req">*</span></label>
+          <textarea id={`${id}-msg`} name="mensaje" placeholder="Mensaje" required />
+        </div>
+      </div>
+    )
+  }
+
+  {
+    form === 'colegios' && (
+      <div class="form-grid">
+        <div class="field">
+          <label for={`${id}-name`}>Tu nombre</label>
+          <input id={`${id}-name`} name="nombre" placeholder="Tu nombre" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for={`${id}-cargo`}>Cargo</label>
+          <input id={`${id}-cargo`} name="cargo" placeholder="Cargo" required />
+        </div>
+        <div class="field full">
+          <label for={`${id}-col`}>Nombre del colegio</label>
+          <input id={`${id}-col`} name="colegio" placeholder="Nombre del colegio" required />
+        </div>
+        <div class="field full">
+          <label for={`${id}-email`}>Email de contacto</label>
+          <input id={`${id}-email`} type="email" name="email" placeholder="Email de contacto" autocomplete="email" required />
+        </div>
+        <div class="field full">
+          <label for={`${id}-tel`}>Teléfono <small>(opcional)</small></label>
+          <input id={`${id}-tel`} type="tel" name="telefono" placeholder="Teléfono" autocomplete="tel" />
+        </div>
+        <div class="field full">
+          <label for={`${id}-msg`}>Cuéntanos qué necesitáis</label>
+          <textarea id={`${id}-msg`} name="mensaje" placeholder="Cuéntanos qué necesitáis..." required />
+        </div>
+      </div>
+    )
+  }
+
+  {
+    form === 'newsletter' && (
+      <div class="news">
+        <label class="sr-only" for={`${id}-email`}>Correo electrónico</label>
+        <input id={`${id}-email`} type="email" name="email" placeholder="Correo electrónico" autocomplete="email" required />
+      </div>
+    )
+  }
+
+  <label class="consent">
+    <input type="checkbox" name="privacidad" value="aceptada" required />
+    <span>He leído y acepto la <a href="/politica-de-privacidad/" target="_blank">política de privacidad</a>.</span>
+  </label>
+
+  <p class="form-status" data-status hidden role="status"></p>
+  <button type="submit" class:list={['btn', { 'btn-full': form !== 'contacto' }]}>{submitLabel}</button>
+</form>
+
+<script>
+  document.querySelectorAll('[data-lead-form]').forEach((form) => {
+    const params = new URLSearchParams(location.search);
+    if (form.dataset.allowUrlTag) {
+      const origen = params.get('origen');
+      if (origen) form.querySelector('input[name="tag"]').value = origen.slice(0, 80);
+      const srv = params.get('servicio');
+      const select = form.querySelector('[data-servicio]');
+      if (srv && select) {
+        const opt = [...select.options].find((o) => o.value.toLowerCase() === srv.toLowerCase());
+        if (opt) select.value = opt.value;
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const status = form.querySelector('[data-status]');
+      const btn = form.querySelector('button[type="submit"]');
+      const label = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+      status.hidden = true;
+      try {
+        const body = new URLSearchParams(new FormData(form)).toString();
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body,
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        const tag = form.querySelector('input[name="tag"]').value;
+        window.dataLayer?.push({
+          event: 'lead_submit',
+          form_name: form.getAttribute('name'),
+          lead_tag: tag,
+          page_path: location.pathname,
+        });
+        form.reset();
+        status.dataset.state = 'ok';
+        status.textContent =
+          form.getAttribute('name') === 'newsletter'
+            ? '¡Listo! Te has suscrito correctamente.'
+            : '¡Gracias! Hemos recibido tu mensaje y te respondemos en menos de 24 h laborables.';
+      } catch (err) {
+        status.dataset.state = 'error';
+        status.textContent = 'No se ha podido enviar. Inténtalo de nuevo o escríbenos a hello@project-robin.com.';
+      } finally {
+        status.hidden = false;
+        btn.disabled = false;
+        btn.textContent = label;
+      }
+    });
+  });
+</script>
+
+<style>
+  .lead-form {
+    display: grid;
+    gap: 16px;
+  }
+  .consent {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .consent input {
+    margin-top: 3px;
+  }
+  .consent a {
+    color: inherit;
+  }
+  .lead-form .btn {
+    justify-self: start;
+  }
+  .btn-full {
+    justify-self: stretch !important;
+    width: 100%;
+  }
+  .news input {
+    width: 100%;
+    font: inherit;
+    font-size: 16px;
+    padding: 13px 16px;
+    border-radius: 8px;
+    border: 1px solid #c9cfdc;
+  }
+  .dark {
+    color: var(--cream);
+  }
+</style>

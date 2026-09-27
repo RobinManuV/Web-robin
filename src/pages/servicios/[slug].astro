@@ -1,0 +1,207 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import ContactSection from '../../components/ContactSection.astro';
+import { SERVICIOS, COMO_FUNCIONA } from '../../data/servicios.js';
+
+export function getStaticPaths() {
+  return SERVICIOS.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+}
+const { s } = Astro.props;
+const contactHref = `/contacto/?origen=${s.tag}&servicio=${encodeURIComponent(s.servicio)}`;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: s.name,
+    serviceType: s.name,
+    description: s.seoDesc,
+    provider: { '@id': 'https://project-robin.com/#organization' },
+    areaServed: 'ES',
+    url: `https://project-robin.com/servicios/${s.slug}/`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://project-robin.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Servicios', item: 'https://project-robin.com/servicios/' },
+      { '@type': 'ListItem', position: 3, name: s.name, item: `https://project-robin.com/servicios/${s.slug}/` },
+    ],
+  },
+];
+---
+
+<Base title={s.seoTitle} description={s.seoDesc} schema={schema}>
+  <section class="top container">
+    <div class="top-text">
+      <p class="eyebrow">Servicio</p>
+      <h1 class="display-md">{s.heading}</h1>
+      {s.intro.map((p) => <p class="text" set:html={p} />)}
+      <a class="btn" href={contactHref}>Contáctanos</a>
+    </div>
+    <ul class="features">
+      {
+        s.features.map((f) => (
+          <li>
+            <span class="f-icon">
+              <Icon name={f.icon} size={30} />
+            </span>
+            <div>
+              <h2>{f.title}</h2>
+              <p>{f.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="how">
+    <div class="how-inner container">
+      <img src="/wp-content/uploads/2024/12/img1.png" alt="" loading="lazy" width="554" height="600" />
+      <div>
+        <p class="eyebrow">¿Cómo funciona?</p>
+        <h2 class="display-md how-title">Da tus primeros pasos hacia un futuro brillante</h2>
+        <ol class="how-steps">
+          {
+            COMO_FUNCIONA.map((c, i) => (
+              <li>
+                <span class="n">
+                  <Icon name={['user', 'cal', 'compass'][i]} size={26} />
+                </span>
+                <div>
+                  <h3>{c.title}</h3>
+                  <p>{c.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <ContactSection tag={s.tag} />
+</Base>
+
+<style>
+  .top {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 60px;
+    align-items: center;
+    padding-block: 110px 100px;
+  }
+  .top-text {
+    display: grid;
+    gap: 18px;
+    justify-items: start;
+  }
+  .top-text .display-md {
+    margin: 4px 0 10px;
+  }
+  .top-text .text {
+    font-size: 18px;
+  }
+  .features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 24px;
+    background: url('/wp-content/uploads/2024/12/bg_pattern.png') center / contain no-repeat;
+  }
+  .features li {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 18px;
+    align-items: center;
+    background: rgba(235, 235, 237, 0.92);
+    border-radius: 12px;
+    padding: 28px 30px;
+  }
+  .f-icon {
+    color: var(--accent);
+  }
+  .features h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .features p {
+    font-size: 17px;
+  }
+  .how {
+    background: var(--accent);
+    padding-block: 120px;
+    overflow: hidden;
+  }
+  .how-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .how-inner img {
+    width: 80%;
+    margin-inline: auto;
+  }
+  .how-title {
+    text-transform: none;
+    margin: 16px 0 26px;
+  }
+  .how-steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 16px;
+  }
+  .how-steps li {
+    display: grid;
+    grid-template-columns: 54px 1fr;
+    gap: 14px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+    padding: 12px;
+    color: var(--cream);
+  }
+  .n {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--cream);
+    color: var(--navy);
+    display: grid;
+    place-items: center;
+  }
+  .how-steps h3 {
+    font-size: 19px;
+    font-weight: 600;
+  }
+  .how-steps p {
+    font-size: 16px;
+  }
+  @media (max-width: 950px) {
+    .top,
+    .how-inner {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .top {
+      padding-block: 50px;
+    }
+    .how {
+      padding-block: 60px;
+    }
+    .how-inner img {
+      width: 60%;
+    }
+    .features li {
+      padding: 20px;
+    }
+  }
+</style>

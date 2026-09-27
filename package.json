@@ -1,0 +1,27 @@
+{
+  "name": "web-robin",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/postbuild.mjs",
+    "preview": "astro preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobinManuV/web-robin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RobinManuV/web-robin/issues"
+  },
+  "homepage": "https://github.com/RobinManuV/web-robin#readme",
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^5.18.2",
+    "google-auth-library": "^9.15.1"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,153 @@
+---
+// Banner "Descubre Holanda" de la home: ahora las flechas sí funcionan y
+// recorren las ciudades (antes era una imagen fija de Ámsterdam).
+import { DESTINOS } from '../data/destinos.js';
+const order = ['amsterdam', 'maastricht', 'rotterdam', 'utrecht', 'groningen', 'delft', 'la-haya', 'eindhoven', 'leiden'];
+const cities = order.map((s) => DESTINOS.find((d) => d.slug === s)).filter(Boolean);
+---
+
+<section class="rh" data-rh aria-roledescription="carrusel" aria-label="Destinos en Holanda">
+  {
+    cities.map((c, i) => (
+      <div class:list={['bg', { on: i === 0 }]} style={`background-image:url('${c.heroImg}')`} data-bg aria-hidden="true" />
+    ))
+  }
+  <div class="wrap">
+    <div>
+      <p class="eyebrow-s">Destinos</p>
+      <h2 class="t">Descubre Holanda</h2>
+    </div>
+    <div>
+      <p class="city" data-city aria-live="polite">{cities[0].name}</p>
+      <div class="btn-row">
+        <a class="btn" href={`/destinos/${cities[0].slug}/`} data-link>Estudiar en {cities[0].name}</a>
+        <a class="btn btn-outline-light" href="/destinos/">Ver todos nuestros destinos</a>
+      </div>
+    </div>
+  </div>
+  <div class="arrows">
+    <button type="button" aria-label="Ciudad anterior" data-dir="-1">‹</button>
+    <button type="button" aria-label="Ciudad siguiente" data-dir="1">›</button>
+  </div>
+  <script type="application/json" data-cities set:html={JSON.stringify(cities.map((c) => ({ n: c.name, s: c.slug })))} />
+</section>
+
+<script>
+  document.querySelectorAll('[data-rh]').forEach((root) => {
+    const cities = JSON.parse(root.querySelector('[data-cities]').textContent);
+    const bgs = root.querySelectorAll('[data-bg]');
+    const city = root.querySelector('[data-city]');
+    const link = root.querySelector('[data-link]');
+    let i = 0;
+    const go = (n) => {
+      i = (n + cities.length) % cities.length;
+      bgs.forEach((b, k) => b.classList.toggle('on', k === i));
+      city.textContent = cities[i].n;
+      link.href = `/destinos/${cities[i].s}/`;
+      link.textContent = `Estudiar en ${cities[i].n}`;
+    };
+    root.querySelectorAll('[data-dir]').forEach((b) => b.addEventListener('click', () => go(i + Number(b.dataset.dir))));
+    let t = setInterval(() => go(i + 1), 6000);
+    root.addEventListener('mouseenter', () => clearInterval(t));
+    root.addEventListener('mouseleave', () => (t = setInterval(() => go(i + 1), 6000)));
+  });
+</script>
+
+<style>
+  .rh {
+    position: relative;
+    min-height: 640px;
+    display: flex;
+    overflow: hidden;
+    border-radius: 24px;
+    margin-inline: 0;
+    color: #fff;
+  }
+  .bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+  .bg.on {
+    opacity: 1;
+  }
+  .rh::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(90deg, rgba(13, 20, 46, 0.6), rgba(13, 20, 46, 0.15) 45%, rgba(13, 20, 46, 0) 70%),
+      linear-gradient(0deg, rgba(13, 20, 46, 0.55), rgba(13, 20, 46, 0) 40%);
+  }
+  .wrap {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 56px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .eyebrow-s {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .t {
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+  .city {
+    font-size: clamp(44px, 7vw, 92px);
+    font-weight: 800;
+    line-height: 0.95;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .arrows {
+    position: absolute;
+    right: 40px;
+    bottom: 36px;
+    z-index: 2;
+    display: flex;
+    gap: 14px;
+  }
+  .arrows button {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    background: transparent;
+    color: #fff;
+    font-size: 22px;
+    line-height: 1;
+  }
+  .arrows button:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  @media (max-width: 767px) {
+    .rh {
+      min-height: 460px;
+      border-radius: 18px;
+    }
+    .wrap {
+      padding: 32px 22px 90px;
+    }
+    .t {
+      font-size: 26px;
+    }
+    .arrows {
+      right: 22px;
+      bottom: 24px;
+    }
+  }
+</style>
