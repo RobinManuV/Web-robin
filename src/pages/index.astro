@@ -9,6 +9,15 @@ import { EQUIPO, CIFRAS, ESPANA_PUBLICADA } from '../data/site.js';
 
 const todosPaquetes = [
   {
+    title: 'Holanda',
+    img: '/wp-content/uploads/2026/05/amsterdam-cityscape-view-2026-03-20-01-59-27-utc-1024x683.jpg',
+    stamped: false,
+    bullets: ['Universidades públicas: matrícula oficial de 2.694 €/año.', 'Alojamiento 100% garantizado.', 'Acompañamiento en todo el proceso, de la elección a la llegada.'],
+    text: 'Descubre opciones de estudio en Holanda y encuentra el destino que mejor encaja con tu perfil, tus objetivos y tu forma de estudiar.',
+    cta: 'Estudia en Holanda',
+    href: '/destinos/',
+  },
+  {
     title: 'España',
     popular: true,
     img: '/wp-content/uploads/2026/05/46c3c403c37f85f32d0b79f4d054d084.webp',
@@ -22,19 +31,10 @@ const todosPaquetes = [
     title: 'Multicampus',
     img: '/wp-content/uploads/2026/05/d79ba2af1559ff1148830b83eea1fead.webp',
     stamped: true,
-    bullets: ['Compara campus y destinos disponibles.', 'Más flexibilidad para tu plan de estudios.', 'Encuentra la opción que mejor se adapte a ti.'],
+    bullets: ['Universidades privadas con campus en varias capitales europeas.', 'Un país distinto cada año.', 'Te ayudamos a comparar y elegir la que mejor encaja contigo.'],
     text: 'Una opción pensada para quienes buscan flexibilidad y quieren valorar diferentes campus antes de tomar una decisión final.',
     cta: 'Estudia en Multicampus',
     href: '/the-european-experience/',
-  },
-  {
-    title: 'Holanda',
-    img: '/wp-content/uploads/2026/05/amsterdam-cityscape-view-2026-03-20-01-59-27-utc-1024x683.jpg',
-    stamped: false,
-    bullets: ['Universidades y programas en Holanda.', 'Información sobre requisitos y admisión.', 'Acompañamiento durante el proceso.'],
-    text: 'Descubre opciones de estudio en Holanda y encuentra el destino que mejor encaja con tu perfil, tus objetivos y tu forma de estudiar.',
-    cta: 'Estudia en Holanda',
-    href: '/destinos/',
   },
 ];
 
@@ -144,7 +144,7 @@ const schema = {
         <h2 class="display">Elige tu aventura</h2>
         <p class="lead packs-lead">{packsLead}</p>
       </div>
-      <div class="packs" style={`--n:${paquetes.length}`}>
+      <div class:list={['packs', { 'packs-wide': paquetes.length <= 2 }]} style={`--n:${paquetes.length}`}>
         <img class="packs-bird" src="/wp-content/uploads/2026/05/a711e425cce1f3a3c8c74cb6f495f1f4.webp" alt="" width="257" height="256" loading="lazy" />
         {
           paquetes.map((p) => (
@@ -154,11 +154,13 @@ const schema = {
                 <img class:list={{ stamp: !p.stamped }} src={p.img} alt={`Estudiar en ${p.title}`} width="401" height="296" loading="lazy" />
                 <h3>{p.title}</h3>
               </div>
-              <ul class="tick-list pack-list">
-                {p.bullets.map((b) => <li>{b}</li>)}
-              </ul>
-              <p class="pack-text">{p.text}</p>
-              <a class="btn btn-sm" href={p.href}>{p.cta}</a>
+              <div class="pack-body">
+                <ul class="tick-list pack-list">
+                  {p.bullets.map((b) => <li>{b}</li>)}
+                </ul>
+                <p class="pack-text">{p.text}</p>
+                <a class="btn btn-sm" href={p.href}>{p.cta}</a>
+              </div>
             </article>
           ))
         }
@@ -551,6 +553,37 @@ const schema = {
   }
   .pack .btn {
     align-self: center;
+  }
+  .pack-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+  }
+  .pack-img h3 {
+    hyphens: none;
+    overflow-wrap: normal;
+  }
+
+  /* Con 2 paquetes: tarjetas horizontales (foto a la izquierda, texto a la derecha) */
+  .packs-wide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 1320px;
+    margin-inline: auto;
+    gap: 40px;
+  }
+  .packs-wide .pack {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 26px;
+    padding: 48px 28px 28px;
+  }
+  .packs-wide .pack-img h3 {
+    font-size: clamp(22px, 2.1vw, 32px);
+  }
+  .packs-wide .pack .btn {
+    align-self: flex-start;
   }
 
   /* MÉTODO (carrusel) */
@@ -946,6 +979,11 @@ const schema = {
     .packs {
       gap: 30px;
     }
+    .packs-wide {
+      grid-template-columns: minmax(0, 640px);
+      justify-content: center;
+      gap: 90px;
+    }
     .packs-bird {
       right: 20px;
     }
@@ -978,6 +1016,13 @@ const schema = {
     .packs-bird {
       width: 130px;
       top: -110px;
+    }
+    .packs-wide .pack {
+      grid-template-columns: 1fr;
+      padding: 70px 24px 28px;
+    }
+    .packs-wide .pack-img img {
+      aspect-ratio: 401 / 296;
     }
     .stats-img {
       max-height: 340px;

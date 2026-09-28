@@ -93,7 +93,6 @@ h1,
 h2,
 h3 {
   overflow-wrap: break-word;
-  hyphens: auto;
 }
 p a,
 li a {

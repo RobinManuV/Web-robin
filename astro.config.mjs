@@ -13,7 +13,8 @@ export default defineConfig({
       filter: (page) =>
         !page.includes('/reserva-confirmada/') &&
         !page.includes('/gracias/') &&
-        !page.includes('/yuselico-studios/') && // landing de campaña, solo con enlace directo
+        !page.includes('/yuselico-studios/') &&
+        !/\/the-european-experience\/.+-2\/$/.test(page) && // duplicados: canonical a /universidades/<slug>/ // landing de campaña, solo con enlace directo
         (ESPANA_PUBLICADA || !ESPANA_RUTAS.some((r) => page.endsWith(r))),
     }),
   ],

@@ -2,6 +2,8 @@
 // Plantilla de universidad (España, multicampus y The European Experience).
 import Base from '../layouts/Base.astro';
 import ContactSection from './ContactSection.astro';
+import { MULTICAMPUS_GUIA, MULTICAMPUS_ACTUALIZADO } from '../data/multicampus-guia.js';
+import { UNIVERSIDADES_MULTICAMPUS } from '../data/universidades.js';
 
 const {
   u,
@@ -13,6 +15,8 @@ const {
 } = Astro.props;
 
 const url = `https://project-robin.com${canonicalPath || Astro.url.pathname}`;
+const g = MULTICAMPUS_GUIA[u.slug];
+const otras = g ? UNIVERSIDADES_MULTICAMPUS.filter((x) => x.slug !== u.slug) : [];
 const bookHref = `${contactHref}?origen=${tag}`;
 const schema = [
   {
@@ -23,6 +27,15 @@ const schema = [
     url,
     ...(u.city ? { address: { '@type': 'PostalAddress', addressLocality: u.city, addressCountry: 'ES' } } : {}),
   },
+  ...(g
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: g.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+        },
+      ]
+    : []),
   {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -44,7 +57,7 @@ const why = [
 const icons = ['Icon-1_.svg', 'Icon-2_.svg', 'Icon-3_.svg', 'Icon-4.svg', 'Icon-5.svg', 'Icon-6.svg'];
 ---
 
-<Base title={u.seoTitle} description={u.seoDesc} image={u.heroImg} type="article" schema={schema}>
+<Base title={u.seoTitle} description={u.seoDesc} image={u.heroImg} type="article" schema={schema} canonicalPath={canonicalPath}>
   <section class="hero container">
     <div class="hero-text">
       <a class="link-back" href={back.href}>{back.label}</a>
@@ -63,6 +76,31 @@ const icons = ['Icon-1_.svg', 'Icon-2_.svg', 'Icon-3_.svg', 'Icon-4.svg', 'Icon-
       <img src={u.heroImg} alt={`Campus de ${u.name}`} width="732" height="844" />
     </div>
   </section>
+
+  {
+    g && (
+      <section class="g-resumen section-sm">
+        <div class="container g-resumen-grid">
+          <div class="stack" style="--stack:16px">
+            <p class="eyebrow">En resumen</p>
+            <h2 class="display-md">¿Merece la pena estudiar en {u.name}?</h2>
+            <p class="lead g-resumen-text">{g.resumen}</p>
+            <p class="small g-updated">
+              Actualizado en <time datetime={MULTICAMPUS_ACTUALIZADO.iso}>{MULTICAMPUS_ACTUALIZADO.texto}</time> con datos oficiales de {u.name}
+            </p>
+          </div>
+          <dl class="g-datos">
+            {g.datos.map((x) => (
+              <div>
+                <dt>{x.label}</dt>
+                <dd>{x.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+    )
+  }
 
   <section class="fit bg-cream">
     <div class="container">
@@ -86,6 +124,66 @@ const icons = ['Icon-1_.svg', 'Icon-2_.svg', 'Icon-3_.svg', 'Icon-4.svg', 'Icon-
       <p class="center" style="margin-top:34px"><a class="btn" href="#reserva">Reservar entrevista</a></p>
     </div>
   </section>
+
+  {
+    g && (
+      <>
+        <section class="section-sm container" id="programa">
+          <p class="eyebrow">El programa</p>
+          <h2 class="display-md g-h2">{g.programa.titulo}</h2>
+          <p class="text g-intro">{g.programa.texto}</p>
+          <ul class="check-list g-puntos">
+            {g.programa.puntos.map((x) => (
+              <li>{x}</li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="section-sm bg-sky" id="costes">
+          <div class="container g-two">
+            <div class="stack" style="--stack:16px">
+              <p class="eyebrow">Costes</p>
+              <h2 class="display-md">¿Cuánto cuesta estudiar en {u.name}?</h2>
+              <p class="text g-intro">{g.costes.nota}</p>
+            </div>
+            <table class="g-table">
+              <caption class="sr-only">Costes de {u.name}</caption>
+              <tbody>
+                {g.costes.filas.map((f) => (
+                  <tr class:list={{ total: f.total }}>
+                    <th scope="row">{f.label}</th>
+                    <td>{f.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section-sm container" id="admision">
+          <p class="eyebrow">Admisión</p>
+          <h2 class="display-md g-h2">Cómo entrar en {u.name}</h2>
+          <ol class="g-pasos">
+            {g.admision.pasos.map((x, i) => (
+              <li>
+                <span>{i + 1}</span>
+                <h3>{x.title}</h3>
+                <p>{x.text}</p>
+              </li>
+            ))}
+          </ol>
+          <div class="g-req">
+            <p class="g-req-title">Qué necesitas</p>
+            <ul class="check-list">
+              {g.admision.requisitos.map((x) => (
+                <li>{x}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      </>
+    )
+  }
 
   <section class="section" id="como-es">
     <div class="container">
@@ -133,6 +231,38 @@ const icons = ['Icon-1_.svg', 'Icon-2_.svg', 'Icon-3_.svg', 'Icon-4.svg', 'Icon-
     )
   }
 
+  {
+    g && (
+      <section class="section-sm bg-cream g-faq" id="preguntas-frecuentes">
+        <div class="container">
+          <p class="eyebrow center">Preguntas frecuentes</p>
+          <h2 class="display-md center g-h2">Estudiar en {u.name}: lo que más nos preguntáis</h2>
+          <div class="g-faq-list">
+            {g.faq.map((f, i) => (
+              <details open={i === 0}>
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
+          <nav class="g-otras" aria-label="Otras universidades multicampus">
+            <p class="eyebrow center">Compara con</p>
+            <ul>
+              {otras.map((o) => (
+                <li>
+                  <a href={`/universidades/${o.slug}/`}>Estudiar en {o.name}</a>
+                </li>
+              ))}
+              <li>
+                <a href="/the-european-experience/">Todas las opciones multicampus</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </section>
+    )
+  }
+
   <section class="interest">
     <h2 class="display-md">¿Te interesa {u.name}?</h2>
     <p class="lead">Consulta gratis de 30 minutos. Te decimos si encaja contigo o si hay opciones mejores para tu perfil.</p>
@@ -143,6 +273,208 @@ const icons = ['Icon-1_.svg', 'Icon-2_.svg', 'Icon-3_.svg', 'Icon-4.svg', 'Icon-
 </Base>
 
 <style>
+  /* ---- Guía ampliada (multicampus) ---- */
+  .g-resumen-grid,
+  .g-two {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(30px, 5vw, 70px);
+    align-items: center;
+  }
+  .g-resumen-text {
+    font-size: clamp(18px, 1.5vw, 21px);
+    line-height: 1.45;
+  }
+  .g-updated {
+    opacity: 0.7;
+  }
+  .g-datos {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .g-datos div {
+    background: var(--sky);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .g-datos div:first-child {
+    grid-column: span 2;
+    background: var(--navy);
+    color: var(--cream);
+  }
+  .g-datos dt {
+    font-size: 14px;
+    opacity: 0.8;
+  }
+  .g-datos dd {
+    margin: 4px 0 0;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .g-datos div:first-child dd {
+    font-size: 30px;
+    color: var(--accent);
+  }
+  .g-h2 {
+    margin: 14px 0 16px;
+  }
+  .g-intro {
+    max-width: 820px;
+    line-height: 1.5;
+  }
+  .g-puntos {
+    margin-top: 24px;
+    font-size: 17px;
+    max-width: 900px;
+    gap: 12px;
+  }
+  .g-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    font-size: 17px;
+  }
+  .g-table th,
+  .g-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--grey);
+    text-align: left;
+  }
+  .g-table th {
+    font-weight: 500;
+  }
+  .g-table td {
+    text-align: right;
+    font-weight: 700;
+  }
+  .g-table tr.total th,
+  .g-table tr.total td {
+    background: var(--navy);
+    color: var(--cream);
+  }
+  .g-table tr.total td {
+    color: var(--accent);
+  }
+  .g-pasos {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 20px;
+  }
+  .g-pasos li {
+    border-top: 3px solid var(--navy);
+    padding-top: 16px;
+    display: grid;
+    gap: 10px;
+    align-content: start;
+  }
+  .g-pasos span {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+  }
+  .g-pasos h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .g-pasos p {
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .g-req {
+    margin-top: 28px;
+    background: var(--peach);
+    border-radius: 16px;
+    padding: 24px 26px;
+  }
+  .g-req-title {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .g-faq-list {
+    max-width: 860px;
+    margin: 0 auto;
+    display: grid;
+    gap: 12px;
+  }
+  .g-faq details {
+    border: 2px solid var(--navy);
+    border-radius: 14px;
+    padding: 0 22px;
+    background: var(--white);
+  }
+  .g-faq summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 18px 30px 18px 0;
+    font-size: 19px;
+    font-weight: 700;
+    position: relative;
+  }
+  .g-faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .g-faq summary::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    translate: 0 -50%;
+    font-size: 26px;
+    color: var(--accent-dark);
+    transition: rotate 0.2s;
+  }
+  .g-faq details[open] summary::after {
+    rotate: 45deg;
+  }
+  .g-faq details p {
+    padding-bottom: 20px;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .g-otras {
+    margin-top: 40px;
+  }
+  .g-otras ul {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  .g-otras a {
+    display: inline-block;
+    border: 1px solid var(--navy);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 15px;
+    text-decoration: none;
+  }
+  .g-otras a:hover {
+    background: var(--navy);
+    color: var(--cream);
+  }
+  @media (max-width: 900px) {
+    .g-resumen-grid,
+    .g-two {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .hero {
     display: grid;
     grid-template-columns: 1.1fr 1fr;
