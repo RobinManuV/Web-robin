@@ -33,7 +33,7 @@ export const PRODUCTOS = [
       { src: '/fotos/camiseta-robin-diseno.webp', alt: 'Diseño de la camiseta Robin: espalda y delantero' },
       { src: '/fotos/camiseta-robin-2.webp', alt: 'Robins con la camiseta, vista de espalda' },
       { src: '/fotos/camiseta-robin-3.webp', alt: 'Partido de fútbol con la camiseta Robin' },
-      { src: '/fotos/camiseta-robin.webp', alt: 'Robins jugando al baloncesto con la camiseta' },
+      { src: '/fotos/camiseta-robin.webp', alt: 'Grupo de Robins con la camiseta, vista de espalda' },
     ],
     tallas: true,
   },
