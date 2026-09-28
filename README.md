@@ -121,6 +121,7 @@ Cada artículo sale con: título SEO, meta description, entradilla que responde 
 |---|---|---|
 | `ANTHROPIC_API_KEY` | Sí | Clave de la API de Anthropic (console.anthropic.com → API keys). La búsqueda web debe estar activada en la organización. |
 | `BLOG_SECRET` | Sí | Una contraseña larga inventada. Firma los enlaces del correo. |
+| `BLOG_PANEL_PASSWORD` | Sí | Contraseña para entrar al panel `/api/blog-panel`. |
 | `GITHUB_TOKEN` | Sí | Token *fine-grained* de GitHub solo para el repo `web-robin`, con permiso **Contents: Read and write**. |
 | `UNSPLASH_ACCESS_KEY` | Sí | "Access Key" de una app gratuita en unsplash.com/developers. |
 | `BLOG_EMAIL_TO` | No | Por defecto `manuel@project-robin.com`. |
@@ -133,6 +134,6 @@ Cada artículo sale con: título SEO, meta description, entradilla que responde 
 
 ### Probarla a mano
 
-- **Panel de control:** `/api/blog-panel?clave=<BLOG_SECRET>` (estado, registro, configuración y botón "Lanzar investigación ahora")
+- **Panel de control:** `/api/blog-panel` (pide `BLOG_PANEL_PASSWORD`; estado, registro, configuración y botón "Lanzar investigación ahora")
 - Ver estado en JSON: `/api/blog-admin?clave=<BLOG_SECRET>`
 - Lanzar la investigación ahora: `/api/blog-admin?clave=<BLOG_SECRET>&accion=investigar` (añade `&force=1` para repetirla)

@@ -1,4 +1,4 @@
-// /api/blog-panel?clave=<BLOG_SECRET> — panel de control de la máquina de blogs.
+// /api/blog-panel — panel de control de la máquina de blogs (pide la contraseña BLOG_PANEL_PASSWORD).
 // Muestra el estado de la semana, el registro y botones para lanzar la investigación.
 // Se actualiza sola cada 10 segundos mientras hay trabajo en curso.
 import { cfg, missingConfig } from '../lib/blog/config.mjs';
@@ -10,18 +10,55 @@ import { link } from '../lib/blog/sign.mjs';
 
 const html = (body, status = 200) => new Response(body, { status, headers: { 'content-type': 'text/html; charset=utf-8' } });
 
+import { createHmac, timingSafeEqual } from 'node:crypto';
+
+// Contraseña del panel: variable BLOG_PANEL_PASSWORD en Netlify (no va en el código).
+// Tras entrar, se guarda una cookie de sesión de 30 días para no pedirla cada vez.
+const password = () => process.env.BLOG_PANEL_PASSWORD || '';
+const COOKIE = 'robin_blog_panel';
+const sessionToken = () => createHmac('sha256', `${cfg.secret()}|${password()}`).update('panel').digest('base64url');
+const same = (a, b) => a.length === b.length && timingSafeEqual(Buffer.from(a), Buffer.from(b));
+const cookieOk = (req) => {
+  const m = (req.headers.get('cookie') || '').match(new RegExp(`${COOKIE}=([^;]+)`));
+  return Boolean(password() && m && same(m[1], sessionToken()));
+};
+const loginPage = (msg = '') =>
+  page(
+    'Panel',
+    `<div class="card"><h1>Panel de la máquina de blogs</h1>${msg ? `<p style="color:#b42318">${msg}</p>` : ''}
+<form method="POST" action="/api/blog-panel"><input type="hidden" name="accion" value="login">
+<p>Contraseña:</p><p><input name="password" type="password" autofocus style="padding:10px;font-size:16px;width:100%;max-width:360px"></p>
+<p><button class="btn">Entrar</button></p></form></div>`,
+  );
+
 export default async (req) => {
   const url = new URL(req.url);
-  const clave = url.searchParams.get('clave') || '';
-  if (!cfg.secret() || clave !== cfg.secret()) {
-    return html(page('Panel', '<div class="card"><h1>Panel de la máquina de blogs</h1><form method="GET"><p>Contraseña (BLOG_SECRET):</p><p><input name="clave" type="password" style="padding:10px;font-size:16px;width:100%;max-width:360px"></p><p><button class="btn">Entrar</button></p></form></div>'), 401);
+  if (!password() || !cfg.secret()) {
+    return html(page('Panel', '<div class="card"><h1>Panel sin configurar</h1><p>Faltan las variables BLOG_PANEL_PASSWORD y/o BLOG_SECRET en Netlify.</p></div>'), 503);
   }
+
+  // Formularios (login y acciones)
+  const form = req.method === 'POST' ? new URLSearchParams(await req.text()) : null;
+  if (form?.get('accion') === 'login') {
+    if (!same(String(form.get('password') || ''), password())) return html(loginPage('Contraseña incorrecta.'), 401);
+    return new Response(null, {
+      status: 303,
+      headers: {
+        Location: '/api/blog-panel',
+        'Set-Cookie': `${COOKIE}=${sessionToken()}; Path=/api/blog-panel; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax`,
+      },
+    });
+  }
+  if (form?.get('accion') === 'salir') {
+    return new Response(null, { status: 303, headers: { Location: '/api/blog-panel', 'Set-Cookie': `${COOKIE}=; Path=/api/blog-panel; Max-Age=0` } });
+  }
+  if (!cookieOk(req)) return html(loginPage(), 401);
+
   const week = url.searchParams.get('s') || weekId();
-  const self = (extra = '') => `/api/blog-panel?clave=${encodeURIComponent(clave)}&s=${week}${extra}`;
+  const self = (extra = '') => `/api/blog-panel?s=${week}${extra}`;
 
   let aviso = '';
-  if (req.method === 'POST') {
-    const form = new URLSearchParams(await req.text());
+  if (form) {
     const accion = form.get('accion');
     try {
       if (accion === 'investigar' || accion === 'forzar') {
@@ -64,11 +101,13 @@ ${data?.error ? `<p style="color:#b42318"><strong>Error:</strong> ${esc(data.err
   ${!data || status === 'error' ? '<button class="btn" name="accion" value="investigar">Lanzar investigación ahora</button>' : '<button class="btn out" name="accion" value="forzar">Repetir investigación</button>'}
   ${data?.selection ? '<button class="btn out" name="accion" value="redactar">Volver a redactar</button>' : ''}
   ${data?.ideas?.length ? `<a class="btn out" href="${esc(link('/api/blog-elegir', week))}">Elegir ideas</a>` : ''}
+  <button class="btn out" name="accion" value="salir" style="margin-left:auto">Salir</button>
 </form></div>
 
 <div class="card"><h2>Configuración</h2><ul>
 ${check(!faltan.includes('anthropic'), 'ANTHROPIC_API_KEY')}
 ${check(!faltan.includes('secret'), 'BLOG_SECRET')}
+${check(true, 'BLOG_PANEL_PASSWORD')}
 ${check(!faltan.includes('github'), 'GITHUB_TOKEN')}
 ${check(!faltan.includes('unsplash'), 'UNSPLASH_ACCESS_KEY')}
 ${check(google || process.env.RESEND_API_KEY, 'Correo (cuenta de servicio de Google o RESEND_API_KEY)')}
