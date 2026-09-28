@@ -3,12 +3,19 @@ import Base from '../../layouts/Base.astro';
 import YouTube from '../../components/YouTube.astro';
 import ContactSection from '../../components/ContactSection.astro';
 import { DESTINOS } from '../../data/destinos.js';
+import { GUIA, GASTOS_BASE, ACTUALIZADO, MATRICULA } from '../../data/destinos-guia.js';
 
 export function getStaticPaths() {
   return DESTINOS.map((d) => ({ params: { slug: d.slug }, props: { d } }));
 }
 
 const { d } = Astro.props;
+const g = GUIA[d.slug];
+const eur = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const gastos = g ? [{ label: 'Alquiler de habitación', min: g.alquiler, max: g.alquiler }, ...GASTOS_BASE] : [];
+const totalMin = gastos.reduce((a, x) => a + x.min, 0);
+const totalMax = gastos.reduce((a, x) => a + x.max, 0);
+const otras = DESTINOS.filter((x) => x.slug !== d.slug).sort((a, b) => a.name.localeCompare(b.name, 'es'));
 const tag = `holanda-${d.slug}`;
 const url = `https://project-robin.com/destinos/${d.slug}/`;
 
@@ -31,7 +38,20 @@ const schema = [
     inLanguage: 'es-ES',
     about: { '@type': 'City', name: d.name, containedInPlace: { '@type': 'Country', name: 'Países Bajos' } },
     isPartOf: { '@id': 'https://project-robin.com/#website' },
+    dateModified: ACTUALIZADO.iso,
+    ...(g && {
+      mentions: g.universidades.map((u) => ({ '@type': 'CollegeOrUniversity', name: u.name, url: u.url })),
+    }),
   },
+  ...(g
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: g.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+        },
+      ]
+    : []),
 ];
 
 const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
@@ -65,6 +85,34 @@ const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
   </section>
 
   {
+    g && (
+      <section class="resumen section-sm">
+        <div class="container resumen-grid">
+          <div class="stack" style="--stack:16px">
+            <p class="eyebrow">En resumen</p>
+            <h2 class="display-md">¿Merece la pena estudiar en {d.name}?</h2>
+            <p class="lead resumen-text">{g.resumen}</p>
+            <p class="small updated">
+              Actualizado en <time datetime={ACTUALIZADO.iso}>{ACTUALIZADO.texto}</time>
+            </p>
+          </div>
+          <div>
+            <dl class="datos">
+              {g.datos.map((x) => (
+                <div>
+                  <dt>{x.label}</dt>
+                  <dd>{x.value}</dd>
+                </div>
+              ))}
+            </dl>
+            {g.datosNota && <p class="small nota">{g.datosNota}</p>}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
     hasFit && (
       <section class="fit bg-cream">
         <div class="container">
@@ -72,7 +120,7 @@ const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
           <h2 class="display-md center">¿Es {d.name} tu ciudad?</h2>
           <div class="fit-grid">
             <div class="fit-box">
-              <h3>Esta universidad es para ti si…</h3>
+              <h3>Esta ciudad es para ti si…</h3>
               <ul class="check-list">
                 {d.paraTi.map((x) => (
                   <li>{x}</li>
@@ -80,7 +128,7 @@ const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
               </ul>
             </div>
             <div class="fit-box">
-              <h3>Esta universidad no es para ti si…</h3>
+              <h3>Esta ciudad no es para ti si…</h3>
               <ul class="check-list is-cross">
                 {d.noParaTi.map((x) => (
                   <li>{x}</li>
@@ -90,6 +138,140 @@ const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
           </div>
         </div>
       </section>
+    )
+  }
+
+  {
+    g && (
+      <>
+        <section class="section-sm container" id="universidades">
+          <p class="eyebrow">Dónde estudiar</p>
+          <h2 class="display-md h2">Universidades en {d.name}</h2>
+          <p class="text intro">
+            En Holanda hay dos tipos de universidad: las de investigación (WO), más académicas, y las de ciencias aplicadas (HBO), más prácticas y con prácticas en empresa. Estas son las principales opciones en {d.name}:
+          </p>
+          <div class="unis">
+            {g.universidades.map((u) => (
+              <article class="uni">
+                <p class="uni-type">{u.type}</p>
+                <h3>{u.name}</h3>
+                <p>{u.text}</p>
+                <p class="uni-en">
+                  <strong>En inglés:</strong> {u.ingles}
+                </p>
+                <a href={u.url} target="_blank" rel="noopener">
+                  Web oficial →
+                </a>
+              </article>
+            ))}
+          </div>
+          {g.admisionNota && <p class="aviso">{g.admisionNota}</p>}
+        </section>
+
+        <section class="section-sm bg-sky" id="coste-de-vida">
+          <div class="container coste-grid">
+            <div class="stack" style="--stack:16px">
+              <p class="eyebrow">Coste de vida</p>
+              <h2 class="display-md">¿Cuánto cuesta vivir en {d.name}?</h2>
+              <p class="text">
+                Calcula entre <strong>{eur(totalMin)} y {eur(totalMax)} € al mes</strong>, sin contar la matrícula. La matrícula para estudiantes de la UE es de <strong>{MATRICULA} al año</strong> en el curso 2026-2027 (tarifa oficial, igual en todas las universidades públicas).
+              </p>
+              <p class="text">
+                Si trabajas al menos 32 horas al mes en Holanda, puedes pedir la beca DUO como un estudiante holandés: en 2026 son hasta 324,52 € al mes de beca básica, más hasta 491,08 € de beca complementaria según los ingresos de tus padres.
+              </p>
+            </div>
+            <table class="gastos">
+              <caption class="sr-only">Presupuesto mensual orientativo de un estudiante en {d.name}</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Gasto mensual</th>
+                  <th scope="col">Aprox.</th>
+                </tr>
+              </thead>
+              <tbody>
+                {gastos.map((x) => (
+                  <tr>
+                    <th scope="row">{x.label}</th>
+                    <td>{x.min === x.max ? `${eur(x.min)} €` : `${eur(x.min)}–${eur(x.max)} €`}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th scope="row">Total</th>
+                  <td>
+                    {eur(totalMin)}–{eur(totalMax)} €
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <p class="container small nota">
+            Alquiler: Kamernet (2025-2026). Si trabajas en Holanda, además tendrás que contratar el seguro de salud holandés (desde unos 150 € al mes, con posible ayuda del gobierno); si no trabajas, te vale la Tarjeta Sanitaria Europea con un seguro complementario.
+          </p>
+        </section>
+
+        <section class="section-sm container aloja" id="alojamiento">
+          <div class="stack" style="--stack:16px">
+            <p class="eyebrow">Alojamiento</p>
+            <h2 class="display-md">Encontrar casa en {d.name}</h2>
+            <p class="text">{g.alojamiento.text}</p>
+            <ul class="check-list">
+              {g.alojamiento.tips.map((t) => (
+                <li>{t}</li>
+              ))}
+            </ul>
+          </div>
+          <aside class="aloja-robin">
+            <p class="badge">Housing garantizado</p>
+            <p class="aloja-title">No llegues a {d.name} sin casa</p>
+            <p>Con Robin tu alojamiento está garantizado. Hemos vivido allí y sabemos dónde y cómo buscar.</p>
+            <a class="btn" href={`/contacto/?origen=pack-llegada-${d.slug}&servicio=Pack%20Llegada`}>
+              Pack Llegada {d.name}
+            </a>
+          </aside>
+        </section>
+
+        <section class="section-sm bg-cream" id="vida">
+          <div class="container">
+            <p class="eyebrow">Vida en la ciudad</p>
+            <h2 class="display-md h2">Cómo es vivir en {d.name}</h2>
+            <p class="text intro">{g.vida.text}</p>
+            <div class="vida-grid">
+              {g.vida.highlights.map((h) => (
+                <article class="vida-card">
+                  <h3>{h.title}</h3>
+                  <p>{h.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section class="section-sm container faq" id="preguntas-frecuentes">
+          <p class="eyebrow center">Preguntas frecuentes</p>
+          <h2 class="display-md center h2">Estudiar en {d.name}: lo que más nos preguntáis</h2>
+          <div class="faq-list">
+            {g.faq.map((f, i) => (
+              <details open={i === 0}>
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <nav class="section-sm container otras" aria-label="Otras ciudades de Holanda">
+          <p class="eyebrow center">Compara con otras ciudades</p>
+          <ul>
+            {otras.map((o) => (
+              <li>
+                <a href={`/destinos/${o.slug}/`}>Estudiar en {o.name}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </>
     )
   }
 
@@ -187,6 +369,280 @@ const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
     font-weight: 700;
     margin-bottom: 20px;
   }
+  /* ---- Guía ampliada ---- */
+  .resumen {
+    border-top: 1px solid var(--grey);
+  }
+  .resumen-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(30px, 5vw, 70px);
+    align-items: center;
+  }
+  .resumen-text {
+    font-size: clamp(18px, 1.5vw, 21px);
+    line-height: 1.45;
+  }
+  .updated {
+    opacity: 0.7;
+  }
+  .datos {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .datos div {
+    background: var(--sky);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .datos div:first-child {
+    grid-column: span 2;
+    background: var(--navy);
+    color: var(--cream);
+  }
+  .datos dt {
+    font-size: 14px;
+    opacity: 0.8;
+  }
+  .datos dd {
+    margin: 4px 0 0;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .datos div:first-child dd {
+    font-size: 32px;
+    color: var(--accent);
+  }
+  .nota {
+    margin-top: 10px;
+    opacity: 0.75;
+  }
+  .h2 {
+    margin: 14px 0 14px;
+  }
+  .intro {
+    max-width: 820px;
+    margin-bottom: 30px;
+  }
+  .unis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .uni {
+    border: 2px solid var(--navy);
+    border-radius: 16px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 17px;
+    line-height: 1.45;
+  }
+  .uni-type {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--navy-3);
+  }
+  .uni h3 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .uni-en {
+    background: var(--peach);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+  .uni a {
+    margin-top: auto;
+    font-weight: 700;
+    color: var(--navy-3);
+  }
+  .aviso {
+    margin-top: 22px;
+    background: var(--accent);
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .coste-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(30px, 5vw, 70px);
+    align-items: center;
+  }
+  .coste-grid .text {
+    line-height: 1.5;
+  }
+  .gastos {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    font-size: 17px;
+  }
+  .gastos th,
+  .gastos td {
+    padding: 14px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--grey);
+  }
+  .gastos td {
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .gastos thead th {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+  }
+  .gastos thead th:last-child {
+    text-align: right;
+  }
+  .gastos tbody th {
+    font-weight: 500;
+  }
+  .gastos tfoot th,
+  .gastos tfoot td {
+    background: var(--navy);
+    color: var(--cream);
+    font-weight: 700;
+    border: 0;
+  }
+  .gastos tfoot td {
+    color: var(--accent);
+  }
+  .aloja {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: clamp(30px, 5vw, 70px);
+    align-items: center;
+  }
+  .aloja .text {
+    line-height: 1.5;
+  }
+  .aloja .check-list {
+    font-size: 17px;
+  }
+  .aloja-robin {
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 20px;
+    padding: 34px 30px;
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+  }
+  .badge {
+    background: var(--accent);
+    color: var(--navy);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .aloja-title {
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.05;
+  }
+  .vida-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .vida-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
+    border-top: 5px solid var(--accent);
+  }
+  .vida-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .vida-card p {
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .faq-list {
+    max-width: 860px;
+    margin: 30px auto 0;
+    display: grid;
+    gap: 12px;
+  }
+  .faq details {
+    border: 2px solid var(--navy);
+    border-radius: 14px;
+    padding: 0 22px;
+    background: var(--white);
+  }
+  .faq summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 18px 30px 18px 0;
+    font-size: 19px;
+    font-weight: 700;
+    position: relative;
+  }
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq summary::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    translate: 0 -50%;
+    font-size: 26px;
+    color: var(--accent-dark);
+    transition: rotate 0.2s;
+  }
+  .faq details[open] summary::after {
+    rotate: 45deg;
+  }
+  .faq details p {
+    padding-bottom: 20px;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .otras ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  .otras a {
+    display: inline-block;
+    border: 1px solid var(--navy);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 15px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .otras a:hover {
+    background: var(--navy);
+    color: var(--cream);
+  }
+
   .bird-wrap {
     display: grid;
     place-items: center;
@@ -214,7 +670,11 @@ const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
       grid-template-columns: 1fr;
       padding-block: 40px;
     }
-    .fit-grid {
+    .fit-grid,
+    .resumen-grid,
+    .coste-grid,
+    .aloja,
+    .vida-grid {
       grid-template-columns: 1fr;
     }
   }
