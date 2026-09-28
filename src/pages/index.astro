@@ -58,8 +58,9 @@ const pasos = [
     img: '/wp-content/uploads/2026/06/RobinHouse.webp',
     badge: 'Housing garantizado',
     title: 'Tu casa, asegurada',
-    text: 'Encontrar piso siendo estudiante internacional es un deporte extremo. Lo sabemos porque lo vivimos. Por eso te garantizamos el alojamiento y te ayudamos con la mudanza para que llegues con todo organizado.',
-    bullets: ['Alojamiento garantizado', 'Ayuda para preparar la mudanza', 'Todo listo desde el primer día'],
+    text: 'Encontrar piso siendo estudiante internacional en Holanda es un deporte extremo. Lo sabemos porque lo vivimos. Por eso, desde el principio, te garantizamos como mínimo una opción de alojamiento asegurada, y te ayudamos con la mudanza para que llegues con todo organizado.',
+    bullets: ['Mínimo una opción de alojamiento asegurada', 'Ayuda para preparar la mudanza', 'Todo listo desde el primer día'],
+    note: 'Garantía de alojamiento: desde el principio del proceso te ofrecemos como mínimo una opción de alojamiento asegurada.',
   },
   {
     tab: 'Despega',
@@ -73,7 +74,7 @@ const pasos = [
 const incluye = [
   { icon: 'compass', title: 'Selección de carreras', text: 'Sabrás qué estudiar y dónde, con datos: requisitos, costes y salidas de cada opción.' },
   { icon: 'doc', title: 'Proceso de aplicación', text: 'Cartas de motivación, documentos legales y plazos. Todo revisado antes de enviarlo.' },
-  { icon: 'home', title: 'Housing garantizado', text: 'Tienes casa asegurada. Hemos vivido allí y sabemos dónde y cómo buscar.', highlight: true },
+  { icon: 'home', title: 'Housing garantizado', text: 'Desde el principio tienes como mínimo una opción de alojamiento asegurada. Hemos vivido en Holanda y sabemos dónde y cómo buscar.', highlight: true },
   { icon: 'coin', title: 'Ayudas económicas', text: 'Te explicamos las ayudas al estudiante del gobierno holandés y cómo solicitarlas.' },
 ];
 
@@ -194,6 +195,7 @@ const schema = {
                     <ul class="tick-list">
                       {p.bullets.map((b) => <li>{b}</li>)}
                     </ul>
+                    {p.note && <p class="method-note">{p.note}</p>}
                   </div>
                 </li>
               ))
@@ -691,6 +693,13 @@ const schema = {
   .method-copy .tick-list {
     font-size: 17px;
     font-weight: 600;
+  }
+  .method-note {
+    margin-top: 16px;
+    font-size: 13px;
+    line-height: 1.4;
+    opacity: 0.75;
+    max-width: 560px;
   }
   .method-nav {
     display: flex;

@@ -225,10 +225,11 @@ const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
           <aside class="aloja-robin">
             <p class="badge">Housing garantizado</p>
             <p class="aloja-title">No llegues a {d.name} sin casa</p>
-            <p>Con Robin tu alojamiento está garantizado. Hemos vivido allí y sabemos dónde y cómo buscar.</p>
+            <p>Con Robin, desde el principio tienes como mínimo una opción de alojamiento asegurada en {d.name}. Hemos vivido en Holanda y sabemos dónde y cómo buscar.</p>
             <a class="btn" href={`/contacto/?origen=pack-llegada-${d.slug}&servicio=Pack%20Llegada`}>
               Pack Llegada {d.name}
             </a>
+            <p class="aloja-legal">Garantía de alojamiento: desde el principio del proceso te ofrecemos como mínimo una opción de alojamiento asegurada.</p>
           </aside>
         </section>
 
@@ -551,6 +552,11 @@ const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
     font-size: 14px;
     font-weight: 700;
     text-transform: uppercase;
+  }
+  .aloja-legal {
+    font-size: 13px;
+    line-height: 1.4;
+    opacity: 0.75;
   }
   .aloja-title {
     font-size: 28px;
