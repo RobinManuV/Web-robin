@@ -88,6 +88,18 @@ p {
   margin: 0;
 }
 
+/* Móvil: palabras largas en titulares y URLs largas nunca desbordan la pantalla */
+h1,
+h2,
+h3 {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+p a,
+li a {
+  overflow-wrap: anywhere;
+}
+
 button {
   font: inherit;
   cursor: pointer;
@@ -241,6 +253,8 @@ button {
   font-size: 18px;
   font-weight: 500;
   line-height: 21px;
+  text-align: center;
+  max-width: 100%;
   text-decoration: none;
   transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
   white-space: nowrap;
