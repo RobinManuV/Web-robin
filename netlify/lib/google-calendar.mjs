@@ -27,13 +27,21 @@ function privateKey() {
   return key;
 }
 
+// Acepta el email de la cuenta de servicio o, por si se pega otro campo del JSON,
+// la URL del certificado (…/x509/nombre%40proyecto.iam.gserviceaccount.com).
+export function serviceAccountEmail() {
+  const raw = decodeURIComponent(String(process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL || '').trim());
+  const m = raw.match(/[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.iam\.gserviceaccount\.com/);
+  return m ? m[0] : raw;
+}
+
 const clients = new Map();
 function clientFor(email) {
   if (!clients.has(email)) {
     clients.set(
       email,
       new JWT({
-        email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+        email: serviceAccountEmail(),
         key: privateKey(),
         scopes: SCOPES,
         subject: email, // actúa como esa persona
