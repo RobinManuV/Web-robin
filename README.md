@@ -133,5 +133,6 @@ Cada artículo sale con: título SEO, meta description, entradilla que responde 
 
 ### Probarla a mano
 
-- Ver estado: `/api/blog-admin?clave=<BLOG_SECRET>`
+- **Panel de control:** `/api/blog-panel?clave=<BLOG_SECRET>` (estado, registro, configuración y botón "Lanzar investigación ahora")
+- Ver estado en JSON: `/api/blog-admin?clave=<BLOG_SECRET>`
 - Lanzar la investigación ahora: `/api/blog-admin?clave=<BLOG_SECRET>&accion=investigar` (añade `&force=1` para repetirla)
