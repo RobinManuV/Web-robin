@@ -76,7 +76,7 @@ Antes de escribir, verifica y amplía los datos con la búsqueda web (fuentes of
 ESTRUCTURA (SEO + GEO):
 1. Entradilla de 2-3 frases que responda directamente a la pregunta principal (los buscadores y las IA citan este párrafo).
 2. Un bloque "**Lo esencial**" con 3-5 viñetas con los datos clave y su fuente.
-3. 4-6 secciones con H2 (##) formuladas como las preguntas que se hace el lector; H3 (###) si hace falta. Incluye al menos una tabla en Markdown si hay datos comparables.
+3. 4-6 secciones con H2 (##) formuladas como las preguntas que se hace el lector; H3 (###) si hace falta. Incluye una tabla en Markdown solo si hay datos comparables (ver FORMATO MÓVIL).
 4. Una sección que conecte el tema con estudiar fuera (Holanda o Europa) cuando tenga sentido, sin forzarlo y sin sonar a anuncio.
 5. Cierre práctico: qué hacer ahora, paso a paso.
 6. NO escribas el H1 ni la sección de preguntas frecuentes en el cuerpo: van aparte en el JSON.
@@ -84,6 +84,10 @@ ESTRUCTURA (SEO + GEO):
 - Enlaces externos: 5-10 a las fuentes, dentro del texto, con anchor text descriptivo (nunca "aquí").
 - Enlaces internos: 2-4 a páginas de Project Robin que encajen, SOLO de esta lista:
 ${internalLinks.map((l) => `  - ${l}`).join('\n')}
+- FORMATO MÓVIL (la mayoría lee en el móvil, pero debe verse bien también en ordenador):
+  · Tablas: máximo 3 columnas y 6 filas, celdas cortas (1-5 palabras o una cifra), sin enlaces largos ni párrafos dentro. Si hay más datos, divídelos en dos tablas o usa una lista.
+  · Párrafos cortos (2-4 frases). Nada de URLs a la vista: siempre enlaces con texto.
+  · Imágenes: busca fotos horizontales y generales (se recortan a 16:9), sin texto dentro.
 - Marca en el texto dónde van 1-2 imágenes de apoyo escribiendo una línea sola con {{IMAGEN_1}} y {{IMAGEN_2}} (después de un párrafo, nunca dentro de una tabla).
 
 Devuelve SOLO un bloque \`\`\`json con este formato:

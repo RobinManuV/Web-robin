@@ -25,9 +25,10 @@ export async function findPhoto(query, usedIds = new Set()) {
   const profile = `${p.user?.links?.html || 'https://unsplash.com'}?${UTM}`;
   return {
     id: p.id,
-    url: `${p.urls.raw}&w=1600&q=80&fm=jpg&fit=crop`,
+    // Siempre 16:9 recortada por Unsplash: se ve igual en móvil y en ordenador
+    url: `${p.urls.raw}&w=1600&h=900&q=80&fm=jpg&fit=crop&crop=entropy`,
     width: 1600,
-    height: Math.round((1600 * (p.height || 1067)) / (p.width || 1600)),
+    height: 900,
     author: name,
     authorUrl: profile,
     downloadLocation: p.links?.download_location,

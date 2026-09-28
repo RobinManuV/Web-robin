@@ -101,7 +101,7 @@ h1{font-size:26px;margin:0 0 10px}h2{font-size:20px}a{color:${NAVY}}
 .pick label{display:flex;gap:6px;align-items:center;font-weight:700;border:2px solid ${NAVY};border-radius:999px;padding:6px 14px;cursor:pointer}
 .status{display:inline-block;border-radius:999px;padding:4px 12px;font-weight:700;font-size:13px;background:${ACCENT}}
 .status.parado{background:#b42318;color:#fff}.status.publicado{background:#2e7d32;color:#fff}
-article img{max-width:100%;border-radius:12px}article table{border-collapse:collapse;width:100%}article td,article th{border:1px solid #ddd;padding:8px}
+article{overflow-wrap:break-word}article img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:12px}article table{display:block;max-width:100%;overflow-x:auto;border-collapse:collapse;font-size:14px}article td,article th{border:1px solid #ddd;padding:8px 10px;text-align:left;vertical-align:top;min-width:90px}article th{background:${NAVY};color:#fff}
 figure{margin:20px 0}figcaption{font-size:13px;opacity:.75;margin-top:6px}
 </style></head><body><div class="wrap"><p class="brand">ROBIN · Blog</p>${inner}</div></body></html>`;
 }
