@@ -6,10 +6,10 @@ import { CONTACT } from '../data/site.js';
 // Solo los colegios con nombre real. Los "Colegio 1, 2…" de la web antigua eran huecos de relleno.
 const colegios = ['Colegio International de Torrequebrada', 'Instituto Jorge Manrique', 'Colegio Voramar', 'Colegio Alemán de Madrid'];
 const pasos = [
-  { t: 'Kick-off', d: 'Reunión con orientación para adaptar contenidos a vuestro perfil de alumnos.' },
-  { t: 'Charlas', d: 'Sesiones para alumnos y para familias — presencial o online.' },
-  { t: 'Tutorías', d: '1:1 con los alumnos interesados. Plan individual de candidatura.' },
-  { t: 'Seguimiento', d: 'Reporte anual al colegio. Resultados medibles (admisiones, ciudades, becas).' },
+  { t: 'Kick-off', d: 'Reunión con orientación para adaptar contenidos a vuestro perfil de alumnos.', img: '/fotos/colegios-5.webp', alt: 'Stand de Project Robin en un colegio' },
+  { t: 'Charlas', d: 'Sesiones para alumnos y para familias — presencial o online.', img: '/fotos/colegios-3.webp', alt: 'Charla de Robin ante un auditorio de alumnos de Bachillerato' },
+  { t: 'Tutorías', d: '1:1 con los alumnos interesados. Plan individual de candidatura.', img: '/fotos/colegios-2.webp', alt: 'Alumnas hablando con un mentor de Robin' },
+  { t: 'Seguimiento', d: 'Reporte anual al colegio. Resultados medibles (admisiones, ciudades, becas).', img: '/fotos/colegios-4.webp', alt: 'Sesión de Robin con un grupo de alumnos' },
 ];
 const schema = {
   '@context': 'https://schema.org',
@@ -40,7 +40,7 @@ const schema = {
         </ul>
         <a class="btn" href="#formulario-colegios">Contactar para mi colegio</a>
       </div>
-      <img src="/wp-content/uploads/2026/05/tree-with-green-leaves-four-young-students-in-cas-2026-03-24-03-52-10-utc.jpg" alt="Alumnos de Bachillerato hablando sobre la universidad" />
+      <img class="hero-photo" src="/fotos/colegios-1.webp" alt="Charla de orientación universitaria de Robin en un aula de Bachillerato" width="1600" height="1200" />
     </div>
   </section>
 
@@ -52,6 +52,7 @@ const schema = {
       {
         pasos.map((p, i) => (
           <li>
+            <img class="paso-img" src={p.img} alt={p.alt} loading="lazy" width="600" height="750" />
             <span class="n">{i + 1}</span>
             <h3>{p.t}</h3>
             <p>{p.d}</p>
@@ -115,8 +116,26 @@ const schema = {
   .hero .tick-list {
     font-size: 19px;
   }
-  .hero img {
+  .hero-photo {
     border-radius: 16px;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  }
+  .paso-img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 16px;
+    margin-bottom: -32px;
+  }
+  .pasos li {
+    display: grid;
+    justify-items: center;
+  }
+  .pasos .n {
+    position: relative;
   }
   .pasos {
     list-style: none;

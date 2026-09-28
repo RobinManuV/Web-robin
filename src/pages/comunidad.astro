@@ -4,14 +4,9 @@ import Base from '../layouts/Base.astro';
 import BlogCard from '../components/BlogCard.astro';
 import YouTube from '../components/YouTube.astro';
 import { TESTIMONIOS, VIDEOS_TESTIMONIOS } from '../data/site.js';
+import { PRODUCTOS } from '../data/tienda.js';
 
 const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) => b.data.date - a.data.date).slice(0, 6);
-const tienda = [
-  { name: 'Pack del Estudiante', text: 'Camiseta + sudadera + tote bag + sticker pack + botella. Todo lo que necesitas para empezar.', price: '79 €', color: 'var(--navy)' },
-  { name: 'Sudadera Robin', text: 'Heavy hoodie 400 gsm, bordado grande detrás. Para sobrevivir al invierno holandés.', price: '45 €', color: 'var(--accent)' },
-  { name: 'Camiseta Robin', text: 'Algodón orgánico 100%, print del logo en pecho. Para el día a día universitario.', price: '23 €', color: 'var(--sky)' },
-];
-const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 ---
 
 <Base
@@ -30,13 +25,15 @@ const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').rep
         </div>
       </div>
       <div class="robins">
-        <img src="/wp-content/uploads/2026/04/Robin-en-Bici.png" alt="" width="120" />
-        <p class="robins-title">Nuestros Robins</p>
-        <ul class="tick-list">
-          <li>Cómo es realmente irse a estudiar fuera.</li>
-          <li>Adaptación, cultura y vida universitaria.</li>
-          <li>Dificultades reales… y cómo superarlas.</li>
-        </ul>
+        <img class="robins-photo" src="/fotos/comunidad-robins.webp" alt="Dos Robins brindando con las tazas de Robin" width="1920" height="1440" />
+        <div class="robins-body">
+          <p class="robins-title">Nuestros Robins</p>
+          <ul class="tick-list">
+            <li>Cómo es realmente irse a estudiar fuera.</li>
+            <li>Adaptación, cultura y vida universitaria.</li>
+            <li>Dificultades reales… y cómo superarlas.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -87,18 +84,19 @@ const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').rep
     <p class="text center" style="max-width:600px;margin:0 auto 40px">Nuestra colección exclusiva. Perfecta para estudiantes internacionales que sienten orgullo de formar parte de la comunidad.</p>
     <div class="shop">
       {
-        tienda.map((p) => (
-          <article class="prod">
-            <div class="prod-top" style={`background:${p.color}`} />
+        PRODUCTOS.map((p) => (
+          <a class="prod" href={`/tienda/${p.slug}/`}>
+            <div class="prod-top">
+              {p.img ? <img src={p.img} alt={p.name} loading="lazy" width="600" height="600" /> : <span class="prod-soon-art">Coming soon</span>}
+              {p.comingSoon && p.img && <span class="prod-badge">Coming soon</span>}
+            </div>
             <h3>{p.name}</h3>
-            <p class="small">{p.text}</p>
+            <p class="small">{p.short}</p>
             <div class="prod-foot">
               <strong>{p.price}</strong>
-              <a class="btn btn-sm" href={`/contacto/?origen=tienda-${slug(p.name)}&servicio=Otro`}>
-                Lo quiero →
-              </a>
+              <span class="btn btn-sm">{p.comingSoon ? 'Ver' : 'Lo quiero →'}</span>
             </div>
-          </article>
+          </a>
         ))
       }
     </div>
@@ -173,7 +171,7 @@ const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').rep
   }
   .hero {
     color: #fff;
-    background: linear-gradient(90deg, rgba(45, 58, 100, 0.92), rgba(45, 58, 100, 0.6)), url('/wp-content/uploads/2026/06/bernie-almanzar-CUzEBQz4ThE-unsplash.webp') center / cover;
+    background: linear-gradient(90deg, rgba(45, 58, 100, 0.92), rgba(45, 58, 100, 0.55)), url('/fotos/comunidad-fondo.webp') center / cover;
     border-radius: 0 0 24px 24px;
     padding-block: 80px;
   }
@@ -192,26 +190,30 @@ const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').rep
   }
   .robins {
     background: var(--accent);
-    border-radius: 6px;
-    padding: 30px;
-    text-align: center;
+    border-radius: 16px;
+    overflow: hidden;
+    color: var(--navy);
   }
-  .robins img {
-    margin: 0 auto 8px;
+  .robins-photo {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+  .robins-body {
+    padding: 22px 26px 26px;
   }
   .robins-title {
-    font-size: 34px;
+    font-size: 30px;
     font-weight: 800;
     text-transform: uppercase;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
   .robins .tick-list {
-    text-align: left;
     font-size: 15px;
     font-weight: 700;
   }
   .robins .tick-list li::before {
-    filter: brightness(0) invert(1);
+    filter: brightness(0) saturate(100%) invert(19%) sepia(21%) saturate(1600%) hue-rotate(196deg);
   }
   .t-grid {
     display: grid;
@@ -261,25 +263,65 @@ const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').rep
   }
   .prod {
     background: #fff;
-    border-radius: 12px;
-    padding: 14px 14px 20px;
+    border-radius: 14px;
+    padding: 12px 12px 18px;
     box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
     display: grid;
     gap: 10px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .prod:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 36px rgba(45, 58, 100, 0.14);
   }
   .prod-top {
-    height: 140px;
-    border-radius: 8px;
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--navy);
+  }
+  .prod-top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .prod-soon-art {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    color: var(--accent);
+    font-size: 30px;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+  .prod-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--accent);
+    color: var(--navy);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 999px;
   }
   .prod h3 {
     font-size: 20px;
-    margin-top: 8px;
+    margin-top: 6px;
+    padding-inline: 4px;
+  }
+  .prod .small {
+    padding-inline: 4px;
   }
   .prod-foot {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 6px;
+    padding-inline: 4px;
   }
   .blog {
     display: grid;

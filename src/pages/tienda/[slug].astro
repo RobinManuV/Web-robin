@@ -1,0 +1,453 @@
+---
+// Ficha de producto de la tienda Robin (/tienda/<slug>/).
+// El pedido se envía como solicitud (formulario → Notion, etiqueta "tienda-<slug>")
+// con la talla y la cantidad en el mensaje; Robin contacta para el pago y el envío.
+import Base from '../../layouts/Base.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { PRODUCTOS, TALLAS, GUIA_TALLAS } from '../../data/tienda.js';
+
+export function getStaticPaths() {
+  return PRODUCTOS.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props;
+const otros = PRODUCTOS.filter((x) => x.slug !== p.slug);
+const guiaLista = GUIA_TALLAS.every((g) => g.ancho && g.largo);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: p.name,
+  description: p.short,
+  brand: { '@type': 'Brand', name: 'Robin' },
+  ...(p.img ? { image: `https://project-robin.com${p.img}` } : {}),
+  offers: {
+    '@type': 'Offer',
+    price: p.priceNum,
+    priceCurrency: 'EUR',
+    availability: p.comingSoon ? 'https://schema.org/PreOrder' : 'https://schema.org/InStock',
+    url: `https://project-robin.com/tienda/${p.slug}/`,
+  },
+};
+---
+
+<Base title={`${p.name}${p.comingSoon ? ' (coming soon)' : ''} | Tienda Robin`} description={p.short} image={p.img || undefined} schema={schema}>
+  <section class="container prod">
+    <a class="link-back" href="/comunidad/#tienda">« Volver a la tienda</a>
+    <div class="prod-grid">
+      <div class="gallery" data-gallery>
+        {
+          p.gallery.length > 0 ? (
+            <>
+              <div class="main">
+                <img src={p.gallery[0].src} alt={p.gallery[0].alt} data-main width="900" height="900" />
+                {p.comingSoon && <span class="soon-badge">Coming soon</span>}
+              </div>
+              {p.gallery.length > 1 && (
+                <div class="thumbs">
+                  {p.gallery.map((g, i) => (
+                    <button type="button" class:list={{ on: i === 0 }} data-thumb={g.src} data-alt={g.alt} aria-label={`Ver foto ${i + 1}`}>
+                      <img src={g.src} alt="" loading="lazy" width="120" height="120" />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </>
+          ) : (
+            <div class="main soon-art">
+              <p>Coming soon</p>
+            </div>
+          )
+        }
+      </div>
+
+      <div class="info">
+        <p class="eyebrow">Tienda Robin</p>
+        <h1 class="display-md">{p.name}</h1>
+        <p class="price">{p.price}</p>
+        {p.description.map((d) => <p class="text">{d}</p>)}
+
+        {
+          p.comingSoon ? (
+            <div class="soon-box">
+              <p class="soon-title">Coming soon</p>
+              <p>Estamos terminando los últimos detalles. ¿Quieres que te avisemos cuando esté disponible?</p>
+              <a class="btn" href={`/contacto/?origen=tienda-${p.slug}&servicio=Otro`}>
+                Avísame
+              </a>
+            </div>
+          ) : (
+            <div class="order">
+              {p.tallas && (
+                <div class="opts">
+                  <span class="opt-label">Talla</span>
+                  <div class="tallas" role="radiogroup" aria-label="Talla">
+                    {TALLAS.map((t, i) => (
+                      <label class="talla">
+                        <input type="radio" name="talla-sel" value={t} checked={i === 2} data-talla />
+                        <span>{t}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <a class="guia-link" href="#guia-tallas">
+                    Guía de tallas
+                  </a>
+                </div>
+              )}
+              <div class="opts">
+                <label for="cantidad">Cantidad</label>
+                <input id="cantidad" type="number" min="1" max="20" value="1" data-cantidad />
+              </div>
+              <a class="btn btn-lg" href="#pedido">
+                Lo quiero · {p.price}
+              </a>
+              <p class="small note">Déjanos tus datos y te escribimos para cerrar el pago y el envío.</p>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    p.tallas && (
+      <section class="section-sm bg-cream" id="guia-tallas">
+        <div class="container guia">
+          <div>
+            <p class="eyebrow">Guía de tallas</p>
+            <h2 class="display-md">Encuentra tu talla</h2>
+            <p class="text">Mide una camiseta que te quede bien, estirada sobre una superficie plana: el ancho de axila a axila y el largo desde el hombro hasta el bajo. Si dudas entre dos tallas, elige la mayor.</p>
+          </div>
+          <table class="tallas-table">
+            <thead>
+              <tr>
+                <th scope="col">Talla</th>
+                <th scope="col">Ancho (cm)</th>
+                <th scope="col">Largo (cm)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {GUIA_TALLAS.map((g) => (
+                <tr>
+                  <th scope="row">{g.talla}</th>
+                  <td>{g.ancho ?? '—'}</td>
+                  <td>{g.largo ?? '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+            {!guiaLista && (
+              <caption class="small">Medidas exactas próximamente. Si tienes dudas con la talla, escríbenos.</caption>
+            )}
+          </table>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    !p.comingSoon && (
+      <section class="section-sm container" id="pedido">
+        <div class="pedido-card">
+          <h2 class="display-md">Pide tu {p.name.toLowerCase()}</h2>
+          <p class="text">Te escribimos en menos de 24 horas para confirmar el pago y el envío.</p>
+          <LeadForm form="contacto" tag={`tienda-${p.slug}`} servicio="Otro" submitLabel="Enviar pedido" />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section-sm container otros">
+    <p class="eyebrow center">También en la tienda</p>
+    <div class="otros-grid">
+      {
+        otros.map((o) => (
+          <a class="otro" href={`/tienda/${o.slug}/`}>
+            {o.img ? <img src={o.img} alt={o.name} loading="lazy" width="400" height="400" /> : <span class="otro-soon">Coming soon</span>}
+            <span class="otro-name">{o.name}</span>
+            <span class="otro-price">
+              {o.price}
+              {o.comingSoon && ' · Coming soon'}
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Galería: cambiar la foto principal
+  document.querySelectorAll('[data-gallery]').forEach((g) => {
+    const main = g.querySelector('[data-main]');
+    g.querySelectorAll('[data-thumb]').forEach((b) =>
+      b.addEventListener('click', () => {
+        main.src = b.dataset.thumb;
+        main.alt = b.dataset.alt;
+        g.querySelectorAll('[data-thumb]').forEach((x) => x.classList.toggle('on', x === b));
+      }),
+    );
+  });
+  // Pedido: la talla y la cantidad se escriben en el mensaje del formulario
+  const form = document.querySelector('#pedido form');
+  if (form) {
+    const msg = form.querySelector('textarea[name="mensaje"]');
+    const name = document.querySelector('h1')?.textContent?.trim();
+    const sync = () => {
+      const talla = document.querySelector('[data-talla]:checked')?.value;
+      const cant = document.querySelector('[data-cantidad]')?.value || '1';
+      msg.value = `Pedido: ${name}${talla ? ` · Talla ${talla}` : ''} · ${cant} ud.`;
+    };
+    document.querySelectorAll('[data-talla], [data-cantidad]').forEach((el) => el.addEventListener('change', sync));
+    sync();
+  }
+</script>
+
+<style>
+  .prod {
+    padding-block: 40px 60px;
+  }
+  .link-back {
+    font-size: 15px;
+  }
+  .prod-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(30px, 5vw, 70px);
+    align-items: start;
+  }
+  .main {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: var(--cream-2);
+    aspect-ratio: 1;
+  }
+  .main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .soon-badge {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    background: var(--accent);
+    color: var(--navy);
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 15px;
+  }
+  .soon-art {
+    display: grid;
+    place-items: center;
+    background: var(--navy);
+  }
+  .soon-art p {
+    color: var(--accent);
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .thumbs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .thumbs button {
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    overflow: hidden;
+    background: none;
+    aspect-ratio: 1;
+  }
+  .thumbs button.on {
+    border-color: var(--navy);
+  }
+  .thumbs img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .info {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+  .info .text {
+    line-height: 1.5;
+  }
+  .price {
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--accent-dark);
+  }
+  .order {
+    display: grid;
+    gap: 18px;
+    margin-top: 8px;
+    border-top: 1px solid var(--grey);
+    padding-top: 20px;
+  }
+  .opts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+  }
+  .opts > label,
+  .opt-label {
+    font-weight: 700;
+    min-width: 80px;
+  }
+  .tallas {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .talla input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .talla span {
+    display: grid;
+    place-items: center;
+    min-width: 48px;
+    height: 44px;
+    padding: 0 10px;
+    border: 2px solid var(--navy);
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .talla input:checked + span {
+    background: var(--navy);
+    color: var(--cream);
+  }
+  .talla input:focus-visible + span {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .guia-link {
+    font-size: 15px;
+    font-weight: 600;
+  }
+  #cantidad {
+    width: 90px;
+    font: inherit;
+    padding: 10px 12px;
+    border: 2px solid var(--navy);
+    border-radius: 10px;
+  }
+  .btn-lg {
+    justify-self: start;
+    padding: 16px 32px;
+    font-size: 19px;
+  }
+  .note {
+    opacity: 0.75;
+  }
+  .soon-box {
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 18px;
+    padding: 26px;
+    display: grid;
+    gap: 12px;
+    justify-items: start;
+  }
+  .soon-title {
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .guia {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(30px, 5vw, 70px);
+    align-items: center;
+  }
+  .guia .text {
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .tallas-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    caption-side: bottom;
+  }
+  .tallas-table caption {
+    padding-top: 10px;
+    text-align: left;
+    opacity: 0.75;
+  }
+  .tallas-table th,
+  .tallas-table td {
+    padding: 13px 18px;
+    text-align: center;
+    border-bottom: 1px solid var(--grey);
+  }
+  .tallas-table thead th {
+    background: var(--navy);
+    color: var(--cream);
+  }
+  .pedido-card {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: var(--sky);
+    border-radius: 24px;
+    padding: clamp(24px, 4vw, 48px);
+    display: grid;
+    gap: 16px;
+  }
+  .otros-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 320px));
+    justify-content: center;
+    gap: 20px;
+  }
+  .otro {
+    display: grid;
+    gap: 6px;
+    text-decoration: none;
+  }
+  .otro img,
+  .otro-soon {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+  .otro-soon {
+    display: grid;
+    place-items: center;
+    background: var(--navy);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 26px;
+    text-transform: uppercase;
+  }
+  .otro-name {
+    font-weight: 700;
+    font-size: 18px;
+  }
+  .otro-price {
+    font-size: 15px;
+    opacity: 0.8;
+  }
+  @media (max-width: 900px) {
+    .prod-grid,
+    .guia {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
