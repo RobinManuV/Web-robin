@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import { ESPANA_PUBLICADA, ESPANA_RUTAS } from './src/data/site.js';
 
 // Web de Project Robin. Todas las URLs terminan en "/" igual que en WordPress
 // para no perder nada de lo que Google ya tiene indexado.
@@ -10,7 +11,9 @@ export default defineConfig({
   integrations: [
     sitemap({
       filter: (page) =>
-        !page.includes('/reserva-confirmada/') && !page.includes('/gracias/'),
+        !page.includes('/reserva-confirmada/') &&
+        !page.includes('/gracias/') &&
+        (ESPANA_PUBLICADA || !ESPANA_RUTAS.some((r) => page.endsWith(r))),
     }),
   ],
 });

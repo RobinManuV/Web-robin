@@ -1,9 +1,11 @@
 ---
 import UniversityPage from '../../components/UniversityPage.astro';
 import { UNIVERSIDADES } from '../../data/universidades.js';
+import { ESPANA_PUBLICADA } from '../../data/site.js';
 
 export function getStaticPaths() {
-  return UNIVERSIDADES.map((u) => ({ params: { slug: u.slug }, props: { u } }));
+  // Las universidades españolas solo se publican si ESPANA_PUBLICADA = true (src/data/site.js)
+  return UNIVERSIDADES.filter((u) => ESPANA_PUBLICADA || u.group !== 'espana').map((u) => ({ params: { slug: u.slug }, props: { u } }));
 }
 const { u } = Astro.props;
 const multi = u.group === 'multicampus';

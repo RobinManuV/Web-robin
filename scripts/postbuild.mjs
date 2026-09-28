@@ -4,7 +4,8 @@
 //     se sirven desde ese sitio de Netlify. Si no, el botón Log In apunta a
 //     https://project-robin.com/login, que hoy resuelve Cloudflare.
 //  2. Redirecciones 301 de URLs antiguas de WordPress que no deben dar 404.
-import { writeFileSync, readFileSync, existsSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync, rmSync } from 'node:fs';
+import { ESPANA_PUBLICADA, ESPANA_RUTAS } from '../src/data/site.js';
 
 const origin = (process.env.PORTAL_ORIGIN || '').replace(/\/+$/, '');
 const lines = [];
@@ -34,7 +35,17 @@ lines.push(
   '',
 );
 
+// España sin publicar: se borran sus páginas del build y redirigen a la home (302 temporal).
+if (!ESPANA_PUBLICADA) {
+  for (const r of ESPANA_RUTAS) rmSync(`dist${r}`, { recursive: true, force: true });
+  lines.push(
+    '# España sin publicar (ESPANA_PUBLICADA = false en src/data/site.js)',
+    ...ESPANA_RUTAS.flatMap((r) => [`${r.replace(/\/$/, '')}   /   302!`, `${r}   /   302!`]),
+    '',
+  );
+}
+
 const file = 'dist/_redirects';
 const previous = existsSync(file) ? readFileSync(file, 'utf8') : '';
 writeFileSync(file, lines.join('\n') + '\n' + previous);
-console.log(`✓ dist/_redirects generado${origin ? ` (portal: ${origin})` : ''}`);
+console.log(`✓ dist/_redirects generado${origin ? ` (portal: ${origin})` : ''}${ESPANA_PUBLICADA ? '' : ' · España oculta'}`);

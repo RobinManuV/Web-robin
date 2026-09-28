@@ -5,9 +5,9 @@ import Testimonials from '../components/Testimonials.astro';
 import DescubreHolanda from '../components/DescubreHolanda.astro';
 import ContactSection from '../components/ContactSection.astro';
 import Icon from '../components/Icon.astro';
-import { EQUIPO, CIFRAS } from '../data/site.js';
+import { EQUIPO, CIFRAS, ESPANA_PUBLICADA } from '../data/site.js';
 
-const paquetes = [
+const todosPaquetes = [
   {
     title: 'España',
     popular: true,
@@ -37,6 +37,15 @@ const paquetes = [
     href: '/destinos/',
   },
 ];
+
+// España se oculta mientras ESPANA_PUBLICADA = false (src/data/site.js).
+// Con España oculta, la etiqueta "Más popular" pasa a Holanda.
+const paquetes = todosPaquetes
+  .filter((p) => ESPANA_PUBLICADA || p.title !== 'España')
+  .map((p) => (ESPANA_PUBLICADA ? p : { ...p, popular: p.title === 'Holanda' }));
+const packsLead = ESPANA_PUBLICADA
+  ? 'Tres caminos, un equipo detrás. Te acompañamos donde tiene sentido ir: Holanda, España o un grado europeo multicampus.'
+  : 'Dos caminos, un equipo detrás. Te acompañamos donde tiene sentido ir: Holanda o un grado europeo multicampus.';
 
 const pasos = [
   {
@@ -133,9 +142,9 @@ const schema = {
       <div class="center stack" style="--stack:18px">
         <p class="eyebrow">Nuestros paquetes</p>
         <h2 class="display">Elige tu aventura</h2>
-        <p class="lead packs-lead">Tres caminos, un equipo detrás. Te acompañamos donde tiene sentido ir: Holanda, España o un grado europeo multicampus.</p>
+        <p class="lead packs-lead">{packsLead}</p>
       </div>
-      <div class="packs">
+      <div class="packs" style={`--n:${paquetes.length}`}>
         <img class="packs-bird" src="/wp-content/uploads/2026/05/a711e425cce1f3a3c8c74cb6f495f1f4.webp" alt="" width="257" height="256" loading="lazy" />
         {
           paquetes.map((p) => (
@@ -477,7 +486,7 @@ const schema = {
   .packs {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 372px));
+    grid-template-columns: repeat(var(--n, 3), minmax(0, 372px));
     justify-content: center;
     gap: 80px;
     margin-top: 150px;

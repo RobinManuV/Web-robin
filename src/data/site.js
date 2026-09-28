@@ -3,6 +3,32 @@
 // Cambia aquí un texto y se actualiza en todas las páginas.
 // ============================================================
 
+// ------------------------------------------------------------
+// ESPAÑA: sección preparada pero SIN PUBLICAR.
+// Con false: no sale en el menú, ni en la home, ni en el formulario; sus
+// páginas (/estudiar-universidad-espana/, /contacto-estudiar-en-espana/ y
+// /universidades/<universidad-española>/) no se publican, salen del sitemap y
+// cualquier visita redirige a la home (302, temporal).
+// Para publicarla: cambia a true y haz deploy. Todo vuelve a aparecer y a indexarse.
+// ------------------------------------------------------------
+export const ESPANA_PUBLICADA = false;
+
+// URLs de la sección España (las usan astro.config.mjs y scripts/postbuild.mjs)
+export const ESPANA_RUTAS = [
+  '/estudiar-universidad-espana/',
+  '/contacto-estudiar-en-espana/',
+  '/universidades/esade/',
+  '/universidades/ie-university/',
+  '/universidades/universidad-alfonso-x-el-sabio-uax/',
+  '/universidades/universidad-carlos-iii-de-madrid-uc3m/',
+  '/universidades/universidad-complutense-de-madrid-ucm/',
+  '/universidades/universidad-de-deusto/',
+  '/universidades/universidad-de-navarra-unav/',
+  '/universidades/universidad-politecnica-de-madrid-upm/',
+  '/universidades/universidad-pontificia-comillas-icai-icade/',
+  '/universidades/universitat-politecnica-de-catalunya-upc/',
+];
+
 export const SITE = {
   name: 'Project Robin',
   url: 'https://project-robin.com',
@@ -41,7 +67,7 @@ export const CIUDADES = [
   { slug: 'eindhoven', name: 'Eindhoven' },
 ];
 
-export const NAV = [
+const NAV_COMPLETO = [
   {
     label: 'Holanda',
     href: '/destinos/',
@@ -88,6 +114,8 @@ export const NAV = [
   { label: 'Nosotros', href: '/sobre-nosotros/' },
   { label: 'Colegios', href: '/colegios/' },
 ];
+
+export const NAV = NAV_COMPLETO.filter((item) => ESPANA_PUBLICADA || item.label !== 'España');
 
 export const FOOTER = {
   tagline: 'Tu Futuro Empieza Aquí.',
