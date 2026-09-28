@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import YouTube from '../../components/YouTube.astro';
 import ContactSection from '../../components/ContactSection.astro';
 import { DESTINOS } from '../../data/destinos.js';
-import { GUIA, GASTOS_BASE, ACTUALIZADO, MATRICULA } from '../../data/destinos-guia.js';
+import { GUIA, GASTOS_BASE, ACTUALIZADO, MATRICULA, DELFT_AERO } from '../../data/destinos-guia.js';
 
 export function getStaticPaths() {
   return DESTINOS.map((d) => ({ params: { slug: d.slug }, props: { d } }));
@@ -167,6 +167,35 @@ const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
           </div>
           {g.admisionNota && <p class="aviso">{g.admisionNota}</p>}
         </section>
+
+        {g.promoAero && (
+          <section class="section-sm container" id="aeroespaciales">
+            <div class="aero">
+              <div class="aero-text">
+                <p class="eyebrow">Aerospace Engineering</p>
+                <h2 class="display-md">¿Pensando en estudiar aeroespaciales?</h2>
+                <p class="text">
+                  Descubre nuestro pack especializado de preparación de los exámenes de acceso a TU Delft. Las clases las da un profesor exalumno de Delft, en grupos de máximo 5 alumnos y con simulacros del examen real. Y con todo el acompañamiento de Robin incluido.
+                </p>
+                <a class="btn" href="/servicios/aeroespaciales-delft/">Descubre el pack</a>
+              </div>
+              <div class="aero-stats">
+                <div>
+                  <p class="aero-num">≈ {DELFT_AERO.general}</p>
+                  <p>tasa de entrada general en Aerospace Engineering</p>
+                </div>
+                <div class="aero-arrow" aria-hidden="true">→</div>
+                <div class="aero-hl">
+                  <p class="aero-num">{DELFT_AERO.robin}</p>
+                  <p>
+                    de nuestros alumnos entra <span class="aero-tag">verificado</span>
+                  </p>
+                </div>
+                <p class="aero-note">{DELFT_AERO.nota[0].toUpperCase() + DELFT_AERO.nota.slice(1)}. Tasa general: unos 3.000 candidatos para 440 plazas (TU Delft, 2026-27).</p>
+              </div>
+            </div>
+          </section>
+        )}
 
         <section class="section-sm bg-sky" id="coste-de-vida">
           <div class="container coste-grid">
@@ -473,6 +502,71 @@ const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
     font-size: 17px;
     font-weight: 600;
   }
+  .aero {
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 24px;
+    padding: clamp(28px, 4vw, 56px);
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 60px);
+    align-items: center;
+  }
+  .aero-text {
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+  }
+  .aero .eyebrow {
+    color: var(--accent);
+  }
+  .aero .display-md {
+    color: var(--cream-text);
+  }
+  .aero .text {
+    line-height: 1.5;
+  }
+  .aero-stats {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 14px;
+    align-items: center;
+  }
+  .aero-stats > div:not(.aero-arrow) {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+    height: 100%;
+  }
+  .aero-stats .aero-hl {
+    background: var(--accent) !important;
+    color: var(--navy);
+  }
+  .aero-num {
+    font-size: clamp(36px, 4vw, 54px);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .aero-arrow {
+    font-size: 30px;
+    color: var(--accent);
+  }
+  .aero-tag {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .aero-note {
+    grid-column: 1 / -1;
+    font-size: 13px;
+    opacity: 0.75;
+  }
   .coste-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -677,6 +771,7 @@ const hasFit = d.paraTi.length > 0 || d.noParaTi.length > 0;
       padding-block: 40px;
     }
     .fit-grid,
+    .aero,
     .resumen-grid,
     .coste-grid,
     .aloja,

@@ -1,7 +1,6 @@
 ---
 import { FOOTER, CONTACT, SITE } from '../data/site.js';
-const { extra = null } = Astro.props;
-const columns = extra ? [FOOTER.columns[0], extra, ...FOOTER.columns.slice(1)] : FOOTER.columns;
+const columns = FOOTER.columns;
 const year = new Date().getFullYear();
 const path = Astro.url.pathname;
 ---
@@ -36,11 +35,10 @@ const path = Astro.url.pathname;
     <div class="col contact">
       <p class="col-title">¡Contactanos!</p>
       <p class="label">Email</p>
-      <p><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a><br /><a href={`mailto:${CONTACT.emailInfo}`}>{CONTACT.emailInfo}</a></p>
+      <p><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></p>
       <p class="label">Teléfono</p>
       <p>
-        <a href={`tel:${CONTACT.phone.replace(/\s/g, '')}`}>{CONTACT.phone}</a><br />
-        <a href={`tel:${CONTACT.phone2.replace(/\s/g, '')}`}>{CONTACT.phone2}</a>
+        <a href={`tel:${CONTACT.phone.replace(/\s/g, '')}`}>{CONTACT.phone}</a>
       </p>
       <p class="city">{CONTACT.city}</p>
     </div>

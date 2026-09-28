@@ -5,7 +5,7 @@ import ContactSection from '../../components/ContactSection.astro';
 import { SERVICIOS, COMO_FUNCIONA } from '../../data/servicios.js';
 
 export function getStaticPaths() {
-  return SERVICIOS.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+  return SERVICIOS.filter((s) => !s.custom).map((s) => ({ params: { slug: s.slug }, props: { s } }));
 }
 const { s } = Astro.props;
 const contactHref = `/contacto/?origen=${s.tag}&servicio=${encodeURIComponent(s.servicio)}`;

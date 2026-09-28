@@ -1,0 +1,451 @@
+---
+// Servicio "Aeroespaciales Delft": curso preparatorio para la selección de
+// Aerospace Engineering (BSc) en TU Delft + acompañamiento completo de Robin.
+// Sin precio ni temario detallado (a petición de Robin).
+// Cifras oficiales de TU Delft: ~3.000 candidatos en la selección y 440 plazas (2026-27).
+import Base from '../../layouts/Base.astro';
+import ContactSection from '../../components/ContactSection.astro';
+import { DELFT_AERO } from '../../data/destinos-guia.js';
+
+const url = 'https://project-robin.com/servicios/aeroespaciales-delft/';
+const title = 'Preparación examen de acceso Aerospace Engineering TU Delft | Project Robin';
+const description =
+  'Curso preparatorio para la selección de Aerospace Engineering en TU Delft: profesor exalumno de Delft, grupos de máximo 5 alumnos y simulacros. 8 de cada 16 alumnos admitidos.';
+const contactHref = '/contacto/?origen=aeroespaciales-delft&servicio=Aeroespaciales%20Delft';
+
+const fases = [
+  { when: 'Verano', title: 'Arranque', text: 'Clases introductorias en julio y agosto y primer material de preparación, para llegar a septiembre con ventaja.' },
+  { when: 'Septiembre – febrero', title: 'Clases en vivo', text: 'Sesiones guiadas por un profesor exalumno de TU Delft, con material exclusivo alineado con el examen real: matemáticas, física y materia de primer curso.' },
+  { when: 'Marzo', title: 'Motivación y simulacros', text: 'Trabajamos tu perfil según lo que busca Delft y haces simulacros del examen para llegar al día clave habiéndolo vivido más de una vez.' },
+];
+
+const incluye = [
+  { title: 'Asesoramiento educativo', items: ['Evaluación de perfil e intereses', 'Selección de hasta 3 alternativas más', 'Aplicación en Studielink', 'CV, essays y prueba de matemáticas', 'Apoyo en otras pruebas de admisión'] },
+  { title: 'Vida universitaria', items: ['Selección de residencia', 'Apoyo con el visado y el BSN', 'Consejos de zona, bici y transporte', 'Asociaciones y vida social'] },
+  { title: 'Red de expertos', items: ['Estudiantes Robin en cada ciudad', 'Llamadas 1:1 con quien ya está dentro', 'Dudas académicas resueltas por alguien que las vivió', 'El día a día real, no el del folleto'] },
+  { title: 'Seguimiento continuo', items: ['Comunicación constante de principio a fin', 'Evaluación periódica del proceso', 'Ajustes según tu feedback', 'Soporte después de la aceptación'] },
+];
+
+const faq = [
+  { q: '¿Cómo es la selección de Aerospace Engineering en TU Delft?', a: 'Primero te inscribes en Studielink antes del 15 de enero. Después hay una fase de matching (prueba de nivel de matemáticas y física y ejercicios de autorreflexión, que no puntúan) y una fase de selección con un test de aptitud académica y un examen de matemáticas, física y temas de primer curso, en marzo. Con esos resultados TU Delft asigna un número de ranking.' },
+  { q: '¿Cuántas plazas hay y cuántos candidatos?', a: 'Para el curso 2026-2027 hay 440 plazas, y según TU Delft unos 3.000 candidatos participan en la selección. Eso deja la tasa de entrada en torno al 15%.' },
+  { q: '¿Quién da las clases?', a: 'Un profesor exalumno de TU Delft, que conoce el examen y la carrera desde dentro. Las clases son en grupos de máximo 5 alumnos, divididos por nivel y por sistema educativo (Bachillerato, IB, A-Levels…).' },
+  { q: '¿Qué resultados tenéis?', a: `${DELFT_AERO.robin} de los alumnos que preparamos fueron admitidos: ${DELFT_AERO.nota}. La media general ronda el ${DELFT_AERO.general}.` },
+  { q: '¿Incluye algo más que el curso?', a: 'Sí. Incluye el acompañamiento completo de Robin: elección de alternativas, aplicación en Studielink, essays y CV, alojamiento, trámites de llegada y seguimiento hasta después de la aceptación. Todo incluido, sin extras.' },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Preparación para la selección de Aerospace Engineering en TU Delft',
+    serviceType: 'Curso preparatorio de acceso universitario',
+    description,
+    provider: { '@id': 'https://project-robin.com/#organization' },
+    areaServed: 'ES',
+    url,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://project-robin.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Servicios', item: 'https://project-robin.com/servicios/' },
+      { '@type': 'ListItem', position: 3, name: 'Aeroespaciales Delft', item: url },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+---
+
+<Base title={title} description={description} schema={schema}>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <a class="link-back" href="/servicios/">« Volver a Servicios</a>
+        <p class="eyebrow">Curso preparatorio · TU Delft</p>
+        <h1 class="display-md">Aerospace Engineering en TU Delft: preparado en serio</h1>
+        <p class="lead">Un curso diseñado para una sola cosa: que entres en TU Delft sin preocuparte por nada más. Con un profesor exalumno de Delft y todo el acompañamiento de Robin.</p>
+        <div class="btn-row">
+          <a class="btn" href="#reserva">Reserva tu consulta online</a>
+          <a class="btn btn-outline-light" href={contactHref}>Quiero información</a>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <p class="num">≈ 3.000</p>
+          <p>candidatos en la selección</p>
+        </div>
+        <div class="stat">
+          <p class="num">440</p>
+          <p>plazas en 2026-27</p>
+        </div>
+        <div class="stat">
+          <p class="num">≈ {DELFT_AERO.general}</p>
+          <p>tasa de entrada general</p>
+        </div>
+        <div class="stat hl">
+          <p class="num">{DELFT_AERO.robin}</p>
+          <p>de nuestros alumnos entra <span class="tag">verificado</span></p>
+        </div>
+        <p class="stats-note">{DELFT_AERO.nota[0].toUpperCase() + DELFT_AERO.nota.slice(1)}. Plazas y candidatos: TU Delft.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm container">
+    <p class="eyebrow">El proceso de TU Delft</p>
+    <h2 class="display-md h2">Así es la selección</h2>
+    <ol class="proceso">
+      <li>
+        <span>1</span>
+        <div>
+          <h3>Studielink antes del 15 de enero</h3>
+          <p>Aerospace Engineering tiene plazas limitadas (numerus fixus): si no te inscribes a tiempo, no entras en la selección.</p>
+        </div>
+      </li>
+      <li>
+        <span>2</span>
+        <div>
+          <h3>Fase de matching</h3>
+          <p>Prueba de nivel de matemáticas y física y ejercicios de autorreflexión. No puntúan, pero te dicen dónde estás.</p>
+        </div>
+      </li>
+      <li>
+        <span>3</span>
+        <div>
+          <h3>Fase de selección (marzo)</h3>
+          <p>Test de aptitud académica y examen de matemáticas, física y temas de primer curso. Tu nota se compara con la del resto de candidatos.</p>
+        </div>
+      </li>
+      <li>
+        <span>4</span>
+        <div>
+          <h3>Número de ranking</h3>
+          <p>Con los resultados, TU Delft te asigna un número de ranking. Las plazas se ofrecen por orden.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="section-sm bg-sky">
+    <div class="container">
+      <p class="eyebrow">El programa</p>
+      <h2 class="display-md h2">De julio al día del examen</h2>
+      <div class="fases">
+        {
+          fases.map((f, i) => (
+            <article class="fase">
+              <p class="fase-when">
+                0{i + 1} · {f.when}
+              </p>
+              <h3>{f.title}</h3>
+              <p>{f.text}</p>
+            </article>
+          ))
+        }
+      </div>
+      <div class="grupos">
+        <p class="grupos-num">5</p>
+        <div>
+          <p class="grupos-title">Grupos reducidos</p>
+          <p>Máximo 5 alumnos por grupo, divididos por nivel y por sistema educativo (Bachillerato, IB, A-Levels…).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm container">
+    <p class="eyebrow">Mucho más que un curso</p>
+    <h2 class="display-md h2">Te acompañamos hasta el primer día de clase</h2>
+    <p class="text intro">Robin no termina cuando acaba el último simulacro. Te acompañamos en todo el camino, desde la decisión inicial hasta tu primer día en Holanda. Todo incluido, sin extras.</p>
+    <div class="incluye">
+      {
+        incluye.map((b, i) => (
+          <article class="inc">
+            <p class="inc-n">0{i + 1}</p>
+            <h3>{b.title}</h3>
+            <ul class="check-list">
+              {b.items.map((x) => (
+                <li>{x}</li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section-sm bg-cream faq">
+    <div class="container">
+      <p class="eyebrow center">Preguntas frecuentes</p>
+      <h2 class="display-md center h2">Lo que más nos preguntáis</h2>
+      <div class="faq-list">
+        {
+          faq.map((f, i) => (
+            <details open={i === 0}>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+      <p class="center more">
+        ¿Quieres saber más sobre la ciudad? <a href="/destinos/delft/">Estudiar en Delft: universidad, costes y alojamiento</a>
+      </p>
+    </div>
+  </section>
+
+  <ContactSection tag="aeroespaciales-delft" />
+</Base>
+
+<style>
+  .hero {
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 0 0 24px 24px;
+    padding-block: 60px 80px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(30px, 5vw, 70px);
+    align-items: center;
+  }
+  .hero-text {
+    display: grid;
+    gap: 18px;
+    justify-items: start;
+  }
+  .hero .display-md {
+    color: var(--cream-text);
+  }
+  .hero .eyebrow {
+    color: var(--accent);
+  }
+  .link-back {
+    color: var(--cream);
+    font-size: 15px;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .stat {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .stat .num {
+    font-size: clamp(30px, 3vw, 42px);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat.hl {
+    background: var(--accent);
+    color: var(--navy);
+  }
+  .tag {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+  .stats-note {
+    grid-column: span 2;
+    font-size: 13px;
+    opacity: 0.75;
+  }
+  .h2 {
+    margin: 14px 0 26px;
+  }
+  .intro {
+    max-width: 780px;
+    margin: -10px 0 30px;
+    line-height: 1.5;
+  }
+  .proceso {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .proceso li {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    border-top: 3px solid var(--navy);
+    padding-top: 18px;
+  }
+  .proceso span {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .proceso h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .proceso p,
+  .fase p,
+  .grupos p {
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .fases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .fase {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 26px;
+    display: grid;
+    gap: 10px;
+    align-content: start;
+  }
+  .fase .fase-when {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--navy-3);
+  }
+  .fase h3 {
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .grupos {
+    margin-top: 20px;
+    background: var(--navy);
+    color: var(--cream);
+    border-radius: 16px;
+    padding: 22px 28px;
+    display: flex;
+    gap: 22px;
+    align-items: center;
+  }
+  .grupos-num {
+    font-size: 64px !important;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .grupos-title {
+    font-size: 20px !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .incluye {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .inc {
+    border: 2px solid var(--navy);
+    border-radius: 16px;
+    padding: 24px;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+  .inc-n {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent-dark);
+  }
+  .inc h3 {
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .inc .check-list {
+    font-size: 15px;
+  }
+  .faq-list {
+    max-width: 860px;
+    margin: 0 auto;
+    display: grid;
+    gap: 12px;
+  }
+  .faq details {
+    border: 2px solid var(--navy);
+    border-radius: 14px;
+    padding: 0 22px;
+    background: var(--white);
+  }
+  .faq summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 18px 30px 18px 0;
+    font-size: 19px;
+    font-weight: 700;
+    position: relative;
+  }
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq summary::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    translate: 0 -50%;
+    font-size: 26px;
+    color: var(--accent-dark);
+    transition: rotate 0.2s;
+  }
+  .faq details[open] summary::after {
+    rotate: 45deg;
+  }
+  .faq details p {
+    padding-bottom: 20px;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .more {
+    margin-top: 26px;
+    font-size: 17px;
+  }
+  .more a {
+    font-weight: 700;
+  }
+  @media (max-width: 1000px) {
+    .hero-grid,
+    .fases {
+      grid-template-columns: 1fr;
+    }
+    .proceso,
+    .incluye {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .proceso,
+    .incluye {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

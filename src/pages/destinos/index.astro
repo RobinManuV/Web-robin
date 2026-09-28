@@ -29,13 +29,9 @@ const schema = [
   },
 ];
 
-const footerExtra = {
-  title: 'Destinos',
-  links: [...DESTINOS].sort((a, b) => a.name.localeCompare(b.name, 'es')).map((d) => ({ label: d.name, href: `/destinos/${d.slug}/` })),
-};
 ---
 
-<Base title={title} description={description} image="/wp-content/uploads/2026/05/b45b3c027f2f7b146d546b7c9d8fc598.webp" schema={schema} footerExtra={footerExtra}>
+<Base title={title} description={description} image="/wp-content/uploads/2026/05/b45b3c027f2f7b146d546b7c9d8fc598.webp" schema={schema}>
   <section class="hero">
     <img class="hero-img" src="/wp-content/uploads/2026/07/estudia-en-holanda-con-project-robin-1.webp" alt="" aria-hidden="true" />
     <div class="hero-inner">

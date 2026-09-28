@@ -27,7 +27,7 @@ const pasos = [
 const contact = `/contacto${h.tag === 'espana' ? '-estudiar-en-espana' : ''}/?origen=${h.tag}`;
 ---
 
-<Base title={h.seoTitle} description={h.seoDesc} image={h.heroBg} schema={schema} footerExtra={h.footerExtra}>
+<Base title={h.seoTitle} description={h.seoDesc} image={h.heroBg} schema={schema}>
   <section class="hero" style={`--bg:url('${h.heroBg}')`}>
     <div class="hero-inner">
       <p class="eyebrow">Tu próximo destino</p>

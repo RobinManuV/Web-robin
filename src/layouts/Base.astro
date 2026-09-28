@@ -15,7 +15,6 @@ const {
   noindex = false,
   schema = [],
   headerVariant = 'light',
-  footerExtra = null,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
@@ -136,7 +135,7 @@ const schemas = [organization, ...(Array.isArray(schema) ? schema : [schema])];
     <main id="contenido">
       <slot />
     </main>
-    <Footer extra={footerExtra} />
+    <Footer />
     <CookieBanner />
   </body>
 </html>

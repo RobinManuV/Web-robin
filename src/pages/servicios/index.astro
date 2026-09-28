@@ -48,8 +48,8 @@ import { SERVICIOS } from '../../data/servicios.js';
   }
   .packs {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 60px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
     margin-top: 70px;
     align-items: stretch;
   }
@@ -92,6 +92,13 @@ import { SERVICIOS } from '../../data/servicios.js';
   }
   .pack .btn {
     align-self: center;
+  }
+  @media (max-width: 1200px) {
+    .packs {
+      grid-template-columns: repeat(2, minmax(0, 420px));
+      justify-content: center;
+      row-gap: 70px;
+    }
   }
   @media (max-width: 950px) {
     .packs {

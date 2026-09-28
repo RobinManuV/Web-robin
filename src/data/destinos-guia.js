@@ -24,6 +24,14 @@ export const GASTOS_BASE = [
   { label: 'Ocio, material y otros', min: 100, max: 200 },
 ];
 
+// Datos del pack de Aeroespaciales Delft (se usan en /destinos/delft/ y en
+// /servicios/aeroespaciales-delft/). General: 440 plazas / ~3.000 candidatos (TU Delft, 2026-27).
+export const DELFT_AERO = {
+  general: '15%',
+  robin: '50%',
+  nota: '8 de los 16 alumnos que preparamos fueron admitidos',
+};
+
 export const GUIA = {
   amsterdam: {
     alquiler: 950,
@@ -313,6 +321,7 @@ export const GUIA = {
         url: 'https://www.tudelft.nl/en',
       },
     ],
+    promoAero: true,
     admisionNota:
       'Ojo con los plazos: varios grados de TU Delft (Aerospace Engineering, Computer Science and Engineering, Nanobiology, Architecture…) tienen plazas limitadas (numerus fixus) y el plazo para solicitar plaza termina el 15 de enero.',
     alojamiento: {
@@ -334,6 +343,7 @@ export const GUIA = {
     faq: [
       { q: '¿Es difícil entrar en TU Delft?', a: 'Los grados con numerus fixus (como Aerospace Engineering o Computer Science and Engineering) tienen proceso de selección y plazo el 15 de enero. Piden una buena base en matemáticas y física.' },
       { q: '¿Qué grados de TU Delft son en inglés?', a: 'Entre los grados en inglés están Aerospace Engineering, Computer Science and Engineering, Nanobiology y Applied Earth Sciences. El resto de grados suele ser en neerlandés; los másters son en inglés.' },
+      { q: '¿Cómo prepararse para el examen de acceso de Aerospace Engineering?', a: 'La selección combina un test de aptitud académica y un examen de matemáticas, física y temas de primer curso en marzo. En Robin tenemos un curso preparatorio específico con un profesor exalumno de TU Delft y grupos de máximo 5 alumnos: 8 de los 16 alumnos que preparamos fueron admitidos, frente a una tasa general de entrada en torno al 15%.' },
       { q: '¿Cuánto cuesta vivir en Delft?', a: 'Entre 975 y 1.210 € al mes aproximadamente, con una habitación de unos 600 € (media de Kamernet de finales de 2025).' },
     ],
   },

@@ -31,7 +31,8 @@ lines.push(
   '/wp-login.php        https://project-robin.com/login   301',
   '/author/*            /sobre-nosotros/       301',
   '/category/*          /blog/                 301',
-  '/servicios/pack-llegada/  /servicios/asesoramiento-completo/  301',
+  '/servicios/erasmus/        /servicios/            301',
+  '/servicios/erasmus         /servicios/            301',
   '',
 );
 

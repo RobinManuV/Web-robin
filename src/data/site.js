@@ -44,10 +44,7 @@ export const SITE = {
 
 export const CONTACT = {
   email: 'hello@project-robin.com',
-  emailInfo: 'info@project-robin.com',
-  phone: '+34 680 84 23 16',
-  phone2: '+34 629 86 86 18',
-  phoneColegios: '+34 629 86 86 18',
+  phone: '+34 711 55 70 29',
   city: 'Madrid, España',
   linkedin: 'https://www.linkedin.com/company/project-robin/',
 };
@@ -135,7 +132,8 @@ export const FOOTER = {
       title: 'Servicios',
       links: [
         { label: 'Asesoramiento Completo', href: '/servicios/asesoramiento-completo/' },
-        { label: 'Erasmus', href: '/servicios/erasmus/' },
+        { label: 'Aeroespaciales Delft', href: '/servicios/aeroespaciales-delft/' },
+        { label: 'Pack Llegada', href: '/servicios/pack-llegada/' },
         { label: 'Mentoría', href: '/servicios/mentoria/' },
       ],
     },

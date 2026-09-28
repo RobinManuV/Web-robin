@@ -9,7 +9,7 @@ Sustituye a la web de WordPress + Elementor y **mantiene exactamente las mismas 
 |---|---|
 | Textos de las ciudades de Holanda (`/destinos/...`) | `src/data/destinos.js` |
 | Universidades de España y multicampus | `src/data/universidades.js` |
-| Servicios (Mentoría, Asesoramiento, Erasmus) | `src/data/servicios.js` |
+| Servicios (Asesoramiento, Aeroespaciales Delft, Pack Llegada, Mentoría) | `src/data/servicios.js` (la página de Aeroespaciales Delft está en `src/pages/servicios/aeroespaciales-delft.astro`) |
 | Menú, contacto, equipo, testimonios, cifras de la home | `src/data/site.js` |
 | Artículos del blog | `src/content/blog/*.md` (un archivo por artículo) |
 | Páginas legales | `src/content/legal/*.md` |
@@ -32,7 +32,7 @@ Cada formulario manda un campo `tag` con el origen del lead, que se guarda en No
 | Ciudades de Holanda (reserva) | `holanda-<ciudad>` |
 | Universidades de España | `espana-<universidad>` |
 | Universidades multicampus | `multicampus-<universidad>` |
-| Servicios | `mentoria`, `asesoramiento-completo`, `erasmus` |
+| Servicios | `asesoramiento-completo`, `aeroespaciales-delft`, `pack-llegada`, `mentoria` |
 | `/colegios/` | `colegios` |
 | Blog | `blog-<artículo>` |
 | Newsletter | `newsletter-holanda`, `newsletter-espana`, `newsletter-multicampus` (no va a Notion) |

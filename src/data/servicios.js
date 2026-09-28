@@ -1,5 +1,6 @@
 // ============================================================
-// Servicios. Cada uno genera /servicios/<slug>/
+// Servicios (en el orden en que salen en /servicios/). Cada uno genera /servicios/<slug>/
+// salvo los marcados con `custom: true`, que tienen su propia página en src/pages/servicios/.
 // `tag` es la etiqueta que llega a Notion cuando alguien pide info desde esa página.
 // ============================================================
 
@@ -10,29 +11,6 @@ export const COMO_FUNCIONA = [
 ];
 
 export const SERVICIOS = [
-  {
-    slug: 'mentoria',
-    tag: 'mentoria',
-    servicio: 'Mentoría',
-    name: 'Mentoría',
-    seoTitle: 'Mentoría para estudiar en Holanda | Project Robin',
-    seoDesc:
-      'Recibe orientación personalizada para elegir estudios, preparar tu solicitud y organizar tu llegada a Holanda con apoyo de Project Robin.',
-    heading: 'Mentoría personalizada: paso a paso',
-    intro: [
-      '¿Tienes preguntas sobre cómo estudiar en los Países Bajos? Con nuestra mentoría personalizada, aclaramos todos los pasos del proceso en una llamada de 90 minutos con un asesor experto.',
-      'Te ayudamos con la preparación de tus aplicaciones, los trámites de visado, y la planificación de tu llegada. Estamos aquí para guiarte y asegurarnos de que todo sea más sencillo. ¡Resuelve tus inquietudes en una sola sesión y avanza con confianza hacia tu meta!',
-    ],
-    features: [
-      { icon: 'doc', title: 'Resuelve trámites y documentos', text: 'Te explicamos cómo gestionar tus aplicaciones, visados y demás documentos de forma clara y eficiente. Evita errores y ahorra tiempo con nuestra ayuda.' },
-      { icon: 'cal', title: 'Planificación de tu llegada', text: 'Conoce qué pasos tomar antes y después de llegar. Te orientamos sobre todo lo necesario, desde registros legales hasta el día a día en Holanda.' },
-      { icon: 'chat', title: 'Respuestas 100% personalizadas', text: 'Nuestro servicio está adaptado a tus necesidades específicas. Pregunta lo que quieras y obtén soluciones prácticas para avanzar con seguridad.' },
-    ],
-    card: {
-      bullets: ['Resuelve dudas en 90 minutos', 'Apoyo personalizado en el proceso', 'Consejos prácticos para avanzar'],
-      text: '¿Ya tienes claro qué estudiar, pero necesitas ayuda con algún paso? Con una llamada de 90 minutos, te ayudamos a resolver todas tus dudas para que sigas avanzando con confianza.',
-    },
-  },
   {
     slug: 'asesoramiento-completo',
     tag: 'asesoramiento-completo',
@@ -58,26 +36,61 @@ export const SERVICIOS = [
     },
   },
   {
-    slug: 'erasmus',
-    tag: 'erasmus',
-    servicio: 'Erasmus',
-    name: 'Erasmus',
-    seoTitle: 'Asesoramiento para estudiantes Erasmus | Project Robin',
+    // Página propia: src/pages/servicios/aeroespaciales-delft.astro
+    slug: 'aeroespaciales-delft',
+    custom: true,
+    tag: 'aeroespaciales-delft',
+    servicio: 'Aeroespaciales Delft',
+    name: 'Aeroespaciales Delft',
+    card: {
+      bullets: ['Preparación de los exámenes de acceso.', 'Profesor exalumno de TU Delft.', 'Grupos de máximo 5 alumnos.'],
+      text: 'Curso preparatorio para entrar en Aerospace Engineering en TU Delft, con todo el acompañamiento de Robin incluido: aplicación, alojamiento y llegada.',
+    },
+  },
+  {
+    slug: 'pack-llegada',
+    tag: 'pack-llegada',
+    servicio: 'Pack Llegada',
+    name: 'Pack Llegada',
+    seoTitle: 'Pack Llegada: alojamiento y trámites al llegar a Holanda | Project Robin',
     seoDesc:
-      'Prepara tu experiencia Erasmus con apoyo en alojamiento, trámites, planificación y adaptación al destino antes y durante tu estancia.',
-    heading: 'Lo que necesitas para tu aventura Erasmus',
+      'Aterriza en Holanda con todo resuelto: como mínimo una opción de alojamiento asegurada desde el principio, apoyo con el BSN y los trámites, y consejos para tu nueva ciudad.',
+    heading: 'Pack Llegada: aterriza con todo resuelto',
     intro: [
-      'Preparar tu experiencia ERASMUS en los Países Bajos no tiene que ser complicado. Con nuestra llamada especializada, resolvemos todas tus dudas en un solo lugar, de forma clara y personalizada.',
-      'Desde recomendaciones para encontrar alojamiento hasta orientación sobre cómo adaptarte al sistema educativo y cultural neerlandés, nos aseguramos de que empieces tu aventura con confianza.',
+      'Ya tienes la admisión. Ahora empieza lo que nadie te cuenta: encontrar casa, registrarte en el ayuntamiento y entender cómo funciona tu nueva ciudad. <strong>Con el Pack Llegada lo hacemos contigo.</strong>',
+      'Desde el principio tienes <strong>como mínimo una opción de alojamiento asegurada</strong>, y te acompañamos en los trámites para que tu único trabajo sea empezar las clases.',
     ],
     features: [
-      { icon: 'doc', title: 'Preparación para tu ERASMUS', text: 'Descubre todo lo que necesitas saber para comenzar tu experiencia ERASMUS con éxito. Desde trámites básicos hasta consejos esenciales, te guiamos paso a paso para que te sientas listo/a desde el primer día.' },
-      { icon: 'home', title: 'Recomendaciones de alojamiento', text: 'Encontrar un lugar donde vivir en los Países Bajos puede ser un desafío, pero no tienes que hacerlo solo/a. Te ofrecemos opciones seguras, accesibles y adaptadas a tus necesidades como estudiante ERASMUS.' },
-      { icon: 'chat', title: 'Consejos para integrarte rápidamente', text: 'Te ayudamos a adaptarte al sistema educativo, la cultura local y la vida cotidiana en Holanda. Aprovecha al máximo tu experiencia ERASMUS con nuestros tips personalizados.' },
+      { icon: 'home', title: 'Housing garantizado', text: 'Desde el principio te ofrecemos como mínimo una opción de alojamiento asegurada. Te ayudamos a elegir residencia y a evitar las estafas típicas de los anuncios.' },
+      { icon: 'doc', title: 'BSN y trámites de llegada', text: 'Te guiamos en el registro en el ayuntamiento para conseguir tu BSN (tu número de identificación en Holanda) y, si lo necesitas, en el visado.' },
+      { icon: 'compass', title: 'Tu ciudad, desde dentro', text: 'Consejos de zona, bici y transporte, e información sobre asociaciones y vida social para que no llegues perdido.' },
     ],
     card: {
-      bullets: ['Orientación para estudiantes Erasmus.', 'Responde tus dudas en 60 minutos.', 'Precio adaptado para estudiantes.'],
-      text: '¿Te vas de Erasmus a Holanda? Te ayudamos a prepararte con una sesión de 60 minutos para resolver todas tus preguntas, adaptándonos a tus necesidades y presupuesto.',
+      bullets: ['Mínimo una opción de alojamiento asegurada.', 'Apoyo con el BSN y los trámites.', 'Consejos de ciudad, transporte y vida social.'],
+      text: '¿Ya tienes plaza? Te ayudamos con lo que viene después: casa, papeles y primeros días en tu nueva ciudad.',
+    },
+  },
+  {
+    slug: 'mentoria',
+    tag: 'mentoria',
+    servicio: 'Mentoría',
+    name: 'Mentoría',
+    seoTitle: 'Mentoría para estudiar en Holanda | Project Robin',
+    seoDesc:
+      'Recibe orientación personalizada para elegir estudios, preparar tu solicitud y organizar tu llegada a Holanda con apoyo de Project Robin.',
+    heading: 'Mentoría personalizada: paso a paso',
+    intro: [
+      '¿Tienes preguntas sobre cómo estudiar en los Países Bajos? Con nuestra mentoría personalizada, aclaramos todos los pasos del proceso en una llamada de 90 minutos con un asesor experto.',
+      'Te ayudamos con la preparación de tus aplicaciones, los trámites de visado, y la planificación de tu llegada. Estamos aquí para guiarte y asegurarnos de que todo sea más sencillo. ¡Resuelve tus inquietudes en una sola sesión y avanza con confianza hacia tu meta!',
+    ],
+    features: [
+      { icon: 'doc', title: 'Resuelve trámites y documentos', text: 'Te explicamos cómo gestionar tus aplicaciones, visados y demás documentos de forma clara y eficiente. Evita errores y ahorra tiempo con nuestra ayuda.' },
+      { icon: 'cal', title: 'Planificación de tu llegada', text: 'Conoce qué pasos tomar antes y después de llegar. Te orientamos sobre todo lo necesario, desde registros legales hasta el día a día en Holanda.' },
+      { icon: 'chat', title: 'Respuestas 100% personalizadas', text: 'Nuestro servicio está adaptado a tus necesidades específicas. Pregunta lo que quieras y obtén soluciones prácticas para avanzar con seguridad.' },
+    ],
+    card: {
+      bullets: ['Resuelve dudas en 90 minutos', 'Apoyo personalizado en el proceso', 'Consejos prácticos para avanzar'],
+      text: '¿Ya tienes claro qué estudiar, pero necesitas ayuda con algún paso? Con una llamada de 90 minutos, te ayudamos a resolver todas tus dudas para que sigas avanzando con confianza.',
     },
   },
 ];
