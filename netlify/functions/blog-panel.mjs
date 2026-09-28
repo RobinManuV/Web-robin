@@ -77,7 +77,7 @@ export default async (req) => {
 
   const data = await getWeek(week);
   const status = data?.status || 'sin datos';
-  const working = ['investigando', 'redactando'].includes(status) || /lanzada/.test(aviso);
+  const working = ['investigando', 'redactando'].includes(status) || (/lanzada/.test(aviso) && !['error', 'ideas', 'borradores'].includes(status));
   const faltan = missingConfig(['anthropic', 'secret', 'github', 'unsplash']);
   const google = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY;
 
