@@ -65,7 +65,7 @@ const { tag = 'general', compact = false } = Astro.props;
   // Caché compartida para no pedir la disponibilidad dos veces en la misma página
   let availabilityPromise;
   const getAvailability = () =>
-    (availabilityPromise ??= fetch('/api/availability').then((r) => {
+    (availabilityPromise ??= fetch('/api/availability', { cache: 'no-store' }).then((r) => {
       if (!r.ok) throw new Error('availability ' + r.status);
       return r.json();
     }));

@@ -32,7 +32,10 @@ export default async (req) => {
         errores: Object.fromEntries(failed.map((e) => [e, lastErrors[e] || 'desconocido'])),
       };
     }
-    return Response.json(body, { headers: { 'Cache-Control': failed.length || debug ? 'no-store' : 'public, max-age=60' } });
+    // Si Google falla, se avisa al navegador para que muestre "no hemos podido cargar la agenda"
+    if (failed.length === hosts.length) body.error = 'No se pudo leer el calendario';
+    // Nunca se guarda en caché: la agenda tiene que estar siempre al día
+    return Response.json(body, { status: body.error ? 502 : 200, headers: { 'Cache-Control': 'no-store', 'Netlify-CDN-Cache-Control': 'no-store' } });
   } catch (err) {
     console.error('[availability]', err);
     return Response.json({ error: 'No se pudo leer la agenda' }, { status: 502 });
