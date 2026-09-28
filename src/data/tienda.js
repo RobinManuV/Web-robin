@@ -5,16 +5,21 @@
 // "tienda-<slug>"); Robin contacta para el pago y el envío.
 // ============================================================
 
-export const TALLAS = ['XS', 'S', 'M', 'L', 'XL'];
+export const TALLAS = ['S', 'M', 'L', 'XL'];
 
-// Guía de tallas: PENDIENTE de las medidas reales del proveedor (en cm).
-// Rellena ancho y largo y la tabla se mostrará con los números.
+// Guía de tallas (cm), medidas del proveedor. A = largo total, B = ancho de hombros,
+// C = ancho de pecho, D = largo de manga (ver /fotos/guia-tallas-camiseta.webp).
+export const GUIA_MEDIDAS = [
+  { key: 'A', label: 'Largo total' },
+  { key: 'B', label: 'Ancho de hombros' },
+  { key: 'C', label: 'Ancho de pecho' },
+  { key: 'D', label: 'Largo de manga' },
+];
 export const GUIA_TALLAS = [
-  { talla: 'XS', ancho: null, largo: null },
-  { talla: 'S', ancho: null, largo: null },
-  { talla: 'M', ancho: null, largo: null },
-  { talla: 'L', ancho: null, largo: null },
-  { talla: 'XL', ancho: null, largo: null },
+  { talla: 'S', A: 69, B: 67, C: 66, D: 45 },
+  { talla: 'M', A: 70, B: 69, C: 68, D: 46 },
+  { talla: 'L', A: 71, B: 71, C: 70, D: 47 },
+  { talla: 'XL', A: 72, B: 73, C: 72, D: 48 },
 ];
 
 export const PRODUCTOS = [

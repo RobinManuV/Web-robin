@@ -4,14 +4,13 @@
 // con la talla y la cantidad en el mensaje; Robin contacta para el pago y el envío.
 import Base from '../../layouts/Base.astro';
 import LeadForm from '../../components/LeadForm.astro';
-import { PRODUCTOS, TALLAS, GUIA_TALLAS } from '../../data/tienda.js';
+import { PRODUCTOS, TALLAS, GUIA_TALLAS, GUIA_MEDIDAS } from '../../data/tienda.js';
 
 export function getStaticPaths() {
   return PRODUCTOS.map((p) => ({ params: { slug: p.slug }, props: { p } }));
 }
 const { p } = Astro.props;
 const otros = PRODUCTOS.filter((x) => x.slug !== p.slug);
-const guiaLista = GUIA_TALLAS.every((g) => g.ancho && g.largo);
 
 const schema = {
   '@context': 'https://schema.org',
@@ -83,7 +82,7 @@ const schema = {
                   <div class="tallas" role="radiogroup" aria-label="Talla">
                     {TALLAS.map((t, i) => (
                       <label class="talla">
-                        <input type="radio" name="talla-sel" value={t} checked={i === 2} data-talla />
+                        <input type="radio" name="talla-sel" value={t} checked={t === 'M'} data-talla />
                         <span>{t}</span>
                       </label>
                     ))}
@@ -115,29 +114,34 @@ const schema = {
           <div>
             <p class="eyebrow">Guía de tallas</p>
             <h2 class="display-md">Encuentra tu talla</h2>
-            <p class="text">Mide una camiseta que te quede bien, estirada sobre una superficie plana: el ancho de axila a axila y el largo desde el hombro hasta el bajo. Si dudas entre dos tallas, elige la mayor.</p>
+            <p class="text">Mide una camiseta que te quede bien, estirada sobre una superficie plana, y compárala con la tabla: A es el largo total, B el ancho de hombros, C el ancho de pecho y D el largo de manga. Si dudas entre dos tallas, elige la mayor.</p>
           </div>
-          <table class="tallas-table">
-            <thead>
-              <tr>
-                <th scope="col">Talla</th>
-                <th scope="col">Ancho (cm)</th>
-                <th scope="col">Largo (cm)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {GUIA_TALLAS.map((g) => (
+          <div class="guia-right">
+            <img class="guia-img" src="/fotos/guia-tallas-camiseta.webp" alt="Esquema de medidas: A largo total, B ancho de hombros, C ancho de pecho, D largo de manga" loading="lazy" width="540" height="440" />
+            <table class="tallas-table">
+              <caption class="small">Medidas en centímetros, prenda en plano.</caption>
+              <thead>
                 <tr>
-                  <th scope="row">{g.talla}</th>
-                  <td>{g.ancho ?? '—'}</td>
-                  <td>{g.largo ?? '—'}</td>
+                  <th scope="col">cm</th>
+                  {GUIA_TALLAS.map((g) => (
+                    <th scope="col">{g.talla}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-            {!guiaLista && (
-              <caption class="small">Medidas exactas próximamente. Si tienes dudas con la talla, escríbenos.</caption>
-            )}
-          </table>
+              </thead>
+              <tbody>
+                {GUIA_MEDIDAS.map((m) => (
+                  <tr>
+                    <th scope="row">
+                      <strong>{m.key}</strong> <span class="medida">{m.label}</span>
+                    </th>
+                    {GUIA_TALLAS.map((g) => (
+                      <td>{g[m.key]}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
     )
@@ -384,6 +388,25 @@ const schema = {
     overflow: hidden;
     caption-side: bottom;
   }
+  .guia-right {
+    display: grid;
+    gap: 16px;
+  }
+  .guia-img {
+    width: 100%;
+    max-width: 360px;
+    margin-inline: auto;
+    mix-blend-mode: multiply;
+  }
+  .tallas-table tbody th {
+    text-align: left;
+    white-space: nowrap;
+  }
+  .medida {
+    font-weight: 500;
+    font-size: 14px;
+    opacity: 0.8;
+  }
   .tallas-table caption {
     padding-top: 10px;
     text-align: left;
@@ -448,6 +471,19 @@ const schema = {
     .prod-grid,
     .guia {
       grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .tallas-table th,
+    .tallas-table td {
+      padding: 11px 8px;
+    }
+    .tallas-table tbody th {
+      white-space: normal;
+    }
+    .medida {
+      display: block;
+      font-size: 12px;
     }
   }
 </style>
