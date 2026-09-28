@@ -37,6 +37,7 @@ export async function askJson({ system, prompt, maxSearches = 10, maxTokens = 16
   const messages = [{ role: 'user', content: prompt }];
   let text = '';
   let searches = 0;
+  let stop = '';
 
   // La búsqueda web puede devolver stop_reason "pause_turn": se continúa la conversación.
   for (let turn = 0; turn < 6; turn++) {
@@ -45,22 +46,49 @@ export async function askJson({ system, prompt, maxSearches = 10, maxTokens = 16
       if (block.type === 'text') text += block.text;
       if (block.type === 'server_tool_use') searches++;
     }
-    if (r.stop_reason !== 'pause_turn') break;
+    stop = r.stop_reason;
+    if (stop !== 'pause_turn') break;
     messages.push({ role: 'assistant', content: r.content });
   }
 
-  return { json: extractJson(text), text, searches };
+  let json = tryJson(text);
+  if (!json) {
+    // Segundo intento: se le pasa lo que escribió y se le pide solo el JSON, sin buscar.
+    console.warn(`[blog] JSON no válido (stop_reason=${stop}, ${text.length} caracteres). Reparando…`);
+    const r = await call({
+      model: cfg.model(),
+      max_tokens: maxTokens,
+      system: 'Conviertes texto en JSON válido. Respondes SOLO con JSON, sin texto antes ni después y sin ```.',
+      messages: [
+        {
+          role: 'user',
+          content: `Este es el resultado de una investigación${stop === 'max_tokens' ? ' (se cortó antes de terminar; completa lo que falte de forma coherente)' : ''}. Devuélvelo como un único JSON válido con el formato que se pidió:\n\n--- FORMATO PEDIDO ---\n${prompt.slice(prompt.lastIndexOf('```json'))}\n\n--- RESULTADO ---\n${text}`,
+        },
+      ],
+    });
+    json = tryJson((r.content || []).filter((b) => b.type === 'text').map((b) => b.text).join(''));
+  }
+  if (!json) throw new Error(`Claude no devolvió un JSON válido (motivo de parada: ${stop}, ${text.length} caracteres)`);
+  return { json, text, searches };
 }
 
-export function extractJson(text) {
-  const fenced = [...text.matchAll(/```json\s*([\s\S]*?)```/g)].map((m) => m[1]);
-  const candidates = fenced.length ? fenced.reverse() : [text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1)];
-  for (const c of candidates) {
+// Busca el JSON en la respuesta: bloques ```json```, luego del primer { al último }
+function tryJson(text) {
+  const fenced = [...String(text).matchAll(/```(?:json)?\s*([\s\S]*?)```/g)].map((m) => m[1]).reverse();
+  const brace = text.indexOf('{') >= 0 ? [text.slice(text.indexOf('{'), text.lastIndexOf('}') + 1)] : [];
+  for (const c of [...fenced, ...brace]) {
     try {
-      return JSON.parse(c);
+      const v = JSON.parse(c);
+      if (v && typeof v === 'object') return v;
     } catch {
       /* siguiente */
     }
   }
-  throw new Error('Claude no devolvió un JSON válido');
+  return null;
+}
+
+export function extractJson(text) {
+  const v = tryJson(text);
+  if (!v) throw new Error('Claude no devolvió un JSON válido');
+  return v;
 }

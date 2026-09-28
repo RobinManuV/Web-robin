@@ -51,7 +51,7 @@ export async function investigar(week, { force = false } = {}) {
       system: SYSTEM_INVESTIGAR,
       prompt: promptInvestigar({ range, pastTitles, existingPosts }),
       maxSearches: 15,
-      maxTokens: 8000,
+      maxTokens: 16000,
     });
     const ideas = (json.ideas || []).slice(0, 5);
     if (ideas.length < 5) throw new Error(`Solo se encontraron ${ideas.length} ideas`);
