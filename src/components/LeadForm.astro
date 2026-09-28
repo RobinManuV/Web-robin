@@ -143,11 +143,11 @@ const SERVICIOS = ['Asesoramiento Completo', 'Pack Llegada', 'Mentoría', 'Erasm
       status.hidden = true;
       try {
         const body = new URLSearchParams(new FormData(form)).toString();
-        const res = await fetch('/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body,
-        });
+        const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+        // 1) Guardar el lead en Notion (fuente principal)
+        const res = await fetch('/api/lead', { method: 'POST', headers, body });
+        // 2) Copia en Netlify Forms para el aviso por email (si falla, no pasa nada)
+        fetch('/', { method: 'POST', headers, body }).catch(() => {});
         if (!res.ok) throw new Error(String(res.status));
         const tag = form.querySelector('input[name="tag"]').value;
         window.dataLayer?.push({

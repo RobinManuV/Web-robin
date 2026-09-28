@@ -20,7 +20,7 @@ Para añadir un artículo al blog, copia cualquier `.md` de `src/content/blog/`,
 
 ## Formularios y etiquetas de origen
 
-Todos los formularios van a **Netlify Forms** y, desde ahí, a la **Main Database de Notion** (función `netlify/functions/submission-created.mjs`).
+Todos los formularios se guardan directamente en la **Main Database de Notion** (función `netlify/functions/lead.mjs`, en `/api/lead`) y, en paralelo, se envían a **Netlify Forms** para los avisos por email.
 Cada formulario manda un campo `tag` con el origen del lead, que se guarda en Notion en la columna **Origen web** y en el comentario.
 
 | Página | Etiqueta |
@@ -93,3 +93,8 @@ npm run build    # genera dist/
 ```
 
 Para probar las funciones en local: `npx netlify dev` (con las variables en un `.env`).
+
+## Diagnóstico
+
+- Agenda: abre `/api/availability?debug=1` para ver qué calendario falla y el mensaje exacto de Google.
+- Formularios: si no llegan a Notion, el propio formulario muestra el error y en Netlify → Logs → Functions → `lead` aparece el detalle.

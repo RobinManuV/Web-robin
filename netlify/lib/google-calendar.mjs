@@ -51,6 +51,9 @@ async function api(email, method, path, body, query = {}) {
   return res.data;
 }
 
+// Últimos errores de Google por calendario (para el diagnóstico ?debug=1)
+export const lastErrors = {};
+
 // Devuelve los bloques ocupados de cada persona entre timeMin y timeMax
 export async function busyByHost(hosts, timeMin, timeMax) {
   const results = await Promise.all(
@@ -66,7 +69,9 @@ export async function busyByHost(hosts, timeMin, timeMax) {
         if (cal?.errors?.length) throw new Error(JSON.stringify(cal.errors));
         return [h.email, (cal?.busy || []).map((b) => [Date.parse(b.start), Date.parse(b.end)])];
       } catch (err) {
-        console.error(`[calendar] freeBusy falló para ${h.email}:`, err.message);
+        const detail = err?.response?.data?.error_description || err?.response?.data?.error?.message || err?.response?.data?.error || err.message;
+        console.error(`[calendar] freeBusy falló para ${h.email}:`, detail);
+        lastErrors[h.email] = String(typeof detail === 'object' ? JSON.stringify(detail) : detail);
         return [h.email, null]; // null = no sabemos; no lo ofrecemos
       }
     }),
