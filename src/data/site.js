@@ -178,3 +178,14 @@ export const CIFRAS = [
   { value: 98, suffix: '%', label: 'Alumnos aceptados' },
   { value: 11, suffix: '', label: 'Ciudades NL' },
 ];
+
+// Vídeos cortos (YouTube Shorts) de la sección "Sin guión, sin filtro" en /comunidad/.
+// Para añadir uno nuevo, pega aquí su enlace de YouTube.
+export const VIDEOS_TESTIMONIOS = [
+  'https://youtube.com/shorts/9av6yvgeb3k',
+  'https://youtube.com/shorts/prTC5wdVUh8',
+  'https://youtube.com/shorts/fowj-Y7rTYM',
+  'https://youtube.com/shorts/IXtgEwSdxm8',
+  'https://youtube.com/shorts/zt4hiX4gX34',
+  'https://youtube.com/shorts/Esc-pihe_04',
+];

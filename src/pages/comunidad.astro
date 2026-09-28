@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import BlogCard from '../components/BlogCard.astro';
 import YouTube from '../components/YouTube.astro';
-import { TESTIMONIOS } from '../data/site.js';
+import { TESTIMONIOS, VIDEOS_TESTIMONIOS } from '../data/site.js';
 
 const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) => b.data.date - a.data.date).slice(0, 6);
 const tienda = [
@@ -45,7 +45,22 @@ const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').rep
     <div class="container">
       <p class="eyebrow center">Testimonios</p>
       <h2 class="display-md center" style="margin:14px 0 12px">Sin guión, sin filtro</h2>
-      <p class="text center" style="max-width:640px;margin:0 auto 40px">Nuestros Robins contando qué esperaban, qué se encontraron y qué cambiarían.</p>
+      <p class="text center" style="max-width:640px;margin:0 auto 40px">Vídeos cortos de nuestros Robins contando qué esperaban, qué se encontraron y qué cambiarían. Desliza para descubrir más historias.</p>
+      <div class="shorts" data-shorts>
+        <ul class="shorts-track" data-track>
+          {
+            VIDEOS_TESTIMONIOS.map((url, i) => (
+              <li class="short">
+                <YouTube url={url} ratio="9 / 16" title={`Testimonio de un Robin (${i + 1})`} />
+              </li>
+            ))
+          }
+        </ul>
+        <div class="shorts-nav">
+          <button type="button" class="shorts-arrow" data-prev aria-label="Vídeos anteriores">←</button>
+          <button type="button" class="shorts-arrow" data-next aria-label="Más vídeos">→</button>
+        </div>
+      </div>
       <div class="t-grid">
         <div class="t-video">
           <YouTube url="https://youtu.be/psjEcd2yAeg" poster="/wp-content/uploads/2026/05/a6f1b0f7b8b6e609fb8387ac02dc8ff3.webp" title="Voces de nuestros Robins" />
@@ -100,7 +115,62 @@ const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').rep
   </section>
 </Base>
 
+<script>
+  // Carrusel de vídeos: se desliza con el dedo/trackpad y con las flechas
+  document.querySelectorAll('[data-shorts]').forEach((root) => {
+    const track = root.querySelector('[data-track]');
+    const step = () => (track.firstElementChild?.getBoundingClientRect().width || 260) + 18;
+    root.querySelector('[data-prev]').addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    root.querySelector('[data-next]').addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+  });
+</script>
+
 <style>
+  .shorts {
+    margin-bottom: 56px;
+  }
+  .shorts-track {
+    list-style: none;
+    margin: 0;
+    padding: 4px 4px 12px;
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .shorts-track::-webkit-scrollbar {
+    display: none;
+  }
+  .short {
+    flex: 0 0 calc((100% - 3 * 18px) / 4);
+    scroll-snap-align: start;
+    min-width: 220px;
+  }
+  .short .yt {
+    box-shadow: 0 10px 30px rgba(45, 58, 100, 0.15);
+  }
+  .shorts-nav {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 18px;
+  }
+  .shorts-arrow {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--navy);
+    background: var(--white);
+    color: var(--navy);
+    font-size: 20px;
+    line-height: 1;
+    transition: background 0.2s, color 0.2s;
+  }
+  .shorts-arrow:hover {
+    background: var(--navy);
+    color: var(--cream);
+  }
   .hero {
     color: #fff;
     background: linear-gradient(90deg, rgba(45, 58, 100, 0.92), rgba(45, 58, 100, 0.6)), url('/wp-content/uploads/2026/06/bernie-almanzar-CUzEBQz4ThE-unsplash.webp') center / cover;
@@ -217,6 +287,10 @@ const slug = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').rep
     gap: 18px;
   }
   @media (max-width: 900px) {
+    .short {
+      flex-basis: 62%;
+      min-width: 0;
+    }
     .hero-grid,
     .t-grid,
     .shop,

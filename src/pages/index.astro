@@ -4,6 +4,7 @@ import YouTube from '../components/YouTube.astro';
 import Testimonials from '../components/Testimonials.astro';
 import DescubreHolanda from '../components/DescubreHolanda.astro';
 import ContactSection from '../components/ContactSection.astro';
+import Icon from '../components/Icon.astro';
 import { EQUIPO, CIFRAS } from '../data/site.js';
 
 const paquetes = [
@@ -38,17 +39,42 @@ const paquetes = [
 ];
 
 const pasos = [
-  { img: '/wp-content/uploads/2026/06/RobinTelescopio.webp', title: 'Asesoramiento y elección de carreras', text: 'Analizamos tu perfil y te recomendamos las Universidades más compatibles.' },
-  { img: '/wp-content/uploads/2026/06/Robin-Carpetas.webp', title: 'Aplicación y preparación', text: 'Nos encargamos de preparar tu perfil, revisar documentación y guiarte durante todo el proceso de aplicación.' },
-  { img: '/wp-content/uploads/2026/06/RobinHouse.webp', title: 'Housing y llegada', text: 'Te ayudamos a encontrar alojamiento, preparar tu mudanza y llegar con todo organizado desde el primer día.' },
-  { img: '/wp-content/uploads/2026/06/RobinGraduated.webp', title: 'Acompañamiento final', text: 'Estamos contigo hasta el final para resolver dudas, preparar los últimos pasos y empezar tu nueva etapa con confianza.' },
+  {
+    tab: 'Elige',
+    img: '/wp-content/uploads/2026/06/RobinTelescopio.webp',
+    title: 'Elegimos contigo, no por ti',
+    text: 'Analizamos tu perfil, tus notas y tu presupuesto, y te damos una lista corta de universidades que encajan contigo. Requisitos, costes y salidas encima de la mesa desde el primer día.',
+    bullets: ['Análisis de tu perfil y presupuesto', 'Shortlist de universidades compatibles', 'Costes y salidas, sin letra pequeña'],
+  },
+  {
+    tab: 'Aplica',
+    img: '/wp-content/uploads/2026/06/Robin-Carpetas.webp',
+    title: 'Tu aplicación, sin sustos',
+    text: 'Carta de motivación, documentos, plazos y plataformas como Studielink. Preparamos tu perfil contigo y lo revisamos todo antes de enviarlo para que no se escape nada.',
+    bullets: ['Carta de motivación y CV revisados', 'Calendario de plazos a tu medida', 'Aplicación gestionada paso a paso'],
+  },
+  {
+    tab: 'Aterriza',
+    img: '/wp-content/uploads/2026/06/RobinHouse.webp',
+    badge: 'Housing garantizado',
+    title: 'Tu casa, asegurada',
+    text: 'Encontrar piso siendo estudiante internacional es un deporte extremo. Lo sabemos porque lo vivimos. Por eso te garantizamos el alojamiento y te ayudamos con la mudanza para que llegues con todo organizado.',
+    bullets: ['Alojamiento garantizado', 'Ayuda para preparar la mudanza', 'Todo listo desde el primer día'],
+  },
+  {
+    tab: 'Despega',
+    img: '/wp-content/uploads/2026/06/RobinGraduated.webp',
+    title: 'Seguimos contigo cuando llegas',
+    text: 'No desaparecemos cuando te admiten. Te acompañamos en los últimos pasos, resolvemos tus dudas y te asesoramos con las ayudas al estudiante para que empieces tu nueva etapa con confianza.',
+    bullets: ['Dudas resueltas cuando surjan', 'Asesoramiento en ayudas económicas', 'Acceso a la comunidad Robin'],
+  },
 ];
 
-const servicios = [
-  { title: 'Selección de Carreras', text: 'Te ayudamos a tomar decisiones informadas sobre qué universidades y carreras encajan mejor contigo.', dark: true },
-  { title: 'Proceso de aplicación', text: 'Te asesoramos en la preparación de todos los requisitos, desde cartas de motivación hasta la organización de documentos legales necesarios para tu admisión.', dark: false },
-  { title: 'Housing', text: '¿Es difícil encontrar alojamiento en Holanda? Habiendo vivido allí, contamos con las herramientas necesarias para conseguirlo.', dark: false },
-  { title: 'Ayudas Económicas', text: 'Te asesoramos con todos los programas de ayuda al estudiante ofrecidos por el gobierno holandés.', dark: true },
+const incluye = [
+  { icon: 'compass', title: 'Selección de carreras', text: 'Sabrás qué estudiar y dónde, con datos: requisitos, costes y salidas de cada opción.' },
+  { icon: 'doc', title: 'Proceso de aplicación', text: 'Cartas de motivación, documentos legales y plazos. Todo revisado antes de enviarlo.' },
+  { icon: 'home', title: 'Housing garantizado', text: 'Tienes casa asegurada. Hemos vivido allí y sabemos dónde y cómo buscar.', highlight: true },
+  { icon: 'coin', title: 'Ayudas económicas', text: 'Te explicamos las ayudas al estudiante del gobierno holandés y cómo solicitarlas.' },
 ];
 
 const equipoFotos = [
@@ -70,18 +96,20 @@ const schema = {
 <Base title="Estudiar en Holanda con acompañamiento | Project Robin" schema={schema}>
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-bg" aria-hidden="true"></div>
     <div class="hero-inner container">
-      <p class="eyebrow text-cream">The world is your campus</p>
-      <h1 class="display-xl hero-title">Más cerca de tu sueño, estudia en el extranjero</h1>
-      <p class="lead hero-lead">
-        Hablamos sin rodeos, costes, becas, riesgos y beneficios.<br />
-        Te guiamos desde ¿y si me voy? hasta tu primera clase en Europa
-      </p>
-      <div class="btn-row">
-        <a class="btn" href="#reserva">Reserva tu consulta online</a>
-        <a class="btn btn-outline-light" href="#como-funciona">Cómo funciona</a>
+      <div class="hero-text">
+        <p class="eyebrow text-cream">The world is your campus</p>
+        <h1 class="display-xl hero-title">Más cerca de tu sueño, estudia en el extranjero</h1>
+        <p class="lead hero-lead">
+          Hablamos sin rodeos, costes, becas, riesgos y beneficios.<br />
+          Te guiamos desde ¿y si me voy? hasta tu primera clase en Europa
+        </p>
+        <div class="btn-row">
+          <a class="btn" href="#reserva">Reserva tu consulta online</a>
+          <a class="btn btn-outline-light" href="#como-funciona">Cómo funciona</a>
+        </div>
       </div>
+      <div class="hero-map" role="img" aria-label="Mapa con las rutas de estudiantes de Robin entre América y Europa"></div>
     </div>
   </section>
 
@@ -136,18 +164,47 @@ const schema = {
       <p class="lead">Sin falsas promesas. Un proceso claro, transparente y probado. Paso a paso</p>
     </div>
     <div class="container">
-      <ol class="steps">
-        {
-          pasos.map((p, i) => (
-            <li class="step">
-              <span class="step-n">{i + 1}</span>
-              <img src={p.img} alt="" loading="lazy" width="220" height="220" />
-              <h3>{p.title}</h3>
-              <p>{p.text}</p>
-            </li>
-          ))
-        }
-      </ol>
+      <div class="method" data-method>
+        <div class="method-tabs" role="tablist" aria-label="Fases del Método Robin">
+          <span class="method-progress" aria-hidden="true"><span data-progress></span></span>
+          {
+            pasos.map((p, i) => (
+              <button type="button" role="tab" class="method-tab" id={`fase-tab-${i}`} aria-controls={`fase-${i}`} aria-selected={i === 0 ? 'true' : 'false'} data-tab={i}>
+                <span class="method-dot">{i + 1}</span>
+                <span class="method-tab-label">{p.tab}</span>
+              </button>
+            ))
+          }
+        </div>
+        <div class="method-viewport">
+          <ol class="method-track" data-track>
+            {
+              pasos.map((p, i) => (
+                <li class="method-slide" id={`fase-${i}`} role="tabpanel" aria-labelledby={`fase-tab-${i}`} aria-roledescription="fase">
+                  <div class="method-art">
+                    <img src={p.img} alt="" loading="lazy" width="220" height="220" />
+                  </div>
+                  <div class="method-copy">
+                    <p class="method-kicker">
+                      Fase {i + 1} de {pasos.length}
+                      {p.badge && <span class="method-badge">{p.badge}</span>}
+                    </p>
+                    <h3>{p.title}</h3>
+                    <p class="method-text">{p.text}</p>
+                    <ul class="tick-list">
+                      {p.bullets.map((b) => <li>{b}</li>)}
+                    </ul>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+        <div class="method-nav">
+          <button type="button" class="method-arrow" data-prev aria-label="Fase anterior">←</button>
+          <button type="button" class="method-arrow" data-next aria-label="Fase siguiente">→</button>
+        </div>
+      </div>
       <div class="btn-row" style="justify-content:center">
         <a class="btn" href="/servicios/asesoramiento-completo/">Pack Llegada</a>
         <a class="btn btn-outline" href="/servicios/mentoria/">Mentoría 90 minutos</a>
@@ -168,17 +225,28 @@ const schema = {
     </div>
   </section>
 
-  <!-- SERVICIOS -->
+  <!-- QUÉ INCLUYE -->
   <section class="section">
-    <div class="tiles container-narrow">
-      {
-        servicios.map((s) => (
-          <article class:list={['tile', { dark: s.dark }]}>
-            <h3>{s.title}</h3>
-            <p>{s.text}</p>
-          </article>
-        ))
-      }
+    <div class="container incluye">
+      <div class="incluye-head stack" style="--stack:20px">
+        <p class="eyebrow">Qué incluye</p>
+        <h2 class="display-md">Todo lo que necesitas, un solo equipo</h2>
+        <p class="lead">Nada de ir saltando entre agencias, foros y grupos de WhatsApp. Lo tienes todo en un sitio, con gente que ya lo ha vivido.</p>
+        <a class="btn" href="#reserva">Reserva tu consulta</a>
+      </div>
+      <ul class="incluye-grid">
+        {
+          incluye.map((s, i) => (
+            <li class:list={['inc', { highlight: s.highlight }]} style={`--d:${i * 90}ms`} data-reveal>
+              <span class="inc-icon">
+                <Icon name={s.icon} size={30} />
+              </span>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
@@ -267,37 +335,117 @@ const schema = {
     { threshold: 0.6 },
   );
   nums.forEach((n) => io.observe(n));
+
+  // Aparición suave de las tarjetas de "Qué incluye"
+  const rev = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        rev.unobserve(e.target);
+      });
+    },
+    { threshold: 0.2 },
+  );
+  document.querySelectorAll('[data-reveal]').forEach((el) => rev.observe(el));
+
+  // Carrusel del Método Robin: pestañas, flechas, swipe (scroll-snap) y avance automático
+  document.querySelectorAll('[data-method]').forEach((root) => {
+    const track = root.querySelector('[data-track]');
+    const slides = [...track.children];
+    const tabs = [...root.querySelectorAll('[data-tab]')];
+    const bar = root.querySelector('[data-progress]');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let i = 0;
+    let timer;
+    let userTook = false;
+
+    const paint = (n) => {
+      i = n;
+      tabs.forEach((t, k) => {
+        t.setAttribute('aria-selected', String(k === n));
+        t.classList.toggle('done', k < n);
+        t.tabIndex = k === n ? 0 : -1;
+      });
+      bar.style.width = `${(n / (slides.length - 1)) * 100}%`;
+    };
+    const go = (n) => {
+      n = (n + slides.length) % slides.length;
+      track.scrollTo({ left: slides[n].offsetLeft - track.offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
+      paint(n);
+    };
+    const stop = () => {
+      userTook = true;
+      clearInterval(timer);
+    };
+    const start = () => {
+      if (reduce || userTook) return;
+      clearInterval(timer);
+      timer = setInterval(() => go(i + 1), 6000);
+    };
+
+    tabs.forEach((t, k) => t.addEventListener('click', () => (stop(), go(k))));
+    root.querySelector('[data-prev]').addEventListener('click', () => (stop(), go(i - 1)));
+    root.querySelector('[data-next]').addEventListener('click', () => (stop(), go(i + 1)));
+    root.querySelector('[role=tablist]').addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      stop();
+      go(i + (e.key === 'ArrowRight' ? 1 : -1));
+      tabs[i].focus();
+    });
+    track.addEventListener('pointerdown', stop, { passive: true });
+    track.addEventListener('touchstart', stop, { passive: true });
+    root.addEventListener('mouseenter', () => clearInterval(timer));
+    root.addEventListener('mouseleave', start);
+
+    // Si el usuario desliza con el dedo o el trackpad, sincronizamos las pestañas
+    const seen = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) paint(slides.indexOf(e.target));
+        });
+      },
+      { root: track, threshold: 0.6 },
+    );
+    slides.forEach((s) => seen.observe(s));
+
+    // Solo arranca el avance automático cuando la sección está a la vista
+    new IntersectionObserver(([e]) => (e.isIntersecting ? start() : clearInterval(timer)), { threshold: 0.4 }).observe(root);
+    paint(0);
+  });
 </script>
 
 <style>
   /* HERO */
   .hero {
-    position: relative;
     background: var(--navy);
     border-radius: 0 0 24px 24px;
     overflow: hidden;
-    min-height: 715px;
-    display: flex;
-    align-items: center;
-  }
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background: url('/wp-content/uploads/2026/07/hero-global-wide-spain-corrected-animated.gif') right center / auto 92% no-repeat;
   }
   .hero-inner {
-    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(30px, 4vw, 70px);
+    min-height: 715px;
     padding-block: 80px;
+  }
+  /* El GIF es 1600x900 con el mapa en x 628-1572 / y 80-820: recortamos solo el mapa
+     para que quede dentro del contenedor, alineado con el texto. */
+  .hero-map {
+    width: 100%;
+    aspect-ratio: 945 / 740;
+    background: url('/wp-content/uploads/2026/07/hero-global-wide-spain-corrected-animated.gif') 95.9% 50% / 169.3% auto no-repeat;
   }
   .hero-title {
     color: var(--cream-text);
-    max-width: 820px;
+    font-size: clamp(44px, 5.2vw, 84px);
     margin: 14px 0 22px;
   }
   .hero-lead {
     color: var(--cream-text);
-    max-width: 700px;
-    font-size: clamp(18px, 1.6vw, 22px);
+    max-width: 640px;
+    font-size: clamp(18px, 1.5vw, 21px);
     margin-bottom: 26px;
   }
   .hero .btn {
@@ -394,49 +542,176 @@ const schema = {
     align-self: center;
   }
 
-  /* MÉTODO */
-  .steps {
-    list-style: none;
-    padding: 0;
-    margin: 60px 0 40px;
+  /* MÉTODO (carrusel) */
+  .method {
+    max-width: 1140px;
+    margin: 56px auto 40px;
+  }
+  .method-tabs {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 22px;
+    margin-bottom: 28px;
   }
-  .step {
+  .method-progress {
+    position: absolute;
+    left: 12.5%;
+    right: 12.5%;
+    top: 27px;
+    height: 3px;
+    background: var(--grey-card);
+    border-radius: 3px;
+  }
+  .method-progress span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+    border-radius: inherit;
+    transition: width 0.5s ease;
+  }
+  .method-tab {
     position: relative;
-    background: var(--sky);
-    border-radius: 16px;
-    padding: 30px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    background: none;
+    border: 0;
+    padding: 0 6px;
+    color: var(--navy);
   }
-  .step-n {
+  .method-dot {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: var(--navy);
-    color: var(--cream);
     display: grid;
     place-items: center;
-    font-size: 26px;
-    font-weight: 700;
-  }
-  .step img {
-    position: absolute;
-    right: 14px;
-    top: 14px;
-    width: 88px;
-    height: auto;
-  }
-  .step h3 {
     font-size: 22px;
     font-weight: 700;
-    margin-top: 12px;
+    background: var(--white);
+    border: 3px solid var(--grey-card);
+    transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
   }
-  .step p {
-    font-size: 16px;
+  .method-tab-label {
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    opacity: 0.55;
+    transition: opacity 0.3s;
+  }
+  .method-tab.done .method-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--white);
+  }
+  .method-tab[aria-selected='true'] .method-dot {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--cream);
+    transform: scale(1.08);
+  }
+  .method-tab[aria-selected='true'] .method-tab-label,
+  .method-tab:hover .method-tab-label {
+    opacity: 1;
+  }
+  .method-viewport {
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--sky);
+  }
+  .method-track {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .method-track::-webkit-scrollbar {
+    display: none;
+  }
+  .method-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    align-items: center;
+    gap: clamp(24px, 4vw, 60px);
+    padding: clamp(28px, 4vw, 56px);
+  }
+  .method-art {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--white);
+    display: grid;
+    place-items: center;
+    max-width: 340px;
+    width: 100%;
+    margin-inline: auto;
+  }
+  .method-art img {
+    width: 70%;
+    height: auto;
+  }
+  .method-kicker {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--navy-3);
+  }
+  .method-badge {
+    background: var(--accent);
+    color: var(--navy);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+  .method-copy h3 {
+    font-size: clamp(28px, 3.2vw, 44px);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin: 14px 0 16px;
+  }
+  .method-text {
+    font-size: clamp(17px, 1.4vw, 19px);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    max-width: 560px;
+  }
+  .method-copy .tick-list {
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .method-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .method-arrow {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--navy);
+    background: var(--white);
+    color: var(--navy);
+    font-size: 20px;
+    line-height: 1;
+    transition: background 0.2s, color 0.2s;
+  }
+  .method-arrow:hover {
+    background: var(--navy);
+    color: var(--cream);
   }
 
   /* TESTIMONIOS */
@@ -461,33 +736,88 @@ const schema = {
     font-size: 16px;
   }
 
-  /* SERVICIOS */
-  .tiles {
+  /* QUÉ INCLUYE */
+  .incluye {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 470px));
-    justify-content: center;
-    gap: 52px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr);
+    gap: clamp(36px, 6vw, 90px);
+    align-items: center;
+    max-width: 1240px;
   }
-  .tile {
+  .incluye-head .lead {
+    max-width: 480px;
+  }
+  .incluye-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .inc {
     background: var(--peach);
+    border-radius: 18px;
+    padding: 30px 28px 34px;
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    transition: background 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+  .inc:nth-child(even) {
+    transform: translateY(28px);
+  }
+  .inc-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: var(--white);
     color: var(--navy);
-    border-radius: 16px;
-    padding: 130px 45px 80px;
+    transition: background 0.3s, color 0.3s;
   }
-  .tile.dark {
-    background: var(--navy);
-    color: var(--accent);
-  }
-  .tile h3 {
-    font-size: 32px;
+  .inc h3 {
+    font-size: 22px;
     font-weight: 700;
     text-transform: uppercase;
-    line-height: 1.09;
-    margin-bottom: 36px;
-  }
-  .tile p {
-    font-size: 25px;
     line-height: 1.1;
+    margin-top: 6px;
+  }
+  .inc p {
+    font-size: 17px;
+    line-height: 1.45;
+  }
+  .inc.highlight,
+  .inc:hover {
+    background: var(--navy);
+    color: var(--cream);
+    box-shadow: 0 18px 40px rgba(45, 58, 100, 0.22);
+  }
+  .inc.highlight h3,
+  .inc:hover h3 {
+    color: var(--accent);
+  }
+  .inc.highlight .inc-icon,
+  .inc:hover .inc-icon {
+    background: var(--accent);
+    color: var(--navy);
+  }
+  /* aparición al hacer scroll */
+  .inc[data-reveal] {
+    opacity: 0;
+    translate: 0 24px;
+    transition: opacity 0.6s ease var(--d), translate 0.6s ease var(--d), background 0.3s, color 0.3s, box-shadow 0.3s;
+  }
+  .inc[data-reveal].is-in {
+    opacity: 1;
+    translate: 0 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .inc[data-reveal] {
+      opacity: 1;
+      translate: 0 0;
+    }
   }
 
   /* CIFRAS */
@@ -601,24 +931,24 @@ const schema = {
     .packs-bird {
       right: 20px;
     }
-    .steps {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 
   @media (max-width: 900px) {
-    .hero {
-      min-height: 640px;
-      align-items: flex-end;
+    .hero-inner {
+      grid-template-columns: 1fr;
+      min-height: 0;
+      padding-block: 40px 60px;
+      gap: 10px;
     }
-    .hero-bg {
-      background-position: center 30px;
-      background-size: 150% auto;
-      opacity: 0.55;
+    .hero-map {
+      order: -1;
+      max-width: 420px;
+      margin-inline: auto;
     }
     .voices,
     .testi-grid,
-    .stats {
+    .stats,
+    .incluye {
       grid-template-columns: 1fr;
       gap: 36px;
     }
@@ -630,16 +960,6 @@ const schema = {
     .packs-bird {
       width: 130px;
       top: -110px;
-    }
-    .tiles {
-      grid-template-columns: 1fr;
-      gap: 24px;
-    }
-    .tile {
-      padding: 50px 30px;
-    }
-    .tile p {
-      font-size: 20px;
     }
     .stats-img {
       max-height: 340px;
@@ -664,11 +984,33 @@ const schema = {
     .member a {
       max-height: none;
     }
-  }
-
-  @media (max-width: 560px) {
-    .steps {
+    .method-slide {
       grid-template-columns: 1fr;
+      text-align: left;
+    }
+    .method-art {
+      max-width: 180px;
     }
   }
+
+  @media (max-width: 600px) {
+    .method-dot {
+      width: 44px;
+      height: 44px;
+      font-size: 18px;
+    }
+    .method-progress {
+      top: 21px;
+    }
+    .method-tab-label {
+      font-size: 13px;
+    }
+    .incluye-grid {
+      grid-template-columns: 1fr;
+    }
+    .inc:nth-child(even) {
+      transform: none;
+    }
+  }
+
 </style>
