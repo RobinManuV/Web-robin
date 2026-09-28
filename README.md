@@ -98,3 +98,40 @@ Para probar las funciones en local: `npx netlify dev` (con las variables en un `
 
 - Agenda: abre `/api/availability?debug=1` para ver qué calendario falla y el mensaje exacto de Google.
 - Formularios: si no llegan a Notion, el propio formulario muestra el error y en Netlify → Logs → Functions → `lead` aparece el detalle.
+
+## Máquina de blogs (automática)
+
+Cada semana propone temas y escribe dos artículos para el blog con la API de Claude (Anthropic).
+
+| Cuándo | Qué pasa |
+|---|---|
+| **Lunes 08:00** | Claude busca en la web (medios, fuentes oficiales, foros, Reddit y lo público de LinkedIn) los temas de educación en España de la semana anterior y envía a `BLOG_EMAIL_TO` un correo con **5 ideas** y un botón para elegir. |
+| **Al elegir** | En la página del correo marcas qué idea sale el miércoles y cuál el viernes. En unos 10 minutos llega otro correo con los **2 borradores** (vista previa, botón **Parar** y **Publicar ahora**). |
+| **Miércoles y viernes 09:00** | Se publica el borrador del día (si no lo has parado): la máquina guarda el `.md` en GitHub y Netlify publica la web sola. Te llega un correo con el enlace. |
+
+(Las horas son de verano; en invierno, una hora antes, porque Netlify programa en UTC.)
+
+Cada artículo sale con: título SEO, meta description, entradilla que responde directamente (GEO), bloque "Lo esencial", H2 en forma de pregunta, tabla si hay datos, enlaces a las fuentes y a páginas de Robin, 1-2 imágenes de Unsplash con texto alternativo y pie de foto con crédito, preguntas frecuentes (con schema FAQPage) y lista de fuentes.
+
+**Archivos:** `netlify/lib/blog/` (lógica; las instrucciones a Claude están en `prompts.mjs`) y `netlify/functions/blog-*.mjs`. El estado de cada semana se guarda en Netlify Blobs (almacén `blog-machine`).
+
+### Variables de entorno (Netlify → Site configuration → Environment variables)
+
+| Variable | Obligatoria | Valor |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | Sí | Clave de la API de Anthropic (console.anthropic.com → API keys). La búsqueda web debe estar activada en la organización. |
+| `BLOG_SECRET` | Sí | Una contraseña larga inventada. Firma los enlaces del correo. |
+| `GITHUB_TOKEN` | Sí | Token *fine-grained* de GitHub solo para el repo `web-robin`, con permiso **Contents: Read and write**. |
+| `UNSPLASH_ACCESS_KEY` | Sí | "Access Key" de una app gratuita en unsplash.com/developers. |
+| `BLOG_EMAIL_TO` | No | Por defecto `manuel@project-robin.com`. |
+| `BLOG_EMAIL_FROM` | No | Por defecto `hello@project-robin.com`. |
+| `BLOG_MODEL` | No | Modelo de Claude. Por defecto `claude-sonnet-5`. |
+| `GITHUB_REPO` / `GITHUB_BRANCH` | No | Por defecto `RobinManuV/web-robin` y `main`. |
+| `RESEND_API_KEY` | No | Solo si prefieres enviar los correos con Resend en vez de con Gmail. |
+
+**Correo:** se envía con la misma cuenta de servicio de Google que las reservas. En admin.google.com → Seguridad → Controles de API → Delegación en todo el dominio, edita la entrada de la cuenta de servicio y añade el permiso `https://www.googleapis.com/auth/gmail.send` (junto al de calendar, separados por coma).
+
+### Probarla a mano
+
+- Ver estado: `/api/blog-admin?clave=<BLOG_SECRET>`
+- Lanzar la investigación ahora: `/api/blog-admin?clave=<BLOG_SECRET>&accion=investigar` (añade `&force=1` para repetirla)

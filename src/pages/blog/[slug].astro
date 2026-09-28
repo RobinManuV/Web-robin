@@ -13,6 +13,8 @@ const { Content } = await render(post);
 const d = post.data;
 const url = `https://project-robin.com/blog/${post.id}/`;
 const fmt = new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+const imageUrl = d.image.startsWith('http') ? d.image : `https://project-robin.com${d.image}`;
+const catHref = d.category === 'Estudiar en Holanda' ? '/blog/category/estudiar-en-holanda/' : null;
 const related = posts.filter((p) => p.id !== post.id).sort((a, b) => b.data.date - a.data.date).slice(0, 3);
 
 const schema = [
@@ -21,7 +23,9 @@ const schema = [
     '@type': 'BlogPosting',
     headline: d.title,
     description: d.description,
-    image: `https://project-robin.com${d.image}`,
+    image: imageUrl,
+    ...(d.keywords ? { keywords: d.keywords } : {}),
+    ...(d.sources?.length ? { citation: d.sources.map((s) => ({ '@type': 'CreativeWork', name: s.title, url: s.url, ...(s.publisher ? { publisher: s.publisher } : {}) })) } : {}),
     datePublished: d.date.toISOString(),
     dateModified: (d.updated || d.date).toISOString(),
     inLanguage: 'es-ES',
@@ -38,6 +42,15 @@ const schema = [
       { '@type': 'ListItem', position: 3, name: d.title, item: url },
     ],
   },
+  ...(d.faq?.length
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: d.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+        },
+      ]
+    : []),
 ];
 ---
 
@@ -47,15 +60,57 @@ const schema = [
       <a class="link-back" href="/blog/">« Volver al blog</a>
       <h1>{d.title}</h1>
       <p class="meta">
-        <a href="/blog/category/estudiar-en-holanda/">{d.category}</a> ·
+        {catHref ? <a href={catHref}>{d.category}</a> : <span>{d.category}</span>} ·
         <time datetime={d.date.toISOString().slice(0, 10)}>{fmt.format(d.date)}</time>
         {d.updated && d.updated > d.date && <> · Actualizado el <time datetime={d.updated.toISOString().slice(0, 10)}>{fmt.format(d.updated)}</time></>}
       </p>
-      <img class="cover" src={d.image} alt={d.title} />
+      <figure class="cover-fig">
+        <img class="cover" src={d.image} alt={d.imageAlt || d.title} />
+        {
+          d.imageCredit && (
+            <figcaption>
+              Foto de <a href={d.imageCreditUrl} rel="noopener">{d.imageCredit}</a> en{' '}
+              <a href="https://unsplash.com/?utm_source=project_robin&utm_medium=referral" rel="noopener">
+                Unsplash
+              </a>
+            </figcaption>
+          )
+        }
+      </figure>
     </header>
     <div class="prose">
       <Content />
     </div>
+    {
+      d.faq?.length && (
+        <section class="post-faq">
+          <h2>Preguntas frecuentes</h2>
+          {d.faq.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </section>
+      )
+    }
+    {
+      d.sources?.length && (
+        <section class="post-sources">
+          <h2>Fuentes</h2>
+          <ol>
+            {d.sources.map((s) => (
+              <li>
+                <a href={s.url} target="_blank" rel="noopener">
+                  {s.title}
+                </a>
+                {s.publisher && <span> · {s.publisher}</span>}
+              </li>
+            ))}
+          </ol>
+        </section>
+      )
+    }
     <aside class="post-cta">
       <p class="title">¿Quieres saber si Holanda encaja contigo?</p>
       <p>Reserva una primera consulta gratuita de 30 minutos con alguien que ya estudió allí.</p>
@@ -89,10 +144,56 @@ const schema = [
   .meta a {
     color: var(--navy);
   }
+  .cover-fig {
+    margin: 26px 0 34px;
+  }
   .cover {
     width: 100%;
     border-radius: 14px;
-    margin: 26px 0 34px;
+  }
+  .cover-fig figcaption,
+  .prose :global(figcaption) {
+    font-size: 13px;
+    opacity: 0.75;
+    margin-top: 8px;
+  }
+  .prose :global(figure) {
+    margin: 28px 0;
+  }
+  .prose :global(figure img) {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+  }
+  .post-faq,
+  .post-sources {
+    margin-top: 44px;
+  }
+  .post-faq h2,
+  .post-sources h2 {
+    font-size: 26px;
+    margin-bottom: 14px;
+  }
+  .post-faq details {
+    border: 2px solid var(--navy);
+    border-radius: 12px;
+    padding: 0 18px;
+    margin-bottom: 10px;
+  }
+  .post-faq summary {
+    cursor: pointer;
+    font-weight: 700;
+    padding: 14px 0;
+  }
+  .post-faq details p {
+    padding-bottom: 14px;
+    line-height: 1.55;
+  }
+  .post-sources ol {
+    padding-left: 20px;
+    display: grid;
+    gap: 6px;
+    font-size: 15px;
   }
   .post-cta {
     margin-top: 50px;

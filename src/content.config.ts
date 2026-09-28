@@ -13,6 +13,14 @@ const blog = defineCollection({
     image: z.string(),
     category: z.string().default('Estudiar en Holanda'),
     draft: z.boolean().default(false),
+    // Campos que rellena la máquina de blogs (opcionales en los artículos antiguos)
+    imageAlt: z.string().optional(),
+    imageCredit: z.string().optional(),
+    imageCreditUrl: z.string().optional(),
+    keywords: z.string().optional(),
+    faq: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
+    sources: z.array(z.object({ title: z.string(), url: z.string(), publisher: z.string().optional() })).optional(),
+    generated: z.boolean().optional(),
   }),
 });
 

@@ -5,7 +5,7 @@ const fmt = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric' })
 
 <article class="bc">
   <a href={`/blog/${post.id}/`}>
-    <img src={post.data.image} alt={post.data.title} loading="lazy" />
+    <img src={post.data.image} alt={post.data.imageAlt || post.data.title} loading="lazy" />
     <div class="bc-body">
       <span class="bc-cat">{post.data.category}</span>
       <time datetime={post.data.date.toISOString().slice(0, 10)}>{fmt.format(post.data.date)}</time>
