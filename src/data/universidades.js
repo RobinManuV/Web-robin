@@ -675,7 +675,7 @@ export const UNIVERSIDADES_MULTICAMPUS = [
     "logo": "/wp-content/uploads/2025/12/albert-school-logo.png",
     "group": "multicampus",
     "cardText": "Albert School combina business, data science e inteligencia artificial en un modelo multicampus europeo. Es una propuesta muy diferenciadora para perfiles híbridos de negocio y datos.",
-    "cardImg": "/wp-content/uploads/2025/11/albert-school.png",
+    "cardImg": "/fotos/albert-school-campus.webp",
     "cardLogo": "/wp-content/uploads/2025/12/albert-school-logo.png"
   },
   {
