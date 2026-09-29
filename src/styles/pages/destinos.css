@@ -1,0 +1,154 @@
+/* Listado de destinos — todo va dentro de .page-destinos (clase del <main>) */
+
+.page-destinos .hero {
+  position: relative;
+  min-height: 700px;
+  display: flex;
+  align-items: center;
+  background: url('/wp-content/uploads/2026/05/Grupo-250.png') center / cover no-repeat, var(--navy);
+  border-radius: 0 0 24px 24px;
+  overflow: hidden;
+  color: #fff;
+}
+.page-destinos .hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(20, 26, 50, 0.72), rgba(20, 26, 50, 0.25) 60%, rgba(20, 26, 50, 0.05));
+}
+.page-destinos .hero-img {
+  display: none;
+}
+.page-destinos .hero-inner {
+  position: relative;
+  max-width: 780px;
+  padding: 80px var(--gutter);
+}
+.page-destinos .hero h1 {
+  margin: 14px 0 20px;
+}
+.page-destinos .hero .lead {
+  margin-bottom: 28px;
+  font-size: clamp(18px, 1.7vw, 23px);
+}
+.page-destinos .list-section {
+  padding: 80px 0 120px;
+}
+.page-destinos .intro {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto 80px;
+}
+.page-destinos .intro .display {
+  margin: 22px 0 26px;
+}
+.page-destinos .intro .text {
+  max-width: 770px;
+  margin-inline: auto;
+}
+.page-destinos .mill {
+  position: absolute;
+  left: -260px;
+  top: 90px;
+  width: 180px;
+}
+.page-destinos .cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px 40px;
+}
+.page-destinos .card-d {
+  background: var(--cream-2);
+  border: 2px solid var(--navy);
+  border-radius: 16px;
+  padding: 26px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.page-destinos .card-link {
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+}
+.page-destinos .card-img {
+  position: relative;
+}
+.page-destinos .card-img img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+.page-destinos .card-link:hover img {
+  transform: scale(1.02);
+}
+.page-destinos .card-img h3 {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--cream-text);
+  font-size: clamp(26px, 2.4vw, 36px);
+  font-weight: 700;
+  text-transform: uppercase;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+.page-destinos .card-sub {
+  margin-top: 18px;
+  font-size: 24px;
+  font-weight: 700;
+}
+.page-destinos .card-text {
+  margin-top: 8px;
+  font-size: 17px;
+}
+.page-destinos .card-d .btn {
+  align-self: center;
+}
+.page-destinos .cta-band {
+  text-align: center;
+  padding: 150px var(--gutter);
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  color: #fff;
+  background: url('/wp-content/uploads/2026/05/Grupo-252.png') center / cover no-repeat, var(--navy);
+  border-radius: 24px;
+}
+@media (max-width: 1400px) {
+  .page-destinos .mill {
+    left: -180px;
+    width: 140px;
+  }
+}
+@media (max-width: 1250px) {
+  .page-destinos .mill {
+    display: none;
+  }
+}
+@media (max-width: 1000px) {
+  .page-destinos .cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+}
+@media (max-width: 640px) {
+  .page-destinos .hero {
+    min-height: 560px;
+    background-position: 70% center;
+  }
+  .page-destinos .cards {
+    grid-template-columns: 1fr;
+  }
+  .page-destinos .list-section {
+    padding: 60px 0 70px;
+  }
+  .page-destinos .intro {
+    margin-bottom: 40px;
+  }
+}

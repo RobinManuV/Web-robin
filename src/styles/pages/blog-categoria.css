@@ -1,0 +1,15 @@
+/* Categoría del blog — todo va dentro de .page-blog-categoria (clase del <main>) */
+
+.page-blog-categoria .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.page-blog-categoria .category {
+  padding-block: 70px 110px;
+  max-width: 1000px;
+}
+.page-blog-categoria .category-title {
+  margin: 14px 0 40px;
+}

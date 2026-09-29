@@ -1,0 +1,37 @@
+/* Componente LeadForm.astro — todo va dentro de .lead-form */
+
+.lead-form {
+  display: grid;
+  gap: 16px;
+}
+.lead-form .consent {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  font-weight: 400;
+}
+.lead-form .consent input {
+  margin-top: 3px;
+}
+.lead-form .consent a {
+  color: inherit;
+}
+.lead-form .btn {
+  justify-self: start;
+}
+.lead-form .btn-full {
+  justify-self: stretch !important;
+  width: 100%;
+}
+.lead-form .news input {
+  width: 100%;
+  font: inherit;
+  font-size: 16px;
+  padding: 13px 16px;
+  border-radius: 8px;
+  border: 1px solid #c9cfdc;
+}
+.lead-form .dark {
+  color: var(--cream);
+}

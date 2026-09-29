@@ -1,0 +1,120 @@
+/* Componente Footer.astro — todo va dentro de .site-footer */
+
+.site-footer {
+  background: var(--navy);
+  color: var(--cream);
+  padding: 70px 48px 30px;
+}
+.site-footer .inner {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(var(--cols, 3), 1fr) 1.1fr;
+  gap: 32px;
+}
+.site-footer .brand img {
+  width: 300px;
+  max-width: 100%;
+  height: auto;
+}
+.site-footer .tagline {
+  margin-top: 14px;
+  font-family: var(--font-din);
+  font-size: 22px;
+  letter-spacing: 0.01em;
+}
+.site-footer .subtitle {
+  font-size: 16px;
+  line-height: 1.25;
+  max-width: 330px;
+}
+.site-footer .col-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 26px;
+}
+.site-footer .col ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 18px;
+}
+.site-footer .col a {
+  color: var(--cream);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+.site-footer .col a:hover,
+.site-footer .col a.current {
+  color: var(--accent);
+}
+.site-footer .contact p {
+  font-size: 17px;
+  line-height: 1.2;
+}
+.site-footer .contact .label {
+  font-weight: 700;
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+.site-footer .contact p + .label {
+  margin-top: 26px;
+}
+.site-footer .contact a {
+  font-weight: 500;
+  font-size: 17px;
+  word-break: break-word;
+}
+.site-footer .city {
+  margin-top: 26px;
+  font-size: 20px !important;
+}
+.site-footer .bottom {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 34px;
+  font-size: 13px;
+}
+.site-footer .bottom p {
+  margin-left: auto;
+}
+.site-footer .social {
+  color: var(--cream);
+  width: 22px;
+}
+.site-footer .cookie-link {
+  background: none;
+  border: 0;
+  color: var(--cream);
+  text-decoration: underline;
+  font-size: 13px;
+  padding: 0;
+}
+
+@media (max-width: 1024px) {
+  .site-footer .inner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .site-footer .brand {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 560px) {
+  .site-footer {
+    padding: 50px 20px 26px;
+  }
+  .site-footer .inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 20px;
+  }
+  .site-footer .brand img {
+    width: 200px;
+  }
+  .site-footer .bottom {
+    flex-wrap: wrap;
+  }
+  .site-footer .bottom p {
+    margin-left: 0;
+  }
+}

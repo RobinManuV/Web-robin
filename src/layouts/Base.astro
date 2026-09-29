@@ -16,6 +16,7 @@ const {
   canonicalPath = null,
   schema = [],
   headerVariant = 'light',
+  pageClass = '', // clase del <main> que da ámbito a la hoja de estilos de cada página
 } = Astro.props;
 
 const canonical = new URL(canonicalPath || Astro.url.pathname, SITE.url).href;
@@ -133,26 +134,10 @@ const schemas = [organization, ...(Array.isArray(schema) ? schema : [schema])];
     </noscript>
     <a class="skip-link" href="#contenido">Ir al contenido</a>
     <Header variant={headerVariant} />
-    <main id="contenido">
+    <main id="contenido" class={pageClass || undefined}>
       <slot />
     </main>
     <Footer />
     <CookieBanner />
   </body>
 </html>
-
-<style>
-  .skip-link {
-    position: absolute;
-    left: -9999px;
-    top: 8px;
-    z-index: 1000;
-    background: var(--navy);
-    color: var(--cream);
-    padding: 10px 16px;
-    border-radius: 6px;
-  }
-  .skip-link:focus {
-    left: 8px;
-  }
-</style>

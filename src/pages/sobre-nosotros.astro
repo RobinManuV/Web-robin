@@ -1,4 +1,5 @@
 ---
+import '../styles/pages/sobre-nosotros.css';
 import Base from '../layouts/Base.astro';
 import YouTube from '../components/YouTube.astro';
 import { EQUIPO } from '../data/site.js';
@@ -46,7 +47,7 @@ const schema = {
 };
 ---
 
-<Base
+<Base pageClass="page-sobre-nosotros"
   title="Sobre Project Robin | Equipo y experiencia"
   description="Conoce al equipo de Project Robin y cómo acompañamos a estudiantes y familias en la elección de universidad y la preparación de su experiencia."
   schema={schema}
@@ -138,124 +139,3 @@ const schema = {
   </section>
 </Base>
 
-<style>
-  .intro {
-    padding-block: 60px 60px;
-  }
-  .intro .display {
-    margin: 16px 0 20px;
-  }
-  .story {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 36px;
-    padding-block: 60px;
-    align-items: start;
-  }
-  .story-card {
-    background: var(--navy);
-    color: var(--cream);
-    border-radius: 16px;
-    padding: 36px 28px;
-    display: grid;
-    gap: 16px;
-    font-size: 16px;
-  }
-  .story-card .display-md {
-    color: var(--cream);
-  }
-  .team ul {
-    list-style: none;
-    padding: 0;
-    margin: 24px 0 0;
-    display: grid;
-    gap: 14px;
-  }
-  .team .display-md {
-    margin: 12px 0;
-  }
-  .team li {
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 16px;
-    align-items: center;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
-    padding: 18px;
-  }
-  .team img {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: top;
-  }
-  .team h3 {
-    font-size: 22px;
-  }
-  .team h3 a {
-    text-decoration: none;
-  }
-  .role {
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    margin: 2px 0 4px;
-  }
-  .team li p:last-child {
-    font-size: 15px;
-  }
-  .press {
-    padding-block: 70px;
-  }
-  .press h2 {
-    margin: 14px auto;
-    max-width: 900px;
-  }
-  .press-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    margin-top: 40px;
-  }
-  .press-card {
-    background: #fff;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
-  }
-  .press-body {
-    padding: 26px;
-    display: grid;
-    gap: 10px;
-    justify-items: start;
-  }
-  .medio {
-    font-size: 14px;
-  }
-  .kicker {
-    font-size: 26px;
-    font-weight: 700;
-    text-transform: uppercase;
-    line-height: 1.1;
-  }
-  .press-body h3 {
-    font-size: 17px;
-  }
-  .world {
-    padding: 80px var(--gutter);
-    display: grid;
-    justify-items: center;
-    gap: 18px;
-  }
-  .world .text {
-    max-width: 760px;
-  }
-  @media (max-width: 900px) {
-    .story,
-    .press-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>

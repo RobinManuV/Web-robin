@@ -1,4 +1,5 @@
 ---
+import '../styles/pages/legal.css';
 import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
@@ -10,13 +11,13 @@ const { p } = Astro.props;
 const { Content } = await render(p);
 ---
 
-<Base title={`${p.data.title} | Project Robin`} description={p.data.description}>
+<Base pageClass="page-legal" title={`${p.data.title} | Project Robin`} description={p.data.description}>
   <article class="legal">
     <p class="eyebrow center">Legal</p>
     <h1 class="title center">{p.data.title}</h1>
     {
       p.id === 'politica-de-cookies' && (
-        <p class="center" style="margin:20px 0 10px">
+        <p class="center cookie-prefs">
           <button type="button" class="btn" data-open-cookies>
             Cambiar mis preferencias de cookies
           </button>
@@ -27,14 +28,3 @@ const { Content } = await render(p);
   </article>
 </Base>
 
-<style>
-  .legal {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 60px var(--gutter) 100px;
-  }
-  .legal h1 {
-    font-size: clamp(30px, 4vw, 46px);
-    margin: 10px 0 30px;
-  }
-</style>

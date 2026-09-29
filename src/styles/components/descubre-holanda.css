@@ -1,0 +1,98 @@
+/* Componente DescubreHolanda.astro — todo va dentro de .rh */
+
+.rh {
+  position: relative;
+  min-height: 640px;
+  display: flex;
+  overflow: hidden;
+  border-radius: 24px;
+  margin-inline: 0;
+  color: #fff;
+}
+.rh .bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.rh .bg.on {
+  opacity: 1;
+}
+.rh::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, rgba(13, 20, 46, 0.6), rgba(13, 20, 46, 0.15) 45%, rgba(13, 20, 46, 0) 70%),
+    linear-gradient(0deg, rgba(13, 20, 46, 0.55), rgba(13, 20, 46, 0) 40%);
+}
+.rh .wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 56px 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.rh .eyebrow-s {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.rh .t {
+  font-size: 44px;
+  font-weight: 800;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+.rh .city {
+  font-size: clamp(44px, 7vw, 92px);
+  font-weight: 800;
+  line-height: 0.95;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.rh .arrows {
+  position: absolute;
+  right: 40px;
+  bottom: 36px;
+  z-index: 2;
+  display: flex;
+  gap: 14px;
+}
+.rh .arrows button {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  background: transparent;
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+}
+.rh .arrows button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+@media (max-width: 767px) {
+  .rh {
+    min-height: 460px;
+    border-radius: 18px;
+  }
+  .rh .wrap {
+    padding: 32px 22px 90px;
+  }
+  .rh .t {
+    font-size: 26px;
+  }
+  .rh .arrows {
+    right: 22px;
+    bottom: 24px;
+  }
+}

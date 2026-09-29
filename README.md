@@ -14,7 +14,17 @@ Sustituye a la web de WordPress + Elementor y **mantiene exactamente las mismas 
 | Artículos del blog | `src/content/blog/*.md` (un archivo por artículo) |
 | Páginas legales | `src/content/legal/*.md` |
 | Home y resto de páginas | `src/pages/` |
-| Colores y tipografías | `src/styles/global.css` |
+| Colores, tipografías, botones y estilos comunes | `src/styles/global.css` |
+| Estilos de una página concreta | `src/styles/pages/<página>.css` |
+| Estilos de un bloque que se repite (cabecera, pie, formulario…) | `src/styles/components/<bloque>.css` |
+
+### Cómo están organizados los estilos
+
+- El HTML (`src/pages`, `src/components`, `src/layouts`) no lleva estilos dentro: todo el CSS está en `src/styles/`.
+- `global.css`: variables (colores, medidas), tipografía, botones, contenedores y utilidades comunes.
+- `pages/*.css`: una hoja por página o plantilla. Cada página pone su clase en el `<main>` (`page-home`, `page-destino`…) y todas sus reglas empiezan por esa clase, para que no afecten a otras páginas.
+- `components/*.css`: una hoja por componente. Sus reglas empiezan por la clase raíz del componente (`.site-header`, `.site-footer`, `.lead-form`…).
+- Solo quedan atributos `style` para valores que vienen de los datos (fotos de fondo, número de columnas, retrasos de animación) y el fragmento oficial de Google Tag Manager.
 
 Para añadir un artículo al blog, copia cualquier `.md` de `src/content/blog/`, cambia el nombre del archivo (será la URL) y el texto.
 

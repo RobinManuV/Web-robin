@@ -1,0 +1,53 @@
+/* Componente ContactSection.astro — todo va dentro de .contact-section */
+
+.contact-section {
+  padding-block: clamp(56px, 7vw, 100px);
+}
+.contact-section .wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 48px;
+  align-items: center;
+}
+.contact-section .left .eyebrow {
+  margin-bottom: 44px;
+}
+.contact-section .left h2 {
+  max-width: 380px;
+}
+.contact-section .info {
+  list-style: none;
+  padding: 0;
+  margin: 56px 0 0;
+  display: grid;
+  gap: 16px;
+  font-size: 22px;
+}
+.contact-section .info li {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.contact-section .info svg {
+  width: 24px;
+  height: 24px;
+  flex: none;
+}
+.contact-section .info a {
+  text-decoration: none;
+}
+@media (max-width: 900px) {
+  .contact-section .wrap {
+    grid-template-columns: 1fr;
+  }
+  .contact-section .left .eyebrow {
+    margin-bottom: 18px;
+  }
+  .contact-section .info {
+    margin-top: 28px;
+    font-size: 18px;
+  }
+}

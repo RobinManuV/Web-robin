@@ -1,0 +1,145 @@
+/* Colegios — todo va dentro de .page-colegios (clase del <main>) */
+
+.page-colegios .hero {
+  padding-block: 70px 80px;
+}
+.page-colegios .hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+.page-colegios .hero-text {
+  display: grid;
+  gap: 20px;
+  justify-items: start;
+}
+.page-colegios .hero .display-xl {
+  color: var(--cream);
+  font-size: clamp(44px, 5.4vw, 80px);
+}
+.page-colegios .hero .tick-list {
+  font-size: 19px;
+}
+.page-colegios .hero-photo {
+  border-radius: 16px;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+}
+.page-colegios .paso-img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: -32px;
+}
+.page-colegios .pasos li {
+  display: grid;
+  justify-items: center;
+}
+.page-colegios .pasos .n {
+  position: relative;
+}
+.page-colegios .pasos {
+  list-style: none;
+  padding: 0;
+  margin: 50px 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+}
+.page-colegios .pasos .n {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid var(--navy);
+  background: var(--cream-text);
+  display: grid;
+  place-items: center;
+  margin: 0 auto 14px;
+  font-weight: 700;
+  font-size: 22px;
+}
+.page-colegios .pasos h3 {
+  font-size: 22px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.page-colegios .pasos p {
+  font-size: 16px;
+}
+.page-colegios .cols {
+  list-style: none;
+  padding: 0;
+  margin: 40px auto 0;
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+.page-colegios .cols li {
+  border: 2px solid #d5d9e6;
+  border-radius: 10px;
+  padding: 28px 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 16px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+}
+.page-colegios .cols .next {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: #fdf6e9;
+}
+.page-colegios .talk {
+  padding-block: 80px;
+}
+.page-colegios .talk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+.page-colegios .talk .display-md {
+  color: var(--cream);
+  margin: 12px 0;
+}
+.page-colegios .talk .lbl {
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 26px;
+}
+.page-colegios .talk-grid > div:first-child a {
+  color: var(--cream);
+}
+.page-colegios .form-card {
+  background: #fff;
+  color: var(--navy);
+  border-radius: 12px;
+  padding: 28px;
+}
+.page-colegios .form-card h3 {
+  font-size: 22px;
+  text-transform: uppercase;
+}
+.page-colegios .form-card .small {
+  margin: 4px 0 18px;
+}
+@media (max-width: 900px) {
+  .page-colegios .hero-grid,
+  .page-colegios .talk-grid {
+    grid-template-columns: 1fr;
+  }
+  .page-colegios .pasos {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.page-colegios .section-title {
+  margin: 14px 0 12px;
+}

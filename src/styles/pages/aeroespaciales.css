@@ -1,0 +1,246 @@
+/* Aeroespaciales Delft — todo va dentro de .page-aeroespaciales (clase del <main>) */
+
+.page-aeroespaciales .hero {
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: 0 0 24px 24px;
+  padding-block: 60px 80px;
+}
+.page-aeroespaciales .hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: clamp(30px, 5vw, 70px);
+  align-items: center;
+}
+.page-aeroespaciales .hero-text {
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+}
+.page-aeroespaciales .hero .display-md {
+  color: var(--cream-text);
+}
+.page-aeroespaciales .hero .eyebrow {
+  color: var(--accent);
+}
+.page-aeroespaciales .link-back {
+  color: var(--cream);
+  font-size: 15px;
+}
+.page-aeroespaciales .stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.page-aeroespaciales .stat {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+}
+.page-aeroespaciales .stat .num {
+  font-size: clamp(30px, 3vw, 42px);
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.page-aeroespaciales .stat.hl {
+  background: var(--accent);
+  color: var(--navy);
+}
+.page-aeroespaciales .tag {
+  display: inline-block;
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.page-aeroespaciales .stats-note {
+  grid-column: span 2;
+  font-size: 13px;
+  opacity: 0.75;
+}
+.page-aeroespaciales .h2 {
+  margin: 14px 0 26px;
+}
+.page-aeroespaciales .intro {
+  max-width: 780px;
+  margin: -10px 0 30px;
+  line-height: 1.5;
+}
+.page-aeroespaciales .proceso {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.page-aeroespaciales .proceso li {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  border-top: 3px solid var(--navy);
+  padding-top: 18px;
+}
+.page-aeroespaciales .proceso span {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 20px;
+}
+.page-aeroespaciales .proceso h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.page-aeroespaciales .proceso p,
+.page-aeroespaciales .fase p,
+.page-aeroespaciales .grupos p {
+  font-size: 16px;
+  line-height: 1.45;
+}
+.page-aeroespaciales .fases {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.page-aeroespaciales .fase {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 26px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+.page-aeroespaciales .fase .fase-when {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--navy-3);
+}
+.page-aeroespaciales .fase h3 {
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.page-aeroespaciales .grupos {
+  margin-top: 20px;
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: 16px;
+  padding: 22px 28px;
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+.page-aeroespaciales .grupos-num {
+  font-size: 64px !important;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+}
+.page-aeroespaciales .grupos-title {
+  font-size: 20px !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.page-aeroespaciales .incluye {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.page-aeroespaciales .inc {
+  border: 2px solid var(--navy);
+  border-radius: 16px;
+  padding: 24px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+.page-aeroespaciales .inc-n {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent-dark);
+}
+.page-aeroespaciales .inc h3 {
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.page-aeroespaciales .inc .check-list {
+  font-size: 15px;
+}
+.page-aeroespaciales .faq-list {
+  max-width: 860px;
+  margin: 0 auto;
+  display: grid;
+  gap: 12px;
+}
+.page-aeroespaciales .faq details {
+  border: 2px solid var(--navy);
+  border-radius: 14px;
+  padding: 0 22px;
+  background: var(--white);
+}
+.page-aeroespaciales .faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 18px 30px 18px 0;
+  font-size: 19px;
+  font-weight: 700;
+  position: relative;
+}
+.page-aeroespaciales .faq summary::-webkit-details-marker {
+  display: none;
+}
+.page-aeroespaciales .faq summary::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  translate: 0 -50%;
+  font-size: 26px;
+  color: var(--accent-dark);
+  transition: rotate 0.2s;
+}
+.page-aeroespaciales .faq details[open] summary::after {
+  rotate: 45deg;
+}
+.page-aeroespaciales .faq details p {
+  padding-bottom: 20px;
+  font-size: 17px;
+  line-height: 1.5;
+}
+.page-aeroespaciales .more {
+  margin-top: 26px;
+  font-size: 17px;
+}
+.page-aeroespaciales .more a {
+  font-weight: 700;
+}
+@media (max-width: 1000px) {
+  .page-aeroespaciales .hero-grid,
+  .page-aeroespaciales .fases {
+    grid-template-columns: 1fr;
+  }
+  .page-aeroespaciales .proceso,
+  .page-aeroespaciales .incluye {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .page-aeroespaciales .proceso,
+  .page-aeroespaciales .incluye {
+    grid-template-columns: 1fr;
+  }
+}

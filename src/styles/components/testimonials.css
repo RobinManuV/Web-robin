@@ -1,0 +1,106 @@
+/* Componente Testimonials.astro — todo va dentro de .tst */
+
+.tst {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: center;
+  gap: 24px;
+}
+.tst .viewport {
+  overflow: hidden;
+}
+.tst .track {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  transition: transform 0.5s ease;
+}
+.tst .slide {
+  flex: 0 0 100%;
+  display: flex;
+  justify-content: center;
+}
+.tst .card-t {
+  margin: 0;
+  background: var(--cream);
+  color: var(--navy);
+  border-radius: 24px;
+  padding: 40px 46px;
+  width: 100%;
+  max-width: 630px;
+}
+.tst .name {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 600;
+}
+.tst .prog {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 6px;
+}
+.tst blockquote {
+  margin: 42px 0 0;
+  font-size: 21px;
+  line-height: 1.5;
+}
+.tst .stars {
+  margin-top: 28px;
+  font-size: 26px;
+  letter-spacing: 4px;
+}
+.tst .arrow {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 2px solid var(--cream);
+  background: transparent;
+  color: var(--cream);
+  font-size: 30px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+}
+.tst .arrow:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.tst .dots {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.tst .dots button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.4);
+}
+.tst .dots button.on {
+  background: #fff;
+}
+@media (max-width: 700px) {
+  .tst {
+    grid-template-columns: 1fr;
+  }
+  .tst .arrow {
+    display: none;
+  }
+  .tst .card-t {
+    padding: 28px 22px;
+  }
+  .tst .name {
+    font-size: 26px;
+  }
+  .tst .prog {
+    font-size: 18px;
+  }
+  .tst blockquote {
+    font-size: 17px;
+    margin-top: 24px;
+  }
+}

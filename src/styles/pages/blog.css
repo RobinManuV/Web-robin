@@ -1,0 +1,28 @@
+/* Portada del blog — todo va dentro de .page-blog (clase del <main>) */
+
+.page-blog .blog {
+  padding-block: 70px 110px;
+  max-width: 1000px;
+}
+.page-blog .display {
+  margin: 14px 0 18px;
+}
+.page-blog .intro {
+  max-width: 600px;
+  margin: 0 auto 50px;
+}
+.page-blog .grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+@media (max-width: 800px) {
+  .page-blog .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 520px) {
+  .page-blog .grid {
+    grid-template-columns: 1fr;
+  }
+}

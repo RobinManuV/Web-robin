@@ -1,4 +1,5 @@
 ---
+import '../styles/components/contact-section.css';
 // Bloque "¿Preparado para empezar?" + reservador. Aparece al final de casi todas las páginas.
 import BookingWidget from './BookingWidget.astro';
 import { CONTACT } from '../data/site.js';
@@ -31,56 +32,3 @@ const { tag = 'general' } = Astro.props;
   </div>
 </section>
 
-<style>
-  .contact-section {
-    padding-block: clamp(56px, 7vw, 100px);
-  }
-  .wrap {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding-inline: var(--gutter);
-    display: grid;
-    grid-template-columns: 1fr 1.25fr;
-    gap: 48px;
-    align-items: center;
-  }
-  .left .eyebrow {
-    margin-bottom: 44px;
-  }
-  .left h2 {
-    max-width: 380px;
-  }
-  .info {
-    list-style: none;
-    padding: 0;
-    margin: 56px 0 0;
-    display: grid;
-    gap: 16px;
-    font-size: 22px;
-  }
-  .info li {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-  }
-  .info svg {
-    width: 24px;
-    height: 24px;
-    flex: none;
-  }
-  .info a {
-    text-decoration: none;
-  }
-  @media (max-width: 900px) {
-    .wrap {
-      grid-template-columns: 1fr;
-    }
-    .left .eyebrow {
-      margin-bottom: 18px;
-    }
-    .info {
-      margin-top: 28px;
-      font-size: 18px;
-    }
-  }
-</style>

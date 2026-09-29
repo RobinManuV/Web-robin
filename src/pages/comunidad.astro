@@ -1,4 +1,5 @@
 ---
+import '../styles/pages/comunidad.css';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import BlogCard from '../components/BlogCard.astro';
@@ -9,7 +10,7 @@ import { PRODUCTOS } from '../data/tienda.js';
 const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) => b.data.date - a.data.date).slice(0, 6);
 ---
 
-<Base
+<Base pageClass="page-comunidad"
   title="Comunidad de estudiantes internacionales | Project Robin"
   description="Testimonios reales, consejos y recursos de estudiantes internacionales en Europa. Historias sin filtro de quienes ya dieron el paso."
 >
@@ -41,8 +42,8 @@ const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) =>
   <section class="section bg-cream" id="testimonios">
     <div class="container">
       <p class="eyebrow center">Testimonios</p>
-      <h2 class="display-md center" style="margin:14px 0 12px">Sin guión, sin filtro</h2>
-      <p class="text center" style="max-width:640px;margin:0 auto 40px">Vídeos cortos de nuestros Robins contando qué esperaban, qué se encontraron y qué cambiarían. Desliza para descubrir más historias.</p>
+      <h2 class="display-md center section-title">Sin guión, sin filtro</h2>
+      <p class="text center section-intro section-intro--wide">Vídeos cortos de nuestros Robins contando qué esperaban, qué se encontraron y qué cambiarían. Desliza para descubrir más historias.</p>
       <div class="shorts" data-shorts>
         <ul class="shorts-track" data-track>
           {
@@ -80,8 +81,8 @@ const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) =>
 
   <section class="section container" id="tienda">
     <p class="eyebrow center">Sé un Robin</p>
-    <h2 class="display-md center" style="margin:14px 0 12px">Viste el estilo Robin</h2>
-    <p class="text center" style="max-width:600px;margin:0 auto 40px">Nuestra colección exclusiva. Perfecta para estudiantes internacionales que sienten orgullo de formar parte de la comunidad.</p>
+    <h2 class="display-md center section-title">Viste el estilo Robin</h2>
+    <p class="text center section-intro">Nuestra colección exclusiva. Perfecta para estudiantes internacionales que sienten orgullo de formar parte de la comunidad.</p>
     <div class="shop">
       {
         PRODUCTOS.map((p) => (
@@ -103,12 +104,12 @@ const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) =>
   </section>
 
   <section class="section bg-cream">
-    <div class="container" style="max-width:1000px">
+    <div class="container container--blog">
       <p class="eyebrow center">Blog Robin</p>
-      <h2 class="display-md center" style="margin:14px 0 12px">Lo que nos hubiera gustado leer</h2>
-      <p class="text center" style="max-width:600px;margin:0 auto 40px">Artículos honestos sobre becas, costes, decisiones, burocracia y vida universitaria. Escritos por gente que ya hizo este camino.</p>
+      <h2 class="display-md center section-title">Lo que nos hubiera gustado leer</h2>
+      <p class="text center section-intro">Artículos honestos sobre becas, costes, decisiones, burocracia y vida universitaria. Escritos por gente que ya hizo este camino.</p>
       <div class="blog">{posts.map((p) => <BlogCard post={p} />)}</div>
-      <p class="center" style="margin-top:30px"><a class="btn" href="/blog/">Ver todos los artículos</a></p>
+      <p class="center section-cta"><a class="btn" href="/blog/">Ver todos los artículos</a></p>
     </div>
   </section>
 </Base>
@@ -123,224 +124,3 @@ const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) =>
   });
 </script>
 
-<style>
-  .shorts {
-    margin-bottom: 56px;
-  }
-  .shorts-track {
-    list-style: none;
-    margin: 0;
-    padding: 4px 4px 12px;
-    display: flex;
-    gap: 18px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-  .shorts-track::-webkit-scrollbar {
-    display: none;
-  }
-  .short {
-    flex: 0 0 calc((100% - 3 * 18px) / 4);
-    scroll-snap-align: start;
-    min-width: 220px;
-  }
-  .short .yt {
-    box-shadow: 0 10px 30px rgba(45, 58, 100, 0.15);
-  }
-  .shorts-nav {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 18px;
-  }
-  .shorts-arrow {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: 2px solid var(--navy);
-    background: var(--white);
-    color: var(--navy);
-    font-size: 20px;
-    line-height: 1;
-    transition: background 0.2s, color 0.2s;
-  }
-  .shorts-arrow:hover {
-    background: var(--navy);
-    color: var(--cream);
-  }
-  .hero {
-    color: #fff;
-    background: linear-gradient(90deg, rgba(45, 58, 100, 0.92), rgba(45, 58, 100, 0.55)), url('/fotos/comunidad-fondo.webp') center / cover;
-    border-radius: 0 0 24px 24px;
-    padding-block: 80px;
-  }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 50px;
-    align-items: center;
-  }
-  .hero-text {
-    display: grid;
-    gap: 16px;
-  }
-  .hero .display-md {
-    color: #fff;
-  }
-  .robins {
-    background: var(--accent);
-    border-radius: 16px;
-    overflow: hidden;
-    color: var(--navy);
-  }
-  .robins-photo {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-  }
-  .robins-body {
-    padding: 22px 26px 26px;
-  }
-  .robins-title {
-    font-size: 30px;
-    font-weight: 800;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .robins .tick-list {
-    font-size: 15px;
-    font-weight: 700;
-  }
-  .robins .tick-list li::before {
-    filter: brightness(0) saturate(100%) invert(19%) sepia(21%) saturate(1600%) hue-rotate(196deg);
-  }
-  .t-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    align-items: start;
-  }
-  .t-video {
-    grid-column: span 2;
-  }
-  .t-card {
-    margin: 0;
-    background: #fff;
-    border-radius: 14px;
-    padding: 22px;
-    box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
-  }
-  .t-card img {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    object-fit: cover;
-    float: left;
-    margin-right: 12px;
-  }
-  .t-card figcaption {
-    display: grid;
-    min-height: 56px;
-    align-content: center;
-  }
-  .t-card span {
-    font-size: 14px;
-  }
-  .t-card blockquote {
-    clear: both;
-    margin: 14px 0 0;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 1.5;
-  }
-  .shop {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-  .prod {
-    background: #fff;
-    border-radius: 14px;
-    padding: 12px 12px 18px;
-    box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
-    display: grid;
-    gap: 10px;
-    text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .prod:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 36px rgba(45, 58, 100, 0.14);
-  }
-  .prod-top {
-    position: relative;
-    aspect-ratio: 1;
-    border-radius: 10px;
-    overflow: hidden;
-    background: var(--navy);
-  }
-  .prod-top img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .prod-soon-art {
-    display: grid;
-    place-items: center;
-    height: 100%;
-    color: var(--accent);
-    font-size: 30px;
-    font-weight: 800;
-    text-transform: uppercase;
-  }
-  .prod-badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: var(--accent);
-    color: var(--navy);
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 6px 12px;
-    border-radius: 999px;
-  }
-  .prod h3 {
-    font-size: 20px;
-    margin-top: 6px;
-    padding-inline: 4px;
-  }
-  .prod .small {
-    padding-inline: 4px;
-  }
-  .prod-foot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 6px;
-    padding-inline: 4px;
-  }
-  .blog {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-  }
-  @media (max-width: 900px) {
-    .short {
-      flex-basis: 62%;
-      min-width: 0;
-    }
-    .hero-grid,
-    .t-grid,
-    .shop,
-    .blog {
-      grid-template-columns: 1fr;
-    }
-    .t-video {
-      grid-column: auto;
-    }
-  }
-</style>

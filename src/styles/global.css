@@ -171,6 +171,13 @@ button {
   margin-top: var(--stack, 20px);
 }
 
+/* Separación entre hijos de .stack: .stack--16, .stack--24… */
+.stack--16 { --stack: 16px; }
+.stack--18 { --stack: 18px; }
+.stack--20 { --stack: 20px; }
+.stack--24 { --stack: 24px; }
+.stack--34 { --stack: 34px; }
+
 /* ---------- Tipografía ---------- */
 
 .eyebrow {
@@ -302,6 +309,10 @@ button {
 .btn-sm {
   padding: 9px 18px;
   font-size: 15px;
+}
+
+.btn-row--center {
+  justify-content: center;
 }
 
 .btn-row {
@@ -471,6 +482,23 @@ button {
 .hp {
   position: absolute;
   left: -9999px;
+}
+
+/* ---------- Enlace "saltar al contenido" (accesibilidad) ---------- */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 1000;
+  background: var(--navy);
+  color: var(--cream);
+  padding: 10px 16px;
+  border-radius: 6px;
+}
+
+.skip-link:focus {
+  left: 8px;
 }
 
 /* ---------- Prosa (blog, legales) ---------- */

@@ -1,4 +1,5 @@
 ---
+import '../styles/components/lead-form.css';
 import { ESPANA_PUBLICADA } from '../data/site.js';
 // Formulario conectado a Netlify Forms.
 // Cada formulario lleva un campo oculto "tag" con el origen del lead
@@ -175,40 +176,3 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
   });
 </script>
 
-<style>
-  .lead-form {
-    display: grid;
-    gap: 16px;
-  }
-  .consent {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    font-size: 14px;
-    font-weight: 400;
-  }
-  .consent input {
-    margin-top: 3px;
-  }
-  .consent a {
-    color: inherit;
-  }
-  .lead-form .btn {
-    justify-self: start;
-  }
-  .btn-full {
-    justify-self: stretch !important;
-    width: 100%;
-  }
-  .news input {
-    width: 100%;
-    font: inherit;
-    font-size: 16px;
-    padding: 13px 16px;
-    border-radius: 8px;
-    border: 1px solid #c9cfdc;
-  }
-  .dark {
-    color: var(--cream);
-  }
-</style>

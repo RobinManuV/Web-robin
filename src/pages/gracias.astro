@@ -1,12 +1,13 @@
 ---
+import '../styles/pages/mensaje.css';
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="¡Gracias! | Project Robin" noindex>
-  <section class="container center" style="padding-block:140px">
+<Base pageClass="page-mensaje" title="¡Gracias! | Project Robin" noindex>
+  <section class="container center message">
     <p class="eyebrow">Mensaje recibido</p>
-    <h1 class="display-md" style="margin:16px 0 20px">¡Gracias por escribirnos!</h1>
+    <h1 class="display-md message-title">¡Gracias por escribirnos!</h1>
     <p class="lead">Te respondemos en menos de 24 horas laborables.</p>
-    <p style="margin-top:30px"><a class="btn" href="/">Volver al inicio</a></p>
+    <p class="message-cta"><a class="btn" href="/">Volver al inicio</a></p>
   </section>
 </Base>

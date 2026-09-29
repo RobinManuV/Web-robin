@@ -1,0 +1,73 @@
+/* Landing Yuselico Studios — todo va dentro de .page-yuselico (clase del <main>) */
+
+.page-yuselico .lp {
+  background: var(--navy);
+  border-radius: 0 0 24px 24px;
+  padding-block: clamp(50px, 7vw, 90px);
+}
+.page-yuselico .lp-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  gap: clamp(28px, 4vw, 44px);
+  justify-items: center;
+  text-align: center;
+}
+.page-yuselico .lp .lp-title {
+  color: var(--cream-text);
+}
+.page-yuselico .lp-title {
+  max-width: 860px;
+}
+.page-yuselico .lp-video {
+  width: 100%;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  border-radius: 18px;
+}
+/* El formulario sube sobre el final del bloque azul y ocupa casi todo el ancho */
+.page-yuselico .lp {
+  padding-bottom: clamp(120px, 14vw, 170px) !important;
+}
+.page-yuselico .lp-form {
+  padding: 0 var(--gutter) clamp(50px, 7vw, 90px);
+  margin-top: clamp(-120px, -10vw, -80px);
+  position: relative;
+}
+.page-yuselico .form-card {
+  max-width: 1180px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(45, 58, 100, 0.18);
+  padding: clamp(26px, 4vw, 56px);
+  display: grid;
+  gap: clamp(22px, 3vw, 34px);
+}
+.page-yuselico .form-card .lp-title {
+  text-align: center;
+  margin: 0 auto;
+}
+/* 4 campos por fila en escritorio: nombre, email, teléfono y servicio; el mensaje debajo */
+@media (min-width: 900px) {
+  .page-yuselico .form-card .form-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px 18px;
+  }
+  .page-yuselico .form-card .form-grid .full {
+    grid-column: auto;
+  }
+  .page-yuselico .form-card .form-grid .field:last-child {
+    grid-column: 1 / -1;
+  }
+}
+.page-yuselico .form-card textarea {
+  min-height: 120px;
+}
+.page-yuselico .form-card .lead-form .btn {
+  justify-self: center !important;
+  min-width: 280px;
+}
+.page-yuselico .form-card .consent {
+  justify-content: center;
+}

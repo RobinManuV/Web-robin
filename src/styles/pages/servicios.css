@@ -1,0 +1,70 @@
+/* Listado de servicios — todo va dentro de .page-servicios (clase del <main>) */
+
+.page-servicios .packs-wrap {
+  padding-block: 60px 90px;
+}
+.page-servicios .display {
+  margin: 14px 0 12px;
+}
+.page-servicios .packs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+  margin-top: 70px;
+  align-items: stretch;
+}
+.page-servicios .pack {
+  position: relative;
+  background: #dde2f1;
+  border: 2px solid var(--navy);
+  border-radius: 16px;
+  padding: 90px 28px 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.page-servicios .badge {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  background: var(--navy);
+  color: var(--cream);
+  text-align: center;
+  padding: 14px;
+  border-radius: 16px 16px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  transform: translateY(-40px);
+}
+.page-servicios .pack h2 {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+}
+.page-servicios .pack .tick-list {
+  font-size: 16px;
+  font-weight: 700;
+}
+.page-servicios .pack .small {
+  flex: 1;
+}
+.page-servicios .pack .btn {
+  align-self: center;
+}
+@media (max-width: 1200px) {
+  .page-servicios .packs {
+    grid-template-columns: repeat(2, minmax(0, 420px));
+    justify-content: center;
+    row-gap: 70px;
+  }
+}
+@media (max-width: 950px) {
+  .page-servicios .packs {
+    grid-template-columns: 1fr;
+    max-width: 460px;
+    margin-inline: auto;
+    gap: 70px;
+  }
+}

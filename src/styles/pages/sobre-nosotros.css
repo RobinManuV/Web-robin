@@ -1,0 +1,121 @@
+/* Sobre nosotros — todo va dentro de .page-sobre-nosotros (clase del <main>) */
+
+.page-sobre-nosotros .intro {
+  padding-block: 60px 60px;
+}
+.page-sobre-nosotros .intro .display {
+  margin: 16px 0 20px;
+}
+.page-sobre-nosotros .story {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  padding-block: 60px;
+  align-items: start;
+}
+.page-sobre-nosotros .story-card {
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: 16px;
+  padding: 36px 28px;
+  display: grid;
+  gap: 16px;
+  font-size: 16px;
+}
+.page-sobre-nosotros .story-card .display-md {
+  color: var(--cream);
+}
+.page-sobre-nosotros .team ul {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+  display: grid;
+  gap: 14px;
+}
+.page-sobre-nosotros .team .display-md {
+  margin: 12px 0;
+}
+.page-sobre-nosotros .team li {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 16px;
+  align-items: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
+  padding: 18px;
+}
+.page-sobre-nosotros .team img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+}
+.page-sobre-nosotros .team h3 {
+  font-size: 22px;
+}
+.page-sobre-nosotros .team h3 a {
+  text-decoration: none;
+}
+.page-sobre-nosotros .role {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 2px 0 4px;
+}
+.page-sobre-nosotros .team li p:last-child {
+  font-size: 15px;
+}
+.page-sobre-nosotros .press {
+  padding-block: 70px;
+}
+.page-sobre-nosotros .press h2 {
+  margin: 14px auto;
+  max-width: 900px;
+}
+.page-sobre-nosotros .press-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 40px;
+}
+.page-sobre-nosotros .press-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
+}
+.page-sobre-nosotros .press-body {
+  padding: 26px;
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+.page-sobre-nosotros .medio {
+  font-size: 14px;
+}
+.page-sobre-nosotros .kicker {
+  font-size: 26px;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+.page-sobre-nosotros .press-body h3 {
+  font-size: 17px;
+}
+.page-sobre-nosotros .world {
+  padding: 80px var(--gutter);
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+}
+.page-sobre-nosotros .world .text {
+  max-width: 760px;
+}
+@media (max-width: 900px) {
+  .page-sobre-nosotros .story,
+  .page-sobre-nosotros .press-grid {
+    grid-template-columns: 1fr;
+  }
+}

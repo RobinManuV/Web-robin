@@ -1,0 +1,17 @@
+/* Páginas de mensaje (404 y gracias) — todo va dentro de .page-mensaje (clase del <main>) */
+
+.page-mensaje .message {
+  padding-block: 140px;
+}
+.page-mensaje .message-img {
+  margin: 0 auto 20px;
+}
+.page-mensaje .message-title {
+  margin: 16px 0 20px;
+}
+.page-mensaje .message-lead {
+  margin: 18px 0 30px;
+}
+.page-mensaje .message-cta {
+  margin-top: 30px;
+}

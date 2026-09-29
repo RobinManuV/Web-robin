@@ -1,0 +1,229 @@
+/* Plantilla de hubs (Holanda, European Experience…) — todo va dentro de .page-hub (clase del <main>) */
+
+.page-hub .hero {
+  position: relative;
+  min-height: 620px;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  background: var(--bg) center / cover no-repeat, var(--navy);
+  border-radius: 0 0 24px 24px;
+  overflow: hidden;
+}
+.page-hub .hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(20, 26, 50, 0.75), rgba(20, 26, 50, 0.3) 60%, rgba(20, 26, 50, 0.05));
+}
+.page-hub .hero-inner {
+  position: relative;
+  max-width: 760px;
+  padding: 80px var(--gutter);
+  display: grid;
+  gap: 16px;
+}
+.page-hub .hero .lead {
+  font-size: 20px;
+}
+.page-hub .hero-list {
+  font-size: 17px;
+  font-weight: 700;
+}
+.page-hub .why {
+  padding-block: 70px 80px;
+}
+.page-hub .why-title {
+  margin: 14px 0 12px;
+}
+.page-hub .why-text {
+  max-width: 900px;
+  margin: 0 auto 40px;
+  font-size: 16px;
+}
+.page-hub .why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  text-align: left;
+}
+.page-hub .why-card {
+  background: var(--cream-text);
+  color: var(--navy);
+  border-radius: 12px;
+  padding: 30px 28px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+.page-hub .why-card.mid {
+  background: var(--accent);
+}
+.page-hub .why-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.page-hub .why-card p {
+  font-size: 15px;
+}
+.page-hub .video {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+}
+.page-hub .video .yt {
+  max-width: 340px;
+  margin-inline: auto;
+}
+.page-hub .net-title {
+  margin: 14px 0 16px;
+  text-transform: none;
+}
+.page-hub .net-text {
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: 16px;
+}
+.page-hub .unis {
+  list-style: none;
+  padding: 0;
+  margin: 50px 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.page-hub .uni {
+  background: var(--white);
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 24px;
+}
+.page-hub .uni-link {
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.page-hub .uni-img {
+  position: relative;
+  height: 160px;
+  background: var(--sky) center / cover no-repeat;
+}
+.page-hub .uni-city {
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  color: #fff;
+  font-size: 13px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+.page-hub .uni-logo {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px;
+  margin: -38px auto 0;
+  position: relative;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+.page-hub .uni h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin: 18px 22px 6px;
+}
+.page-hub .uni-type {
+  margin: 0 22px 10px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+.page-hub .uni-text {
+  margin: 0 22px 18px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.page-hub .uni .btn {
+  align-self: flex-start;
+  margin-left: 22px;
+}
+.page-hub .steps h2 {
+  text-transform: none;
+}
+.page-hub .steps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin: 50px 0 40px;
+}
+.page-hub .steps ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 34px;
+}
+.page-hub .steps li {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 18px;
+  align-items: center;
+}
+.page-hub .n {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+}
+.page-hub .steps h3 {
+  font-size: 24px;
+  font-weight: 600;
+}
+.page-hub .steps p {
+  font-size: 15px;
+}
+.page-hub .steps-grid img {
+  border-radius: 6px;
+}
+.page-hub .band {
+  color: #fff;
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  padding: 150px var(--gutter);
+  background: linear-gradient(rgba(20, 26, 50, 0.55), rgba(20, 26, 50, 0.55)), var(--bg) center / cover no-repeat, #6b6b6b;
+  border-radius: 24px;
+}
+.page-hub .band .display-md {
+  max-width: 1000px;
+}
+@media (max-width: 950px) {
+  .page-hub .why-grid,
+  .page-hub .video,
+  .page-hub .steps-grid {
+    grid-template-columns: 1fr;
+  }
+  .page-hub .unis {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .page-hub .unis {
+    grid-template-columns: 1fr;
+  }
+  .page-hub .band {
+    padding: 90px var(--gutter);
+  }
+}

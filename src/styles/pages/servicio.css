@@ -1,0 +1,119 @@
+/* Página de cada servicio — todo va dentro de .page-servicio (clase del <main>) */
+
+.page-servicio .top {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 60px;
+  align-items: center;
+  padding-block: 110px 100px;
+}
+.page-servicio .top-text {
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+}
+.page-servicio .top-text .display-md {
+  margin: 4px 0 10px;
+}
+.page-servicio .top-text .text {
+  font-size: 18px;
+}
+.page-servicio .features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 24px;
+  background: url('/wp-content/uploads/2024/12/bg_pattern.png') center / contain no-repeat;
+}
+.page-servicio .features li {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 18px;
+  align-items: center;
+  background: rgba(235, 235, 237, 0.92);
+  border-radius: 12px;
+  padding: 28px 30px;
+}
+.page-servicio .f-icon {
+  color: var(--accent);
+}
+.page-servicio .features h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.page-servicio .features p {
+  font-size: 17px;
+}
+.page-servicio .how {
+  background: var(--accent);
+  padding-block: 120px;
+  overflow: hidden;
+}
+.page-servicio .how-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.page-servicio .how-inner img {
+  width: 80%;
+  margin-inline: auto;
+}
+.page-servicio .how-title {
+  text-transform: none;
+  margin: 16px 0 26px;
+}
+.page-servicio .how-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+.page-servicio .how-steps li {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 14px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--cream);
+}
+.page-servicio .n {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--navy);
+  display: grid;
+  place-items: center;
+}
+.page-servicio .how-steps h3 {
+  font-size: 19px;
+  font-weight: 600;
+}
+.page-servicio .how-steps p {
+  font-size: 16px;
+}
+@media (max-width: 950px) {
+  .page-servicio .top,
+  .page-servicio .how-inner {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .page-servicio .top {
+    padding-block: 50px;
+  }
+  .page-servicio .how {
+    padding-block: 60px;
+  }
+  .page-servicio .how-inner img {
+    width: 60%;
+  }
+  .page-servicio .features li {
+    padding: 20px;
+  }
+}

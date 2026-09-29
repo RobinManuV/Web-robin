@@ -1,0 +1,26 @@
+/* Plantilla de contacto — todo va dentro de .page-contacto (clase del <main>) */
+
+.page-contacto .form-sec {
+  padding: 90px var(--gutter) 110px;
+}
+.page-contacto .inner {
+  max-width: 780px;
+  margin: 0 auto;
+}
+.page-contacto .form-sec h1 {
+  margin: 14px 0 40px;
+}
+.page-contacto .book-sec {
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: 24px 24px 0 0;
+  padding: 110px var(--gutter);
+}
+.page-contacto .book-sec h2 {
+  margin: 14px 0 44px;
+}
+.page-contacto .widget {
+  color: var(--navy);
+  max-width: 620px;
+  margin: 0 auto;
+}

@@ -1,0 +1,86 @@
+/* Componente CookieBanner.astro — todo va dentro de .cky */
+
+.cky {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 999;
+  max-width: 440px;
+  width: calc(100% - 40px);
+}
+.cky[hidden] {
+  display: none;
+}
+.cky .panel {
+  background: #fff;
+  color: #212121;
+  border: 1px solid #f4f4f4;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.cky .title {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.cky .desc a {
+  color: #1863dc;
+}
+.cky .prefs {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+.cky .pref-intro {
+  font-size: 13px;
+}
+.cky .pref {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+}
+.cky .pref span {
+  display: grid;
+}
+.cky .pref small {
+  color: #666;
+}
+.cky .pref input {
+  width: 18px;
+  height: 18px;
+  accent-color: #1863dc;
+}
+.cky .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.cky .b {
+  flex: 1 1 auto;
+  padding: 9px 14px;
+  border-radius: 4px;
+  border: 2px solid #1863dc;
+  font-size: 14px;
+  font-weight: 500;
+}
+.cky .b-ghost {
+  background: transparent;
+  color: #1863dc;
+}
+.cky .b-main {
+  background: #1863dc;
+  color: #fff;
+  flex-basis: 100%;
+}
+.cky .b[hidden] {
+  display: none;
+}

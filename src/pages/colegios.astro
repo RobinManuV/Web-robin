@@ -1,4 +1,5 @@
 ---
+import '../styles/pages/colegios.css';
 import Base from '../layouts/Base.astro';
 import LeadForm from '../components/LeadForm.astro';
 import { CONTACT } from '../data/site.js';
@@ -22,7 +23,7 @@ const schema = {
 };
 ---
 
-<Base
+<Base pageClass="page-colegios"
   title="Orientación universitaria para colegios | Project Robin"
   description="Charlas, talleres y tutorías 1:1 de orientación universitaria internacional para alumnos de Bachillerato y sus familias. Partner oficial de tu colegio."
   schema={schema}
@@ -46,7 +47,7 @@ const schema = {
 
   <section class="section container center">
     <p class="eyebrow">Método Robin</p>
-    <h2 class="display-md" style="margin:14px 0 12px">Así trabajamos con tu colegio</h2>
+    <h2 class="display-md section-title">Así trabajamos con tu colegio</h2>
     <p class="text">Un calendario claro, sesiones acotadas y entregables concretos. Cero ruido extra para el equipo docente.</p>
     <ol class="pasos">
       {
@@ -65,7 +66,7 @@ const schema = {
   <section class="section-sm bg-cream">
     <div class="container center">
       <p class="eyebrow">Colegios Robin</p>
-      <h2 class="display-md" style="margin:14px 0 12px">Centros que ya confían en nosotros</h2>
+      <h2 class="display-md section-title">Centros que ya confían en nosotros</h2>
       <p class="text">Colegios e institutos en España y LATAM que colaboran con Robin para orientar a sus alumnos hacia universidades europeas.</p>
       <ul class="cols">
         {colegios.map((c) => <li>{c}</li>)}
@@ -94,144 +95,3 @@ const schema = {
   </section>
 </Base>
 
-<style>
-  .hero {
-    padding-block: 70px 80px;
-  }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-  }
-  .hero-text {
-    display: grid;
-    gap: 20px;
-    justify-items: start;
-  }
-  .hero .display-xl {
-    color: var(--cream);
-    font-size: clamp(44px, 5.4vw, 80px);
-  }
-  .hero .tick-list {
-    font-size: 19px;
-  }
-  .hero-photo {
-    border-radius: 16px;
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
-  }
-  .paso-img {
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    border-radius: 16px;
-    margin-bottom: -32px;
-  }
-  .pasos li {
-    display: grid;
-    justify-items: center;
-  }
-  .pasos .n {
-    position: relative;
-  }
-  .pasos {
-    list-style: none;
-    padding: 0;
-    margin: 50px 0 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 26px;
-  }
-  .pasos .n {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    border: 3px solid var(--navy);
-    background: var(--cream-text);
-    display: grid;
-    place-items: center;
-    margin: 0 auto 14px;
-    font-weight: 700;
-    font-size: 22px;
-  }
-  .pasos h3 {
-    font-size: 22px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .pasos p {
-    font-size: 16px;
-  }
-  .cols {
-    list-style: none;
-    padding: 0;
-    margin: 40px auto 0;
-    max-width: 1000px;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 14px;
-  }
-  .cols li {
-    border: 2px solid #d5d9e6;
-    border-radius: 10px;
-    padding: 28px 16px;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 16px;
-    display: grid;
-    place-items: center;
-    background: #fff;
-  }
-  .cols .next {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: #fdf6e9;
-  }
-  .talk {
-    padding-block: 80px;
-  }
-  .talk-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
-  }
-  .talk .display-md {
-    color: var(--cream);
-    margin: 12px 0;
-  }
-  .talk .lbl {
-    color: var(--accent);
-    font-weight: 700;
-    text-transform: uppercase;
-    margin-top: 26px;
-  }
-  .talk-grid > div:first-child a {
-    color: var(--cream);
-  }
-  .form-card {
-    background: #fff;
-    color: var(--navy);
-    border-radius: 12px;
-    padding: 28px;
-  }
-  .form-card h3 {
-    font-size: 22px;
-    text-transform: uppercase;
-  }
-  .form-card .small {
-    margin: 4px 0 18px;
-  }
-  @media (max-width: 900px) {
-    .hero-grid,
-    .talk-grid {
-      grid-template-columns: 1fr;
-    }
-    .pasos {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-</style>
