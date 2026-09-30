@@ -147,3 +147,19 @@ Cada artículo sale con: título SEO, meta description, entradilla que responde 
 - **Panel de control:** `/api/blog-panel` (pide `BLOG_PANEL_PASSWORD`; estado, registro, configuración y botón "Lanzar investigación ahora")
 - Ver estado en JSON: `/api/blog-admin?clave=<BLOG_SECRET>`
 - Lanzar la investigación ahora: `/api/blog-admin?clave=<BLOG_SECRET>&accion=investigar` (añade `&force=1` para repetirla)
+
+### Fotos de las ciudades
+
+`public/fotos/ciudades/` (`<ciudad>-card.webp` 800×600 para las tarjetas y `<ciudad>-hero.webp` 1920×1080 para el carrusel de la home y redes). Fotos gratuitas de Unsplash (licencia Unsplash: uso comercial, sin atribución obligatoria). Identificadores en images.unsplash.com:
+
+- twente: `photo-1713680993894-6b08588da50b`
+- breda: `photo-1569496453553-f35768ed0e36`
+- leiden: `photo-1713733720850-a948838c90a8`
+- groningen: `photo-1629205819196-d1073d5c4f2d`
+- amsterdam: `photo-1605704320412-5c3255bf47a9`
+- la-haya: `photo-1586174035695-35ab9e19215c`
+- utrecht: `photo-1564085027787-7f8911ca8d91`
+- rotterdam: `photo-1614521272693-73052eaefc51`
+- delft: `photo-1623967680609-442921aa33ef`
+- maastricht: `photo-1666533587027-1e53dd317e65`
+- eindhoven: `photo-1664993305337-582a5d02ab38`

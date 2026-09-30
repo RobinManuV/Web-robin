@@ -25,8 +25,8 @@ export const DESTINOS = [
     subtitle: 'Campus tecnológico y emprendedor',
     intro:
       'La Universidad de Twente, en Enschede, es de las pocas de Holanda con campus propio: residencias, deporte y facultades en el mismo recinto. Fuerte en ingeniería, tecnología y ciencias sociales.',
-    cardImg: '/wp-content/uploads/2026/04/images.jpeg',
-    heroImg: '/wp-content/uploads/2026/04/images.jpeg',
+    cardImg: '/fotos/ciudades/twente-card.webp',
+    heroImg: '/fotos/ciudades/twente-hero.webp',
     video: null,
     paraTi: [
       'Te atrae la tecnología, la ingeniería o crear tu propia startup.',
@@ -49,8 +49,8 @@ export const DESTINOS = [
     subtitle: 'Ciudad pequeña, carreras creativas',
     intro:
       'Sede de Breda University of Applied Sciences, referente en videojuegos, turismo, hostelería y logística. Ambiente cercano, a unos 25 minutos en tren de Róterdam.',
-    cardImg: '/wp-content/uploads/2026/04/images-1.jpeg',
-    heroImg: '/wp-content/uploads/2026/04/images-1.jpeg',
+    cardImg: '/fotos/ciudades/breda-card.webp',
+    heroImg: '/fotos/ciudades/breda-hero.webp',
     video: null,
     paraTi: [
       'Te interesan los videojuegos, el turismo, los eventos o la hostelería.',
@@ -73,8 +73,8 @@ export const DESTINOS = [
     subtitle: 'La universidad más antigua de Holanda',
     intro:
       'La Universidad de Leiden (1575) destaca en derecho, humanidades y ciencias. Ciudad histórica y tranquila, entre Ámsterdam y La Haya.',
-    cardImg: '/wp-content/uploads/2026/04/Torre_Drienerlo.jpg',
-    heroImg: '/wp-content/uploads/2026/04/Torre_Drienerlo.jpg',
+    cardImg: '/fotos/ciudades/leiden-card.webp',
+    heroImg: '/fotos/ciudades/leiden-hero.webp',
     video: null,
     paraTi: [
       'Te interesan el derecho, las humanidades, la arqueología o las ciencias.',
@@ -97,8 +97,8 @@ export const DESTINOS = [
     subtitle: 'La ciudad más estudiantil',
     intro:
       'Cerca de una cuarta parte de sus habitantes son estudiantes. La Universidad de Groningen y Hanze, con un coste de vida más bajo que en el oeste del país.',
-    cardImg: '/wp-content/uploads/2024/12/Untitled-design-12-1024x576.jpg',
-    heroImg: '/wp-content/uploads/2024/12/Untitled-design-12.jpg',
+    cardImg: '/fotos/ciudades/groningen-card.webp',
+    heroImg: '/fotos/ciudades/groningen-hero.webp',
     video: 'https://www.youtube.com/watch?v=0h-Z6XOp9Ts',
     paraTi: [
       'Quieres vivir en la ciudad más estudiantil de Holanda.',
@@ -121,8 +121,8 @@ export const DESTINOS = [
     subtitle: 'La capital, con todo y a su precio',
     intro:
       'UvA, VU y HvA: la mayor oferta de grados del país. También es la ciudad donde más cuesta encontrar alojamiento.',
-    cardImg: '/wp-content/uploads/2026/05/b45b3c027f2f7b146d546b7c9d8fc598-1024x542.webp',
-    heroImg: '/wp-content/uploads/2026/05/b45b3c027f2f7b146d546b7c9d8fc598.webp',
+    cardImg: '/fotos/ciudades/amsterdam-card.webp',
+    heroImg: '/fotos/ciudades/amsterdam-hero.webp',
     video: 'https://www.youtube.com/watch?v=EB6KYmA9Lzs',
     paraTi: [
       'Buscas la mayor oferta de grados en inglés del país.',
@@ -145,8 +145,8 @@ export const DESTINOS = [
     subtitle: 'Derecho internacional y playa',
     intro:
       'Sede de la Corte Internacional de Justicia, con un campus de la Universidad de Leiden y The Hague University of Applied Sciences. Con la playa de Scheveningen al lado.',
-    cardImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Holanda-La-Haya-1024x576.jpg',
-    heroImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Holanda-La-Haya.jpg',
+    cardImg: '/fotos/ciudades/la-haya-card.webp',
+    heroImg: '/fotos/ciudades/la-haya-hero.webp',
     video: 'https://www.youtube.com/watch?v=fDNWL8ACoJM',
     paraTi: [
       'Te interesan las relaciones internacionales, el derecho internacional o la diplomacia.',
@@ -169,8 +169,8 @@ export const DESTINOS = [
     subtitle: 'En el centro de todo',
     intro:
       'La Universidad de Utrecht es una de las mejor valoradas del país. Ciudad universitaria de verdad, a menos de media hora de Ámsterdam.',
-    cardImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Holanda-Utrecht-1024x576.jpg',
-    heroImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Holanda-Utrecht.jpg',
+    cardImg: '/fotos/ciudades/utrecht-card.webp',
+    heroImg: '/fotos/ciudades/utrecht-hero.webp',
     video: 'https://youtu.be/wzutd9s_zBs',
     paraTi: [
       'Quieres una ciudad universitaria de verdad, en el centro del país.',
@@ -193,8 +193,8 @@ export const DESTINOS = [
     subtitle: 'Economía y negocios',
     intro:
       'Erasmus University Rotterdam, con su escuela de economía y RSM, y el mayor puerto de Europa. Una ciudad moderna y con mucha salida profesional.',
-    cardImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Paises-Bajos-Rotterdam-1024x576.jpg',
-    heroImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Paises-Bajos-Rotterdam.jpg',
+    cardImg: '/fotos/ciudades/rotterdam-card.webp',
+    heroImg: '/fotos/ciudades/rotterdam-hero.webp',
     video: 'https://www.youtube.com/watch?v=jV04Lgpm-CU',
     paraTi: [
       'Te interesan la economía, los negocios o el management.',
@@ -217,8 +217,8 @@ export const DESTINOS = [
     subtitle: 'Ingeniería de primer nivel',
     intro:
       'TU Delft es la referencia en ingeniería y arquitectura. Muy exigente en la admisión, en una ciudad pequeña entre Róterdam y La Haya.',
-    cardImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Holanda-Delft-1024x576.jpg',
-    heroImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Holanda-Delft.jpg',
+    cardImg: '/fotos/ciudades/delft-card.webp',
+    heroImg: '/fotos/ciudades/delft-hero.webp',
     video: 'https://youtu.be/p8N9Cr9etoY',
     paraTi: [
       'Quieres estudiar ingeniería, arquitectura o informática al máximo nivel.',
@@ -241,8 +241,8 @@ export const DESTINOS = [
     subtitle: 'La más internacional',
     intro:
       'En la Universidad de Maastricht más de la mitad de los alumnos son internacionales, y se estudia con Problem-Based Learning en grupos pequeños. Aquí estudiamos los fundadores de Robin.',
-    cardImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Holanda-Maastricht-1024x576.jpg',
-    heroImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Holanda-Maastricht.jpg',
+    cardImg: '/fotos/ciudades/maastricht-card.webp',
+    heroImg: '/fotos/ciudades/maastricht-hero.webp',
     video: 'https://www.youtube.com/watch?v=n__UefsZMm4',
     paraTi: [
       'Quieres el ambiente más internacional de Holanda.',
@@ -265,8 +265,8 @@ export const DESTINOS = [
     subtitle: 'Tecnología y diseño',
     intro:
       'TU Eindhoven y Fontys, en el corazón de la región tecnológica de ASML y Philips. Ideal para perfiles técnicos con salida en la industria.',
-    cardImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Holanda-Eindhoven-1024x576.jpg',
-    heroImg: '/wp-content/uploads/2024/12/Universidad-para-Estudiar-en-Holanda-Eindhoven.jpg',
+    cardImg: '/fotos/ciudades/eindhoven-card.webp',
+    heroImg: '/fotos/ciudades/eindhoven-hero.webp',
     video: 'https://youtu.be/1JcWR-68Nco',
     paraTi: [
       'Te interesan la ingeniería, la tecnología o el diseño industrial.',
