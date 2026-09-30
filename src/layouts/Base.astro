@@ -154,5 +154,9 @@ const schemas = [organization, website, ...(Array.isArray(schema) ? schema : [sc
     </main>
     <Footer />
     <CookieBanner />
+    <script>
+      // Medición propia para el panel "Web" del gestor (solo con cookies de analítica aceptadas)
+      import '../scripts/analytics.ts';
+    </script>
   </body>
 </html>

@@ -160,7 +160,7 @@ const { tag = 'general', compact = false } = Astro.props;
         const res = await fetch('/api/book', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...data, start: chosen.start, tag, page: location.pathname }),
+          body: JSON.stringify({ ...data, start: chosen.start, tag, page: location.pathname, vid: (() => { try { return JSON.parse(localStorage.getItem('robin-vid') || 'null')?.id || ''; } catch (e) { return ''; } })() }),
         });
         const out = await res.json().catch(() => ({}));
         if (!res.ok) throw Object.assign(new Error(out.error || 'Error'), { code: res.status });

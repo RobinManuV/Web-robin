@@ -85,6 +85,8 @@ import '../styles/components/cookie-banner.css';
       personalization_storage: g(choice.analytics),
     });
     (window as any).dataLayer?.push({ event: 'cookie_consent_update', consent_analytics: choice.analytics, consent_ads: choice.ads });
+    // Avisa al medidor propio (src/scripts/analytics.ts) para que empiece o deje de medir
+    window.dispatchEvent(new CustomEvent('robin:consent', { detail: choice }));
     close();
   }
 
@@ -137,5 +139,6 @@ import '../styles/components/cookie-banner.css';
     if ((e.target as HTMLElement).closest('[data-open-cookies]')) open(true);
   });
 
-  if (!readValid()) open(false);
+  const inHeatmap = new URLSearchParams(location.search).has('robin_heatmap');
+  if (!readValid() && !inHeatmap) open(false);
 </script>

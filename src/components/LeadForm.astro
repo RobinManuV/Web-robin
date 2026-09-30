@@ -145,9 +145,14 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
       status.hidden = true;
       try {
         const body = new URLSearchParams(new FormData(form)).toString();
+        // Identificador aleatorio de analítica (solo existe si el visitante aceptó las cookies de analítica)
+        let vid = '';
+        try {
+          vid = JSON.parse(localStorage.getItem('robin-vid') || 'null')?.id || '';
+        } catch (e) {}
         const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
         // 1) Guardar el lead en Notion (fuente principal)
-        const res = await fetch('/api/lead', { method: 'POST', headers, body });
+        const res = await fetch('/api/lead', { method: 'POST', headers, body: vid ? `${body}&vid=${encodeURIComponent(vid)}` : body });
         const result = await res.json().catch(() => ({}));
         if (result.filtered) {
           form.reset();

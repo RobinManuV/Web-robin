@@ -3,6 +3,7 @@
 import { getHosts, busyByHost, createMeeting } from '../lib/google-calendar.mjs';
 import { candidateSlots, freeSlots, pickHost, config } from '../lib/slots.mjs';
 import { createLead } from '../lib/notion.mjs';
+import { pingAnalytics } from '../lib/analytics-ping.mjs';
 
 const clean = (v, max = 500) => String(v ?? '').trim().slice(0, max);
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
@@ -16,7 +17,6 @@ function madridLocalIso(date) {
   );
   return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`;
 }
-
 export default async (req) => {
   if (req.method !== 'POST') return new Response('Method Not Allowed', { status: 405 });
 
@@ -94,5 +94,6 @@ export default async (req) => {
     console.error('[book] Notion:', err.message);
   }
 
+  await pingAnalytics('booking', { form: 'reserva', tag, page, vid: body.vid });
   return Response.json({ ok: true, host: hosts.length > 1 ? host.name.split(' ')[0] : null, start: startDate.toISOString(), meetingLink });
 };

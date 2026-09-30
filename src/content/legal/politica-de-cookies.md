@@ -25,11 +25,13 @@ Las cookies de terceros utilizadas en nuestro sitio web sirven principalmente pa
 
 **Cookies que utilizamos**
 
-Solo las cookies necesarias se instalan sin tu permiso. Las de analítica y publicidad no se activan hasta que las aceptas en la ventana de cookies, y puedes retirar tu consentimiento cuando quieras. Tu elección se guarda durante 12 meses; pasado ese tiempo te volveremos a preguntar.
+Solo las cookies necesarias se instalan sin tu permiso. La medición propia de Project Robin (páginas vistas, clics, desplazamiento, vídeos y uso de formularios, nunca lo que escribes en ellos) solo funciona si aceptas las cookies de analítica. Las de analítica y publicidad no se activan hasta que las aceptas en la ventana de cookies, y puedes retirar tu consentimiento cuando quieras. Tu elección se guarda durante 12 meses; pasado ese tiempo te volveremos a preguntar.
 
 | Cookie | Titular | Tipo | Finalidad | Duración |
 |---|---|---|---|---|
 | robin-consent (almacenamiento local) | Project Robin (propia) | Necesaria | Recordar tu elección sobre las cookies | 12 meses |
+| robin-vid (almacenamiento local) | Project Robin (propia) | Analítica | Identificador aleatorio para medir de forma agregada qué páginas se visitan, dónde se hace clic y qué vídeos se ven. No incluye tu nombre, email ni teléfono | 13 meses |
+| robin-sid (almacenamiento de sesión) | Project Robin (propia) | Analítica | Agrupar las páginas vistas en una misma visita | Hasta cerrar el navegador (30 min sin actividad) |
 | _ga | Google (tercero) | Analítica | Distinguir visitantes de forma anónima para medir las visitas | 2 años |
 | _ga_* | Google (tercero) | Analítica | Mantener el estado de la sesión para Google Analytics | 2 años |
 | _fbp | Meta (tercero) | Publicidad | Medir los resultados de nuestras campañas en Facebook e Instagram | 3 meses |

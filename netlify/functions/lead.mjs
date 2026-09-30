@@ -3,6 +3,7 @@
 // no depende de que Netlify Forms esté configurado. (Netlify Forms se sigue usando
 // en paralelo solo para los avisos por email y como copia.)
 import { createLead } from '../lib/notion.mjs';
+import { pingAnalytics } from '../lib/analytics-ping.mjs';
 
 const clean = (v, max = 500) => String(v ?? '').trim().slice(0, max);
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
@@ -82,6 +83,8 @@ export default async (req) => {
     if (form !== 'colegios' && form !== 'newsletter') await saveInSupabase(lead);
 
     const res = await createLead(lead);
+    // Aviso anónimo al panel "Web" del gestor (qué formulario se usa); no bloquea la respuesta si falla
+    await pingAnalytics('lead', { form, tag: d.tag || form, page: d.pagina, vid: d.vid });
     if (res.skipped) {
       console.error('[lead] Notion sin configurar (NOTION_TOKEN / NOTION_DATABASE_ID)');
       return Response.json({ ok: false, error: 'Notion sin configurar' }, { status: 503 });

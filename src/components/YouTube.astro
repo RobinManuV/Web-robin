@@ -37,12 +37,17 @@ const thumb = poster || (id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : nul
     if (!box || box.dataset.loaded) return;
     box.dataset.loaded = '1';
     const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube-nocookie.com/embed/${box.dataset.yt}?autoplay=1&rel=0`;
+    // enablejsapi permite al medidor saber qué % del vídeo se ha visto (solo con consentimiento)
+    iframe.src = `https://www.youtube-nocookie.com/embed/${box.dataset.yt}?autoplay=1&rel=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
     iframe.title = box.dataset.title || 'Vídeo';
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
     iframe.allowFullscreen = true;
     box.innerHTML = '';
     box.appendChild(iframe);
+    // Pide a YouTube que informe del progreso (lo usa src/scripts/analytics.ts)
+    iframe.addEventListener('load', () => iframe.contentWindow?.postMessage(JSON.stringify({ event: 'listening', id: box.dataset.yt }), '*'));
+    const where = box.closest('[data-carousel]') ? 'carrusel-testimonios' : box.closest('[data-shorts]') ? 'shorts-comunidad' : location.pathname;
+    window.dispatchEvent(new CustomEvent('robin:video-play', { detail: { id: box.dataset.yt, title: box.dataset.title, where } }));
   });
 </script>
 

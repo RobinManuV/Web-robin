@@ -163,3 +163,18 @@ Cada artículo sale con: título SEO, meta description, entradilla que responde 
 - delft: `photo-1623967680609-442921aa33ef`
 - maastricht: `photo-1666533587027-1e53dd317e65`
 - eindhoven: `photo-1664993305337-582a5d02ab38`
+
+## Medición propia para el gestor (pestaña "Web" de Robin-Admin)
+
+- `src/scripts/analytics.ts`: mide páginas, origen, clics (para mapas de calor), scroll, tiempo activo, salida, vídeos, formularios (nunca lo escrito), velocidad y errores. **Solo si el visitante acepta las cookies de analítica**; deja de medir en cuanto las rechaza.
+- `src/scripts/heatmap-view.ts`: cuando el gestor abre una página con `?robin_heatmap=1`, la web pinta encima el mapa de calor que le envía el gestor (solo acepta mensajes de `PUBLIC_ADMIN_ORIGIN`).
+- `netlify/lib/analytics-ping.mjs`: `lead.mjs` y `book.mjs` avisan al gestor de cada formulario o reserva enviados (anónimo: sin nombre, email ni teléfono) para saber qué formularios se usan más.
+- `netlify/functions/blog-estado.mjs`: estado de la máquina de blogs para el gestor (cabecera `x-robin-blog-secret` = `BLOG_SECRET`).
+
+Variables de entorno de la web:
+
+| Variable | Valor |
+|---|---|
+| `PUBLIC_ANALYTICS_ENDPOINT` | `https://<gestor>/api/web/collect` (sin ella no se mide nada) |
+| `PUBLIC_ADMIN_ORIGIN` | `https://<gestor>` |
+| `ANALYTICS_SERVER_SECRET` | igual que `WEB_ANALYTICS_SERVER_SECRET` en el gestor |
