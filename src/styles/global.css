@@ -328,22 +328,12 @@ button {
   color: var(--navy);
 }
 
-/* ---------- Tarjetas y sello ---------- */
+/* ---------- Tarjetas ---------- */
 
 .card {
   background: var(--white);
   border-radius: var(--radius);
   box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
-}
-
-/* Imagen con borde dentado tipo "sello postal" (misma máscara que la web original) */
-.stamp {
-  -webkit-mask-image: url('/wp-content/uploads/2026/05/Mask-Image.svg');
-  mask-image: url('/wp-content/uploads/2026/05/Mask-Image.svg');
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
 }
 
 /* ---------- Listas con check ---------- */

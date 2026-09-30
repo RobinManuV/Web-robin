@@ -92,8 +92,10 @@ const schemas = [organization, ...(Array.isArray(schema) ? schema : [schema])];
         wait_for_update: 500,
       });
       try {
+        // Misma versión y caducidad que src/components/CookieBanner.astro
         var saved = JSON.parse(localStorage.getItem('robin-consent') || 'null');
-        if (saved) {
+        var valid = saved && saved.v === 2 && Date.now() - new Date(saved.date).getTime() <= 365 * 864e5;
+        if (valid) {
           gtag('consent', 'update', {
             analytics_storage: saved.analytics ? 'granted' : 'denied',
             ad_storage: saved.ads ? 'granted' : 'denied',

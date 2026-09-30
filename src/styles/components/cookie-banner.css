@@ -1,86 +1,138 @@
 /* Componente CookieBanner.astro — todo va dentro de .cky */
 
+/* Ventana centrada con fondo oscurecido */
 .cky {
   position: fixed;
-  left: 20px;
-  bottom: 20px;
+  inset: 0;
   z-index: 999;
-  max-width: 440px;
-  width: calc(100% - 40px);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(45, 58, 100, 0.55); /* --navy al 55 % */
 }
-.cky[hidden] {
-  display: none;
+.cky[hidden],
+.cky [hidden] {
+  display: none !important;
+}
+
+/* En las páginas legales: sin fondo, abajo, para poder leer el texto */
+.cky.cky--inline {
+  inset: auto 16px 16px auto;
+  background: none;
+  padding: 0;
+}
+.cky.cky--inline .panel {
+  max-width: 440px;
+  max-height: 50vh;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Mientras la ventana está abierta, la página de fondo no se desplaza */
+:root.cky-open {
+  overflow: hidden;
+}
+
+.cky .panel:focus {
+  outline: none;
 }
 .cky .panel {
-  background: #fff;
-  color: #212121;
-  border: 1px solid #f4f4f4;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.5;
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: var(--cream);
+  color: var(--navy);
+  border-radius: var(--radius-lg);
+  padding: 30px 30px 26px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  font-size: 15px;
+  line-height: 1.55;
 }
 .cky .title {
-  font-weight: 700;
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.cky .desc p + p {
+  margin-top: 10px;
 }
 .cky .desc a {
-  color: #1863dc;
+  color: var(--blue);
+  text-decoration: underline;
 }
+
+/* Segunda capa: categorías */
 .cky .prefs {
-  margin-top: 14px;
+  margin-top: 18px;
   display: grid;
   gap: 10px;
-}
-.cky .pref-intro {
-  font-size: 13px;
 }
 .cky .pref {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border: 1px solid #eee;
-  border-radius: 6px;
+  gap: 14px;
+  padding: 12px 14px;
+  background: var(--white);
+  border: 1px solid var(--grey-card);
+  border-radius: var(--radius);
+  cursor: pointer;
 }
 .cky .pref span {
   display: grid;
+  gap: 2px;
 }
 .cky .pref small {
-  color: #666;
+  font-size: 13px;
+  opacity: 0.8;
 }
 .cky .pref input {
-  width: 18px;
-  height: 18px;
-  accent-color: #1863dc;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--navy);
 }
+
+/* Botones: Aceptar y Rechazar con el mismo peso visual (lo pide la AEPD) */
 .cky .actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 22px;
 }
 .cky .b {
-  flex: 1 1 auto;
-  padding: 9px 14px;
-  border-radius: 4px;
-  border: 2px solid #1863dc;
-  font-size: 14px;
-  font-weight: 500;
-}
-.cky .b-ghost {
-  background: transparent;
-  color: #1863dc;
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: 2px solid var(--navy);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
 }
 .cky .b-main {
-  background: #1863dc;
-  color: #fff;
-  flex-basis: 100%;
+  background: var(--navy);
+  color: var(--cream);
 }
-.cky .b[hidden] {
-  display: none;
+.cky .b-main:hover {
+  background: var(--navy-2);
+}
+.cky .b-ghost {
+  grid-column: 1 / -1;
+  background: transparent;
+  color: var(--navy);
+}
+.cky .b-ghost:hover {
+  background: var(--sky);
+}
+.cky .b:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .cky .panel {
+    padding: 24px 20px 20px;
+  }
+  .cky .actions {
+    grid-template-columns: 1fr;
+  }
 }

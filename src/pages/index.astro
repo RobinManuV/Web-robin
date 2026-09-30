@@ -12,7 +12,6 @@ const todosPaquetes = [
   {
     title: 'Holanda',
     img: '/wp-content/uploads/2026/05/amsterdam-cityscape-view-2026-03-20-01-59-27-utc-1024x683.jpg',
-    stamped: false,
     bullets: ['Universidades públicas: matrícula oficial de 2.694 €/año.', 'Alojamiento 100% garantizado.', 'Acompañamiento en todo el proceso, de la elección a la llegada.'],
     text: 'Descubre opciones de estudio en Holanda y encuentra el destino que mejor encaja con tu perfil, tus objetivos y tu forma de estudiar.',
     cta: 'Estudia en Holanda',
@@ -21,8 +20,7 @@ const todosPaquetes = [
   {
     title: 'España',
     popular: true,
-    img: '/wp-content/uploads/2026/05/46c3c403c37f85f32d0b79f4d054d084.webp',
-    stamped: true,
+    img: '/fotos/espana-pack.webp',
     bullets: ['Opciones académicas en distintas ciudades.', 'Programas adaptados a tu perfil.', 'Orientación para elegir el mejor destino.'],
     text: 'Explora alternativas de estudio en España con una propuesta clara para ayudarte a valorar ciudades, campus y oportunidades disponibles.',
     cta: 'Estudia en España',
@@ -30,8 +28,7 @@ const todosPaquetes = [
   },
   {
     title: 'Multicampus',
-    img: '/wp-content/uploads/2026/05/d79ba2af1559ff1148830b83eea1fead.webp',
-    stamped: true,
+    img: '/fotos/multicampus-pack.webp',
     bullets: ['Universidades privadas con campus en varias capitales europeas.', 'Un país distinto cada año.', 'Te ayudamos a comparar y elegir la que mejor encaja contigo.'],
     text: 'Una opción pensada para quienes buscan flexibilidad y quieren valorar diferentes campus antes de tomar una decisión final.',
     cta: 'Estudia en Multicampus',
@@ -110,7 +107,7 @@ const schema = {
     <div class="hero-inner container">
       <div class="hero-text">
         <p class="eyebrow text-cream">The world is your campus</p>
-        <h1 class="display-xl hero-title">Más cerca de tu sueño, estudia en el extranjero</h1>
+        <h1 class="display-xl hero-title">Más cerca de tu sueño<span class="hero-comma">,</span> estudia en el extranjero</h1>
         <p class="lead hero-lead">
           Hablamos sin rodeos, costes, becas, riesgos y beneficios.<br />
           Te guiamos desde ¿y si me voy? hasta tu primera clase en Europa
@@ -152,7 +149,7 @@ const schema = {
             <article class="pack">
               {p.popular && <p class="pack-badge">Más popular</p>}
               <div class="pack-img">
-                <img class:list={{ stamp: !p.stamped }} src={p.img} alt={`Estudiar en ${p.title}`} width="401" height="296" loading="lazy" />
+                <img src={p.img} alt={`Estudiar en ${p.title}`} width="401" height="296" loading="lazy" />
                 <h3>{p.title}</h3>
               </div>
               <div class="pack-body">

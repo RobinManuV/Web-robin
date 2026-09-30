@@ -14,6 +14,7 @@ const { items = TESTIMONIOS } = Astro.props;
           <li class="slide">
             <figure class="card-t">
               <figcaption>
+                {t.photo && <img class="photo" src={t.photo} alt={t.name} width="88" height="88" loading="lazy" />}
                 <p class="name">{t.name}</p>
                 <p class="prog">{t.program}</p>
               </figcaption>

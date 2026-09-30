@@ -1,58 +1,82 @@
 ---
 import '../styles/components/cookie-banner.css';
-// Banner de cookies con los mismos textos y categorías que el CookieYes actual.
-// Actualiza Google Consent Mode v2 (lo que GTM usa para decidir qué etiquetas se disparan).
+// Ventana de consentimiento de cookies (RGPD, LSSI art. 22.2 y Guía de cookies de la AEPD):
+// - Primera capa con Aceptar y Rechazar al mismo nivel y con el mismo peso visual.
+// - Segunda capa (Configurar) con categorías desactivadas por defecto.
+// - Nada que no sea necesario se activa hasta que el usuario acepta (Google Consent Mode v2).
+// - La elección caduca a los 12 meses o si cambia CONSENT_VERSION: entonces se vuelve a preguntar.
+// - Se puede cambiar en cualquier momento con cualquier elemento [data-open-cookies] (pie de página).
+// Si cambias CONSENT_VERSION o CONSENT_MAX_DAYS, cámbialos también en src/layouts/Base.astro.
 ---
 
 <div class="cky" data-cookie-banner hidden>
-  <div class="panel" role="dialog" aria-labelledby="cky-title" aria-live="polite">
+  <div class="panel" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cky-title" aria-describedby="cky-desc">
     <p class="title" id="cky-title">Tu privacidad en Robin</p>
-    <p class="desc">
-      Usamos cookies necesarias para que la web funcione y, si lo aceptas, cookies de analítica para medir visitas y consultas,
-      y de publicidad de Meta para medir campañas. Puedes aceptar, rechazar o personalizar tu elección y cambiarla cuando quieras.
-      <a href="/politica-de-cookies/">Política de cookies</a>.
-    </p>
+    <div class="desc" id="cky-desc">
+      <p>
+        Usamos cookies propias necesarias para que la web funcione. Solo si lo aceptas, usaremos también cookies de terceros:
+        de <strong>analítica</strong> (Google Analytics) para saber cuántas personas nos visitan y de <strong>publicidad</strong> (Meta)
+        para medir nuestras campañas.
+      </p>
+      <p>
+        Puedes aceptarlas, rechazarlas o configurarlas. Cambia tu elección cuando quieras desde «Preferencias de cookies», al pie de la
+        web. Más información en la <a href="/politica-de-cookies/">política de cookies</a>.
+      </p>
+    </div>
 
     <div class="prefs" data-prefs hidden>
-      <p class="pref-intro">
-        Las cookies necesarias permiten el funcionamiento de la web y recordar tu elección. Las demás categorías están desactivadas hasta que las aceptes.
-      </p>
       <label class="pref">
-        <span><strong>Necesarias</strong><small>Siempre activas</small></span>
+        <span><strong>Necesarias</strong><small>Hacen que la web funcione y recuerdan tu elección. Siempre activas.</small></span>
         <input type="checkbox" checked disabled />
       </label>
       <label class="pref">
-        <span><strong>Analítica</strong><small>Medir visitas y consultas.</small></span>
+        <span><strong>Analítica</strong><small>Google Analytics: visitas y uso de la web, de forma agregada.</small></span>
         <input type="checkbox" data-cat="analytics" />
       </label>
       <label class="pref">
-        <span><strong>Publicidad</strong><small>Permite a Meta medir los resultados de las campañas.</small></span>
+        <span><strong>Publicidad</strong><small>Meta (Facebook e Instagram): medir los resultados de nuestras campañas.</small></span>
         <input type="checkbox" data-cat="ads" />
       </label>
     </div>
 
     <div class="actions">
-      <button type="button" class="b b-ghost" data-action="customize">Personalizar</button>
-      <button type="button" class="b b-ghost" data-action="reject">Rechazar todas</button>
-      <button type="button" class="b b-ghost" data-action="save" hidden>Guardar preferencias</button>
+      <button type="button" class="b b-main" data-action="reject">Rechazar todas</button>
       <button type="button" class="b b-main" data-action="accept">Aceptar todas</button>
+      <button type="button" class="b b-ghost" data-action="customize">Configurar</button>
+      <button type="button" class="b b-ghost" data-action="save" hidden>Guardar mi selección</button>
     </div>
   </div>
 </div>
 
 <script>
   const KEY = 'robin-consent';
-  const banner = document.querySelector('[data-cookie-banner]');
-  const prefs = banner.querySelector('[data-prefs]');
-  const saveBtn = banner.querySelector('[data-action="save"]');
-  const customizeBtn = banner.querySelector('[data-action="customize"]');
+  const CONSENT_VERSION = 2;
+  const CONSENT_MAX_DAYS = 365;
 
-  function apply(choice) {
+  const banner = document.querySelector('[data-cookie-banner]') as HTMLElement;
+  const prefs = banner.querySelector('[data-prefs]') as HTMLElement;
+  const saveBtn = banner.querySelector('[data-action="save"]') as HTMLElement;
+  const customizeBtn = banner.querySelector('[data-action="customize"]') as HTMLElement;
+  const box = (cat: string) => banner.querySelector(`[data-cat="${cat}"]`) as HTMLInputElement;
+  let lastFocus: Element | null = null;
+
+  function readValid() {
     try {
-      localStorage.setItem(KEY, JSON.stringify({ ...choice, date: new Date().toISOString() }));
+      const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (!saved || saved.v !== CONSENT_VERSION) return null;
+      if (Date.now() - new Date(saved.date).getTime() > CONSENT_MAX_DAYS * 864e5) return null;
+      return saved;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function apply(choice: { analytics: boolean; ads: boolean }) {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({ ...choice, v: CONSENT_VERSION, date: new Date().toISOString() }));
     } catch (e) {}
-    const g = (v) => (v ? 'granted' : 'denied');
-    window.gtag?.('consent', 'update', {
+    const g = (v: boolean) => (v ? 'granted' : 'denied');
+    (window as any).gtag?.('consent', 'update', {
       analytics_storage: g(choice.analytics),
       ad_storage: g(choice.ads),
       ad_user_data: g(choice.ads),
@@ -60,43 +84,58 @@ import '../styles/components/cookie-banner.css';
       functionality_storage: 'granted',
       personalization_storage: g(choice.analytics),
     });
-    window.dataLayer?.push({ event: 'cookie_consent_update', consent_analytics: choice.analytics, consent_ads: choice.ads });
-    banner.hidden = true;
+    (window as any).dataLayer?.push({ event: 'cookie_consent_update', consent_analytics: choice.analytics, consent_ads: choice.ads });
+    close();
   }
 
   function open(showPrefs = false) {
-    let saved = null;
-    try {
-      saved = JSON.parse(localStorage.getItem(KEY) || 'null');
-    } catch (e) {}
-    banner.querySelector('[data-cat="analytics"]').checked = !!saved?.analytics;
-    banner.querySelector('[data-cat="ads"]').checked = !!saved?.ads;
+    const saved = readValid();
+    box('analytics').checked = !!saved?.analytics;
+    box('ads').checked = !!saved?.ads;
     prefs.hidden = !showPrefs;
     saveBtn.hidden = !showPrefs;
     customizeBtn.hidden = showPrefs;
+    if (banner.hidden) lastFocus = document.activeElement;
     banner.hidden = false;
+    // En las páginas legales la ventana no tapa el texto, para que se pueda leer antes de decidir
+    const legal = /^\/(politica-de-cookies|politica-de-privacidad|aviso-legal)\//.test(location.pathname);
+    banner.classList.toggle('cky--inline', legal);
+    document.documentElement.classList.toggle('cky-open', !legal);
+    (banner.querySelector('.panel') as HTMLElement).focus();
+  }
+
+  function close() {
+    banner.hidden = true;
+    document.documentElement.classList.remove('cky-open');
+    (lastFocus as HTMLElement)?.focus?.();
   }
 
   banner.addEventListener('click', (e) => {
-    const action = e.target.closest('[data-action]')?.dataset.action;
+    const action = (e.target as HTMLElement).closest<HTMLElement>('[data-action]')?.dataset.action;
     if (action === 'accept') apply({ analytics: true, ads: true });
     if (action === 'reject') apply({ analytics: false, ads: false });
     if (action === 'customize') open(true);
-    if (action === 'save')
-      apply({
-        analytics: banner.querySelector('[data-cat="analytics"]').checked,
-        ads: banner.querySelector('[data-cat="ads"]').checked,
-      });
+    if (action === 'save') apply({ analytics: box('analytics').checked, ads: box('ads').checked });
+  });
+
+  // El foco no sale de la ventana mientras está abierta (accesibilidad)
+  banner.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const items = [...banner.querySelectorAll<HTMLElement>('a, button:not([hidden]), input:not([disabled])')].filter((el) => el.offsetParent);
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
   });
 
   document.addEventListener('click', (e) => {
-    if (e.target.closest('[data-open-cookies]')) open(true);
+    if ((e.target as HTMLElement).closest('[data-open-cookies]')) open(true);
   });
 
-  let hasChoice = false;
-  try {
-    hasChoice = !!localStorage.getItem(KEY);
-  } catch (e) {}
-  if (!hasChoice) open(false);
+  if (!readValid()) open(false);
 </script>
-

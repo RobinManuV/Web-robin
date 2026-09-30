@@ -116,7 +116,7 @@ export const NAV = NAV_COMPLETO.filter((item) => ESPANA_PUBLICADA || item.label 
 
 export const FOOTER = {
   tagline: 'Tu Futuro Empieza Aquí.',
-  subtitle: 'Asesoramiento experto para estudiar, vivir y triunfar en los Países Bajos.',
+  subtitle: 'Asesoramiento experto para estudiar, vivir y triunfar en el extranjero.',
   columns: [
     {
       title: 'Explorar',

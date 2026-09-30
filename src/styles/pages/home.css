@@ -26,6 +26,10 @@
   font-size: clamp(44px, 5.2vw, 84px);
   margin: 14px 0 22px;
 }
+/* Coma más pequeña: con el interlineado tan justo parecía una tilde sobre la línea siguiente */
+.page-home .hero-comma {
+  font-size: 0.55em;
+}
 .page-home .hero-lead {
   color: var(--cream-text);
   max-width: 640px;
@@ -102,6 +106,7 @@
   width: 100%;
   aspect-ratio: 401 / 296;
   object-fit: cover;
+  border-radius: var(--radius);
 }
 .page-home .pack-img h3 {
   position: absolute;
@@ -338,6 +343,7 @@
 
 /* TESTIMONIOS */
 .page-home .testi {
+  margin-inline: clamp(10px, 1.6vw, 24px);
   background: var(--navy);
   padding-block: clamp(70px, 10vw, 170px);
 }
