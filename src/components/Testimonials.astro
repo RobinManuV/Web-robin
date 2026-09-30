@@ -1,65 +1,102 @@
 ---
 import '../styles/components/testimonials.css';
-// Carrusel de testimonios (mismo formato que la home actual).
-import { TESTIMONIOS } from '../data/site.js';
-const { items = TESTIMONIOS } = Astro.props;
+// Carrusel de testimonios: alterna un vídeo (YouTube Shorts) y una reseña escrita.
+// Se desliza con el dedo o con la rueda/trackpad (scroll horizontal) y con las flechas.
+// Si sobran vídeos o reseñas, van al final. Los datos están en src/data/site.js.
+import YouTube from './YouTube.astro';
+import { TESTIMONIOS, VIDEOS_TESTIMONIOS } from '../data/site.js';
+const { items = TESTIMONIOS, videos = VIDEOS_TESTIMONIOS } = Astro.props;
+
+const slides = [];
+for (let i = 0; i < Math.max(items.length, videos.length); i++) {
+  if (videos[i]) slides.push({ type: 'video', url: videos[i], n: i + 1 });
+  if (items[i]) slides.push({ type: 'review', ...items[i] });
+}
 ---
 
 <div class="tst" data-carousel>
-  <button type="button" class="arrow prev" aria-label="Testimonio anterior" data-prev>‹</button>
-  <div class="viewport">
-    <ul class="track" data-track>
-      {
-        items.map((t) => (
-          <li class="slide">
+  <button type="button" class="arrow prev" aria-label="Anterior" data-prev>‹</button>
+  <ul class="track" data-track>
+    {
+      slides.map((s) => (
+        <li class:list={['slide', `slide--${s.type}`]}>
+          {s.type === 'video' ? (
+            <div class="video-t">
+              <YouTube url={s.url} ratio="9 / 16" title={`Vídeo testimonio de un Robin (${s.n})`} />
+            </div>
+          ) : (
             <figure class="card-t">
               <figcaption>
-                {t.photo && <img class="photo" src={t.photo} alt={t.name} width="88" height="88" loading="lazy" />}
-                <p class="name">{t.name}</p>
-                <p class="prog">{t.program}</p>
+                {s.photo && <img class="photo" src={s.photo} alt={s.name} width="88" height="88" loading="lazy" />}
+                <p class="name">{s.name}</p>
+                <p class="prog">{s.program}</p>
               </figcaption>
-              <blockquote>{t.text}</blockquote>
+              <blockquote>{s.text}</blockquote>
               <p class="stars" aria-label="5 de 5 estrellas">★★★★★</p>
             </figure>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
-  <button type="button" class="arrow next" aria-label="Siguiente testimonio" data-next>›</button>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+  <button type="button" class="arrow next" aria-label="Siguiente" data-next>›</button>
   <div class="dots" data-dots></div>
 </div>
 
 <script>
-  document.querySelectorAll('[data-carousel]').forEach((root) => {
-    const track = root.querySelector('[data-track]');
-    const slides = track.children;
-    const dots = root.querySelector('[data-dots]');
-    let i = 0;
-    let timer;
-    [...slides].forEach((_, k) => {
+  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-track]')!;
+    const slides = [...track.children] as HTMLElement[];
+    const dots = root.querySelector<HTMLElement>('[data-dots]')!;
+    let timer: number | undefined;
+    let stopped = false; // tras la primera interacción ya no avanza solo
+
+    slides.forEach((_, k) => {
       const b = document.createElement('button');
       b.type = 'button';
-      b.setAttribute('aria-label', `Ir al testimonio ${k + 1}`);
-      b.addEventListener('click', () => go(k, true));
+      b.setAttribute('aria-label', `Ir a la diapositiva ${k + 1}`);
+      b.addEventListener('click', () => {
+        stop();
+        go(k);
+      });
       dots.appendChild(b);
     });
-    function go(n, user) {
-      i = (n + slides.length) % slides.length;
-      track.style.transform = `translateX(-${i * 100}%)`;
+
+    const current = () => Math.round(track.scrollLeft / track.clientWidth);
+    function go(n: number) {
+      const i = (n + slides.length) % slides.length;
+      track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' });
+    }
+    function mark() {
+      const i = current();
       [...dots.children].forEach((d, k) => d.classList.toggle('on', k === i));
-      if (user) restart();
     }
-    function restart() {
+    function stop() {
+      stopped = true;
       clearInterval(timer);
-      timer = setInterval(() => go(i + 1), 7000);
     }
-    root.querySelector('[data-prev]').addEventListener('click', () => go(i - 1, true));
-    root.querySelector('[data-next]').addEventListener('click', () => go(i + 1, true));
-    root.addEventListener('mouseenter', () => clearInterval(timer));
-    root.addEventListener('mouseleave', restart);
-    go(0);
-    restart();
+
+    track.addEventListener('scroll', () => requestAnimationFrame(mark), { passive: true });
+    root.querySelector('[data-prev]')!.addEventListener('click', () => {
+      stop();
+      go(current() - 1);
+    });
+    root.querySelector('[data-next]')!.addEventListener('click', () => {
+      stop();
+      go(current() + 1);
+    });
+    // Cualquier toque, rueda o clic (por ejemplo, darle al play) detiene el avance automático
+    ['pointerdown', 'wheel', 'touchstart', 'keydown'].forEach((ev) => root.addEventListener(ev, stop, { passive: true }));
+
+    mark();
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced) {
+      timer = window.setInterval(() => {
+        if (stopped) return;
+        // Solo avanza si el carrusel está a la vista
+        const r = root.getBoundingClientRect();
+        if (r.bottom > 0 && r.top < innerHeight) go(current() + 1);
+      }, 7000);
+    }
   });
 </script>
-

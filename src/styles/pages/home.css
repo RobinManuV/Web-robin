@@ -470,6 +470,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 50% 48%; /* centrado en las caras del grupo */
 }
 .page-home .stats-box {
   background: var(--sky);

@@ -3,25 +3,46 @@
 .tst {
   position: relative;
   display: grid;
-  grid-template-columns: 56px 1fr 56px;
+  grid-template-columns: 56px minmax(0, 1fr) 56px;
   align-items: center;
   gap: 24px;
 }
-.tst .viewport {
-  overflow: hidden;
-}
+
+/* Pista con desplazamiento horizontal: se desliza con el dedo, la rueda o las flechas */
 .tst .track {
+  grid-column: 2;
+  grid-row: 1;
   display: flex;
   list-style: none;
   margin: 0;
   padding: 0;
-  transition: transform 0.5s ease;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.tst .track::-webkit-scrollbar {
+  display: none;
 }
 .tst .slide {
   flex: 0 0 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
 }
+
+/* Vídeo vertical (Shorts) */
+.tst .video-t {
+  width: min(100%, 360px);
+}
+.tst .video-t .yt {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+/* Reseña escrita */
 .tst .card-t {
   margin: 0;
   background: var(--cream);
@@ -60,7 +81,10 @@
   font-size: 26px;
   letter-spacing: 4px;
 }
+
+/* Flechas y puntos */
 .tst .arrow {
+  grid-row: 1;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -71,6 +95,13 @@
   line-height: 1;
   display: grid;
   place-items: center;
+  cursor: pointer;
+}
+.tst .prev {
+  grid-column: 1;
+}
+.tst .next {
+  grid-column: 3;
 }
 .tst .arrow:hover {
   background: rgba(255, 255, 255, 0.1);
@@ -79,6 +110,7 @@
   grid-column: 1 / -1;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 8px;
 }
 .tst .dots button {
@@ -88,30 +120,29 @@
   border: 0;
   padding: 0;
   background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
 }
 .tst .dots button.on {
   background: #fff;
 }
+
 @media (max-width: 700px) {
   .tst {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .tst .track {
+    grid-column: 1;
   }
   .tst .arrow {
     display: none;
   }
+  .tst .video-t {
+    width: min(100%, 300px);
+  }
   .tst .card-t {
     padding: 28px 22px;
   }
-  .tst .photo {
-  display: block;
-  width: 88px;
-  height: 88px;
-  margin: 0 auto 16px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--accent);
-}
-.tst .name {
+  .tst .name {
     font-size: 26px;
   }
   .tst .prog {
