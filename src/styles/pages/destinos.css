@@ -116,7 +116,19 @@
   font-size: clamp(26px, 2.4vw, 36px);
   font-weight: 700;
   text-transform: uppercase;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+/* Degradado azul marino arriba de la foto para que el nombre se lea siempre */
+.page-destinos .card-img::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(45, 58, 100, 0.75) 0%, rgba(45, 58, 100, 0.35) 30%, rgba(45, 58, 100, 0) 55%);
+  pointer-events: none;
+}
+.page-destinos .card-img h3 {
+  z-index: 2;
 }
 .page-destinos .card-sub {
   margin-top: 18px;
