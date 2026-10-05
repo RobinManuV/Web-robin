@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /api/blog-admin
+Disallow: /api/blog-panel
+Disallow: /yuselico-studios/
+
+Sitemap: https://project-robin.com/sitemap-index.xml

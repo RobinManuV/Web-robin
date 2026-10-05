@@ -40,7 +40,17 @@ const organization = {
   sameAs: [CONTACT.linkedin],
 };
 
-const schemas = [organization, ...(Array.isArray(schema) ? schema : [schema])];
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE.url}/#website`,
+  name: SITE.name,
+  url: `${SITE.url}/`,
+  inLanguage: 'es-ES',
+  publisher: { '@id': `${SITE.url}/#organization` },
+};
+
+const schemas = [organization, website, ...(Array.isArray(schema) ? schema : [schema])];
 ---
 
 <!doctype html>
@@ -50,6 +60,8 @@ const schemas = [organization, ...(Array.isArray(schema) ? schema : [schema])];
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={SITE.name} />
+    <meta name="theme-color" content="#173f5f" />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, follow" />}
     {!noindex && <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />}
@@ -61,6 +73,7 @@ const schemas = [organization, ...(Array.isArray(schema) ? schema : [schema])];
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={`${title} | ${SITE.name}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
