@@ -12,18 +12,16 @@ const isBlockedName = (v) => normalizedName(v).replace(/[^a-z0-9]/g, '') === 'ro
 async function saveInSupabase(lead) {
   const baseUrl = String(process.env.SUPABASE_URL || '').replace(/\/$/, '');
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const table = process.env.SUPABASE_LEADS_TABLE || 'leads';
+  const table = process.env.SUPABASE_LEADS_TABLE || 'crm_leads';
   if (!baseUrl || !key) return { skipped: true };
 
   const row = {
-    nombre: lead.name || null,
+    name: lead.name || lead.email || 'Lead web',
     email: lead.email || null,
-    telefono: lead.phone || null,
-    servicio: lead.servicio || null,
-    mensaje: lead.message || null,
-    origen: lead.tag || null,
-    pagina: lead.page || null,
-    formulario: lead.form || null,
+    phone: lead.phone || null,
+    summary: [lead.servicio, lead.tag].filter(Boolean).join(' · ') || null,
+    body_text: lead.message || null,
+    comment: [lead.form && `Formulario: ${lead.form}`, lead.page && `Página: ${lead.page}`].filter(Boolean).join(' · ') || null,
   };
 
   const response = await fetch(`${baseUrl}/rest/v1/${encodeURIComponent(table)}`, {
