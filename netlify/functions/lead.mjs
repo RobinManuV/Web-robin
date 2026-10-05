@@ -6,6 +6,39 @@ import { createLead } from '../lib/notion.mjs';
 
 const clean = (v, max = 500) => String(v ?? '').trim().slice(0, max);
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+const normalizedName = (v) => String(v ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
+const isBlockedName = (v) => normalizedName(v).replace(/[^a-z0-9]/g, '') === 'robertnat';
+
+async function saveInSupabase(lead) {
+  const baseUrl = String(process.env.SUPABASE_URL || '').replace(/\/$/, '');
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const table = process.env.SUPABASE_LEADS_TABLE || 'leads';
+  if (!baseUrl || !key) return { skipped: true };
+
+  const row = {
+    nombre: lead.name || null,
+    email: lead.email || null,
+    telefono: lead.phone || null,
+    servicio: lead.servicio || null,
+    mensaje: lead.message || null,
+    origen: lead.tag || null,
+    pagina: lead.page || null,
+    formulario: lead.form || null,
+  };
+
+  const response = await fetch(`${baseUrl}/rest/v1/${encodeURIComponent(table)}`, {
+    method: 'POST',
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      'Content-Type': 'application/json',
+      Prefer: 'return=minimal',
+    },
+    body: JSON.stringify(row),
+  });
+  if (!response.ok) throw new Error(`Supabase ${response.status}: ${await response.text()}`);
+  return { saved: true };
+}
 
 export default async (req) => {
   if (req.method !== 'POST') return new Response('Method Not Allowed', { status: 405 });
@@ -20,8 +53,12 @@ export default async (req) => {
 
   if (d['bot-field'] || d.website) return Response.json({ ok: true }); // bot
   const form = clean(d['form-name'] || d.form || 'contacto', 40);
+  const name = clean(d.nombre || d.name, 120);
   const email = clean(d.email, 160).toLowerCase();
   if (!isEmail(email)) return Response.json({ error: 'Email no válido' }, { status: 400 });
+
+  // Filtro de prueba/anti-spam: responder como correcto, pero no persistir ni notificar.
+  if (isBlockedName(name)) return Response.json({ ok: true, filtered: true });
 
   // La newsletter no es un lead comercial (se puede activar con NOTION_NEWSLETTER=true)
   if (form === 'newsletter' && process.env.NOTION_NEWSLETTER !== 'true') {
@@ -29,10 +66,10 @@ export default async (req) => {
   }
 
   try {
-    const res = await createLead({
+    const lead = {
       form,
       tag: clean(d.tag || form, 80),
-      name: clean(d.nombre || d.name, 120),
+      name,
       email,
       phone: clean(d.telefono || d.phone, 40),
       servicio: clean(d.servicio, 80),
@@ -40,7 +77,13 @@ export default async (req) => {
       colegio: clean(d.colegio, 160),
       message: clean(d.mensaje || d.message, 3000),
       page: clean(d.pagina, 200),
-    });
+    };
+
+    // Los formularios comerciales no escolares se copian también en Supabase.
+    // Newsletter y colegios mantienen su flujo actual.
+    if (form !== 'colegios' && form !== 'newsletter') await saveInSupabase(lead);
+
+    const res = await createLead(lead);
     if (res.skipped) {
       console.error('[lead] Notion sin configurar (NOTION_TOKEN / NOTION_DATABASE_ID)');
       return Response.json({ ok: false, error: 'Notion sin configurar' }, { status: 503 });

@@ -148,6 +148,14 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
         const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
         // 1) Guardar el lead en Notion (fuente principal)
         const res = await fetch('/api/lead', { method: 'POST', headers, body });
+        const result = await res.json().catch(() => ({}));
+        if (result.filtered) {
+          form.reset();
+          status.dataset.state = 'ok';
+          status.textContent = '¡Gracias! Hemos recibido tu mensaje y te respondemos en menos de 24 h laborables.';
+          status.hidden = false;
+          return;
+        }
         // 2) Copia en Netlify Forms para el aviso por email (si falla, no pasa nada)
         fetch('/', { method: 'POST', headers, body }).catch(() => {});
         if (!res.ok) throw new Error(String(res.status));
