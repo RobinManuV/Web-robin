@@ -1,6 +1,7 @@
 ---
 import '../styles/components/lead-form.css';
 import { ESPANA_PUBLICADA } from '../data/site.js';
+import GeoHide from './GeoHide.astro';
 // Formulario conectado a Netlify Forms.
 // Cada formulario lleva un campo oculto "tag" con el origen del lead
 // (general, pack-llegada, colegios, espana, holanda-maastricht…).
@@ -56,11 +57,15 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
         <div class="field">
           <label for={`${id}-srv`}>Servicio <span class="req">*</span></label>
           <select id={`${id}-srv`} name="servicio" required data-servicio>
-            {SERVICIOS.map((s) => (
-              <option value={s} selected={s === servicio}>
-                {s}
-              </option>
-            ))}
+            {SERVICIOS.map((s) => {
+              const opt = (
+                <option value={s} selected={s === servicio}>
+                  {s}
+                </option>
+              );
+              // "Estudiar en España" no se ofrece a quien entra desde España
+              return s === 'Estudiar en España' ? <GeoHide>{opt}</GeoHide> : opt;
+            })}
           </select>
         </div>
         <div class="field full">

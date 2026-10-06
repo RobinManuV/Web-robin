@@ -10,7 +10,7 @@ type Click = { sel?: string; rx?: number; ry?: number; x?: number; y?: number; p
 type ScrollBand = { depth: number; pct: number }; // % de visitas que llegan a esa profundidad
 type Msg = { type: 'robin-heatmap'; mode: 'clicks' | 'scroll'; clicks?: Click[]; scroll?: ScrollBand[] };
 
-const ADMIN_ORIGIN = (import.meta.env.PUBLIC_ADMIN_ORIGIN as string | undefined)?.replace(/\/+$/, '') || '';
+const ADMIN_ORIGIN = ((import.meta.env.PUBLIC_ADMIN_ORIGIN as string | undefined) || 'https://robin-admin-platform.netlify.app').replace(/\/+$/, '');
 const allowed = (origin: string) => !!ADMIN_ORIGIN && ADMIN_ORIGIN.split(',').map((o) => o.trim()).includes(origin);
 
 let layer: HTMLDivElement | null = null;

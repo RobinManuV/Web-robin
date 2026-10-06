@@ -10,11 +10,11 @@
 // velocidad de carga (Core Web Vitals) y errores de JavaScript.
 //
 // Adónde lo manda: a PUBLIC_ANALYTICS_ENDPOINT (función web-collect del gestor).
-// Si esa variable no está definida en Netlify, el medidor no hace nada.
 // No guarda nombres, emails ni teléfonos: nunca lee lo que se escribe en los formularios.
 // ============================================================
 
-const ENDPOINT = import.meta.env.PUBLIC_ANALYTICS_ENDPOINT as string | undefined;
+// Gestor Robin-Admin (se puede cambiar con la variable PUBLIC_ANALYTICS_ENDPOINT en Netlify)
+const ENDPOINT = (import.meta.env.PUBLIC_ANALYTICS_ENDPOINT as string | undefined) || 'https://robin-admin-platform.netlify.app/api/web/collect';
 const CONSENT_KEY = 'robin-consent';
 const CONSENT_VERSION = 2;
 const CONSENT_MAX_DAYS = 365;

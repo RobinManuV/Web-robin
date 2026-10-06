@@ -1,0 +1,8 @@
+---
+// No se muestra a quien entra desde España (lo quita la edge function geo-espana).
+// Ver src/lib/geo-espana.mjs.
+const open = '<!--geo-hide-->';
+const close = '<!--/geo-hide-->';
+---
+
+<Fragment set:html={open} /><slot /><Fragment set:html={close} />

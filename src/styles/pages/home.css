@@ -153,6 +153,11 @@
   overflow-wrap: normal;
 }
 
+/* Con 3 paquetes (fuera de España): que "MULTICAMPUS" quepa en la foto */
+.page-home .packs:not(.packs-wide) .pack-img h3 {
+  font-size: clamp(24px, 2.2vw, 32px);
+}
+
 /* Con 2 paquetes: tarjetas horizontales (foto a la izquierda, texto a la derecha) */
 .page-home .packs-wide {
   grid-template-columns: repeat(2, minmax(0, 1fr));

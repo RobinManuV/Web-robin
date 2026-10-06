@@ -175,6 +175,14 @@ Variables de entorno de la web:
 
 | Variable | Valor |
 |---|---|
-| `PUBLIC_ANALYTICS_ENDPOINT` | `https://<gestor>/api/web/collect` (sin ella no se mide nada) |
-| `PUBLIC_ADMIN_ORIGIN` | `https://<gestor>` |
+| `PUBLIC_ANALYTICS_ENDPOINT` | opcional; por defecto `https://robin-admin-platform.netlify.app/api/web/collect` |
+| `PUBLIC_ADMIN_ORIGIN` | opcional; por defecto `https://robin-admin-platform.netlify.app` |
 | `ANALYTICS_SERVER_SECRET` | igual que `WEB_ANALYTICS_SERVER_SECRET` en el gestor |
+
+## España según el país del visitante
+
+`ESPANA_PUBLICADA = true` (src/data/site.js): las páginas de España se publican y Google las indexa.
+A quien entra **desde España** no se le muestra España en el menú, la portada ni el formulario
+(edge function `netlify/edge-functions/geo-espana.ts` + `src/lib/geo-espana.mjs`, marcadores
+`<GeoHide>` / `<GeoOnly>`). Con enlace directo, sus páginas se pueden ver desde cualquier país.
+Para probarlo sin VPN: añade `?pais=ES` o `?pais=MX` a cualquier URL.

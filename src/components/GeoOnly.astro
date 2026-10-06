@@ -1,0 +1,8 @@
+---
+// Solo se muestra a quien entra desde España (para el resto, la edge function lo borra).
+// Va dentro de <template> para que, si la edge function no actúa, no se vea nunca.
+const open = '<!--geo-only--><template data-geo-only>';
+const close = '</template><!--/geo-only-->';
+---
+
+<Fragment set:html={open} /><slot /><Fragment set:html={close} />

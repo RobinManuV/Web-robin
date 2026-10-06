@@ -4,14 +4,15 @@
 // ============================================================
 
 // ------------------------------------------------------------
-// ESPAÑA: sección preparada pero SIN PUBLICAR.
-// Con false: no sale en el menú, ni en la home, ni en el formulario; sus
-// páginas (/estudiar-universidad-espana/, /contacto-estudiar-en-espana/ y
-// /universidades/<universidad-española>/) no se publican, salen del sitemap y
-// cualquier visita redirige a la home (302, temporal).
-// Para publicarla: cambia a true y haz deploy. Todo vuelve a aparecer y a indexarse.
+// ESPAÑA (para estudiantes de fuera de España: Latinoamérica, Francia, Portugal…)
+// ESPANA_PUBLICADA = true: sus páginas se publican y Google las indexa.
+//   A quien entra DESDE ESPAÑA no se le enseña en el menú, la portada ni el
+//   formulario (países en ESPANA_PAISES_OCULTA, src/lib/geo-espana.mjs), aunque
+//   con un enlace directo sí puede ver sus páginas.
+// ESPANA_PUBLICADA = false: no se publica para nadie (sus URLs redirigen a la home).
 // ------------------------------------------------------------
-export const ESPANA_PUBLICADA = false;
+export const ESPANA_PUBLICADA = true;
+export { ESPANA_PAISES_OCULTA } from '../lib/geo-espana.mjs';
 
 // URLs de la sección España (las usan astro.config.mjs y scripts/postbuild.mjs)
 export const ESPANA_RUTAS = [
@@ -85,6 +86,7 @@ const NAV_COMPLETO = [
   {
     label: 'España',
     href: '/estudiar-universidad-espana/',
+    geoHide: true, // no se muestra a quien entra desde España
     children: [
       { label: 'ESADE', href: '/universidades/esade/' },
       { label: 'IE University', href: '/universidades/ie-university/' },

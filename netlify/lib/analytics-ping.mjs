@@ -8,7 +8,7 @@
 const clean = (v, max = 200) => String(v ?? '').trim().slice(0, max);
 
 export async function pingAnalytics(type, { form, tag, page, vid } = {}) {
-  const url = process.env.ANALYTICS_ENDPOINT || process.env.PUBLIC_ANALYTICS_ENDPOINT;
+  const url = process.env.ANALYTICS_ENDPOINT || process.env.PUBLIC_ANALYTICS_ENDPOINT || 'https://robin-admin-platform.netlify.app/api/web/collect';
   const secret = process.env.ANALYTICS_SERVER_SECRET;
   if (!url || !secret) return;
   const body = {

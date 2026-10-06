@@ -1,6 +1,7 @@
 ---
 import '../styles/components/header.css';
 import { NAV, SITE } from '../data/site.js';
+import GeoHide from './GeoHide.astro';
 const path = Astro.url.pathname;
 const isActive = (item) =>
   path === item.href ||
@@ -17,36 +18,40 @@ const isActive = (item) =>
     <nav class="nav" id="main-navigation" aria-label="Menú principal" data-nav>
       <ul class="menu">
         {
-          NAV.map((item) => (
-            <li class:list={['item', { 'has-sub': item.children, active: isActive(item) }]}>
-              <a href={item.href} class="top-link" data-nav-link>
-                {item.label}
+          NAV.map((item) => {
+            const li = (
+              <li class:list={['item', { 'has-sub': item.children, active: isActive(item) }]}>
+                <a href={item.href} class="top-link" data-nav-link>
+                  {item.label}
+                  {item.children && (
+                    <svg class="caret" viewBox="0 0 10 6" aria-hidden="true">
+                      <path d="M0 0l5 6 5-6z" fill="currentColor" />
+                    </svg>
+                  )}
+                </a>
                 {item.children && (
-                  <svg class="caret" viewBox="0 0 10 6" aria-hidden="true">
-                    <path d="M0 0l5 6 5-6z" fill="currentColor" />
-                  </svg>
+                  <button class="sub-toggle" type="button" aria-expanded="false" aria-label={`Abrir ${item.label}`}>
+                    <svg viewBox="0 0 10 6" aria-hidden="true">
+                      <path d="M0 0l5 6 5-6z" fill="currentColor" />
+                    </svg>
+                  </button>
                 )}
-              </a>
-              {item.children && (
-                <button class="sub-toggle" type="button" aria-expanded="false" aria-label={`Abrir ${item.label}`}>
-                  <svg viewBox="0 0 10 6" aria-hidden="true">
-                    <path d="M0 0l5 6 5-6z" fill="currentColor" />
-                  </svg>
-                </button>
-              )}
-              {item.children && (
-                <ul class="sub">
-                  {item.children.map((c) => (
-                    <li>
-                      <a href={c.href} class:list={{ current: path === c.href }} data-nav-link>
-                        {c.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))
+                {item.children && (
+                  <ul class="sub">
+                    {item.children.map((c) => (
+                      <li>
+                        <a href={c.href} class:list={{ current: path === c.href }} data-nav-link>
+                          {c.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            );
+            // España no se muestra a quien entra desde España (edge function geo-espana)
+            return item.geoHide ? <GeoHide>{li}</GeoHide> : li;
+          })
         }
       </ul>
       <div class="mobile-ctas">
