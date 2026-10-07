@@ -4,6 +4,7 @@ import { getHosts, busyByHost, createMeeting } from '../lib/google-calendar.mjs'
 import { candidateSlots, freeSlots, pickHost, config } from '../lib/slots.mjs';
 import { createLead } from '../lib/notion.mjs';
 import { pingAnalytics } from '../lib/analytics-ping.mjs';
+import { saveCrmLead } from '../lib/crm-lead.mjs';
 
 const clean = (v, max = 500) => String(v ?? '').trim().slice(0, max);
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
@@ -80,6 +81,14 @@ export default async (req) => {
 
   const meetingLink =
     event.hangoutLink || event.conferenceData?.entryPoints?.find((e) => e.entryPointType === 'video')?.uri || '';
+
+  // La reserva ya está confirmada; guardar el lead en CRM sin convertir un
+  // fallo secundario del CRM en una reserva fallida ni provocar otra invitación.
+  try {
+    await saveCrmLead({ name, email, phone, message, tag, page, form: 'reserva', servicio: 'Consulta gratuita' });
+  } catch (err) {
+    console.error('[book] CRM:', err.message);
+  }
 
   // Notion no debe bloquear la reserva: si falla, queda en el log
   try {
