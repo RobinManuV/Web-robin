@@ -11,8 +11,11 @@ const normalizedName = (v) => String(v ?? '').normalize('NFD').replace(/[\u0300-
 const isBlockedName = (v) => normalizedName(v).replace(/[^a-z0-9]/g, '') === 'robertnat';
 
 async function saveInSupabase(lead) {
-  const baseUrl = String(process.env.SUPABASE_URL || '').replace(/\/$/, '');
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // The public site's generic key belongs to the student portal and can be
+  // rotated independently. Prefer the dedicated CRM service credentials so
+  // website leads are written to the same administrative database as the CRM.
+  const baseUrl = String(process.env.ADMIN_SUPABASE_URL || process.env.SUPABASE_URL || '').replace(/\/$/, '');
+  const key = process.env.ADMIN_SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   const table = process.env.SUPABASE_LEADS_TABLE || 'crm_leads';
   if (!baseUrl || !key) return { skipped: true };
 
