@@ -55,7 +55,7 @@ Además, cada envío lanza el evento `lead_submit` (con `lead_tag`) y cada reser
 
 El reservador (`src/components/BookingWidget.astro`) usa dos funciones:
 
-- `GET /api/availability`: huecos libres de las próximas 2 semanas en el calendario de **hello@project-robin.com**, de **lunes a sábado de 17:00 a 21:00** (hora de Madrid). Los domingos no.
+- `GET /api/availability`: huecos libres de las próximas 2 semanas en el calendario de **hello@project-robin.com**, de **lunes a viernes de 17:00 a 21:00** (hora de Madrid). Sábados y domingos no.
 - `POST /api/book`: vuelve a comprobar que el hueco sigue libre, crea el evento con **Google Meet** en el calendario de hello@project-robin.com, invita al alumno por email y crea el lead en Notion (con la fecha en la columna *Meeting*).
 
 ### Configuración de Google (una sola vez, la hace un admin de Google Workspace)
@@ -79,7 +79,7 @@ El reservador (`src/components/BookingWidget.astro`) usa dos funciones:
 | `NOTION_TOKEN` | Sí | Token de una integración interna de Notion (notion.so/my-integrations) |
 | `NOTION_DATABASE_ID` | Sí | `1eb069542601804c8f6fc22553255077` (Main Database) |
 | `PORTAL_ORIGIN` | No | Solo si quieres que este sitio sirva `/login` por proxy desde el sitio de Netlify del portal (`https://xxxx.netlify.app`) |
-| `BOOKING_SCHEDULE` | No | Horario en JSON (1 = lunes … 7 = domingo). Por defecto lunes a sábado 17:00–21:00: `{"1":[["17:00","21:00"]],"2":[["17:00","21:00"]],"3":[["17:00","21:00"]],"4":[["17:00","21:00"]],"5":[["17:00","21:00"]],"6":[["17:00","21:00"]]}` |
+| `BOOKING_SCHEDULE` | No | Horario en JSON (1 = lunes … 7 = domingo). Por defecto lunes a viernes 17:00–21:00: `{"1":[["17:00","21:00"]],"2":[["17:00","21:00"]],"3":[["17:00","21:00"]],"4":[["17:00","21:00"]],"5":[["17:00","21:00"]]}` |
 | `BOOKING_MIN_NOTICE_HOURS` | No | Antelación mínima para reservar (por defecto `12`) |
 | `BOOKING_DAYS_AHEAD` | No | Días que se muestran (por defecto `14`) |
 | `BOOKING_BUFFER_MINUTES` | No | Margen libre entre reuniones (por defecto `0`) |

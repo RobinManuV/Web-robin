@@ -3,7 +3,7 @@
 //
 // Variables opcionales:
 //   BOOKING_SCHEDULE          JSON con el horario por día de la semana (1=lunes … 7=domingo)
-//                             por defecto: lunes a sábado 17:00–21:00 (domingos no)
+//                             por defecto: lunes a viernes 17:00–21:00 (sábados y domingos no)
 //   BOOKING_SLOT_MINUTES      duración de la llamada (30)
 //   BOOKING_MIN_NOTICE_HOURS  antelación mínima para reservar (12)
 //   BOOKING_DAYS_AHEAD        días que se muestran (14)
@@ -12,13 +12,12 @@
 export const TZ = 'Europe/Madrid';
 
 const DEFAULT_SCHEDULE = {
-  // lunes (1) a sábado (6), de 17:00 a 21:00. Domingo (7) cerrado.
+  // lunes (1) a viernes (5), de 17:00 a 21:00. Sábado (6) y domingo (7) cerrados.
   1: [['17:00', '21:00']],
   2: [['17:00', '21:00']],
   3: [['17:00', '21:00']],
   4: [['17:00', '21:00']],
   5: [['17:00', '21:00']],
-  6: [['17:00', '21:00']],
 };
 
 export function config() {
