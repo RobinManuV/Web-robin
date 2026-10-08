@@ -86,6 +86,7 @@ const { tag = 'general', compact = false } = Astro.props;
     let slots = [];
     let chosen = null;
     let activeDay = null;
+    let expanded = false; // false: 5 horarios del día; true: todos
 
     function slotButton(s) {
       const li = document.createElement('li');
@@ -142,12 +143,15 @@ const { tag = 'general', compact = false } = Astro.props;
         b.textContent = cap(fmtDay.format(new Date(byDay[k][0].start)));
         b.addEventListener('click', () => {
           activeDay = k;
+          expanded = false;
           render();
         });
         days.appendChild(b);
       });
       days.hidden = false;
-      byDay[activeDay].forEach((s) => list.appendChild(slotButton(s)));
+      const delDia = byDay[activeDay];
+      (expanded ? delDia : delDia.slice(0, 5)).forEach((s) => list.appendChild(slotButton(s)));
+      more.hidden = expanded || delDia.length <= 5;
     }
 
     function pick(s) {
@@ -159,6 +163,10 @@ const { tag = 'general', compact = false } = Astro.props;
       form.querySelector('input[name="name"]').focus();
     }
 
+    more.addEventListener('click', () => {
+      expanded = true;
+      render();
+    });
     $('[data-back]').addEventListener('click', () => show('slots'));
 
     form.addEventListener('submit', async (e) => {
