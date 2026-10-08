@@ -14,7 +14,7 @@ function privateKey() {
 const b64url = (s) => Buffer.from(s, 'utf8').toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 const encSubject = (s) => `=?UTF-8?B?${Buffer.from(s, 'utf8').toString('base64')}?=`;
 
-async function sendGmail({ to, subject, html, text }) {
+async function sendGmail({ to, subject, html, text, fromName }) {
   const from = cfg.emailFrom();
   const client = new JWT({
     email: serviceAccountEmail(),
@@ -24,7 +24,7 @@ async function sendGmail({ to, subject, html, text }) {
   });
   const boundary = `robin-${Date.now().toString(36)}`;
   const raw = [
-    `From: Robin Blog <${from}>`,
+    `From: ${fromName || 'Robin Blog'} <${from}>`,
     `To: ${to}`,
     `Subject: ${encSubject(subject)}`,
     'MIME-Version: 1.0',
@@ -49,11 +49,11 @@ async function sendGmail({ to, subject, html, text }) {
   });
 }
 
-async function sendResend({ to, subject, html, text }) {
+async function sendResend({ to, subject, html, text, fromName }) {
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: `Robin Blog <${cfg.emailFrom()}>`, to: [to], subject, html, text }),
+    body: JSON.stringify({ from: `${fromName || 'Robin Blog'} <${cfg.emailFrom()}>`, to: [to], subject, html, text }),
   });
   if (!res.ok) throw new Error(`Resend ${res.status}: ${await res.text()}`);
 }

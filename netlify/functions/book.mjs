@@ -5,6 +5,7 @@ import { candidateSlots, freeSlots, pickHost, config } from '../lib/slots.mjs';
 import { createLead } from '../lib/notion.mjs';
 import { pingAnalytics } from '../lib/analytics-ping.mjs';
 import { saveCrmLead } from '../lib/crm-lead.mjs';
+import { registrarReserva } from '../lib/reservas.mjs';
 
 const clean = (v, max = 500) => String(v ?? '').trim().slice(0, max);
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
@@ -103,6 +104,13 @@ export default async (req) => {
     });
   } catch (err) {
     console.error('[book] Notion:', err.message);
+  }
+
+  // Aviso inmediato al equipo y programación del recordatorio de 2 h antes
+  try {
+    await registrarReserva({ name, email, phone, curso, message, tag, host: host.name, start: slot.start, meetingLink });
+  } catch (err) {
+    console.error('[book] Avisos:', err.message);
   }
 
   await pingAnalytics('booking', { form: 'reserva', tag, page, vid: body.vid });

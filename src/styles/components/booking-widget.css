@@ -67,8 +67,8 @@
 }
 .booking .days {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
   padding-bottom: 10px;
   margin-bottom: 8px;
 }

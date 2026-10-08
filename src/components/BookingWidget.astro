@@ -85,7 +85,6 @@ const { tag = 'general', compact = false } = Astro.props;
     const status = $('[data-status]');
     let slots = [];
     let chosen = null;
-    let expanded = false;
     let activeDay = null;
 
     function slotButton(s) {
@@ -100,24 +99,41 @@ const { tag = 'general', compact = false } = Astro.props;
       return li;
     }
 
+    // Solo se muestran 4 días: mañana, pasado mañana y dos de la semana siguiente
+    // (martes y jueves si tienen huecos). Si falta alguno, se completa con el siguiente día libre.
+    const dateKey = (ms) => fmtKey.format(new Date(ms));
+    const addDays = (key, n) => {
+      const [y, m, d] = key.split('-').map(Number);
+      return new Date(Date.UTC(y, m - 1, d + n, 12)).toISOString().slice(0, 10);
+    };
+    const weekday = (key) => (new Date(key + 'T12:00:00Z').getUTCDay() + 6) % 7; // 0 = lunes
+    function pickDays(byDay) {
+      const keys = Object.keys(byDay).sort();
+      const today = dateKey(Date.now());
+      const picked = [];
+      const add = (k) => k && byDay[k] && !picked.includes(k) && picked.push(k);
+      add(addDays(today, 1));
+      add(addDays(today, 2));
+      const nextMonday = addDays(today, 7 - weekday(today));
+      const nextWeek = keys.filter((k) => k >= nextMonday && k < addDays(nextMonday, 7) && !picked.includes(k));
+      add(nextWeek.find((k) => weekday(k) === 1) || nextWeek[0]);
+      add(nextWeek.find((k) => weekday(k) === 3 && !picked.includes(k)) || nextWeek.find((k) => !picked.includes(k)));
+      keys.forEach((k) => picked.length < 4 && add(k));
+      return picked.sort();
+    }
+
     function render() {
       list.innerHTML = '';
+      more.hidden = true;
       if (!slots.length) {
-        list.innerHTML = '<li class="empty">Ahora mismo no hay huecos libres en las próximas dos semanas. Escríbenos y te buscamos uno.</li>';
-        more.hidden = true;
-        return;
-      }
-      if (!expanded) {
         days.hidden = true;
-        slots.slice(0, 5).forEach((s) => list.appendChild(slotButton(s)));
-        more.hidden = slots.length <= 5;
+        list.innerHTML = '<li class="empty">Ahora mismo no hay huecos libres en las próximas dos semanas. Escríbenos y te buscamos uno.</li>';
         return;
       }
-      // Vista ampliada: pestañas por día
       const byDay = {};
-      slots.forEach((s) => (byDay[fmtKey.format(new Date(s.start))] ??= []).push(s));
-      const keys = Object.keys(byDay);
-      activeDay = activeDay && byDay[activeDay] ? activeDay : keys[0];
+      slots.forEach((s) => (byDay[dateKey(s.start)] ??= []).push(s));
+      const keys = pickDays(byDay);
+      activeDay = activeDay && keys.includes(activeDay) ? activeDay : keys[0];
       days.innerHTML = '';
       keys.forEach((k) => {
         const b = document.createElement('button');
@@ -132,7 +148,6 @@ const { tag = 'general', compact = false } = Astro.props;
       });
       days.hidden = false;
       byDay[activeDay].forEach((s) => list.appendChild(slotButton(s)));
-      more.hidden = true;
     }
 
     function pick(s) {
@@ -144,10 +159,6 @@ const { tag = 'general', compact = false } = Astro.props;
       form.querySelector('input[name="name"]').focus();
     }
 
-    more.addEventListener('click', () => {
-      expanded = true;
-      render();
-    });
     $('[data-back]').addEventListener('click', () => show('slots'));
 
     form.addEventListener('submit', async (e) => {

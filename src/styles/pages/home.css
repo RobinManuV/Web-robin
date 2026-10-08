@@ -2,8 +2,10 @@
 
 /* HERO */
 .page-home .hero {
+  /* Caja azul con aire blanco a los lados, igual que la de testimonios */
+  margin-inline: clamp(10px, 1.6vw, 24px);
   background: var(--navy);
-  border-radius: 0 0 24px 24px;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   overflow: hidden;
 }
 .page-home .hero-inner {
@@ -14,12 +16,12 @@
   min-height: 715px;
   padding-block: 80px;
 }
-/* El GIF es 1600x900 con el mapa en x 628-1572 / y 80-820: recortamos solo el mapa
-   para que quede dentro del contenedor, alineado con el texto. */
+/* El GIF es 1600x900 con el mapa en x 628-1572 / y 80-820. Recortamos x 598-1600 / y 50-850
+   (un margen de ~30 px alrededor) para que ninguna costa quede cortada por el borde. */
 .page-home .hero-map {
   width: 100%;
-  aspect-ratio: 945 / 740;
-  background: url('/wp-content/uploads/2026/07/hero-global-wide-spain-corrected-animated.gif') 95.9% 50% / 169.3% auto no-repeat;
+  aspect-ratio: 1002 / 800;
+  background: url('/wp-content/uploads/2026/07/hero-global-wide-spain-corrected-animated.gif') 100% 50% / 159.7% auto no-repeat;
 }
 .page-home .hero-title {
   color: var(--cream-text);
@@ -177,6 +179,75 @@
 }
 .page-home .packs-wide .pack .btn {
   align-self: flex-start;
+}
+
+/* "Alojamiento 100% garantizado": subrayador que se dibuja y late suavemente */
+.page-home .pack-list .hl {
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.page-home .pack-list .hl span {
+  justify-self: start;
+  padding: 1px 4px;
+  margin-inline: -4px;
+  border-radius: 4px;
+  background: linear-gradient(var(--accent), var(--accent)) left center / 0% 100% no-repeat;
+  animation: hl-draw 2.4s ease-in-out infinite;
+}
+@keyframes hl-draw {
+  0% { background-size: 0% 100%; }
+  35%, 80% { background-size: 100% 100%; }
+  100% { background-size: 100% 100%; opacity: 0.85; }
+}
+.page-home .pack-list li.hl::before {
+  animation: hl-tick 2.4s ease-in-out infinite;
+}
+@keyframes hl-tick {
+  0%, 100% { transform: scale(1); }
+  45% { transform: scale(1.35); }
+}
+
+/* MÉTODO: título y subtítulo */
+.page-home .metodo-head h2 {
+  font-size: clamp(48px, 6vw, 88px);
+  line-height: 1;
+}
+.page-home .metodo-sub {
+  font-size: clamp(18px, 2vw, 26px);
+  font-weight: 600;
+  color: var(--navy-3);
+}
+
+/* Pájaro que vuela entre fases del método (lo crea el script del carrusel) */
+.page-home .method-viewport {
+  position: relative;
+}
+.page-home .method-flyer {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  will-change: transform;
+}
+.page-home .method-flyer img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 8px 10px rgba(45, 58, 100, 0.25));
+}
+.page-home .method.is-flying .method-art img {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-home .pack-list .hl span {
+    animation: none;
+    background-size: 100% 100%;
+  }
+  .page-home .pack-list li.hl::before {
+    animation: none;
+  }
 }
 
 /* MÉTODO (carrusel) */
@@ -362,7 +433,7 @@
 .page-home .testi {
   margin-inline: clamp(10px, 1.6vw, 24px);
   background: var(--navy);
-  padding-block: clamp(70px, 10vw, 170px);
+  padding-block: clamp(36px, 5vw, 80px);
 }
 .page-home .testi-grid {
   display: grid;
@@ -518,7 +589,8 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  margin-top: 70px;
+  margin-top: 52px;
+  margin-bottom: 40px;
   align-items: start;
 }
 .page-home .member {
@@ -532,7 +604,7 @@
   align-items: flex-end;
 }
 .page-home .member:nth-child(2) {
-  margin-top: 40px;
+  margin-top: 14px;
 }
 .page-home .member-info {
   width: 100%;

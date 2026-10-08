@@ -15,6 +15,7 @@ const todosPaquetes = [
     title: 'Holanda',
     popular: true,
     img: '/wp-content/uploads/2026/05/amsterdam-cityscape-view-2026-03-20-01-59-27-utc-1024x683.jpg',
+    destacado: 'Alojamiento 100% garantizado.',
     bullets: ['Universidades públicas: matrícula oficial de 2.694 €/año.', 'Alojamiento 100% garantizado.', 'Acompañamiento en todo el proceso, de la elección a la llegada.'],
     text: 'Descubre opciones de estudio en Holanda y encuentra el destino que mejor encaja con tu perfil, tus objetivos y tu forma de estudiar.',
     cta: 'Estudia en Holanda',
@@ -163,7 +164,7 @@ const schema = {
                       </div>
                       <div class="pack-body">
                         <ul class="tick-list pack-list">
-                          {p.bullets.map((b) => <li>{b}</li>)}
+                          {p.bullets.map((b) => (b === p.destacado ? <li class="hl"><span>{b}</span></li> : <li>{b}</li>))}
                         </ul>
                         <p class="pack-text">{p.text}</p>
                         <a class="btn btn-sm" href={p.href}>{p.cta}</a>
@@ -182,9 +183,9 @@ const schema = {
 
   <!-- MÉTODO ROBIN -->
   <section class="section">
-    <div class="container center stack stack--20">
-      <p class="eyebrow">Método Robin</p>
-      <h2 class="display">Te guiamos de principio a fin</h2>
+    <div class="container center stack stack--20 metodo-head">
+      <h2 class="display">Método Robin</h2>
+      <p class="metodo-sub">Te guiamos de principio a fin</p>
       <p class="lead">Sin falsas promesas. Un proceso claro, transparente y probado. Paso a paso</p>
     </div>
     <div class="container">
@@ -394,8 +395,55 @@ const schema = {
       });
       bar.style.width = `${(n / (slides.length - 1)) * 100}%`;
     };
+    const viewport = root.querySelector('.method-viewport');
+    const artOf = (k) => slides[k].querySelector('.method-art img');
+    let flying = false;
+
+    // El pájaro de la fase actual despega, cruza el panel y aterriza como imagen de la siguiente fase.
+    // (Usa las mismas imágenes de cada fase: al cambiarlas por otras nuevas, el vuelo funciona igual.)
+    const fly = (from, to) => {
+      if (reduce || flying || !viewport.animate) return;
+      const a = artOf(from);
+      const b = artOf(to);
+      if (!a || !b) return;
+      const vr = viewport.getBoundingClientRect();
+      const r = a.getBoundingClientRect();
+      if (r.right < vr.left || r.left > vr.right) return; // la fase actual no está a la vista
+      const dir = to > from || (from === slides.length - 1 && to === 0) ? 1 : -1;
+      const flyer = document.createElement('div');
+      flyer.className = 'method-flyer';
+      Object.assign(flyer.style, { left: `${r.left - vr.left}px`, top: `${r.top - vr.top}px`, width: `${r.width}px`, height: `${r.height}px` });
+      const img = document.createElement('img');
+      img.src = a.currentSrc || a.src;
+      img.alt = '';
+      flyer.appendChild(img);
+      viewport.appendChild(flyer);
+      root.classList.add('is-flying');
+      flying = true;
+      const dx = dir * Math.min(r.width * 0.3, 110); // se mantiene sobre su columna, sin cruzar el texto
+      const anim = flyer.animate(
+        [
+          { transform: 'translate(0,0) rotate(0deg) scale(1)', offset: 0 },
+          { transform: `translate(${dx * 0.55}px,-${r.height * 0.6}px) rotate(${dir * 14}deg) scale(0.82)`, offset: 0.35 },
+          { transform: `translate(${dx}px,-${r.height * 0.5}px) rotate(${dir * 4}deg) scale(0.7)`, offset: 0.55 },
+          { transform: `translate(${dx * 0.35}px,${r.height * 0.06}px) rotate(${dir * -8}deg) scale(1.08)`, offset: 0.85 },
+          { transform: 'translate(0,0) rotate(0deg) scale(1)', offset: 1 },
+        ],
+        { duration: 1100, easing: 'cubic-bezier(.45,.05,.3,1)' },
+      );
+      setTimeout(() => (img.src = b.currentSrc || b.src), 520);
+      const done = () => {
+        flyer.remove();
+        root.classList.remove('is-flying');
+        flying = false;
+      };
+      anim.onfinish = done;
+      anim.oncancel = done;
+    };
+
     const go = (n) => {
       n = (n + slides.length) % slides.length;
+      if (n !== i) fly(i, n);
       track.scrollTo({ left: slides[n].offsetLeft - track.offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
       paint(n);
     };
