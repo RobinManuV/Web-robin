@@ -2,7 +2,11 @@
 import '../../styles/pages/destinos.css';
 import Base from '../../layouts/Base.astro';
 import NewsletterMap from '../../components/NewsletterMap.astro';
-import { DESTINOS, LOGOS_HOLANDA } from '../../data/destinos.js';
+import { DESTINOS as TODOS, LOGOS_HOLANDA } from '../../data/destinos.js';
+
+// Orden de las tarjetas: primero estas seis ciudades y luego el resto, en su orden habitual.
+const PRIMERAS = ['amsterdam', 'rotterdam', 'groningen', 'maastricht', 'eindhoven', 'delft'];
+const DESTINOS = [...PRIMERAS.map((slug) => TODOS.find((d) => d.slug === slug)).filter(Boolean), ...TODOS.filter((d) => !PRIMERAS.includes(d.slug))];
 
 const title = 'Estudiar en Holanda: 11 ciudades universitarias | Project Robin';
 const description =
