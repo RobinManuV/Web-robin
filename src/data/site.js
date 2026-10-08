@@ -153,20 +153,20 @@ export const FOOTER = {
 export const EQUIPO = [
   {
     name: 'Noel Cortés',
-    role: 'Co-fundador · Holanda',
-    bio: 'Graduado en Economics and Business Economics en la Universidad de Maastricht. Actualmente trabajando en el departamento de M&A en Deloitte.',
+    role: 'Co-fundador',
+    bio: 'Graduado en Economía y Business en Maastricht University. Ex M&A en Deloitte.',
     linkedin: 'https://es.linkedin.com/in/noelcorteslink',
   },
   {
     name: 'María Gavira',
-    role: 'Co-fundadora · Comunidad',
-    bio: 'Graduada en International Business en la Universidad de Maastricht. Actualmente trabajando como Associate en AlphaSights en Londres.',
+    role: 'Co-fundadora',
+    bio: 'Graduada en International Business en Maastricht University. Ex AlphaSights.',
     linkedin: 'https://uk.linkedin.com/in/maria-gavira-martinez-170638259',
   },
   {
     name: 'Manuel Fernández',
-    role: 'Co-fundador · Multicampus',
-    bio: 'Graduado en Economics and Business Economics en la Universidad de Maastricht. Actualmente cursando un Master in Management en ESCP Business School.',
+    role: 'Co-fundador',
+    bio: 'Graduado en Economía y Business en Maastricht. MIM @ ESCP. Ex Bloomberg.',
     linkedin: 'https://nl.linkedin.com/in/manuel-fernandez-prieto',
   },
 ];
