@@ -8,6 +8,7 @@ import { writeFileSync, readFileSync, existsSync, rmSync } from 'node:fs';
 import { ESPANA_PUBLICADA, ESPANA_RUTAS } from '../src/data/site.js';
 
 const origin = (process.env.PORTAL_ORIGIN || '').replace(/\/+$/, '');
+const adminOrigin = (process.env.PUBLIC_ADMIN_ORIGIN || 'https://robin-admin-platform.netlify.app').replace(/\/+$/, '');
 const lines = [];
 
 if (origin) {
@@ -23,6 +24,10 @@ if (origin) {
 }
 
 lines.push(
+  '# Acceso corto al login administrativo',
+  `/admin        ${adminOrigin}/   302`,
+  `/admin/       ${adminOrigin}/   302`,
+  '',
   '# URLs antiguas de WordPress',
   '/feed/*              /blog/                 301',
   '/feed                /blog/                 301',
