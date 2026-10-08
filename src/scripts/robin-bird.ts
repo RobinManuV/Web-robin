@@ -1,40 +1,41 @@
-// Pájaro Robin en vuelo (SVG) para el carrusel del Método Robin.
-// Mira a la derecha. Las alas son dos grupos con id para girarlas desde el script:
-//   [data-wing="near"] y [data-wing="far"], con pivote en (100, 78).
-const NAVY = '#2d3a64';
-const CREAM = '#fcfbf8';
-const SHADE = '#e6e3d8';
-const YELLOW = '#f2b523';
+// Pájaro Robin en vuelo (SVG), dibujado a partir de los pájaros de las ilustraciones del Método Robin
+// (cuerpo redondo, gafas grandes, pico amarillo, barriga amarilla, cola hacia atrás).
+// Mira a la derecha. Las alas son dos grupos que se giran desde el script con setWings().
+const LINE = '#23365a';
+const LENS = '#232c44';
+const YELLOW = '#f2ba2b';
+const SW = 7;
 
-const wing = (id: string, fill: string) => `
-  <g data-wing="${id}" transform="translate(100 78)">
-    <path d="M8 4C20-20 12-60-22-90C-32-70-42-40-34-10C-30 4-10 10 8 4Z" fill="${fill}" stroke="${NAVY}" stroke-width="4" stroke-linejoin="round"/>
-    <path d="M-2-8C2-32-4-54-18-74M-16-6C-16-26-22-42-30-56" fill="none" stroke="${NAVY}" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+// Ala: en reposo (θ = 0) está plegada sobre el cuerpo, hacia la cola. Pivote en el hombro (320, 470).
+const WING_PATH = 'M342 436C290 400 175 436 62 530L30 556L50 584L24 610L62 632C170 666 292 626 338 544C356 512 360 468 342 436Z';
+const WING_LINES = 'M306 462C230 480 150 520 70 584M322 502C262 546 180 590 96 622';
+
+const wing = (id: 'near' | 'far') => `
+  <g data-wing="${id}" transform="translate(320 470)">
+    <g transform="translate(-320 -470)">
+      <path d="${WING_PATH}" fill="${id === 'far' ? '#e8ecf6' : '#fff'}" stroke="${LINE}" stroke-width="${SW}" stroke-linejoin="round"/>
+      <path d="${WING_LINES}" fill="none" stroke="${LINE}" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+    </g>
   </g>`;
 
-export const BIRD_SVG = `<svg viewBox="-10 -30 240 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" overflow="visible">
-  ${wing('far', SHADE)}
-  <g stroke="${NAVY}" stroke-width="8" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M64 80L8 94L16 104L60 102Z"/>
-    <ellipse cx="108" cy="90" rx="56" ry="34" transform="rotate(-8 108 90)"/>
-    <circle cx="152" cy="60" r="25"/>
-  </g>
-  <g fill="${CREAM}">
-    <path d="M64 80L8 94L16 104L60 102Z"/>
-    <ellipse cx="108" cy="90" rx="56" ry="34" transform="rotate(-8 108 90)"/>
-    <circle cx="152" cy="60" r="25"/>
-  </g>
-  <path d="M92 104C106 80 150 86 142 108C132 124 98 124 92 104Z" fill="${YELLOW}"/>
-  <path d="M96 100C110 92 128 96 134 106" fill="none" stroke="${NAVY}" stroke-width="3" stroke-linecap="round" opacity=".5"/>
-  <path d="M174 55L202 64L174 73Z" fill="${CREAM}" stroke="${NAVY}" stroke-width="4" stroke-linejoin="round"/>
-  <path d="M138 52Q152 44 168 50L166 62Q154 70 141 62Z" fill="${NAVY}"/>
-  <path d="M139 54L122 50" stroke="${NAVY}" stroke-width="4" stroke-linecap="round"/>
-  <path d="M112 118L94 142M126 118L110 146" stroke="${NAVY}" stroke-width="4" stroke-linecap="round" fill="none"/>
-  ${wing('near', CREAM)}
+const BODY = 'M232 268C255 200 320 150 395 148C475 146 540 192 556 255L560 300C576 350 578 400 572 450C568 540 530 640 440 688C380 708 290 700 215 660C150 650 80 640 44 626C40 600 20 560 5 540C120 480 215 400 232 268Z';
+
+export const BIRD_SVG = `<svg viewBox="-20 -60 680 840" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" overflow="visible">
+  ${wing('far')}
+  <path d="M330 696L246 744M246 744L222 738M246 744L232 768" fill="none" stroke="${LINE}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M372 700L300 752M300 752L276 748M300 752L286 774" fill="none" stroke="${LINE}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="${BODY}" fill="#fff" stroke="${LINE}" stroke-width="${SW}" stroke-linejoin="round"/>
+  <path d="M250 684C280 560 360 444 470 430C530 422 562 440 566 458C560 560 520 642 432 690C380 706 300 702 250 684Z" fill="${YELLOW}"/>
+  <path d="M330 452C322 500 310 540 262 590" fill="none" stroke="${LINE}" stroke-width="${SW - 1}" stroke-linecap="round"/>
+  <path d="M215 300L332 256" stroke="${LENS}" stroke-width="12" stroke-linecap="round"/>
+  <path d="M330 250C372 238 440 236 472 242L478 266C482 322 442 346 400 342C346 332 322 292 330 250Z" fill="${LENS}"/>
+  <path d="M476 226L608 205C612 236 590 276 528 284L478 266Z" fill="${LENS}"/>
+  <path d="M478 306C500 294 552 298 580 316L604 322L560 338C520 352 488 346 478 326Z" fill="${YELLOW}" stroke="${LINE}" stroke-width="6" stroke-linejoin="round"/>
+  ${wing('near')}
 </svg>`;
 
-/** Gira las alas: 0° = arriba, 90° = hacia delante, 170° = abajo. */
-export function setWings(root: Element, near: number, far = near - 12) {
-  root.querySelector('[data-wing="near"]')?.setAttribute('transform', `translate(100 78) rotate(${near.toFixed(1)})`);
-  root.querySelector('[data-wing="far"]')?.setAttribute('transform', `translate(100 78) rotate(${far.toFixed(1)}) scale(.92)`);
+/** Gira las alas: 0° = plegadas sobre el cuerpo, ~105° = arriba, negativo = abajo (aleteo hacia abajo). */
+export function setWings(root: Element, near: number, far = near * 0.82 - 4) {
+  root.querySelector('[data-wing="near"]')?.setAttribute('transform', `translate(320 470) rotate(${near.toFixed(1)})`);
+  root.querySelector('[data-wing="far"]')?.setAttribute('transform', `translate(320 470) rotate(${far.toFixed(1)})`);
 }

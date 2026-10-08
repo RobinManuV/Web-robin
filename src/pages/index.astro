@@ -421,10 +421,10 @@ const schema = {
       const startLeft = track.scrollLeft;
       const endLeft = slides[to].offsetLeft - track.offsetLeft;
       const world = Math.min(vr.width, Math.abs(endLeft - startLeft)); // recorrido del pájaro
-      const x0 = r.left - vr.left;
-      const y0 = r.top - vr.top;
-      const w = r.width * 1.05;
-      const h = w * (200 / 240);
+      const w = r.width * 0.9;
+      const h = w * (840 / 680); // proporción del dibujo del pájaro
+      const x0 = r.left - vr.left + (r.width - w) / 2;
+      const y0 = r.top - vr.top + (r.height - h) / 2;
       const lift = Math.min(r.height * 0.55, Math.max(0, y0 - 6));
 
       const flyer = document.createElement('div');
@@ -455,19 +455,22 @@ const schema = {
         const sc = ease(clamp01((t - 0.3) / 0.7)); // la cámara llega un poco después
         track.scrollLeft = startLeft + (endLeft - startLeft) * sc;
 
-        // Alas: abre (0→0.14), bate ~5 veces y las sube para frenar al aterrizar
-        const phase = Math.PI * (1 + 2 * 5.2 * Math.pow(t, 0.92)); // empieza abajo (plegadas) y sube
-        const glide = clamp01((t - 0.86) / 0.14);
-        const amp = 62 * (1 - 0.55 * glide);
-        const mid = 78 - 22 * glide;
-        const beat = mid - amp * Math.cos(phase) * (t < 0.14 ? ease(t / 0.14) : 1);
-        setWings(flyer, Math.max(6, Math.min(150, beat)), beat - 14);
+        // Alas: UN solo batido por viaje. Se abren (0→0.16), golpe hacia abajo que lo impulsa (→0.42),
+        // suben despacio hasta planear semiabiertas (→0.62) y se pliegan al aterrizar (0.88→1).
+        const seg = (v, a, b) => ease(clamp01((t - a) / (b - a)));
+        const beat = t < 0.16 ? 108 * seg(t, 0, 0.16)
+          : t < 0.42 ? 108 - 140 * seg(t, 0.16, 0.42)
+          : t < 0.62 ? -32 + 94 * seg(t, 0.42, 0.62)
+          : t < 0.88 ? 62 + 3 * Math.sin(((t - 0.62) / 0.26) * Math.PI * 2)
+          : 62 * (1 - seg(t, 0.88, 1));
+        setWings(flyer, beat);
+        const push = Math.sin(Math.PI * clamp01((t - 0.16) / 0.26)); // el golpe de ala lo eleva
 
         // Posición: avanza más rápido que la cámara, sube en arco y baja suave
         const dx = dir * Math.abs(world) * (e - sc);
         const arc = Math.sin(Math.PI * Math.pow(e, 0.85));
-        const bob = -5 * Math.sin(phase) * (1 - glide) * (t > 0.14 ? 1 : 0);
-        const crouch = t < 0.14 ? ease(t / 0.14) * 7 : 0;
+        const bob = -14 * push;
+        const crouch = t < 0.16 ? ease(t / 0.16) * 10 : 0;
         const x = Math.max(-w * 0.2, Math.min(vr.width - w * 0.8, x0 + dx));
         const y = y0 - lift * arc + bob + crouch;
         const pitch = -16 * Math.pow(1 - e, 2) - 22 * Math.pow(e, 7) + 7 * Math.sin(Math.PI * e);
