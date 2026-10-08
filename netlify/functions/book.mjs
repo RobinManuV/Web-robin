@@ -33,6 +33,7 @@ export default async (req) => {
   const email = clean(body.email, 160).toLowerCase();
   const phone = clean(body.phone, 40);
   const message = clean(body.message, 2000);
+  const curso = clean(body.curso, 60);
   const tag = clean(body.tag || 'general', 80);
   const page = clean(body.page, 200);
   const start = Date.parse(body.start);
@@ -70,6 +71,7 @@ export default async (req) => {
         `Nombre: ${name}`,
         `Email: ${email}`,
         `Teléfono: ${phone}`,
+        ...(curso ? [`Curso: ${curso}`] : []),
         `Origen: ${tag}${page ? ` (${page})` : ''}`,
         message ? `\nMensaje:\n${message}` : '',
       ].join('\n'),
@@ -85,7 +87,7 @@ export default async (req) => {
   // La reserva ya está confirmada; guardar el lead en CRM sin convertir un
   // fallo secundario del CRM en una reserva fallida ni provocar otra invitación.
   try {
-    await saveCrmLead({ name, email, phone, message, tag, page, form: 'reserva', servicio: 'Consulta gratuita' });
+    await saveCrmLead({ name, email, phone, message, curso, tag, page, form: 'reserva', servicio: 'Consulta gratuita' });
   } catch (err) {
     console.error('[book] CRM:', err.message);
   }
@@ -93,7 +95,7 @@ export default async (req) => {
   // Notion no debe bloquear la reserva: si falla, queda en el log
   try {
     await createLead({
-      name, email, phone, message, tag, page,
+      name, email, phone, message, curso, tag, page,
       form: 'reserva',
       host: host.name,
       meetingStart: madridLocalIso(startDate),

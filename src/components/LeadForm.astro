@@ -2,6 +2,7 @@
 import '../styles/components/lead-form.css';
 import { ESPANA_PUBLICADA } from '../data/site.js';
 import GeoHide from './GeoHide.astro';
+import CursoField from './CursoField.astro';
 // Formulario conectado a Netlify Forms.
 // Cada formulario lleva un campo oculto "tag" con el origen del lead
 // (general, pack-llegada, colegios, espana, holanda-maastricht…).
@@ -12,6 +13,7 @@ import GeoHide from './GeoHide.astro';
 //   tag:  etiqueta del origen (se puede sobrescribir con ?origen= en la URL)
 //   allowUrlTag: si true, usa ?origen= de la URL (página de contacto)
 //   servicio: valor preseleccionado del desplegable Servicio
+//   curso: si true (por defecto), el formulario de contacto pregunta en qué curso está
 const {
   form = 'contacto',
   tag = 'general',
@@ -19,6 +21,7 @@ const {
   servicio = 'Asesoramiento Completo',
   submitLabel = 'Enviar',
   dark = false,
+  curso = true,
 } = Astro.props;
 const id = `${form}-${tag}`.replace(/[^a-z0-9-]/gi, '');
 const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llegada', 'Mentoría', ...(ESPANA_PUBLICADA ? ['Estudiar en España'] : []), 'Multicampus', 'Otro'];
@@ -68,6 +71,7 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
             })}
           </select>
         </div>
+        {curso && <CursoField id={`${id}-curso`} dark={dark} />}
         <div class="field full">
           <label for={`${id}-msg`}>Mensaje <span class="req">*</span></label>
           <textarea id={`${id}-msg`} name="mensaje" placeholder="Mensaje" required />

@@ -1,5 +1,6 @@
 ---
 import '../styles/components/booking-widget.css';
+import CursoField from './CursoField.astro';
 // Reservador de citas conectado a Google Calendar (Noel, María y Manuel).
 // Muestra solo huecos libres reales y crea el evento con Google Meet.
 // `tag` identifica desde qué página se reserva (llega a Notion y a GTM).
@@ -36,9 +37,10 @@ const { tag = 'general', compact = false } = Astro.props;
       <label for={`bk-phone-${tag}`}>Teléfono <span class="req">*</span></label>
       <input id={`bk-phone-${tag}`} name="phone" type="tel" autocomplete="tel" required />
     </div>
+    <CursoField id={`bk-curso-${tag}`} />
     <div class="field">
       <label for={`bk-msg-${tag}`}>¿Algo que debamos saber? <small>(opcional)</small></label>
-      <textarea id={`bk-msg-${tag}`} name="message" rows="3" placeholder="Curso, carrera que te interesa, dudas…"></textarea>
+      <textarea id={`bk-msg-${tag}`} name="message" rows="3" placeholder="Carrera que te interesa, dudas…"></textarea>
     </div>
     <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
     <label class="consent">

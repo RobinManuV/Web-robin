@@ -46,6 +46,7 @@ export async function createLead(lead) {
     lead.tag && `Origen web: ${lead.tag}`,
     lead.form && `Formulario: ${lead.form}`,
     lead.servicio && `Servicio: ${lead.servicio}`,
+    lead.curso && `Curso: ${lead.curso}`,
     lead.cargo && `Cargo: ${lead.cargo}`,
     lead.page && `Página: ${lead.page}`,
     lead.meetingLink && `Meet: ${lead.meetingLink}`,

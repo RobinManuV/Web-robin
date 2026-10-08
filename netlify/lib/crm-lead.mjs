@@ -12,6 +12,7 @@ export async function saveCrmLead(lead) {
     message && `Mensaje del formulario:\n${message}`,
     lead.form && `Formulario: ${clean(lead.form, 80)}`,
     lead.page && `Página: ${clean(lead.page, 300)}`,
+    lead.curso && `Curso: ${clean(lead.curso, 60)}`,
     lead.colegio && `Colegio: ${clean(lead.colegio, 200)}`,
     lead.cargo && `Cargo: ${clean(lead.cargo, 160)}`,
   ].filter(Boolean).join('\n\n');
@@ -30,6 +31,7 @@ export async function saveCrmLead(lead) {
       tag: clean(lead.tag, 100) || null,
       page_url: clean(lead.page, 300) || null,
       service: clean(lead.servicio, 120) || null,
+      course: clean(lead.curso, 60) || null,
       school: clean(lead.colegio, 200) || null,
       role: clean(lead.cargo, 160) || null,
       utm_source: clean(lead.utm_source, 160) || null,

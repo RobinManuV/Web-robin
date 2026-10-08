@@ -1,0 +1,40 @@
+---
+// Pregunta obligatoria "¿En qué curso estás?" (formularios de contacto y reserva).
+// Desde España: 2º / 1º de Bachillerato. Desde fuera: Y13 / Grade 12 (US) y Y12 / Grade 11 (US).
+// La variante la elige la edge function geo-espana (ver src/lib/geo-espana.mjs).
+import '../styles/components/curso-field.css';
+import GeoHide from './GeoHide.astro';
+import GeoOnly from './GeoOnly.astro';
+
+const { id = 'curso', dark = false } = Astro.props;
+const internacional = ['Y13 / Grade 12 (US)', 'Y12 / Grade 11 (US)', 'Otro'];
+const espana = ['2º de Bachillerato', '1º de Bachillerato', 'Otro'];
+---
+
+<fieldset class:list={['curso-field', 'full', { dark }]}>
+  <legend>¿En qué curso estás? <span class="req">*</span></legend>
+  <GeoHide>
+    <div class="curso-options">
+      {
+        internacional.map((c, i) => (
+          <label>
+            <input type="radio" name="curso" value={c} required={i === 0} id={i === 0 ? id : undefined} />
+            <span>{c}</span>
+          </label>
+        ))
+      }
+    </div>
+  </GeoHide>
+  <GeoOnly>
+    <div class="curso-options">
+      {
+        espana.map((c, i) => (
+          <label>
+            <input type="radio" name="curso" value={c} required={i === 0} id={i === 0 ? id : undefined} />
+            <span>{c}</span>
+          </label>
+        ))
+      }
+    </div>
+  </GeoOnly>
+</fieldset>

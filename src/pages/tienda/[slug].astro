@@ -154,7 +154,7 @@ const schema = {
         <div class="pedido-card">
           <h2 class="display-md">Pide tu {p.name.toLowerCase()}</h2>
           <p class="text">Te escribimos en menos de 24 horas para confirmar el pago y el envío.</p>
-          <LeadForm form="contacto" tag={`tienda-${p.slug}`} servicio="Otro" submitLabel="Enviar pedido" />
+          <LeadForm form="contacto" tag={`tienda-${p.slug}`} servicio="Otro" submitLabel="Enviar pedido" curso={false} />
         </div>
       </section>
     )

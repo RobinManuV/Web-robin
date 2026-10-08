@@ -44,6 +44,7 @@ export default async (req) => {
       email,
       phone: clean(d.telefono || d.phone, 40),
       servicio: clean(d.servicio, 80),
+      curso: clean(d.curso, 60),
       cargo: clean(d.cargo, 120),
       colegio: clean(d.colegio, 160),
       message: clean(d.mensaje || d.message, 3000),
