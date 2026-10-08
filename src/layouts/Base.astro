@@ -94,6 +94,31 @@ const schemas = [organization, website, ...(Array.isArray(schema) ? schema : [sc
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() { dataLayer.push(arguments); }
+
+      // El contenedor GTM histórico consulta la API de CookieYes. La web usa un
+      // banner propio, así que exponemos un adaptador compatible para que GTM
+      // reciba la elección real guardada en `robin-consent`.
+      function readRobinConsent() {
+        try {
+          var choice = JSON.parse(localStorage.getItem('robin-consent') || 'null');
+          var valid = choice && choice.v === 2 && Date.now() - new Date(choice.date).getTime() <= 365 * 864e5;
+          return valid ? choice : null;
+        } catch (e) {
+          return null;
+        }
+      }
+      window.getCkyConsent = function () {
+        var choice = readRobinConsent();
+        return {
+          categories: {
+            necessary: true,
+            functional: !!choice,
+            analytics: choice?.analytics === true,
+            advertisement: choice?.ads === true,
+          },
+        };
+      };
+
       gtag('consent', 'default', {
         analytics_storage: 'denied',
         ad_storage: 'denied',
@@ -106,9 +131,8 @@ const schemas = [organization, website, ...(Array.isArray(schema) ? schema : [sc
       });
       try {
         // Misma versión y caducidad que src/components/CookieBanner.astro
-        var saved = JSON.parse(localStorage.getItem('robin-consent') || 'null');
-        var valid = saved && saved.v === 2 && Date.now() - new Date(saved.date).getTime() <= 365 * 864e5;
-        if (valid) {
+        var saved = readRobinConsent();
+        if (saved) {
           gtag('consent', 'update', {
             analytics_storage: saved.analytics ? 'granted' : 'denied',
             ad_storage: saved.ads ? 'granted' : 'denied',

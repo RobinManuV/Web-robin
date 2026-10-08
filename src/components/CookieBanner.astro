@@ -87,6 +87,9 @@ import '../styles/components/cookie-banner.css';
     (window as any).dataLayer?.push({ event: 'cookie_consent_update', consent_analytics: choice.analytics, consent_ads: choice.ads });
     // Avisa al medidor propio (src/scripts/analytics.ts) para que empiece o deje de medir
     window.dispatchEvent(new CustomEvent('robin:consent', { detail: choice }));
+    // Las etiquetas históricas de GTM escuchan el evento de CookieYes. El banner
+    // actual es propio, así que emitimos el evento compatible con la misma elección.
+    document.dispatchEvent(new CustomEvent('cookieyes_consent_update', { detail: choice }));
     close();
   }
 
