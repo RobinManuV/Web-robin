@@ -5,7 +5,16 @@ import LeadForm from '../components/LeadForm.astro';
 import { CONTACT } from '../data/site.js';
 
 // Solo los colegios con nombre real. Los "Colegio 1, 2…" de la web antigua eran huecos de relleno.
-const colegios = ['Colegio International de Torrequebrada', 'Instituto Jorge Manrique', 'Colegio Voramar', 'Colegio Alemán de Madrid'];
+const colegios = [
+  'Colegio International de Torrequebrada',
+  'Colegio Voramar',
+  'Nuestra Señora del Carmen',
+  'IES Jorge Manrique de Palencia',
+  'Colegio Británico de Barranquilla',
+  'Albaydar, Sevilla',
+  'Irlandesas de Bami, Sevilla',
+  'Díaz Balaguer, Madrid',
+];
 const pasos = [
   { t: 'Kick-off', d: 'Reunión con orientación para adaptar contenidos a vuestro perfil de alumnos.', img: '/fotos/colegios-5.webp', alt: 'Stand de Project Robin en un colegio' },
   { t: 'Charlas', d: 'Sesiones para alumnos y para familias — presencial o online.', img: '/fotos/colegios-3.webp', alt: 'Charla de Robin ante un auditorio de alumnos de Bachillerato' },
