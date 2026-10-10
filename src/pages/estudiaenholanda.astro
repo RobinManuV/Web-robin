@@ -53,11 +53,6 @@ const vida = [
   'Consejos sobre la zona de residencia, alquiler de bicicleta y transporte público',
 ];
 
-const pagos = [
-  { cuando: 'Primer', resto: 'contacto' },
-  { cuando: 'Aplicación', resto: 'terminada', strong: true },
-  { cuando: 'Aceptados*', resto: 'en la universidad', strong: true },
-];
 ---
 
 <Base
@@ -138,33 +133,6 @@ const pagos = [
       <p class="lh-badge">
         Incluye el primer año de <strong>Robin Community</strong> para un acompañamiento completo durante tu primer curso
       </p>
-    </div>
-  </section>
-
-  <section class="lh-section lh-price" id="precio">
-    <div class="lh-wrap">
-      <p class="lh-price-tag">Todo incluido por <strong>2.999&nbsp;€</strong></p>
-      <h2 class="title lh-pay-title">División de los pagos</h2>
-      <ol class="lh-pay">
-        {
-          pagos.map((p) => (
-            <li>
-              <span class="lh-pay-pct">33,33&nbsp;%</span>
-              <span class="lh-pay-dot" aria-hidden="true" />
-              <span class="lh-pay-when">
-                {p.strong ? <strong>{p.cuando}</strong> : p.cuando} {p.resto}
-              </span>
-            </li>
-          ))
-        }
-      </ol>
-      <p class="small lh-note">
-        *El último pago está condicionado a que el alumno haya sido aceptado en al menos una de las opciones escogidas. El
-        servicio de ayuda, soporte y apoyo continúa después del último pago.
-      </p>
-      <div class="btn-row btn-row--center">
-        <a class="btn" href="#reserva">¡Reserva tu llamada ya!</a>
-      </div>
     </div>
   </section>
 
