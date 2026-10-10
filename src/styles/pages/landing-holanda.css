@@ -19,7 +19,7 @@
   color: var(--cream-text);
   margin-inline: clamp(10px, 1.6vw, 24px);
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-  padding: clamp(36px, 6vw, 80px) 0 0;
+  padding: clamp(36px, 6vw, 80px) 0 clamp(36px, 6vw, 80px);
   overflow: hidden;
 }
 .page-lh .lh-hero-inner {
@@ -28,14 +28,13 @@
   padding-inline: var(--gutter);
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  align-items: end;
-  gap: clamp(16px, 3vw, 48px);
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
 }
 .page-lh .lh-hero-text {
   display: grid;
   gap: clamp(16px, 2vw, 24px);
   align-self: center;
-  padding-bottom: clamp(32px, 5vw, 70px);
 }
 .page-lh .lh-hero-text .eyebrow {
   color: var(--accent);
@@ -66,7 +65,7 @@
 .page-lh .lh-hero-art {
   width: 100%;
   height: auto;
-  max-width: 560px;
+  max-width: 520px;
   justify-self: center;
 }
 
@@ -270,10 +269,9 @@
   }
   .page-lh .lh-hero-text {
     justify-items: center;
-    padding-bottom: 8px;
   }
   .page-lh .lh-hero-art {
-    max-width: 380px;
+    max-width: 260px;
     order: 2;
   }
   .page-lh .lh-cols {
