@@ -1,0 +1,172 @@
+---
+import '../styles/pages/landing-holanda.css';
+// Landing de campaña "Estudia en Holanda" (contenido del PDF "Project Robin Delft 2026/27").
+// NO se enlaza desde ninguna parte de la web, no sale en el sitemap y lleva noindex:
+// solo se llega con el enlace directo /estudiaenholanda/.
+// Las reservas llegan con la etiqueta "estudiaenholanda".
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ContactSection from '../components/ContactSection.astro';
+
+const ofrecemos = [
+  {
+    icon: 'user',
+    title: 'Evaluamos tu perfil',
+    lead: 'Dedicamos tiempo a conocerte.',
+    text: 'Comenzamos con un análisis profundo de tus intereses académicos y habilidades, para identificar las mejores opciones educativas para ti.',
+  },
+  {
+    icon: 'compass',
+    title: 'Te asesoramos en la selección',
+    text: 'Te ayudamos a tomar decisiones informadas sobre qué universidades y carreras encajan mejor contigo. Nuestro objetivo es asegurarnos de que todos estáis satisfechos con las decisiones tomadas.',
+  },
+  {
+    icon: 'globe',
+    title: 'Acceso a una red de expertos',
+    text: 'Contamos con una red de estudiantes repartidos por todas las ciudades del país. Organizaremos llamadas con ellos, en las que podrás hacer todas las preguntas que tengas, desde dudas académicas hasta detalles de la vida diaria.',
+  },
+  {
+    icon: 'chat',
+    title: 'Seguimiento continuo',
+    text: 'Mantenemos una comunicación constante contigo y evaluamos continuamente tu evolución en el proceso. Nuestro objetivo es ajustar y recalibrar las propuestas según tu feedback y asegurarnos de que estás satisfecho y seguro con el camino a seguir.',
+  },
+  {
+    icon: 'cap',
+    title: 'Gestionamos tu candidatura',
+    text: '¡Manos a la obra! Una vez hayas llegado a una decisión sobre los sitios a los que te gustaría postular, nos ponemos con el papeleo. Te ayudamos a gestionar la admisión y residencia (BSN) en Holanda para asegurar de que todo está listo para tu llegada.',
+  },
+];
+
+const educativo = [
+  'Universidades de research por todo el país',
+  'Aplicaciones para cada universidad en el portal oficial: <strong>Studielink</strong>',
+  'Asesoramiento y apoyo con los procesos de admisión específicos de cada universidad: CV, essays, prueba de matemáticas…',
+  'BSN',
+  'Trámite por correspondencia',
+];
+
+const vida = [
+  'Selección de residencia',
+  'Contacto previo con estudiantes de tu ciudad',
+  'Información sobre asociaciones de estudiantes y actividades sociales',
+  'Apoyo y soporte en la obtención del <strong>visado</strong>',
+  'Consejos sobre la zona de residencia, alquiler de bicicleta y transporte público',
+];
+
+const pagos = [
+  { cuando: 'Primer', resto: 'contacto' },
+  { cuando: 'Aplicación', resto: 'terminada', strong: true },
+  { cuando: 'Aceptados*', resto: 'en la universidad', strong: true },
+];
+---
+
+<Base
+  pageClass="page-lh"
+  title="Estudia en Holanda con Project Robin | Reserva tu llamada"
+  description="Orientación educativa y logística para estudiar en Holanda: elección de universidad y carrera, admisión, visado y adaptación. Reserva tu llamada."
+  noindex
+>
+  <section class="lh-hero">
+    <div class="lh-hero-inner">
+      <div class="lh-hero-text">
+        <p class="eyebrow">Estudia en Holanda</p>
+        <h1 class="display">Tu partner para estudiar en Holanda</h1>
+        <p class="lead">
+          Orientación educativa y logística en la elección de la universidad y la carrera, además de facilitar la adaptación
+          a tu nueva etapa.
+        </p>
+        <div class="btn-row lh-hero-cta">
+          <a class="btn" href="#reserva">¡Reserva tu llamada ya!</a>
+        </div>
+        <p class="lh-quote">«De ex alumnos para futuros alumnos»</p>
+      </div>
+      <img
+        class="lh-hero-art"
+        src="/wp-content/uploads/2026/06/RobinTelescopio.webp"
+        alt="Robin mirando por un telescopio"
+        width="1232"
+        height="864"
+        fetchpriority="high"
+      />
+    </div>
+  </section>
+
+  <section class="lh-section">
+    <div class="lh-wrap">
+      <h2 class="display-md lh-title">¿Qué te ofrecemos?</h2>
+      <ol class="lh-offer">
+        {
+          ofrecemos.map((o, i) => (
+            <li class="lh-offer-item">
+              <span class="lh-offer-icon" aria-hidden="true">
+                <Icon name={o.icon} size={34} />
+              </span>
+              <div class="lh-offer-body">
+                <h3 class="title">
+                  <span class="lh-offer-n">{i + 1}</span>
+                  {o.title}
+                </h3>
+                {o.lead && <p class="lh-offer-lead">{o.lead}</p>}
+                <p>{o.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="btn-row btn-row--center">
+        <a class="btn btn-navy" href="#reserva">¡Reserva tu llamada ya!</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="lh-section lh-more">
+    <div class="lh-wrap">
+      <div class="lh-more-head">
+        <h2 class="display-md lh-title">Mucho más que una agencia</h2>
+        <p class="lead">«De ex alumnos para futuros alumnos»</p>
+      </div>
+      <div class="lh-cols">
+        <article class="lh-card">
+          <h3 class="title">Asesoramiento educativo</h3>
+          <ul set:html={educativo.map((t) => `<li>${t}</li>`).join('')} />
+        </article>
+        <article class="lh-card">
+          <h3 class="title">Asesoramiento vida universitaria</h3>
+          <ul set:html={vida.map((t) => `<li>${t}</li>`).join('')} />
+        </article>
+      </div>
+      <p class="lh-badge">
+        Incluye el primer año de <strong>Robin Community</strong> para un acompañamiento completo durante tu primer curso
+      </p>
+    </div>
+  </section>
+
+  <section class="lh-section lh-price" id="precio">
+    <div class="lh-wrap">
+      <p class="lh-price-tag">Todo incluido por <strong>2.999&nbsp;€</strong></p>
+      <h2 class="title lh-pay-title">División de los pagos</h2>
+      <ol class="lh-pay">
+        {
+          pagos.map((p) => (
+            <li>
+              <span class="lh-pay-pct">33,33&nbsp;%</span>
+              <span class="lh-pay-dot" aria-hidden="true" />
+              <span class="lh-pay-when">
+                {p.strong ? <strong>{p.cuando}</strong> : p.cuando} {p.resto}
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="small lh-note">
+        *El último pago está condicionado a que el alumno haya sido aceptado en al menos una de las opciones escogidas. El
+        servicio de ayuda, soporte y apoyo continúa después del último pago.
+      </p>
+      <div class="btn-row btn-row--center">
+        <a class="btn" href="#reserva">¡Reserva tu llamada ya!</a>
+      </div>
+    </div>
+  </section>
+
+  <ContactSection tag="estudiaenholanda" />
+</Base>

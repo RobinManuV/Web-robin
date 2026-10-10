@@ -14,6 +14,7 @@ export default defineConfig({
         !page.includes('/reserva-confirmada/') &&
         !page.includes('/gracias/') &&
         !page.includes('/yuselico-studios/') &&
+        !page.includes('/estudiaenholanda/') &&
         !/\/the-european-experience\/.+-2\/$/.test(page) && // duplicados: canonical a /universidades/<slug>/ // landing de campaña, solo con enlace directo
         (ESPANA_PUBLICADA || !ESPANA_RUTAS.some((r) => page.endsWith(r))),
     }),

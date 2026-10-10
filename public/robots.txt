@@ -4,5 +4,6 @@ Disallow: /api/
 Disallow: /api/blog-admin
 Disallow: /api/blog-panel
 Disallow: /yuselico-studios/
+Disallow: /estudiaenholanda/
 
 Sitemap: https://project-robin.com/sitemap-index.xml
