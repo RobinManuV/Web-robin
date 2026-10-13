@@ -60,8 +60,49 @@ const { tag = 'general', compact = false } = Astro.props;
 </div>
 
 <script>
-  const fmtDay = new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'short', timeZone: 'Europe/Madrid' });
-  const fmtTime = new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid' });
+  import { lang, locale, pick } from '../i18n/runtime.js';
+
+  const T = pick({
+    es: {
+      empty: 'Ahora mismo no hay huecos libres en las próximas dos semanas. Escríbenos y te buscamos uno.',
+      madrid: 'hora de Madrid',
+      booking: 'Reservando…',
+      taken: 'Ese hueco se acaba de ocupar. Elige otro, por favor.',
+      fail: 'No hemos podido confirmar la reserva. Inténtalo de nuevo o escríbenos a hello@project-robin.com.',
+      agenda: 'No hemos podido cargar la agenda. Escríbenos y te proponemos un horario.',
+      see: (day, time, host) => `Te esperamos el ${day} a las ${time}${host ? ` con ${host}` : ''}.`,
+    },
+    en: {
+      empty: 'There are no free slots in the next two weeks. Write to us and we will find one for you.',
+      madrid: 'Madrid time',
+      booking: 'Booking…',
+      taken: 'That slot has just been taken. Please choose another one.',
+      fail: 'We could not confirm your booking. Please try again or write to us at hello@project-robin.com.',
+      agenda: 'We could not load the calendar. Write to us and we will suggest a time.',
+      see: (day, time, host) => `We look forward to seeing you on ${day} at ${time}${host ? ` with ${host}` : ''}.`,
+    },
+    pt: {
+      empty: 'Neste momento não há horários livres nas próximas duas semanas. Escreve-nos e encontramos um para ti.',
+      madrid: 'hora de Madrid',
+      booking: 'A reservar…',
+      taken: 'Esse horário acabou de ser ocupado. Escolhe outro, por favor.',
+      fail: 'Não conseguimos confirmar a reserva. Tenta novamente ou escreve-nos para hello@project-robin.com.',
+      agenda: 'Não foi possível carregar a agenda. Escreve-nos e propomos-te um horário.',
+      see: (day, time, host) => `Esperamos-te a ${day} às ${time}${host ? ` com ${host}` : ''}.`,
+    },
+    br: {
+      empty: 'No momento não há horários livres nas próximas duas semanas. Escreva para nós e encontramos um para você.',
+      madrid: 'horário de Madri',
+      booking: 'Reservando…',
+      taken: 'Esse horário acabou de ser ocupado. Escolha outro, por favor.',
+      fail: 'Não conseguimos confirmar a reserva. Tente novamente ou escreva para hello@project-robin.com.',
+      agenda: 'Não foi possível carregar a agenda. Escreva para nós e propomos um horário.',
+      see: (day, time, host) => `Esperamos você ${day} às ${time}${host ? ` com ${host}` : ''}.`,
+    },
+  });
+
+  const fmtDay = new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'short', timeZone: 'Europe/Madrid' });
+  const fmtTime = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid' });
   const fmtKey = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Madrid' });
   const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1).replace('.', '');
 
@@ -128,7 +169,7 @@ const { tag = 'general', compact = false } = Astro.props;
       more.hidden = true;
       if (!slots.length) {
         days.hidden = true;
-        list.innerHTML = '<li class="empty">Ahora mismo no hay huecos libres en las próximas dos semanas. Escríbenos y te buscamos uno.</li>';
+        list.innerHTML = `<li class="empty">${T.empty}</li>`;
         return;
       }
       const byDay = {};
@@ -157,7 +198,7 @@ const { tag = 'general', compact = false } = Astro.props;
     function pick(s) {
       chosen = s;
       const d = new Date(s.start);
-      $('[data-chosen]').textContent = `${cap(fmtDay.format(d))} · ${fmtTime.format(d)} (hora de Madrid)`;
+      $('[data-chosen]').textContent = `${cap(fmtDay.format(d))} · ${fmtTime.format(d)} (${T.madrid})`;
       status.hidden = true;
       show('form');
       form.querySelector('input[name="name"]').focus();
@@ -174,27 +215,26 @@ const { tag = 'general', compact = false } = Astro.props;
       if (!form.reportValidity()) return;
       const data = Object.fromEntries(new FormData(form));
       const btn = $('[data-submit]');
+      const submitLabel = btn.textContent;
       btn.disabled = true;
-      btn.textContent = 'Reservando…';
+      btn.textContent = T.booking;
       status.hidden = true;
       try {
         const res = await fetch('/api/book', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...data, start: chosen.start, tag, page: location.pathname, vid: (() => { try { return JSON.parse(localStorage.getItem('robin-vid') || 'null')?.id || ''; } catch (e) { return ''; } })() }),
+          body: JSON.stringify({ ...data, lang, start: chosen.start, tag, page: location.pathname, vid: (() => { try { return JSON.parse(localStorage.getItem('robin-vid') || 'null')?.id || ''; } catch (e) { return ''; } })() }),
         });
         const out = await res.json().catch(() => ({}));
         if (!res.ok) throw Object.assign(new Error(out.error || 'Error'), { code: res.status });
-        $('[data-done-text]').textContent = `Te esperamos el ${fmtDay.format(new Date(chosen.start))} a las ${fmtTime.format(new Date(chosen.start))}${out.host ? ` con ${out.host}` : ''}.`;
+        $('[data-done-text]').textContent = T.see(fmtDay.format(new Date(chosen.start)), fmtTime.format(new Date(chosen.start)), out.host);
         show('done');
         window.dataLayer?.push({ event: 'booking_confirmed', lead_tag: tag, page_path: location.pathname });
       } catch (err) {
         status.hidden = false;
         status.dataset.state = 'error';
         status.textContent =
-          err.code === 409
-            ? 'Ese hueco se acaba de ocupar. Elige otro, por favor.'
-            : 'No hemos podido confirmar la reserva. Inténtalo de nuevo o escríbenos a hello@project-robin.com.';
+          err.code === 409 ? T.taken : T.fail;
         if (err.code === 409) {
           slots = slots.filter((s) => s.start !== chosen.start);
           render();
@@ -202,7 +242,7 @@ const { tag = 'general', compact = false } = Astro.props;
         }
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Confirmar reserva';
+        btn.textContent = submitLabel;
       }
     });
 
@@ -212,8 +252,7 @@ const { tag = 'general', compact = false } = Astro.props;
         render();
       })
       .catch(() => {
-        list.innerHTML =
-          '<li class="empty">No hemos podido cargar la agenda. Escríbenos y te proponemos un horario.</li>';
+        list.innerHTML = `<li class="empty">${T.agenda}</li>`;
       });
   });
 </script>

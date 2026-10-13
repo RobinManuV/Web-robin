@@ -5,6 +5,7 @@
 // Las reservas pendientes se guardan en Netlify Blobs (almacén "reservas").
 import { getStore } from '@netlify/blobs';
 import { sendMail } from './blog/mail.mjs';
+import { LANG_NAMES, LOCALES, normLang, recordatorio } from './lang.mjs';
 
 export const AVISO_EQUIPO = process.env.BOOKING_NOTIFY_EMAIL || 'hello@project-robin.com';
 export const RECORDATORIO_HORAS = 2;
@@ -14,8 +15,8 @@ let override = null;
 export const _usarAlmacen = (s) => (override = s); // solo para pruebas
 const store = () => override || getStore({ name: 'reservas', consistency: 'strong' });
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-const fecha = (ms) =>
-  new Intl.DateTimeFormat('es-ES', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', timeZone: TZ }).format(new Date(ms));
+const fecha = (ms, locale = 'es-ES') =>
+  new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', timeZone: TZ }).format(new Date(ms));
 
 function filas(r) {
   return [
@@ -26,6 +27,7 @@ function filas(r) {
     ['Curso', r.curso],
     ['Con', r.host],
     ['Origen', r.tag],
+    ['Idioma', LANG_NAMES[normLang(r.lang)]],
     ['Mensaje', r.message],
     ['Enlace Meet', r.meetingLink],
   ].filter(([, v]) => v);
@@ -73,22 +75,21 @@ export async function enviarRecordatorios(now = Date.now()) {
       continue;
     }
     if (r.recordatorioEnviado || r.start <= now || r.start - now > RECORDATORIO_HORAS * 3600e3) continue;
-    const cuando = fecha(r.start);
-    const meet = r.meetingLink ? `<p><a href="${esc(r.meetingLink)}">Entrar a la videollamada</a></p>` : '';
+    const lang = normLang(r.lang);
+    const cuando = fecha(r.start, LOCALES[lang]);
     try {
       await sendMail({
         to: AVISO_EQUIPO,
         fromName: 'Reservas Robin',
-        subject: `En 2 horas: consulta con ${r.name} · ${cuando}`,
+        subject: `En 2 horas: consulta con ${r.name} · ${fecha(r.start)}`,
         html: `<p>Recordatorio: la consulta empieza en unas 2 horas.</p>${tabla(r)}`,
         text: `Recordatorio: la consulta empieza en unas 2 horas.\n\n${texto(r)}`,
       });
+      // Al alumno, en su idioma
       await sendMail({
         to: r.email,
         fromName: 'Project Robin',
-        subject: `Tu consulta con Project Robin es en 2 horas (${cuando})`,
-        html: `<p>Hola ${esc(String(r.name).split(' ')[0])},</p><p>Te recordamos que tu primera consulta gratuita con Project Robin es <b>${esc(cuando)}</b> (hora de Madrid).</p>${meet}<p>Si no puedes asistir, responde a este correo y buscamos otro hueco.</p><p>¡Hasta ahora!<br>El equipo de Robin</p>`,
-        text: `Hola ${String(r.name).split(' ')[0]},\n\nTe recordamos que tu primera consulta gratuita con Project Robin es ${cuando} (hora de Madrid).\n${r.meetingLink ? `Enlace: ${r.meetingLink}\n` : ''}\nSi no puedes asistir, responde a este correo y buscamos otro hueco.\n\nEl equipo de Robin`,
+        ...recordatorio(lang, { first: String(r.name).split(' ')[0], cuando, meetingLink: r.meetingLink, esc }),
       });
       await s.setJSON(key, { ...r, recordatorioEnviado: true, recordatorioAt: Date.now() });
       enviados++;

@@ -93,6 +93,7 @@
 }
 .site-header .ctas {
   display: flex;
+  align-items: center;
   gap: 12px;
   margin-left: auto;
 }
@@ -220,5 +221,8 @@
     display: grid;
     gap: 12px;
     margin-top: 24px;
+  }
+  .site-header .lang-switch.in-menu {
+    justify-self: start;
   }
 }

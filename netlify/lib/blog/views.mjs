@@ -26,15 +26,17 @@ ${inner}
 </div></body></html>`;
 }
 
-// ---------- Correo del lunes: 5 ideas ----------
+// ---------- Correo del lunes: 4 ideas (2 actualidad + 2 informativas) ----------
+const TIPO = { actualidad: 'ACTUALIDAD', informativo: 'INFORMATIVO' };
+const whyLabel = (i) => (i.type === 'informativo' ? 'Por qué interesa' : 'Por qué ahora');
 export function emailIdeas({ week, range, summary, ideas, chooseUrl, dates }) {
   const list = ideas
     .map(
       (i, n) => `<div style="border-top:1px solid #e6e6ea;padding:14px 0">
-<p style="margin:0 0 4px;font-size:13px;opacity:.7">IDEA ${n + 1} · ${esc(i.audience || '')} · relevancia ${esc(i.score ?? '')}/10</p>
+<p style="margin:0 0 4px;font-size:13px;opacity:.7">IDEA ${n + 1} · ${TIPO[i.type] || ''} · ${esc(i.audience || '')} · relevancia ${esc(i.score ?? '')}/10</p>
 <p style="margin:0 0 6px;font-size:17px;font-weight:700">${esc(i.title)}</p>
 <p style="margin:0 0 6px;font-size:14px;line-height:1.5">${esc(i.angle)}</p>
-<p style="margin:0 0 6px;font-size:13px;line-height:1.5"><strong>Por qué ahora:</strong> ${esc(i.whyNow)}</p>
+<p style="margin:0 0 6px;font-size:13px;line-height:1.5"><strong>${whyLabel(i)}:</strong> ${esc(i.whyNow)}</p>
 <p style="margin:0;font-size:12px;line-height:1.6">${(i.sources || [])
         .slice(0, 3)
         .map((s) => `<a href="${esc(s.url)}" style="color:${NAVY}">${esc(s.publisher || s.title)}</a>`)
@@ -43,7 +45,7 @@ export function emailIdeas({ week, range, summary, ideas, chooseUrl, dates }) {
     )
     .join('');
   const html = emailShell(
-    `5 ideas para esta semana (${range.from} → ${range.to})`,
+    `4 ideas para esta semana (${range.from} → ${range.to})`,
     `<p style="font-size:15px;line-height:1.55;margin:0 0 10px">${esc(summary)}</p>
 ${list}
 <p style="margin:22px 0 8px;font-size:15px">Elige cuál se publica el <strong>${esc(humanDate(dates.miercoles))}</strong> y cuál el <strong>${esc(
@@ -51,10 +53,10 @@ ${list}
     )}</strong>:</p>
 <p style="margin:0 0 6px">${btn(chooseUrl, 'Elegir los 2 blogs de la semana')}</p>`,
   );
-  const text = `5 ideas para la semana ${week}\n\n${summary}\n\n${ideas
-    .map((i, n) => `${n + 1}. ${i.title}\n   ${i.angle}\n`)
+  const text = `4 ideas para la semana ${week}\n\n${summary}\n\n${ideas
+    .map((i, n) => `${n + 1}. [${TIPO[i.type] || ''}] ${i.title}\n   ${i.angle}\n`)
     .join('\n')}\nElige aquí: ${chooseUrl}`;
-  return { subject: `Blog Robin · 5 ideas de la semana (${week})`, html, text };
+  return { subject: `Blog Robin · 4 ideas de la semana (${week})`, html, text };
 }
 
 // ---------- Correo con los borradores ----------
@@ -122,8 +124,8 @@ export function pageChoose({ week, ideas, dates, action, selection }) {
     )}</strong>. En unos 10 minutos te llegan los borradores por correo.</p></div>
 ${ideas
   .map(
-    (i, n) => `<div class="idea"><p class="meta">IDEA ${n + 1} · ${esc(i.audience || '')} · relevancia ${esc(i.score ?? '')}/10</p>
-<h3>${esc(i.title)}</h3><p>${esc(i.angle)}</p><p class="meta"><strong>Por qué ahora:</strong> ${esc(i.whyNow)}</p>
+    (i, n) => `<div class="idea"><p class="meta">IDEA ${n + 1} · ${TIPO[i.type] || ''} · ${esc(i.audience || '')} · relevancia ${esc(i.score ?? '')}/10</p>
+<h3>${esc(i.title)}</h3><p>${esc(i.angle)}</p><p class="meta"><strong>${whyLabel(i)}:</strong> ${esc(i.whyNow)}</p>
 <p class="meta">${(i.sources || []).map((s) => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.publisher || s.title)}</a>`).join(' · ')}</p></div>`,
   )
   .join('')}

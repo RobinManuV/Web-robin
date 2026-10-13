@@ -1,4 +1,6 @@
 // Guarda un lead recibido desde cualquier formulario público en el CRM.
+import { LANG_NAMES, normLang } from './lang.mjs';
+
 const clean = (value, max = 10000) => String(value ?? '').trim().slice(0, max);
 
 export async function saveCrmLead(lead) {
@@ -12,6 +14,7 @@ export async function saveCrmLead(lead) {
     message && `Mensaje del formulario:\n${message}`,
     lead.form && `Formulario: ${clean(lead.form, 80)}`,
     lead.page && `Página: ${clean(lead.page, 300)}`,
+    `Idioma: ${LANG_NAMES[normLang(lead.lang)]}`,
     lead.curso && `Curso: ${clean(lead.curso, 60)}`,
     lead.colegio && `Colegio: ${clean(lead.colegio, 200)}`,
     lead.cargo && `Cargo: ${clean(lead.cargo, 160)}`,
@@ -30,6 +33,7 @@ export async function saveCrmLead(lead) {
       form_name: clean(lead.form, 80) || 'contacto',
       tag: clean(lead.tag, 100) || null,
       page_url: clean(lead.page, 300) || null,
+      lang: normLang(lead.lang),
       service: clean(lead.servicio, 120) || null,
       course: clean(lead.curso, 60) || null,
       school: clean(lead.colegio, 200) || null,

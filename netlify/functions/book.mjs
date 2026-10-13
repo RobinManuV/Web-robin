@@ -6,6 +6,7 @@ import { createLead } from '../lib/notion.mjs';
 import { pingAnalytics } from '../lib/analytics-ping.mjs';
 import { saveCrmLead } from '../lib/crm-lead.mjs';
 import { registrarReserva } from '../lib/reservas.mjs';
+import { normLang, invitacion } from '../lib/lang.mjs';
 
 const clean = (v, max = 500) => String(v ?? '').trim().slice(0, max);
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
@@ -37,6 +38,7 @@ export default async (req) => {
   const curso = clean(body.curso, 60);
   const tag = clean(body.tag || 'general', 80);
   const page = clean(body.page, 200);
+  const lang = normLang(body.lang);
   const start = Date.parse(body.start);
 
   if (!name || !isEmail(email) || !phone || !Number.isFinite(start) || !body.consent) {
@@ -65,17 +67,7 @@ export default async (req) => {
       start: startDate,
       end: endDate,
       attendee: { email, name },
-      summary: `Consulta gratuita Project Robin · ${name}`,
-      description: [
-        `Primera consulta gratuita (30 min) reservada desde la web.`,
-        ``,
-        `Nombre: ${name}`,
-        `Email: ${email}`,
-        `Teléfono: ${phone}`,
-        ...(curso ? [`Curso: ${curso}`] : []),
-        `Origen: ${tag}${page ? ` (${page})` : ''}`,
-        message ? `\nMensaje:\n${message}` : '',
-      ].join('\n'),
+      ...invitacion(lang, { name, phone, email, curso, tag, page, message }),
     });
   } catch (err) {
     console.error('[book] Error creando el evento:', err?.response?.data || err);
@@ -88,7 +80,7 @@ export default async (req) => {
   // La reserva ya está confirmada; guardar el lead en CRM sin convertir un
   // fallo secundario del CRM en una reserva fallida ni provocar otra invitación.
   try {
-    await saveCrmLead({ name, email, phone, message, curso, tag, page, form: 'reserva', servicio: 'Consulta gratuita' });
+    await saveCrmLead({ name, email, phone, message, curso, tag, page, form: 'reserva', servicio: 'Consulta gratuita', lang });
   } catch (err) {
     console.error('[book] CRM:', err.message);
   }
@@ -98,6 +90,7 @@ export default async (req) => {
     await createLead({
       name, email, phone, message, curso, tag, page,
       form: 'reserva',
+      lang,
       host: host.name,
       meetingStart: madridLocalIso(startDate),
       meetingLink,
@@ -108,7 +101,7 @@ export default async (req) => {
 
   // Aviso inmediato al equipo y programación del recordatorio de 2 h antes
   try {
-    await registrarReserva({ name, email, phone, curso, message, tag, host: host.name, start: slot.start, meetingLink });
+    await registrarReserva({ name, email, phone, curso, message, tag, lang, host: host.name, start: slot.start, meetingLink });
   } catch (err) {
     console.error('[book] Avisos:', err.message);
   }

@@ -1,4 +1,4 @@
-// Segundo plano (hasta 15 min): Claude investiga las tendencias y se envía el correo con 5 ideas.
+// Segundo plano (hasta 15 min): Claude investiga las tendencias y se envía el correo con 4 ideas.
 import { internalOk } from '../lib/blog/sign.mjs';
 import { investigar } from '../lib/blog/pipeline.mjs';
 import { weekId } from '../lib/blog/dates.mjs';

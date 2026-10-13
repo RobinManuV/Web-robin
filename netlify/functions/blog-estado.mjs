@@ -53,7 +53,7 @@ export default async (req) => {
     const accion = body.accion;
     if (accion === 'investigar' || accion === 'forzar') {
       await runInBackground('blog-investigar-background', { week, force: accion === 'forzar' });
-      return Response.json({ ok: true, week, msg: 'Investigación lanzada. El correo con las 5 ideas llegará en unos minutos.' });
+      return Response.json({ ok: true, week, msg: 'Investigación lanzada. El correo con las 4 ideas llegará en unos minutos.' });
     }
     if (accion === 'redactar') {
       await runInBackground('blog-redactar-background', { week });

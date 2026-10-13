@@ -4,7 +4,7 @@
 // {
 //   week, range: {from, to}, createdAt,
 //   status: 'investigando' | 'ideas' | 'redactando' | 'borradores' | 'error',
-//   ideas: [ {title, angle, whyNow, audience, keywords[], sources[{title,url,publisher,date}]} ],
+//   ideas: [ {type: 'actualidad'|'informativo', title, angle, whyNow, audience, keywords[], sources[{title,url,publisher,date}]} ],
 //   selection: { miercoles: <índice>, viernes: <índice> },
 //   drafts: { miercoles: Draft, viernes: Draft },
 //   log: [ {at, msg} ]

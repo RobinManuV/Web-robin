@@ -1,0 +1,31 @@
+/* Componente LangSwitch.astro — selector de idioma ES / EN / PT */
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--grey-card);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+}
+.lang-switch a {
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: var(--navy);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.lang-switch a:hover {
+  background: var(--sky);
+}
+.lang-switch a[aria-current='true'] {
+  background: var(--navy);
+  color: var(--white);
+}
+.lang-switch a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

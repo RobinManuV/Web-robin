@@ -8,6 +8,8 @@
 // colegios, holanda-maastricht…). Si la columna no existe, se crea el lead igual
 // y la etiqueta queda escrita en el comentario.
 
+import { LANG_NAMES, normLang } from './lang.mjs';
+
 const NOTION_VERSION = '2022-06-28';
 
 // Etiqueta de la web → opción de la columna TIPO que ya usáis
@@ -49,6 +51,7 @@ export async function createLead(lead) {
     lead.curso && `Curso: ${lead.curso}`,
     lead.cargo && `Cargo: ${lead.cargo}`,
     lead.page && `Página: ${lead.page}`,
+    `Idioma: ${LANG_NAMES[normLang(lead.lang)]}`,
     lead.meetingLink && `Meet: ${lead.meetingLink}`,
     lead.message && `\n${lead.message}`,
   ]

@@ -2,6 +2,7 @@
 import '../styles/components/header.css';
 import { NAV, SITE } from '../data/site.js';
 import GeoHide from './GeoHide.astro';
+import LangSwitch from './LangSwitch.astro';
 const path = Astro.url.pathname;
 const isActive = (item) =>
   path === item.href ||
@@ -55,12 +56,14 @@ const isActive = (item) =>
         }
       </ul>
       <div class="mobile-ctas">
+        <LangSwitch class="in-menu" />
         <a class="btn" href="/contacto/?origen=cabecera">Consulta Gratis</a>
         <a class="btn btn-outline" href={SITE.loginUrl}>Log In</a>
       </div>
     </nav>
 
     <div class="ctas">
+      <LangSwitch />
       <a class="btn cta-main" href="/contacto/?origen=cabecera">Consulta Gratis</a>
       <a class="btn btn-outline cta-login" href={SITE.loginUrl}>Log In</a>
     </div>
@@ -72,20 +75,28 @@ const isActive = (item) =>
 </header>
 
 <script>
+  import { pick } from '../i18n/runtime.js';
+
+  const T = pick({
+    es: { open: 'Abrir menú', close: 'Cerrar menú', openItem: 'Abrir', closeItem: 'Cerrar', submenu: 'submenú' },
+    en: { open: 'Open menu', close: 'Close menu', openItem: 'Open', closeItem: 'Close', submenu: 'submenu' },
+    pt: { open: 'Abrir menu', close: 'Fechar menu', openItem: 'Abrir', closeItem: 'Fechar', submenu: 'submenu' },
+    br: { open: 'Abrir menu', close: 'Fechar menu', openItem: 'Abrir', closeItem: 'Fechar', submenu: 'submenu' },
+  });
   const header = document.querySelector('[data-header]');
   const burger = header?.querySelector('[data-burger]');
   const closeMenu = () => {
     if (!header || !burger) return;
     header.classList.remove('is-open');
     burger.setAttribute('aria-expanded', 'false');
-    burger.setAttribute('aria-label', 'Abrir menú');
+    burger.setAttribute('aria-label', T.open);
     document.body.style.overflow = '';
   };
   const toggleMenu = () => {
     if (!header || !burger) return;
     const open = header.classList.toggle('is-open');
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    burger.setAttribute('aria-label', open ? T.close : T.open);
     document.body.style.overflow = open ? 'hidden' : '';
   };
   burger?.addEventListener('click', toggleMenu);
@@ -94,7 +105,7 @@ const isActive = (item) =>
       const li = btn.closest('.item');
       const open = li.classList.toggle('sub-open');
       btn.setAttribute('aria-expanded', String(open));
-      btn.setAttribute('aria-label', `${open ? 'Cerrar' : 'Abrir'} ${li.querySelector('.top-link')?.textContent?.trim() || 'submenú'}`);
+      btn.setAttribute('aria-label', `${open ? T.closeItem : T.openItem} ${li.querySelector('.top-link')?.textContent?.trim() || T.submenu}`);
     });
   });
   header?.querySelectorAll('[data-nav-link]').forEach((link) => link.addEventListener('click', closeMenu));

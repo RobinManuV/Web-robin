@@ -1,0 +1,32 @@
+---
+// Selector de idioma (ES / EN / PT). Lleva a la misma página en el otro idioma;
+// si esa página no está traducida (blog, legales), a la portada de ese idioma.
+// Los enlaces se recalculan en las copias traducidas (scripts/i18n.mjs).
+import '../styles/components/lang-switch.css';
+import { LANGS, isTranslatable, withLang } from '../i18n/config.mjs';
+
+const { class: className = '' } = Astro.props;
+const path = Astro.url.pathname;
+const href = (code) => (isTranslatable(path) ? withLang(code, path) : withLang(code, '/'));
+---
+
+<div class:list={['lang-switch', className]} role="group" aria-label="Idioma">
+  {
+    Object.values(LANGS).map((l) => (
+      <a href={href(l.code)} lang={l.htmlLang} hreflang={l.htmlLang} data-lang={l.code} aria-label={l.name} aria-current={String(l.code === 'es')}>
+        {l.label}
+      </a>
+    ))
+  }
+</div>
+
+<script>
+  // Recuerda la elección para no redirigir a Portugal de nuevo (netlify/edge-functions/idioma-portugal.ts)
+  document.addEventListener('click', (e) => {
+    const a = (e.target as Element | null)?.closest?.('.lang-switch a[data-lang]') as HTMLElement | null;
+    if (!a) return;
+    try {
+      document.cookie = `robin_lang=${a.dataset.lang}; path=/; max-age=31536000; samesite=lax`;
+    } catch {}
+  });
+</script>

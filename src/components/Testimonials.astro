@@ -44,6 +44,15 @@ for (let i = 0; i < Math.max(items.length, videos.length); i++) {
 </div>
 
 <script>
+  import { pick } from '../i18n/runtime.js';
+
+  const slideLabel = pick({
+    es: (n: number) => `Ir a la diapositiva ${n}`,
+    en: (n: number) => `Go to slide ${n}`,
+    pt: (n: number) => `Ir para o diapositivo ${n}`,
+    br: (n: number) => `Ir para o slide ${n}`,
+  });
+
   document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
     const track = root.querySelector<HTMLElement>('[data-track]')!;
     const slides = [...track.children] as HTMLElement[];
@@ -54,7 +63,7 @@ for (let i = 0; i < Math.max(items.length, videos.length); i++) {
     slides.forEach((_, k) => {
       const b = document.createElement('button');
       b.type = 'button';
-      b.setAttribute('aria-label', `Ir a la diapositiva ${k + 1}`);
+      b.setAttribute('aria-label', slideLabel(k + 1));
       b.addEventListener('click', () => {
         stop();
         go(k);

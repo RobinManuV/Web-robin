@@ -111,12 +111,12 @@ Para probar las funciones en local: `npx netlify dev` (con las variables en un `
 
 ## Máquina de blogs (automática)
 
-Cada semana propone temas y escribe dos artículos para el blog con la API de Claude (Anthropic).
+Cada semana propone 4 temas (2 de actualidad y 2 informativos sobre estudiar en Holanda) y escribe dos artículos, a tu elección, para el blog con la API de Claude (Anthropic).
 
 | Cuándo | Qué pasa |
 |---|---|
-| **Lunes 08:00** | Claude busca en la web (medios, fuentes oficiales, foros, Reddit y lo público de LinkedIn) los temas de educación en España de la semana anterior y envía a `BLOG_EMAIL_TO` un correo con **5 ideas** y un botón para elegir. |
-| **Al elegir** | En la página del correo marcas qué idea sale el miércoles y cuál el viernes. En unos 10 minutos llega otro correo con los **2 borradores** (vista previa, botón **Parar** y **Publicar ahora**). |
+| **Lunes 08:00** | Claude busca en la web (medios, fuentes oficiales, foros, Reddit y lo público de LinkedIn) envía a `BLOG_EMAIL_TO` un correo con **4 ideas** y un botón para elegir: **2 de actualidad** (temas de educación en España de la semana anterior) y **2 informativas** (guías sobre estudiar en Holanda que responden preguntas que se hacen las familias y que el blog aún no cubre). |
+| **Al elegir** | En la página del correo marcas qué idea sale el miércoles y cuál el viernes (cualquier combinación de las 4). Las de actualidad salen en la categoría «Actualidad educativa» y las informativas en «Estudiar en Holanda». En unos 10 minutos llega otro correo con los **2 borradores** (vista previa, botón **Parar** y **Publicar ahora**). |
 | **Miércoles y viernes 09:00** | Se publica el borrador del día (si no lo has parado): la máquina guarda el `.md` en GitHub y Netlify publica la web sola. Te llega un correo con el enlace. |
 
 (Las horas son de verano; en invierno, una hora antes, porque Netlify programa en UTC.)
@@ -141,6 +141,10 @@ Cada artículo sale con: título SEO, meta description, entradilla que responde 
 | `RESEND_API_KEY` | No | Solo si prefieres enviar los correos con Resend en vez de con Gmail. |
 
 **Correo:** se envía con la misma cuenta de servicio de Google que las reservas. En admin.google.com → Seguridad → Controles de API → Delegación en todo el dominio, edita la entrada de la cuenta de servicio y añade el permiso `https://www.googleapis.com/auth/gmail.send` (junto al de calendar, separados por coma).
+
+### Criterios de las fotos
+
+Las fotos de Unsplash no se cogen a ciegas: Claude recibe las candidatas de cada búsqueda y elige la que cumple los criterios, o ninguna (sin foto de portada se usa la imagen por defecto de Robin; sin foto de apoyo se omite). Los criterios están en `CRITERIOS_FOTOS` (`netlify/lib/blog/prompts.mjs`): encajar con el tema y con el público (estudiantes españoles de 16-19 años y familias), jóvenes en entornos de estudio o ciudad, sin escenas de trabajo ajenas al tema, sin otros países o contextos que den una imagen equivocada y sin texto ni logotipos. Se decide por el entorno, la edad y la actividad, no por el aspecto de las personas. Claude solo ve la descripción y las etiquetas de cada foto, no la imagen: la vista previa del borrador sigue siendo la revisión final.
 
 ### Probarla a mano
 
@@ -186,3 +190,20 @@ A quien entra **desde España** no se le muestra España en el menú, la portada
 (edge function `netlify/edge-functions/geo-espana.ts` + `src/lib/geo-espana.mjs`, marcadores
 `<GeoHide>` / `<GeoOnly>`). Con enlace directo, sus páginas se pueden ver desde cualquier país.
 Para probarlo sin VPN: añade `?pais=ES` o `?pais=MX` a cualquier URL.
+
+## Idiomas (ES / EN / PT-PT / PT-BR)
+
+La web está en español en la raíz y se traduce al inglés (`/en/…`) y al portugués de Portugal (`/pt/…`) y de Brasil (`/br/…`) **después del build**: `npm run build` ejecuta `scripts/i18n.mjs build`, que lee el HTML de `dist/`, sustituye cada frase por su traducción y escribe `dist/en/**`, `dist/pt/**` y `dist/br/**` con los mismos slugs.
+
+- **Qué se traduce:** todas las páginas salvo el blog (`/blog/**`), las legales (`/aviso-legal/`, `/politica-de-cookies/`, `/politica-de-privacidad/`) y `/404/`. Los enlaces desde una página traducida a esas rutas llevan a la versión en español.
+- **Diccionarios:** `src/i18n/en.json`, `src/i18n/pt.json` y `src/i18n/br.json`. La clave es la frase en español tal cual sale en el HTML (espacios normalizados). Si falta una clave, esa frase se queda en español y el build avisa; con `I18N_STRICT=1` el build falla.
+- **Texto nuevo o cambiado en español:** `npm run i18n:pendientes` (equivale a `node scripts/i18n.mjs extract --out pendientes.json`) lista las frases sin traducir con la página donde aparecen. Se traducen y se incorporan con `node scripts/i18n.mjs merge --pending pendientes.json --in lote.txt` (líneas `id ||| inglés ||| portugués [||| portugués de Brasil]`; si falta la columna BR se adapta sola desde el portugués de Portugal; comprueba que coinciden las etiquetas HTML y los números).
+- **SEO:** `<html lang>`, canonical, `og:locale`, bloque hreflang (es, en, pt-PT, pt-BR, x-default) en todas las páginas traducibles y `sitemap-i18n.xml` enlazado desde `sitemap-index.xml`.
+- **Selector de idioma:** `src/components/LangSwitch.astro` (cabecera y menú móvil). No se traduce, lo reescribe el motor en cada idioma.
+- **Textos dentro de scripts:** usar `src/i18n/runtime.js` (`lang`, `locale`, `pick({es, en, pt, br})`; si falta `br` usa `pt`).
+- **Leads y reservas:** los formularios envían `idioma`; se guarda en Notion y en el CRM (`source_payload.lang`, línea "Idioma:") y en la reserva. El email de confirmación y el recordatorio al alumno van en su idioma (`netlify/lib/lang.mjs`); los avisos al equipo siguen en español.
+- **Estilo de las traducciones:** inglés británico; portugués de Portugal con "tu"; portugués de Brasil con "você", generado desde el de Portugal con `scripts/i18n/ptbr.mjs` (reglas de pronombres, verbos y léxico) y revisable a mano en `src/i18n/br.json`.; marca "Project Robin" y eslogan "The world is your campus" sin traducir.
+
+### Idioma por defecto según el país
+
+La edge function `netlify/edge-functions/idioma-portugal.ts` redirige (302) la **portada `/`** a `/pt/` si el visitante entra desde Portugal y a `/br/` si entra desde Brasil. Solo la primera visita: el selector de idioma guarda la cookie `robin_lang` y, con ella, no se vuelve a redirigir. Tampoco se redirige a bots, buscadores ni previsualizadores de enlaces. Para probarlo sin VPN: `/?pais=PT` o `/?pais=BR`.

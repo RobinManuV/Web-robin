@@ -1,6 +1,6 @@
 // ============================================================
 // Máquina de blogs: los tres pasos de cada semana.
-//   1. investigar(week)  → lunes: 5 ideas + correo con enlace para elegir
+//   1. investigar(week)  → lunes: 4 ideas (2 actualidad + 2 informativas) + correo con enlace para elegir
 //   2. redactar(week)    → tras elegir: 2 borradores + correo con vista previa
 //   3. publicar(week, slot) → miércoles / viernes: commit a GitHub (Netlify publica)
 // ============================================================
@@ -53,10 +53,16 @@ export async function investigar(week, { force = false } = {}) {
       maxSearches: 15,
       maxTokens: 16000,
     });
-    const ideas = (json.ideas || []).slice(0, 5);
-    if (ideas.length < 5) throw new Error(`Solo se encontraron ${ideas.length} ideas`);
+    const all = json.ideas || [];
+    const actualidad = all.filter((i) => i.type === 'actualidad').slice(0, 2);
+    const informativo = all.filter((i) => i.type === 'informativo').slice(0, 2);
+    if (actualidad.length < 2 || informativo.length < 2) {
+      throw new Error(`Se esperaban 2 ideas de actualidad y 2 informativas; llegaron ${actualidad.length} y ${informativo.length}`);
+    }
+    // Orden fijo: 1-2 actualidad, 3-4 informativas
+    const ideas = [...actualidad, ...informativo];
     Object.assign(data, { status: 'ideas', summary: json.summary || '', ideas });
-    log(data, `5 ideas listas (${searches} búsquedas)`);
+    log(data, `4 ideas listas: 2 de actualidad + 2 informativas (${searches} búsquedas)`);
     await saveWeek(data);
 
     await sendMail(
@@ -103,9 +109,14 @@ export async function redactar(week) {
       });
       if (!article.body || !article.title) throw new Error('El artículo llegó incompleto');
 
-      const hero = await findPhoto(article.heroImage?.query, usedPhotos);
+      // La categoría la fija el tipo de idea, no lo que devuelva Claude
+      article.category = data.ideas[idx].type === 'informativo' ? 'Estudiar en Holanda' : 'Actualidad educativa';
+      const ctx = { title: article.title, category: article.category };
+      const hero = await findPhoto(article.heroImage?.query, usedPhotos, { ...ctx, use: 'portada del artículo', alt: article.heroImage?.alt });
       const photos = {};
-      for (const img of article.images || []) photos[img.marker] = await findPhoto(img.query, usedPhotos);
+      for (const img of article.images || []) {
+        photos[img.marker] = await findPhoto(img.query, usedPhotos, { ...ctx, use: `imagen de apoyo (${img.marker})`, alt: img.alt });
+      }
       const body = bodyWithImages(article.body, article.images, photos);
 
       Object.assign(draft, {

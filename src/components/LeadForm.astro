@@ -40,6 +40,7 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
   <input type="hidden" name="form-name" value={form} />
   <input type="hidden" name="tag" value={tag} />
   <input type="hidden" name="pagina" value={Astro.url.pathname} />
+  <input type="hidden" name="idioma" value="es" />
   <p class="hp"><label>No rellenar: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
 
   {
@@ -130,7 +131,38 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
 </form>
 
 <script>
+  import { lang, pick } from '../i18n/runtime.js';
+
+  const T = pick({
+    es: {
+      sending: 'Enviando…',
+      thanks: '¡Gracias! Hemos recibido tu mensaje y te respondemos en menos de 24 h laborables.',
+      subscribed: '¡Listo! Te has suscrito correctamente.',
+      error: 'No se ha podido enviar. Inténtalo de nuevo o escríbenos a hello@project-robin.com.',
+    },
+    en: {
+      sending: 'Sending…',
+      thanks: 'Thank you! We have received your message and will reply within 24 working hours.',
+      subscribed: 'Done! You have subscribed successfully.',
+      error: 'We could not send your message. Please try again or write to us at hello@project-robin.com.',
+    },
+    pt: {
+      sending: 'A enviar…',
+      thanks: 'Obrigado! Recebemos a tua mensagem e respondemos em menos de 24 horas úteis.',
+      subscribed: 'Pronto! Subscreveste com sucesso.',
+      error: 'Não foi possível enviar. Tenta novamente ou escreve-nos para hello@project-robin.com.',
+    },
+    br: {
+      sending: 'Enviando…',
+      thanks: 'Obrigado! Recebemos a sua mensagem e respondemos em menos de 24 horas úteis.',
+      subscribed: 'Pronto! Inscrição feita com sucesso.',
+      error: 'Não foi possível enviar. Tente novamente ou escreva para hello@project-robin.com.',
+    },
+  });
+
   document.querySelectorAll('[data-lead-form]').forEach((form) => {
+    const idioma = form.querySelector('input[name="idioma"]');
+    if (idioma) idioma.value = lang;
     const params = new URLSearchParams(location.search);
     if (form.dataset.allowUrlTag) {
       const origen = params.get('origen');
@@ -150,7 +182,7 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
       const btn = form.querySelector('button[type="submit"]');
       const label = btn.textContent;
       btn.disabled = true;
-      btn.textContent = 'Enviando…';
+      btn.textContent = T.sending;
       status.hidden = true;
       try {
         const body = new URLSearchParams(new FormData(form)).toString();
@@ -166,7 +198,7 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
         if (result.filtered) {
           form.reset();
           status.dataset.state = 'ok';
-          status.textContent = '¡Gracias! Hemos recibido tu mensaje y te respondemos en menos de 24 h laborables.';
+          status.textContent = T.thanks;
           status.hidden = false;
           return;
         }
@@ -183,12 +215,10 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
         form.reset();
         status.dataset.state = 'ok';
         status.textContent =
-          form.getAttribute('name') === 'newsletter'
-            ? '¡Listo! Te has suscrito correctamente.'
-            : '¡Gracias! Hemos recibido tu mensaje y te respondemos en menos de 24 h laborables.';
+          form.getAttribute('name') === 'newsletter' ? T.subscribed : T.thanks;
       } catch (err) {
         status.dataset.state = 'error';
-        status.textContent = 'No se ha podido enviar. Inténtalo de nuevo o escríbenos a hello@project-robin.com.';
+        status.textContent = T.error;
       } finally {
         status.hidden = false;
         btn.disabled = false;

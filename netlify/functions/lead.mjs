@@ -5,6 +5,7 @@
 import { createLead } from '../lib/notion.mjs';
 import { pingAnalytics } from '../lib/analytics-ping.mjs';
 import { saveCrmLead } from '../lib/crm-lead.mjs';
+import { normLang } from '../lib/lang.mjs';
 
 const clean = (v, max = 500) => String(v ?? '').trim().slice(0, max);
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
@@ -49,6 +50,7 @@ export default async (req) => {
       colegio: clean(d.colegio, 160),
       message: clean(d.mensaje || d.message, 3000),
       page: clean(d.pagina, 200),
+      lang: normLang(d.idioma),
     };
 
     // Los formularios comerciales se guardan en CRM. La newsletter sigue siendo
