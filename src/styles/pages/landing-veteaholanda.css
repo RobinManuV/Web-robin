@@ -1,0 +1,900 @@
+/* Landing de campaña "Vete a Holanda" — todo va dentro de .page-vh (clase del <main>) */
+
+.page-vh {
+  --vh-gap: clamp(14px, 2vw, 24px);
+}
+.page-vh .vh-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+.page-vh .vh-wrap--narrow {
+  max-width: 820px;
+}
+.page-vh .vh-section {
+  padding-block: clamp(52px, 7vw, 100px);
+}
+.page-vh .vh-eyebrow {
+  text-align: center;
+  margin: 0 0 14px;
+  font-size: clamp(15px, 1.5vw, 20px);
+  letter-spacing: 0.04em;
+}
+.page-vh .vh-title {
+  text-align: center;
+  margin: 0 0 clamp(26px, 4vw, 48px);
+}
+.page-vh .vh-sub {
+  text-align: center;
+  max-width: 760px;
+  margin: calc(clamp(26px, 4vw, 48px) * -0.45) auto clamp(26px, 4vw, 44px);
+}
+
+/* Botones grandes y llamativos */
+.page-vh .vh-btn-big {
+  font-size: clamp(17px, 1.5vw, 21px);
+  font-weight: 700;
+  padding: 16px 30px;
+  border-radius: 8px;
+  white-space: normal;
+}
+.page-vh .btn:not(.btn-navy):not(.btn-outline-light) {
+  color: var(--navy);
+}
+.page-vh .vh-pulse {
+  animation: vh-pulse 2.2s ease-out infinite;
+}
+@keyframes vh-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(236, 179, 79, 0.65);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 18px rgba(236, 179, 79, 0);
+  }
+}
+
+/* ---------- Barra de urgencia ---------- */
+.page-vh .vh-top {
+  background: var(--accent);
+  color: var(--navy);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px 22px;
+  padding: 10px var(--gutter);
+  font-size: clamp(14px, 1.3vw, 17px);
+  font-weight: 600;
+  text-align: center;
+}
+.page-vh .vh-top[hidden] {
+  display: none;
+}
+.page-vh .vh-top p {
+  display: block;
+}
+.page-vh .vh-top-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d9372b;
+  display: inline-block;
+  margin-right: 8px;
+  animation: vh-blink 1.2s ease-in-out infinite;
+}
+@keyframes vh-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+.page-vh .vh-top a {
+  color: var(--navy);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Hero ---------- */
+.page-vh .vh-hero {
+  position: relative;
+  margin-inline: clamp(10px, 1.6vw, 24px);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  overflow: hidden;
+  color: var(--cream-text);
+  background:
+    linear-gradient(100deg, rgba(45, 58, 100, 0.97) 32%, rgba(45, 58, 100, 0.72) 70%, rgba(45, 58, 100, 0.55)),
+    url('/fotos/ciudades/amsterdam-hero.webp') center / cover no-repeat,
+    var(--navy);
+}
+.page-vh .vh-hero-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(36px, 6vw, 84px) var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.9fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+}
+.page-vh .vh-hero-text {
+  display: grid;
+  gap: clamp(16px, 2vw, 26px);
+  justify-items: start;
+}
+.page-vh .vh-pill {
+  display: inline-block;
+  background: rgba(254, 251, 229, 0.14);
+  border: 1px solid rgba(254, 251, 229, 0.4);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: clamp(13px, 1.2vw, 16px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.page-vh .vh-hero h1 {
+  color: var(--cream-text);
+  font-size: clamp(40px, 6vw, 92px);
+  margin: 0;
+}
+.page-vh .vh-hl {
+  color: var(--accent);
+}
+.page-vh .vh-hero .lead {
+  max-width: 34em;
+  color: var(--cream-text);
+}
+.page-vh .vh-micro {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  font-size: 15px;
+  font-weight: 600;
+  opacity: 0.92;
+}
+.page-vh .vh-micro li::before {
+  content: '✓';
+  color: var(--accent);
+  margin-right: 7px;
+  font-weight: 800;
+}
+
+/* Tarjeta con cuenta atrás */
+.page-vh .vh-clock {
+  background: var(--cream-text);
+  color: var(--navy);
+  border-radius: var(--radius-lg);
+  padding: clamp(20px, 2.6vw, 34px);
+  display: grid;
+  gap: 14px;
+  text-align: center;
+  transform: rotate(1.4deg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  border: 3px solid var(--accent);
+}
+.page-vh .vh-clock-kicker {
+  justify-self: center;
+  background: #d9372b;
+  color: #fff;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.page-vh .vh-clock-title {
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 800;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.page-vh .vh-clock-note {
+  font-size: 15px;
+  line-height: 1.35;
+}
+.page-vh .vh-clock .btn {
+  width: 100%;
+}
+
+/* Dígitos de la cuenta atrás */
+.page-vh .vh-digits {
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(6px, 1vw, 12px);
+}
+.page-vh .vh-digits[hidden] {
+  display: none;
+}
+.page-vh .vh-digits > div {
+  background: var(--navy);
+  color: var(--cream-text);
+  border-radius: 12px;
+  padding: clamp(10px, 1.4vw, 16px) 4px;
+  display: grid;
+  gap: 2px;
+}
+.page-vh .vh-digits b {
+  font-size: clamp(28px, 3.4vw, 46px);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+.page-vh .vh-digits span {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- Marquee ---------- */
+.page-vh .vh-marquee-clip {
+  overflow: hidden;
+  padding-block: 14px;
+}
+.page-vh .vh-marquee {
+  overflow: hidden;
+  background: var(--navy);
+  color: var(--accent);
+  padding-block: 16px;
+  border-block: 4px solid var(--accent);
+  transform: rotate(-0.8deg);
+  width: 104%;
+  margin-left: -2%;
+}
+.page-vh .vh-marquee-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: vh-marquee 38s linear infinite;
+}
+.page-vh .vh-marquee-track li {
+  flex: none;
+  font-size: clamp(18px, 2vw, 28px);
+  font-weight: 800;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.page-vh .vh-marquee-track li::after {
+  content: '✦';
+  margin-inline: clamp(16px, 2.4vw, 34px);
+  color: var(--cream-text);
+}
+@keyframes vh-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Cifras ---------- */
+.page-vh .vh-stats {
+  padding: clamp(40px, 5vw, 70px) var(--gutter) 0;
+}
+.page-vh .vh-stats-grid {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--vh-gap);
+  text-align: center;
+}
+.page-vh .vh-stats-grid > div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+}
+.page-vh .vh-stat-num {
+  margin: 0;
+  font-size: clamp(40px, 5.4vw, 76px);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--navy);
+}
+.page-vh .vh-stat-lbl {
+  font-size: clamp(14px, 1.3vw, 18px);
+  font-weight: 600;
+}
+
+/* ---------- 4 motivos ---------- */
+.page-vh .vh-reasons {
+  list-style: none;
+  margin: 0 0 clamp(26px, 4vw, 44px);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--vh-gap);
+}
+.page-vh .vh-reason {
+  position: relative;
+  background: var(--sky-2);
+  border: 2px solid var(--navy);
+  border-radius: var(--radius-lg);
+  padding: clamp(22px, 3vw, 36px);
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  box-shadow: 6px 6px 0 var(--navy);
+}
+.page-vh .vh-reason.is-main {
+  background: var(--navy);
+  color: var(--cream-text);
+  border-color: var(--navy);
+  box-shadow: 6px 6px 0 var(--accent);
+}
+.page-vh .vh-reason.is-main .title {
+  color: var(--accent);
+}
+.page-vh .vh-reason-icon {
+  width: 64px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: var(--navy);
+}
+.page-vh .vh-reason-icon .icon {
+  width: 55%;
+  height: 55%;
+}
+.page-vh .vh-reason-n {
+  position: absolute;
+  top: clamp(16px, 2vw, 26px);
+  right: clamp(18px, 2.4vw, 30px);
+  font-size: clamp(34px, 4vw, 56px);
+  font-weight: 800;
+  line-height: 1;
+  opacity: 0.18;
+}
+.page-vh .vh-reason p {
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.4;
+}
+
+/* ---------- Alojamiento ---------- */
+.page-vh .vh-housing {
+  background: var(--peach);
+  margin-inline: clamp(10px, 1.6vw, 24px);
+  border-radius: var(--radius-lg);
+  padding-block: clamp(36px, 6vw, 84px);
+}
+.page-vh .vh-housing-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(24px, 5vw, 70px);
+  align-items: center;
+}
+.page-vh .vh-housing-art {
+  position: relative;
+  max-width: 440px;
+  justify-self: center;
+}
+.page-vh .vh-housing-art img {
+  width: 100%;
+}
+.page-vh .vh-stamp {
+  position: absolute;
+  right: -4%;
+  bottom: 4%;
+  background: var(--accent);
+  color: var(--navy);
+  border: 3px solid var(--navy);
+  border-radius: 50%;
+  width: clamp(104px, 12vw, 150px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: clamp(14px, 1.4vw, 18px);
+  font-weight: 800;
+  line-height: 1.05;
+  text-transform: uppercase;
+  transform: rotate(-12deg);
+}
+.page-vh .vh-housing-copy {
+  display: grid;
+  gap: clamp(14px, 2vw, 22px);
+  justify-items: start;
+}
+.page-vh .vh-housing-copy .eyebrow {
+  margin: 0;
+}
+.page-vh .vh-housing-copy h2 {
+  margin: 0;
+}
+.page-vh .vh-housing-copy .lead {
+  margin: 0;
+}
+.page-vh .vh-housing-copy .check-list {
+  font-size: clamp(16px, 1.4vw, 19px);
+}
+
+/* ---------- Ciudades ---------- */
+.page-vh .vh-city-row {
+  list-style: none;
+  margin: 0;
+  padding: 4px var(--gutter) 20px;
+  display: flex;
+  gap: var(--vh-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+.page-vh .vh-city {
+  flex: 0 0 clamp(190px, 22vw, 260px);
+  scroll-snap-align: start;
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+.page-vh .vh-city img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.page-vh .vh-city::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(45, 58, 100, 0.9));
+}
+.page-vh .vh-city span {
+  position: absolute;
+  z-index: 1;
+  left: 16px;
+  bottom: 14px;
+  color: var(--cream-text);
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* ---------- Cómo funciona ---------- */
+.page-vh .vh-steps-sec {
+  background: var(--sky);
+  margin-inline: clamp(10px, 1.6vw, 24px);
+  border-radius: var(--radius-lg);
+  margin-top: clamp(30px, 4vw, 60px);
+}
+.page-vh .vh-steps {
+  list-style: none;
+  margin: 0 0 clamp(26px, 4vw, 44px);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--vh-gap);
+}
+.page-vh .vh-step {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: clamp(18px, 2vw, 26px);
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
+}
+.page-vh .vh-step img {
+  width: 100%;
+  max-width: 150px;
+  aspect-ratio: 1;
+  object-fit: contain;
+  justify-self: center;
+}
+.page-vh .vh-step-n {
+  justify-self: start;
+  background: var(--navy);
+  color: var(--cream-text);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.page-vh .vh-step .title {
+  font-size: clamp(20px, 1.8vw, 24px);
+}
+.page-vh .vh-step p:last-child {
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+/* ---------- Testimonios ---------- */
+.page-vh .vh-testi {
+  background: var(--navy);
+  color: var(--cream-text);
+  margin-inline: clamp(10px, 1.6vw, 24px);
+  border-radius: var(--radius-lg);
+  padding-block: clamp(36px, 5vw, 80px);
+}
+.page-vh .vh-testi-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 2fr);
+  gap: clamp(28px, 4vw, 50px);
+  align-items: center;
+}
+.page-vh .vh-testi-copy {
+  display: grid;
+  gap: 20px;
+  justify-items: start;
+}
+.page-vh .vh-testi-copy .eyebrow {
+  font-size: 20px;
+  color: var(--accent);
+}
+
+/* Carrusel horizontal de vídeos (formato vertical) */
+.page-vh .vh-videos {
+  position: relative;
+  min-width: 0;
+}
+.page-vh .vh-vid-track {
+  list-style: none;
+  margin: 0;
+  padding: 4px 2px 10px;
+  display: flex;
+  gap: var(--vh-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.page-vh .vh-vid-track::-webkit-scrollbar {
+  display: none;
+}
+.page-vh .vh-vid {
+  flex: 0 0 clamp(180px, 17vw, 230px);
+  scroll-snap-align: start;
+}
+.page-vh .vh-vid .yt {
+  border-radius: 16px;
+}
+.page-vh .vh-vid .yt > img {
+  position: absolute;
+  inset: 0;
+}
+.page-vh .vh-vid-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid var(--navy);
+  background: var(--cream-text);
+  color: var(--navy);
+  font-size: 28px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  padding: 0 0 4px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+.page-vh .vh-vid-arrow:hover {
+  background: var(--accent);
+}
+.page-vh .vh-vid-arrow.is-prev {
+  left: -14px;
+}
+.page-vh .vh-vid-arrow.is-next {
+  right: -14px;
+}
+
+/* ---------- Plazos (urgencia) ---------- */
+.page-vh .vh-deadlines {
+  background: var(--accent);
+  color: var(--navy);
+  margin-top: clamp(30px, 4vw, 60px);
+  padding-block: clamp(48px, 6vw, 92px);
+}
+.page-vh .vh-deadlines .vh-title {
+  margin-bottom: clamp(20px, 3vw, 34px);
+}
+.page-vh .vh-digits--lg {
+  max-width: 640px;
+  margin-inline: auto;
+}
+.page-vh .vh-digits--lg b {
+  font-size: clamp(38px, 6vw, 76px);
+}
+.page-vh .vh-count-caption {
+  text-align: center;
+  margin: 16px 0 clamp(26px, 4vw, 40px);
+  font-size: clamp(16px, 1.7vw, 22px);
+  font-weight: 600;
+}
+.page-vh .vh-dl-cards {
+  list-style: none;
+  margin: 0 0 clamp(24px, 3.5vw, 40px);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--vh-gap);
+}
+.page-vh .vh-dl-cards li {
+  background: var(--cream-text);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--navy);
+  padding: clamp(18px, 2.4vw, 28px);
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+.page-vh .vh-dl-date {
+  font-size: clamp(34px, 4vw, 54px);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.page-vh .vh-dl-cards p:last-child {
+  font-size: 16px;
+  line-height: 1.4;
+}
+.page-vh .vh-source {
+  margin: 22px auto 0;
+  max-width: 720px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* ---------- FAQ ---------- */
+.page-vh .vh-faq {
+  display: grid;
+  gap: 12px;
+}
+.page-vh .vh-faq details {
+  background: var(--sky-2);
+  border: 2px solid var(--navy);
+  border-radius: var(--radius);
+  padding: 0 20px;
+}
+.page-vh .vh-faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 18px 28px 18px 0;
+  font-size: clamp(17px, 1.6vw, 20px);
+  font-weight: 700;
+  position: relative;
+}
+.page-vh .vh-faq summary::-webkit-details-marker {
+  display: none;
+}
+.page-vh .vh-faq summary::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1;
+}
+.page-vh .vh-faq details[open] summary::after {
+  content: '–';
+}
+.page-vh .vh-faq details p {
+  padding: 0 0 20px;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+/* ---------- Formulario + llamada ---------- */
+.page-vh .vh-final {
+  background: var(--navy);
+  color: var(--cream-text);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding-block: clamp(48px, 6vw, 96px);
+  scroll-margin-top: calc(var(--header-h) - 10px);
+}
+.page-vh .vh-final .vh-eyebrow {
+  color: var(--accent);
+}
+.page-vh .vh-final .vh-title {
+  color: var(--cream-text);
+  margin-bottom: 14px;
+}
+.page-vh .vh-final-clock {
+  text-align: center;
+  margin: 0 0 clamp(24px, 3.5vw, 40px);
+  font-size: clamp(16px, 1.6vw, 20px);
+  font-weight: 600;
+}
+.page-vh .vh-final-clock[hidden] {
+  display: none;
+}
+.page-vh .vh-final-clock strong {
+  color: var(--accent);
+}
+.page-vh .vh-final-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: var(--vh-gap);
+  align-items: start;
+}
+.page-vh .vh-card {
+  background: var(--white);
+  color: var(--navy);
+  border-radius: var(--radius-lg);
+  padding: clamp(22px, 3vw, 40px);
+  display: grid;
+  gap: 8px;
+  scroll-margin-top: calc(var(--header-h) - 10px);
+}
+.page-vh .vh-card-kicker {
+  justify-self: start;
+  background: var(--accent);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.page-vh .vh-card-sub {
+  margin-bottom: 14px;
+  font-size: 17px;
+}
+.page-vh .vh-card .lead-form .btn {
+  justify-self: stretch;
+  width: 100%;
+  font-size: 19px;
+  font-weight: 700;
+  padding: 16px 24px;
+  color: var(--navy);
+}
+/* El reservador va dentro de la tarjeta, sin su propia sombra ni margen */
+.page-vh .vh-card .booking {
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+.page-vh .vh-card .booking .b-title,
+.page-vh .vh-card .booking .b-sub {
+  display: none;
+}
+
+/* ---------- CTA fijo en móvil ---------- */
+.page-vh .vh-sticky {
+  display: none;
+}
+
+/* ---------- Tablet / móvil ---------- */
+@media (max-width: 980px) {
+  .page-vh .vh-hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .page-vh .vh-clock {
+    transform: none;
+    max-width: 560px;
+  }
+  .page-vh .vh-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .page-vh .vh-testi-grid,
+  .page-vh .vh-housing-inner,
+  .page-vh .vh-final-grid {
+    grid-template-columns: 1fr;
+  }
+  .page-vh .vh-housing-art {
+    max-width: 320px;
+  }
+}
+@media (max-width: 760px) {
+  .page-vh .vh-reasons,
+  .page-vh .vh-dl-cards {
+    grid-template-columns: 1fr;
+  }
+  .page-vh .vh-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 12px;
+  }
+}
+@media (max-width: 560px) {
+  .page-vh .vh-vid {
+    flex-basis: 58vw;
+  }
+  .page-vh .vh-vid-arrow.is-prev {
+    left: 4px;
+  }
+  .page-vh .vh-vid-arrow.is-next {
+    right: 4px;
+  }
+  .page-vh .vh-steps {
+    grid-template-columns: 1fr;
+  }
+  .page-vh .vh-hero-cta,
+  .page-vh .vh-hero-cta .btn,
+  .page-vh .vh-section .btn-row .btn,
+  .page-vh .vh-deadlines .btn-row .btn,
+  .page-vh .vh-housing-copy .btn-row,
+  .page-vh .vh-housing-copy .btn,
+  .page-vh .vh-testi-copy .btn {
+    width: 100%;
+  }
+  .page-vh .vh-reason {
+    box-shadow: 4px 4px 0 var(--navy);
+  }
+  .page-vh .vh-reason.is-main {
+    box-shadow: 4px 4px 0 var(--accent);
+  }
+  .page-vh .vh-top a {
+    display: none;
+  }
+  .page-vh .vh-sticky {
+    display: block;
+    position: fixed;
+    z-index: 90;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom));
+    background: rgba(45, 58, 100, 0.96);
+    box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.2);
+    transition: transform 0.25s;
+  }
+  .page-vh .vh-sticky.is-hidden {
+    transform: translateY(110%);
+  }
+  .page-vh .vh-sticky .btn {
+    width: 100%;
+  }
+  /* para que el botón fijo no tape el final de la página */
+  .page-vh {
+    padding-bottom: 76px;
+  }
+}
+
+/* Al pulsar un botón la cabecera fija no tapa el bloque de destino */
+.page-vh #reserva,
+.page-vh #motivos {
+  scroll-margin-top: calc(var(--header-h) - 10px);
+}
+@media (max-width: 860px) {
+  .page-vh #reserva,
+  .page-vh #formulario,
+  .page-vh #llamada,
+  .page-vh #motivos {
+    scroll-margin-top: 70px;
+  }
+}
+
+/* Sin animaciones para quien lo pide en su sistema */
+@media (prefers-reduced-motion: reduce) {
+  .page-vh .vh-pulse,
+  .page-vh .vh-top-dot {
+    animation: none;
+  }
+  .page-vh .vh-marquee {
+    transform: none;
+    width: auto;
+    margin-left: 0;
+  }
+  .page-vh .vh-marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+    justify-content: center;
+    padding-inline: var(--gutter);
+  }
+  .page-vh .vh-marquee-track li[aria-hidden='true'] {
+    display: none;
+  }
+}
