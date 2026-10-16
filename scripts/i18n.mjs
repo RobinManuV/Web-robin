@@ -20,6 +20,11 @@ const DIST = 'dist';
 const SITE = 'https://project-robin.com';
 const DICT_DIR = 'src/i18n';
 
+// Páginas escritas directamente en portugués de Portugal (landings de campaña para Portugal).
+// Viven en la raíz, sin copias en /en/, /pt/ ni /br/: su texto propio ya está en portugués y solo se
+// traduce lo compartido (cabecera, pie, formularios, banner de cookies) con el diccionario pt.
+const NATIVE_PT = ['/vaparaaholanda/'];
+
 const readJson = (f, fallback) => (existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : fallback);
 const dictOf = (lang) => readJson(path.join(DICT_DIR, `${lang}.json`), {});
 
@@ -34,6 +39,7 @@ function spanishRoutes() {
     .map((f) => '/' + path.relative(DIST, path.dirname(f)).split(path.sep).join('/'))
     .map((r) => (r === '/.' || r === '/' ? '/' : ensureSlash(r)))
     .filter((r) => !/^\/(en|pt|br)(\/|$)/.test(r))
+    .filter((r) => !NATIVE_PT.includes(r))
     .sort();
 }
 const fileOf = (route, lang) => path.join(DIST, lang && lang !== 'es' ? lang : '', route, 'index.html');
@@ -54,16 +60,17 @@ function rewriteHref(value, lang, routes) {
 }
 
 // ---------- una página traducida ----------
-function localize(html, lang, route, routes) {
+// `native`: página escrita en ese idioma que vive en la raíz (NATIVE_PT): conserva su URL y su `pagina`.
+function localize(html, lang, route, routes, native = false) {
   const L = LANGS[lang];
   let out = html.replace(/<html lang="es"/, `<html lang="${L.htmlLang}"`);
   out = editAttrs(out, (tag, a) => {
-    if (tag === 'link' && a.rel === 'canonical' && a.href) return { href: SITE + withLang(lang, new URL(a.href).pathname) };
-    if (tag === 'meta' && a.property === 'og:url' && a.content) return { content: SITE + withLang(lang, new URL(a.content).pathname) };
+    if (!native && tag === 'link' && a.rel === 'canonical' && a.href) return { href: SITE + withLang(lang, new URL(a.href).pathname) };
+    if (!native && tag === 'meta' && a.property === 'og:url' && a.content) return { content: SITE + withLang(lang, new URL(a.content).pathname) };
     if (tag === 'meta' && a.property === 'og:locale') return { content: L.ogLocale };
     if (tag === 'a' && a['data-lang']) {
       const target = a['data-lang'];
-      return { href: routes.has(route) ? withLang(target, route) : withLang(target, '/'), 'aria-current': String(target === lang) };
+      return { href: routes.has(route) && !native ? withLang(target, route) : withLang(target, '/'), 'aria-current': String(target === lang) };
     }
     if (tag === 'a' && a.href) {
       const next = rewriteHref(a.href, lang, routes);
@@ -73,7 +80,7 @@ function localize(html, lang, route, routes) {
       const next = rewriteHref(a.action, lang, routes);
       return next !== a.action ? { action: next } : null;
     }
-    if (tag === 'input' && a.name === 'pagina') return { value: withLang(lang, a.value || route) };
+    if (!native && tag === 'input' && a.name === 'pagina') return { value: withLang(lang, a.value || route) };
     if (tag === 'input' && a.name === 'idioma') return { value: lang };
     return null;
   });
@@ -144,6 +151,13 @@ function build() {
       pages++;
     }
     writeFileSync(fileOf(route), addHreflang(es, route)); // el español solo gana los hreflang
+  }
+  // Páginas nativas en portugués: se traduce solo lo compartido; las frases propias (que no están en el
+  // diccionario) se dejan tal cual, así que aquí no se avisa de "frases sin traducir".
+  for (const route of NATIVE_PT.filter((r) => existsSync(fileOf(r)))) {
+    const t = translate(readFileSync(fileOf(route), 'utf8'), dicts.pt, { inLanguage: LANGS.pt.htmlLang });
+    writeFileSync(fileOf(route), localize(t.html, 'pt', route, routes, true));
+    pages++;
   }
   const urls = writeSitemap(routes);
   console.log(`✓ i18n: ${pages} páginas (${routes.size} × ${TRANSLATED_LANGS.length}) · ${urls} URLs en sitemap-i18n.xml`);

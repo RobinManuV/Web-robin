@@ -1,0 +1,485 @@
+---
+import '../styles/pages/landing-veteaholanda.css';
+// Landing de campaña "Vai para a Holanda": versión en portugués de Portugal de /veteaholanda/.
+// Misma estructura y mismos estilos (landing-veteaholanda.css), texto propio en portugués de Portugal.
+// Igual que /veteaholanda/: NO se enlaza desde ninguna parte, no sale en el sitemap, está en robots.txt y lleva noindex.
+//
+// IDIOMA: el texto de esta página ya está escrito en portugués. Lo compartido (cabecera, pie, formularios,
+// reservador, cookies) sale en español del build y lo traduce scripts/i18n.mjs con el diccionario pt
+// (ver NATIVE_PT en ese script). No se generan copias en /en/, /pt/ ni /br/.
+//
+// LEADS: la etiqueta TAG contiene "portugal", y el servidor (netlify/lib/lang.mjs → paisDeTag) marca por eso
+// todo lead y reserva de esta página como PORTUGAL (Notion: TIPO + comentario · CRM: country · aviso de reserva).
+//
+// URGENCIA: la cuenta atrás es REAL. Apunta a los plazos oficiales de Studielink
+// (15 de enero: carreras con cupo limitado · 1 de mayo: el resto), ver PLAZOS más abajo.
+// Cuando pasen ambos plazos la cuenta atrás se oculta sola; para el curso siguiente hay que actualizar las fechas.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import LeadForm from '../components/LeadForm.astro';
+import BookingWidget from '../components/BookingWidget.astro';
+import YouTube from '../components/YouTube.astro';
+import { CIFRAS, CIUDADES, VIDEOS_TESTIMONIOS } from '../data/site.js';
+
+const TAG = 'vaparaaholanda-portugal';
+
+// Prazos oficiais (Rijksoverheid / Studielink). Hora límite: final del día en Madrid.
+const PLAZOS = [
+  { id: 'enero', fecha: '2027-01-15T23:59:59+01:00', corto: '15 de janeiro', texto: 'o fecho dos cursos com vagas limitadas' },
+  { id: 'mayo', fecha: '2027-05-01T23:59:59+02:00', corto: '1 de maio', texto: 'o fecho geral das candidaturas' },
+];
+
+const marquee = [
+  'Alojamento assegurado',
+  'Todas as universidades',
+  'Todos os cursos',
+  'Aconselhamento 100% personalizado',
+  'Especialistas que já passaram por lá',
+  'Gestão total da tua candidatura',
+  'Apoio durante o teu primeiro ano',
+];
+
+const razones = [
+  {
+    icon: 'home',
+    n: '01',
+    title: 'Alojamento 100% assegurado desde o minuto 1',
+    text: 'Encontrar casa como estudante internacional na Holanda é um desporto radical. Tu não o vais jogar: desde o início do processo tens, no mínimo, uma opção de alojamento assegurada.',
+    destacado: true,
+  },
+  {
+    icon: 'cap',
+    n: '02',
+    title: 'Todas as universidades e cursos disponíveis',
+    text: 'Mais de 15 universidades e mais de 300 licenciaturas em 11 cidades. Não te limitamos a uma única opção: comparamos todas contigo.',
+  },
+  {
+    icon: 'user',
+    n: '03',
+    title: 'Aconselhamento super personalizado',
+    text: 'Cada caso é diferente, por isso não há modelos prontos. Aconselha-te uma equipa que já viveu a experiência: sabemos o que perguntas porque fomos nós que o perguntámos.',
+  },
+  {
+    icon: 'people',
+    n: '04',
+    title: 'Contigo do princípio ao fim, como um irmão mais velho',
+    text: 'Orientamos-te na escolha do curso, tratamos de toda a tua candidatura, apoiamos-te em toda a logística e continuamos ao teu lado durante o primeiro ano de universidade.',
+  },
+];
+
+const pasos = [
+  {
+    img: '/wp-content/uploads/2026/06/RobinTelescopio.webp',
+    tab: 'Escolhe',
+    title: 'Escolhemos contigo, não por ti',
+    text: 'Analisamos o teu perfil, as tuas notas e o teu orçamento, e damos-te uma lista curta de cursos e universidades que fazem sentido para ti. Requisitos, custos e saídas profissionais em cima da mesa desde o primeiro dia.',
+  },
+  {
+    img: '/wp-content/uploads/2026/06/Robin-Carpetas.webp',
+    tab: 'Candidata-te',
+    title: 'A tua candidatura, gerida a 100%',
+    text: 'Carta de motivação, documentos, prazos e Studielink. Preparamos tudo contigo e revemos tudo antes de enviar, para que nada escape.',
+  },
+  {
+    img: '/wp-content/uploads/2026/06/RobinHouse.webp',
+    tab: 'Aterra',
+    title: 'Logística resolvida',
+    text: 'Alojamento assegurado, mudança, burocracias, contacto prévio com estudantes da tua cidade… Chegas com tudo organizado, não com tarefas por fazer.',
+  },
+  {
+    img: '/wp-content/uploads/2026/06/RobinGraduated.webp',
+    tab: 'Levanta voo',
+    title: 'Continuamos contigo no primeiro ano',
+    text: 'Não desaparecemos quando és admitido. Esclarecemos as tuas dúvidas durante o primeiro ano e tens acesso à comunidade Robin.',
+  },
+];
+
+const faqs = [
+  {
+    q: 'Quanto custa a primeira chamada?',
+    a: 'Nada. A primeira consulta é gratuita e dura 30 minutos. Fazemo-la online, no horário que te der mais jeito.',
+  },
+  {
+    q: 'E se ainda não sei o que quero estudar?',
+    a: 'É das coisas mais normais do mundo, e é precisamente aí que começamos. Analisamos o teu perfil, os teus interesses, as tuas notas e o teu orçamento, e damos-te uma lista curta de opções com requisitos, custos e saídas reais.',
+  },
+  {
+    q: 'O que significa «alojamento assegurado»?',
+    a: 'Que desde o início do processo tens, no mínimo, uma opção de alojamento assegurada, e ajudamos-te com a mudança para que chegues com tudo organizado. Explicamos-te os detalhes na chamada.',
+  },
+  {
+    q: 'Até quando posso candidatar-me?',
+    a: 'Depende do curso. Nos cursos com vagas limitadas (numerus fixus), o prazo no Studielink termina a 15 de janeiro e, passada essa data, já não é possível candidatar-se. Nos restantes, o prazo geral é 1 de maio. Algumas universidades têm prazos próprios, por isso na chamada indicamos-te os do teu curso.',
+  },
+  {
+    q: 'Tenho de saber neerlandês?',
+    a: 'Muitas licenciaturas são lecionadas inteiramente em inglês. Na chamada dizemos-te quais encaixam no teu perfil.',
+  },
+  {
+    q: 'Quem me vai aconselhar?',
+    a: 'Pessoas que já estudaram na Holanda e sabem bem o que é fazer este caminho. O nosso lema é «de antigos alunos para futuros alunos».',
+  },
+];
+---
+
+<Base
+  pageClass="page-vh"
+  title="Vai para a Holanda com a Project Robin | Alojamento assegurado e aconselhamento personalizado"
+  description="Estuda na Holanda com alojamento assegurado desde o minuto 1, todas as universidades e cursos e aconselhamento personalizado de especialistas que já passaram por lá. Reserva a tua chamada gratuita."
+  noindex
+>
+  <!-- BARRA DE URGENCIA -->
+  <div class="vh-top" data-vh-top>
+    <p>
+      <span class="vh-top-dot" aria-hidden="true"></span>
+      As candidaturas têm data limite: o primeiro fecho é a <strong data-cd-text="corto">15 de janeiro</strong>
+      <span class="vh-top-left" data-cd-inline hidden> · faltam <strong data-cd-days>0</strong> dias</span>
+    </p>
+    <a href="#reserva">Reservar a minha chamada grátis →</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="vh-hero">
+    <div class="vh-hero-inner">
+      <div class="vh-hero-text">
+        <p class="vh-pill">Estuda na Holanda · Ano letivo 2027/28</p>
+        <h1 class="display-xl">
+          Vai para a <span class="vh-hl">Holanda.</span><br />
+          Com casa desde o minuto 1.
+        </h1>
+        <p class="lead">
+          Acompanhamos-te desde o «e se eu fosse?» até à tua primeira aula: escolha do curso, candidatura, alojamento e
+          o teu primeiro ano. Com quem já passou por lá.
+        </p>
+        <div class="btn-row vh-hero-cta">
+          <a class="btn vh-btn-big vh-pulse" href="#formulario">Preenche o formulário</a>
+          <a class="btn btn-outline-light vh-btn-big" href="#llamada">Reserva uma chamada grátis</a>
+        </div>
+        <ul class="vh-micro">
+          <li>Primeira chamada gratuita</li>
+          <li>30 minutos</li>
+          <li>Online</li>
+        </ul>
+      </div>
+
+      <aside class="vh-clock" aria-label="Contagem decrescente até ao próximo prazo de candidatura">
+        <p class="vh-clock-kicker">O relógio já está a contar</p>
+        <p class="vh-clock-title">Faltam para <span data-cd-text="corto">15 de janeiro</span></p>
+        <div class="vh-digits" role="timer" aria-live="off" data-countdown>
+          <div><b data-cd-d>--</b><span>dias</span></div>
+          <div><b data-cd-h>--</b><span>horas</span></div>
+          <div><b data-cd-m>--</b><span>min</span></div>
+          <div><b data-cd-s>--</b><span>seg</span></div>
+        </div>
+        <p class="vh-clock-note">
+          É <span data-cd-pre>o fecho dos cursos com vagas limitadas</span> (Studielink). Passada essa data, já não é possível candidatar-se a eles.
+        </p>
+        <a class="btn btn-navy vh-btn-big" href="#reserva">Quero começar já</a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="vh-marquee-clip">
+    <div class="vh-marquee" aria-label="O que inclui a Project Robin">
+      <ul class="vh-marquee-track">
+        {marquee.map((m) => <li>{m}</li>)}
+        {marquee.map((m) => <li aria-hidden="true">{m}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  <!-- CIFRAS -->
+  <section class="vh-stats">
+    <dl class="vh-stats-grid">
+      {
+        CIFRAS.map((c) => (
+          <div>
+            <dt class="vh-stat-lbl">{c.label}</dt>
+            <dd class="vh-stat-num">{c.value}{c.suffix}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <!-- 4 MOTIVOS -->
+  <section class="vh-section" id="motivos">
+    <div class="vh-wrap">
+      <p class="eyebrow vh-eyebrow">Porquê a Robin</p>
+      <h2 class="display-md vh-title">Quatro motivos para ires para a Holanda connosco</h2>
+      <ol class="vh-reasons">
+        {
+          razones.map((r) => (
+            <li class:list={['vh-reason', { 'is-main': r.destacado }]}>
+              <span class="vh-reason-icon" aria-hidden="true">
+                <Icon name={r.icon} size={34} />
+              </span>
+              <span class="vh-reason-n" aria-hidden="true">{r.n}</span>
+              <h3 class="title">{r.title}</h3>
+              <p>{r.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="btn-row btn-row--center">
+        <a class="btn vh-btn-big vh-pulse" href="#reserva">Quero ser aconselhado</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALOJAMIENTO -->
+  <section class="vh-housing">
+    <div class="vh-housing-inner">
+      <div class="vh-housing-art">
+        <img src="/wp-content/uploads/2026/06/RobinHouse.webp" alt="" width="520" height="520" loading="lazy" />
+        <span class="vh-stamp" aria-hidden="true">Alojamento<br />assegurado</span>
+      </div>
+      <div class="vh-housing-copy">
+        <p class="eyebrow">O que mais nos perguntam</p>
+        <h2 class="display-md">Chegas com casa. Não com uma lista de anúncios.</h2>
+        <p class="lead">
+          Conseguir alojamento como estudante internacional na Holanda é das partes mais difíceis de todo o processo. Sabemo-lo
+          porque passámos por isso. Por isso, desde o início, não o deixamos ao acaso.
+        </p>
+        <ul class="check-list">
+          <li>No mínimo, uma opção de alojamento assegurada desde o início do processo</li>
+          <li>Ajuda a preparar a mudança</li>
+          <li>Contacto prévio com estudantes da tua cidade</li>
+          <li>Tudo pronto desde o primeiro dia, para que a única coisa que te preocupe seja a tua primeira aula</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-navy vh-btn-big" href="#reserva">Quero o meu alojamento assegurado</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UNIVERSIDADES Y CIUDADES -->
+  <section class="vh-section vh-cities">
+    <div class="vh-wrap">
+      <p class="eyebrow vh-eyebrow">Todas as universidades. Todos os cursos.</p>
+      <h2 class="display-md vh-title">11 cidades. Tu escolhes, nós ajudamos-te a acertar.</h2>
+      <p class="lead vh-sub">
+        Mais de 15 universidades e mais de 300 licenciaturas. Se não sabes por onde começar, começamos contigo pelo teu
+        perfil, não pelo folheto de uma universidade.
+      </p>
+    </div>
+    <ul class="vh-city-row">
+      {
+        CIUDADES.map((c) => (
+          <li class="vh-city">
+            <img src={`/fotos/ciudades/${c.slug}-card.webp`} alt={`Estudiar en ${c.name}`} width="400" height="300" loading="lazy" />
+            <span>{c.name}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="vh-section vh-steps-sec">
+    <div class="vh-wrap">
+      <p class="eyebrow vh-eyebrow">Como um irmão mais velho</p>
+      <h2 class="display-md vh-title">Do «e se eu fosse?» à tua primeira aula. Tratamos de tudo.</h2>
+      <ol class="vh-steps">
+        {
+          pasos.map((p, i) => (
+            <li class="vh-step">
+              <img src={p.img} alt="" width="220" height="220" loading="lazy" />
+              <p class="vh-step-n">Passo {i + 1} · {p.tab}</p>
+              <h3 class="title">{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="btn-row btn-row--center">
+        <a class="btn vh-btn-big" href="#reserva">Começar pelo passo 1</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="vh-testi">
+    <div class="vh-testi-grid">
+      <div class="vh-testi-copy">
+        <p class="eyebrow">O que dizem os nossos Robins</p>
+        <h2 class="display-md">Histórias reais, sem filtros.</h2>
+        <p>Estudantes que já voaram para a Holanda contam como é na realidade. Sem guião.</p>
+        <a class="btn vh-btn-big" href="#reserva">Quero ser o próximo</a>
+      </div>
+      <div class="vh-videos">
+        <button type="button" class="vh-vid-arrow is-prev" aria-label="Vídeo anterior" data-vh-prev>‹</button>
+        <ul class="vh-vid-track" data-vh-track>
+          {
+            VIDEOS_TESTIMONIOS.map((u, i) => (
+              <li class="vh-vid">
+                <YouTube url={u} ratio="9 / 16" title={`Vídeo testemunho de um Robin (${i + 1})`} />
+              </li>
+            ))
+          }
+        </ul>
+        <button type="button" class="vh-vid-arrow is-next" aria-label="Vídeo seguinte" data-vh-next>›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAZOS -->
+  <section class="vh-deadlines">
+    <div class="vh-wrap">
+      <p class="eyebrow vh-eyebrow">Sem rodeios</p>
+      <h2 class="display-md vh-title">Isto tem data. E a data é real.</h2>
+      <div class="vh-digits vh-digits--lg" role="timer" aria-live="off" data-countdown>
+        <div><b data-cd-d>--</b><span>dias</span></div>
+        <div><b data-cd-h>--</b><span>horas</span></div>
+        <div><b data-cd-m>--</b><span>min</span></div>
+        <div><b data-cd-s>--</b><span>seg</span></div>
+      </div>
+      <p class="vh-count-caption">
+        para <span data-cd-pre>o fecho dos cursos com vagas limitadas</span>: <strong data-cd-text="corto">15 de janeiro</strong>
+      </p>
+      <ul class="vh-dl-cards">
+        <li>
+          <p class="vh-dl-date">15 janeiro</p>
+          <h3 class="title">Cursos com vagas limitadas</h3>
+          <p>Data limite no Studielink para os cursos com numerus fixus. Passada essa data, já não é possível candidatar-se a eles.</p>
+        </li>
+        <li>
+          <p class="vh-dl-date">1 maio</p>
+          <h3 class="title">Restantes licenciaturas</h3>
+          <p>Data limite geral. Depois dessa data alguns programas ainda aceitam candidaturas, mas sem garantias.</p>
+        </li>
+        <li>
+          <p class="vh-dl-date">Já</p>
+          <h3 class="title">Alojamento</h3>
+          <p>O alojamento para estudantes na Holanda é escasso. Quanto mais cedo começares, mais opções tens.</p>
+        </li>
+      </ul>
+      <div class="btn-row btn-row--center">
+        <a class="btn btn-navy vh-btn-big" href="#reserva">Não quero chegar tarde</a>
+      </div>
+      <p class="vh-source">
+        Prazos oficiais do governo neerlandês:
+        <a href="https://www.rijksoverheid.nl/onderwerpen/hoger-onderwijs/vraag-en-antwoord/deadline-aanmelden-opleiding-hogeschool-of-universiteit" target="_blank" rel="noopener">Rijksoverheid</a>.
+        Cada universidade pode ter prazos próprios: na chamada indicamos-te os do teu curso.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="vh-section vh-faq-sec">
+    <div class="vh-wrap vh-wrap--narrow">
+      <p class="eyebrow vh-eyebrow">Perguntas frequentes</p>
+      <h2 class="display-md vh-title">O que de certeza estás a perguntar-te</h2>
+      <div class="vh-faq">
+        {
+          faqs.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULARIO + LLAMADA -->
+  <section class="vh-final" id="reserva">
+    <div class="vh-wrap">
+      <p class="eyebrow vh-eyebrow">Dá o passo</p>
+      <h2 class="display-md vh-title">Escolhe como começar: contactamos-te nós ou marcas tu a chamada</h2>
+      <p class="vh-final-clock" data-cd-inline hidden>
+        Faltam <strong data-cd-days>0</strong> dias para <span data-cd-pre>o fecho dos cursos com vagas limitadas</span> (<span data-cd-text="corto">15 de janeiro</span>).
+      </p>
+      <div class="vh-final-grid">
+        <div class="vh-card" id="formulario">
+          <p class="vh-card-kicker">Opção 1</p>
+          <h3 class="title">Deixa-nos os teus dados e contactamos-te</h3>
+          <p class="vh-card-sub">Respondemos-te em menos de 24 horas úteis.</p>
+          <LeadForm form="contacto" tag={TAG} servicio="Asesoramiento Completo" submitLabel="Quero que me contactem" />
+        </div>
+        <div class="vh-card" id="llamada">
+          <p class="vh-card-kicker">Opção 2</p>
+          <h3 class="title">Reserva a tua chamada gratuita</h3>
+          <p class="vh-card-sub">Escolhe o horário que te der mais jeito. É online e dura 30 minutos.</p>
+          <BookingWidget tag={TAG} compact />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FIJO EN MÓVIL -->
+  <div class="vh-sticky" data-vh-sticky>
+    <a class="btn vh-btn-big" href="#reserva">Reserva a tua chamada grátis</a>
+  </div>
+
+  <script is:inline define:vars={{ PLAZOS }}>
+    // Cuenta atrás hasta el siguiente plazo oficial que aún no ha pasado.
+    (function () {
+      var now = Date.now();
+      var plazo = PLAZOS.find(function (p) {
+        return new Date(p.fecha).getTime() > now;
+      });
+      var top = document.querySelector('[data-vh-top]');
+      if (!plazo) {
+        // Ya han pasado todos los plazos: se oculta lo que depende de ellos
+        document.querySelectorAll('[data-countdown]').forEach(function (el) {
+          el.hidden = true;
+        });
+        if (top) top.hidden = true;
+        return;
+      }
+      var target = new Date(plazo.fecha).getTime();
+      document.querySelectorAll('[data-cd-text="corto"]').forEach(function (el) {
+        el.textContent = plazo.corto;
+      });
+      document.querySelectorAll('[data-cd-pre]').forEach(function (el) {
+        el.textContent = plazo.texto;
+      });
+      document.querySelectorAll('[data-cd-inline]').forEach(function (el) {
+        el.hidden = false;
+      });
+      var pad = function (n) {
+        return String(n).padStart(2, '0');
+      };
+      function tick() {
+        var diff = Math.max(0, target - Date.now());
+        var d = Math.floor(diff / 864e5);
+        var h = Math.floor((diff % 864e5) / 36e5);
+        var m = Math.floor((diff % 36e5) / 6e4);
+        var s = Math.floor((diff % 6e4) / 1e3);
+        document.querySelectorAll('[data-cd-d]').forEach(function (el) { el.textContent = pad(d); });
+        document.querySelectorAll('[data-cd-h]').forEach(function (el) { el.textContent = pad(h); });
+        document.querySelectorAll('[data-cd-m]').forEach(function (el) { el.textContent = pad(m); });
+        document.querySelectorAll('[data-cd-s]').forEach(function (el) { el.textContent = pad(s); });
+        document.querySelectorAll('[data-cd-days]').forEach(function (el) { el.textContent = String(d); });
+        if (diff === 0) location.reload();
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+  
+    // Carrusel horizontal de vídeos: las flechas desplazan casi un "pantallazo" de la pista
+    (function () {
+      var track = document.querySelector('[data-vh-track]');
+      if (!track) return;
+      var step = function (dir) {
+        track.scrollBy({ left: dir * track.clientWidth * 0.85, behavior: 'smooth' });
+      };
+      document.querySelector('[data-vh-prev]').addEventListener('click', function () { step(-1); });
+      document.querySelector('[data-vh-next]').addEventListener('click', function () { step(1); });
+    })();
+  
+    // El botón fijo del móvil se esconde cuando ya se ve el formulario
+    (function () {
+      var bar = document.querySelector('[data-vh-sticky]');
+      var end = document.getElementById('reserva');
+      if (!bar || !end || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(function (entries) {
+        bar.classList.toggle('is-hidden', entries[0].isIntersecting);
+      }, { threshold: 0.05 }).observe(end);
+    })();
+  </script>
+</Base>

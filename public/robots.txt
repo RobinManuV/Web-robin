@@ -6,5 +6,6 @@ Disallow: /api/blog-panel
 Disallow: /yuselico-studios/
 Disallow: /estudiaenholanda/
 Disallow: /veteaholanda/
+Disallow: /vaparaaholanda/
 
 Sitemap: https://project-robin.com/sitemap-index.xml

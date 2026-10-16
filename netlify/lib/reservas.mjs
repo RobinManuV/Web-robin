@@ -5,7 +5,7 @@
 // Las reservas pendientes se guardan en Netlify Blobs (almacén "reservas").
 import { getStore } from '@netlify/blobs';
 import { sendMail } from './blog/mail.mjs';
-import { LANG_NAMES, LOCALES, normLang, recordatorio } from './lang.mjs';
+import { LANG_NAMES, LOCALES, normLang, paisDeTag, recordatorio } from './lang.mjs';
 
 export const AVISO_EQUIPO = process.env.BOOKING_NOTIFY_EMAIL || 'hello@project-robin.com';
 export const RECORDATORIO_HORAS = 2;
@@ -26,6 +26,7 @@ function filas(r) {
     ['Teléfono', r.phone],
     ['Curso', r.curso],
     ['Con', r.host],
+    ['País', paisDeTag(r.tag)],
     ['Origen', r.tag],
     ['Idioma', LANG_NAMES[normLang(r.lang)]],
     ['Mensaje', r.message],

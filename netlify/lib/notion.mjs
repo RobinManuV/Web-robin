@@ -8,13 +8,14 @@
 // colegios, holanda-maastricht…). Si la columna no existe, se crea el lead igual
 // y la etiqueta queda escrita en el comentario.
 
-import { LANG_NAMES, normLang } from './lang.mjs';
+import { LANG_NAMES, normLang, paisDeTag } from './lang.mjs';
 
 const NOTION_VERSION = '2022-06-28';
 
 // Etiqueta de la web → opción de la columna TIPO que ya usáis
 function tipoFromTag(tag = '') {
   const t = tag.toLowerCase();
+  if (paisDeTag(t)) return 'PORTUGAL'; // leads de las landings para Portugal
   if (t.includes('llegada')) return 'Llegada';
   if (t.includes('mentoria') || t.includes('mentoría')) return 'Mentoría';
   if (t.includes('delft')) return 'Delft';
@@ -46,6 +47,7 @@ export async function createLead(lead) {
 
   const comment = [
     lead.tag && `Origen web: ${lead.tag}`,
+    paisDeTag(lead.tag) && `País: ${paisDeTag(lead.tag)}`,
     lead.form && `Formulario: ${lead.form}`,
     lead.servicio && `Servicio: ${lead.servicio}`,
     lead.curso && `Curso: ${lead.curso}`,

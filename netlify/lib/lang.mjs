@@ -4,6 +4,11 @@
 export const LANG_NAMES = { es: 'Español', en: 'English', pt: 'Português', br: 'Português (Brasil)' };
 export const LOCALES = { es: 'es-ES', en: 'en-GB', pt: 'pt-PT', br: 'pt-BR' };
 
+// País del lead. Hoy solo se marca PORTUGAL: las landings para Portugal usan una etiqueta (tag)
+// que contiene "portugal" (p. ej. "vaparaaholanda-portugal"). Se deduce en el servidor a partir de
+// la etiqueta, así que cualquier formulario o reserva con esa etiqueta llega siempre como PORTUGAL.
+export const paisDeTag = (tag) => (/portugal/i.test(String(tag ?? '')) ? 'PORTUGAL' : '');
+
 export const normLang = (v) => {
   const raw = String(v ?? '').trim().toLowerCase();
   const l = raw === 'pt-br' || raw === 'br' ? 'br' : raw.slice(0, 2);
@@ -13,29 +18,30 @@ export const normLang = (v) => {
 // Invitación de Google Calendar que ve el alumno
 export function invitacion(lang, { name, phone, email, curso, tag, page, message }) {
   const origen = `${tag}${page ? ` (${page})` : ''}`;
+  const pais = paisDeTag(tag);
   const T = {
     es: {
       summary: `Consulta gratuita Project Robin · ${name}`,
       intro: 'Primera consulta gratuita (30 min) reservada desde la web.',
-      rows: [`Nombre: ${name}`, `Email: ${email}`, `Teléfono: ${phone}`, ...(curso ? [`Curso: ${curso}`] : []), `Origen: ${origen}`],
+      rows: [`Nombre: ${name}`, `Email: ${email}`, `Teléfono: ${phone}`, ...(curso ? [`Curso: ${curso}`] : []), `Origen: ${origen}`, ...(pais ? [`País: ${pais}`] : [])],
       message: '\nMensaje:\n',
     },
     en: {
       summary: `Free consultation with Project Robin · ${name}`,
       intro: 'Free first consultation (30 min) booked through the website.',
-      rows: [`Name: ${name}`, `Email: ${email}`, `Phone: ${phone}`, ...(curso ? [`Year: ${curso}`] : []), `Source: ${origen}`],
+      rows: [`Name: ${name}`, `Email: ${email}`, `Phone: ${phone}`, ...(curso ? [`Year: ${curso}`] : []), `Source: ${origen}`, ...(pais ? [`Country: ${pais}`] : [])],
       message: '\nMessage:\n',
     },
     pt: {
       summary: `Consulta gratuita Project Robin · ${name}`,
       intro: 'Primeira consulta gratuita (30 min) reservada através do site.',
-      rows: [`Nome: ${name}`, `Email: ${email}`, `Telefone: ${phone}`, ...(curso ? [`Ano: ${curso}`] : []), `Origem: ${origen}`],
+      rows: [`Nome: ${name}`, `Email: ${email}`, `Telefone: ${phone}`, ...(curso ? [`Ano: ${curso}`] : []), `Origem: ${origen}`, ...(pais ? [`País: ${pais}`] : [])],
       message: '\nMensagem:\n',
     },
     br: {
       summary: `Consulta gratuita Project Robin · ${name}`,
       intro: 'Primeira consulta gratuita (30 min) agendada pelo site.',
-      rows: [`Nome: ${name}`, `E-mail: ${email}`, `Telefone: ${phone}`, ...(curso ? [`Ano: ${curso}`] : []), `Origem: ${origen}`],
+      rows: [`Nome: ${name}`, `E-mail: ${email}`, `Telefone: ${phone}`, ...(curso ? [`Ano: ${curso}`] : []), `Origem: ${origen}`, ...(pais ? [`País: ${pais}`] : [])],
       message: '\nMensagem:\n',
     },
   }[lang];
