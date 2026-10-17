@@ -1,0 +1,573 @@
+/* Landing del webinar para padres — todo va dentro de .page-wb (clase del <main>) */
+
+.page-wb {
+  --wb-gap: clamp(14px, 2vw, 24px);
+}
+.page-wb .wb-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+.page-wb .wb-wrap--narrow {
+  max-width: 820px;
+}
+.page-wb .wb-section {
+  padding-block: clamp(52px, 7vw, 96px);
+}
+.page-wb .wb-eyebrow {
+  text-align: center;
+  margin: 0 0 14px;
+  font-size: clamp(15px, 1.5vw, 20px);
+  letter-spacing: 0.04em;
+}
+.page-wb .wb-eyebrow--light {
+  color: var(--accent);
+}
+.page-wb .wb-title {
+  text-align: center;
+  margin: 0 0 clamp(26px, 4vw, 46px);
+}
+.page-wb .wb-title--light {
+  color: var(--cream-text);
+}
+
+/* Botones */
+.page-wb .wb-btn-big {
+  font-size: clamp(17px, 1.5vw, 21px);
+  font-weight: 700;
+  padding: 16px 30px;
+  border-radius: 8px;
+  white-space: normal;
+}
+.page-wb .btn:not(.btn-navy):not(.btn-outline-light) {
+  color: var(--navy);
+}
+.page-wb .wb-pulse {
+  animation: wb-pulse 2.2s ease-out infinite;
+}
+@keyframes wb-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(236, 179, 79, 0.65);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 18px rgba(236, 179, 79, 0);
+  }
+}
+
+/* Botón extra grande (bajo las ventajas) */
+.page-wb .wb-btn-xl {
+  font-size: clamp(19px, 2vw, 26px);
+  padding: 20px clamp(26px, 4vw, 48px);
+  box-shadow: 0 0 0 0 rgba(236, 179, 79, 0.65);
+}
+.page-wb .wb-why-cta {
+  margin-top: clamp(28px, 4vw, 48px);
+}
+
+/* ---------- Barra superior ---------- */
+.page-wb .wb-top {
+  background: var(--accent);
+  color: var(--navy);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px 22px;
+  padding: 10px var(--gutter);
+  font-size: clamp(14px, 1.3vw, 17px);
+  font-weight: 600;
+  text-align: center;
+}
+.page-wb .wb-top p {
+  display: block;
+}
+.page-wb .wb-top-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d9372b;
+  display: inline-block;
+  margin-right: 8px;
+  animation: wb-blink 1.2s ease-in-out infinite;
+}
+@keyframes wb-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+.page-wb .wb-top a {
+  color: var(--navy);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Hero ---------- */
+.page-wb .wb-hero {
+  margin-inline: clamp(10px, 1.6vw, 24px);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  overflow: hidden;
+  color: var(--cream-text);
+  background:
+    linear-gradient(100deg, rgba(45, 58, 100, 0.97) 38%, rgba(45, 58, 100, 0.8) 75%, rgba(45, 58, 100, 0.68)),
+    url('/fotos/ciudades/amsterdam-hero.webp') center / cover no-repeat,
+    var(--navy);
+}
+.page-wb .wb-hero-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(32px, 5vw, 72px) var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+.page-wb .wb-hero-text {
+  display: grid;
+  gap: clamp(16px, 2vw, 26px);
+  justify-items: start;
+  min-width: 0;
+}
+.page-wb .wb-pill {
+  display: inline-block;
+  background: rgba(254, 251, 229, 0.14);
+  border: 1px solid rgba(254, 251, 229, 0.4);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-size: clamp(12px, 1.1vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.page-wb .wb-hero h1 {
+  color: var(--cream-text);
+  font-size: clamp(36px, 5vw, 72px);
+  margin: 0;
+}
+.page-wb .wb-hl {
+  color: var(--accent);
+}
+.page-wb .wb-hero .lead {
+  max-width: 32em;
+  color: var(--cream-text);
+}
+
+/* Fecha y cuenta atrás */
+.page-wb .wb-when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 24px;
+}
+.page-wb .wb-date {
+  background: var(--cream-text);
+  color: var(--navy);
+  border-radius: 16px;
+  border: 3px solid var(--accent);
+  padding: 10px 22px 12px;
+  display: grid;
+  justify-items: center;
+  line-height: 1;
+  transform: rotate(-2deg);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+}
+.page-wb .wb-date b {
+  font-size: clamp(52px, 6vw, 76px);
+  font-weight: 800;
+  line-height: 1;
+}
+.page-wb .wb-date-dow,
+.page-wb .wb-date-mon {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.page-wb .wb-when-text {
+  display: grid;
+  gap: 12px;
+}
+.page-wb .wb-when-time {
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+}
+.page-wb .wb-when-time small {
+  font-size: 0.45em;
+  font-weight: 600;
+  color: var(--cream-text);
+  letter-spacing: 0.02em;
+}
+.page-wb .wb-digits {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(62px, 1fr));
+  gap: 8px;
+  text-align: center;
+}
+.page-wb .wb-digits[hidden] {
+  display: none;
+}
+.page-wb .wb-digits > div {
+  background: rgba(254, 251, 229, 0.12);
+  border: 1px solid rgba(254, 251, 229, 0.35);
+  border-radius: 10px;
+  padding: 8px 4px;
+  display: grid;
+  gap: 2px;
+}
+.page-wb .wb-digits b {
+  font-size: clamp(24px, 2.6vw, 34px);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--cream-text);
+}
+.page-wb .wb-digits span {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- Tarjeta del formulario ---------- */
+.page-wb .wb-card {
+  background: var(--cream-text);
+  color: var(--navy);
+  border-radius: var(--radius-lg);
+  border: 3px solid var(--accent);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  padding: clamp(20px, 2.6vw, 32px);
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  scroll-margin-top: 90px;
+}
+.page-wb .wb-card-kicker {
+  justify-self: start;
+  background: #d9372b;
+  color: #fff;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.page-wb .wb-card h2 {
+  margin: 0;
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1.1;
+}
+.page-wb .wb-card-sub {
+  font-size: 15px;
+  line-height: 1.4;
+}
+.page-wb .wb-card .lead-form {
+  margin-top: 4px;
+}
+.page-wb .wb-card textarea {
+  min-height: 90px;
+}
+.page-wb .wb-card .lead-form .btn {
+  justify-self: stretch;
+  width: 100%;
+  font-size: 18px;
+  font-weight: 700;
+  padding: 15px 20px;
+}
+
+/* Confirmación tras registrarse */
+.page-wb .wb-done {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+.page-wb .wb-done-kicker {
+  background: #1f9d55;
+  color: #fff;
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.page-wb .wb-done h3 {
+  margin: 0;
+  font-size: clamp(24px, 2.4vw, 30px);
+  line-height: 1.1;
+}
+.page-wb .wb-done-when {
+  font-weight: 700;
+}
+.page-wb .wb-done .btn.wb-btn-wa {
+  background: #25d366;
+  color: #0b3d1e;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  padding: 16px 20px;
+}
+.page-wb .wb-done-note {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* ---------- Cifras ---------- */
+.page-wb .wb-stats {
+  padding: clamp(36px, 5vw, 64px) var(--gutter) 0;
+}
+.page-wb .wb-stats-grid {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--wb-gap);
+  text-align: center;
+}
+.page-wb .wb-stats-grid > div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+}
+.page-wb .wb-stat-num {
+  margin: 0;
+  font-size: clamp(38px, 5vw, 70px);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--navy);
+}
+.page-wb .wb-stat-lbl {
+  font-size: clamp(14px, 1.3vw, 18px);
+  font-weight: 600;
+}
+
+/* ---------- Temario ---------- */
+.page-wb .wb-topics {
+  list-style: none;
+  margin: 0 0 clamp(26px, 4vw, 44px);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--wb-gap);
+}
+.page-wb .wb-topics li {
+  background: var(--sky-2);
+  border: 2px solid var(--navy);
+  border-radius: var(--radius-lg);
+  padding: clamp(20px, 2.4vw, 30px);
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  box-shadow: 5px 5px 0 var(--navy);
+}
+.page-wb .wb-topic-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--navy);
+  display: grid;
+  place-items: center;
+}
+.page-wb .wb-topics h3,
+.page-wb .wb-topics p {
+  margin: 0;
+}
+
+/* ---------- Por qué registrarte ---------- */
+.page-wb .wb-why {
+  background: var(--navy);
+  color: var(--cream-text);
+  padding-block: clamp(52px, 7vw, 96px);
+  margin-inline: clamp(10px, 1.6vw, 24px);
+  border-radius: var(--radius-lg);
+}
+.page-wb .wb-benefits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--wb-gap);
+}
+.page-wb .wb-benefits li {
+  border: 2px solid rgba(254, 251, 229, 0.35);
+  border-radius: var(--radius-lg);
+  padding: clamp(22px, 3vw, 34px);
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+.page-wb .wb-benefits li.is-main {
+  background: var(--accent);
+  color: var(--navy);
+  border-color: var(--accent);
+}
+.page-wb .wb-benefits h3,
+.page-wb .wb-benefits p {
+  margin: 0;
+}
+.page-wb .wb-benefits h3 {
+  color: inherit;
+}
+
+/* ---------- Plazos ---------- */
+.page-wb .wb-deadlines {
+  background: var(--peach);
+  padding-block: clamp(44px, 6vw, 80px);
+  margin-top: clamp(40px, 6vw, 80px);
+}
+.page-wb .wb-dl {
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--wb-gap);
+}
+.page-wb .wb-dl li {
+  background: var(--white);
+  border: 2px solid var(--navy);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  display: grid;
+  gap: 6px;
+  box-shadow: 5px 5px 0 var(--accent);
+}
+.page-wb .wb-dl p {
+  margin: 0;
+}
+.page-wb .wb-dl-date {
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+.page-wb .wb-source {
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ---------- FAQ ---------- */
+.page-wb .wb-faq {
+  display: grid;
+  gap: 12px;
+}
+.page-wb .wb-faq details {
+  background: var(--sky-2);
+  border: 2px solid var(--navy);
+  border-radius: 12px;
+  padding: 0 20px;
+}
+.page-wb .wb-faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 16px 28px 16px 0;
+  font-weight: 700;
+  font-size: clamp(16px, 1.5vw, 19px);
+  position: relative;
+}
+.page-wb .wb-faq summary::-webkit-details-marker {
+  display: none;
+}
+.page-wb .wb-faq summary::after {
+  content: '+';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  font-weight: 800;
+}
+.page-wb .wb-faq details[open] summary::after {
+  content: '–';
+}
+.page-wb .wb-faq details p {
+  margin: 0;
+  padding-bottom: 18px;
+}
+
+/* ---------- Cierre ---------- */
+.page-wb .wb-final {
+  background: var(--navy);
+  color: var(--cream-text);
+  text-align: center;
+  padding-block: clamp(50px, 7vw, 96px);
+}
+.page-wb .wb-final .wb-wrap {
+  display: grid;
+  gap: 20px;
+  justify-items: center;
+}
+.page-wb .wb-final h2 {
+  color: var(--cream-text);
+  margin: 0;
+}
+.page-wb .wb-final .lead {
+  margin: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ---------- CTA fijo en móvil ---------- */
+.page-wb .wb-sticky {
+  display: none;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 980px) {
+  .page-wb .wb-hero-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-wb .wb-topics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  .page-wb .wb-topics,
+  .page-wb .wb-benefits,
+  .page-wb .wb-dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .page-wb .wb-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 22px;
+  }
+}
+@media (max-width: 560px) {
+  .page-wb .wb-sticky {
+    display: block;
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 40;
+    padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.18);
+    transition: transform 0.25s ease;
+  }
+  .page-wb .wb-sticky.is-hidden {
+    transform: translateY(110%);
+  }
+  .page-wb .wb-sticky .btn {
+    width: 100%;
+    text-align: center;
+  }
+  .page-wb {
+    padding-bottom: 76px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-wb .wb-pulse,
+  .page-wb .wb-top-dot {
+    animation: none;
+  }
+}
+
+/* Cuando el registro está hecho, la tarjeta solo muestra la confirmación */
+.page-wb .wb-card:has(.lead-form.is-done) > :not(.lead-form) {
+  display: none;
+}

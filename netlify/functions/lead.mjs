@@ -6,6 +6,8 @@ import { createLead } from '../lib/notion.mjs';
 import { pingAnalytics } from '../lib/analytics-ping.mjs';
 import { saveCrmLead } from '../lib/crm-lead.mjs';
 import { normLang } from '../lib/lang.mjs';
+import { sendMail } from '../lib/blog/mail.mjs';
+import { correoWebinar } from '../lib/webinar.mjs';
 
 const clean = (v, max = 500) => String(v ?? '').trim().slice(0, max);
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
@@ -63,6 +65,15 @@ export default async (req) => {
     if (res.skipped) {
       console.error('[lead] Notion sin configurar (NOTION_TOKEN / NOTION_DATABASE_ID)');
       return Response.json({ ok: false, error: 'Notion sin configurar' }, { status: 503 });
+    }
+    // Registro en el webinar para padres: correo con la fecha y el enlace del grupo de WhatsApp.
+    // El registro ya está guardado; si el correo falla, solo queda en el log.
+    if (form === 'webinar') {
+      try {
+        await sendMail({ to: email, fromName: 'Project Robin', ...correoWebinar({ nombre: name }) });
+      } catch (err) {
+        console.error('[lead] Correo del webinar:', err.message);
+      }
     }
     return Response.json({ ok: true });
   } catch (err) {

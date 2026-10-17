@@ -9,7 +9,8 @@ import CursoField from './CursoField.astro';
 // Netlify guarda el envío, avisa por email y una función lo manda a Notion.
 //
 // Props:
-//   form: 'contacto' | 'colegios' | 'newsletter'
+//   form: 'contacto' | 'colegios' | 'newsletter' | 'webinar'
+//   (webinar: registro en el webinar para padres; al enviarse muestra el contenido del slot "done")
 //   tag:  etiqueta del origen (se puede sobrescribir con ?origen= en la URL)
 //   allowUrlTag: si true, usa ?origen= de la URL (página de contacto)
 //   servicio: valor preseleccionado del desplegable Servicio
@@ -36,6 +37,7 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
   netlify-honeypot="bot-field"
   data-lead-form
   data-allow-url-tag={allowUrlTag ? '1' : undefined}
+  data-consent-gate={form === 'webinar' ? '1' : undefined}
 >
   <input type="hidden" name="form-name" value={form} />
   <input type="hidden" name="tag" value={tag} />
@@ -76,6 +78,35 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
         <div class="field full">
           <label for={`${id}-msg`}>Mensaje <span class="req">*</span></label>
           <textarea id={`${id}-msg`} name="mensaje" placeholder="Mensaje" required />
+        </div>
+      </div>
+    )
+  }
+
+  {
+    form === 'webinar' && (
+      <div class="form-grid">
+        <div class="field full">
+          <label for={`${id}-name`}>Tu nombre <span class="req">*</span></label>
+          <input id={`${id}-name`} name="nombre" placeholder="Nombre y apellidos" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for={`${id}-tel`}>Teléfono <span class="req">*</span></label>
+          <input id={`${id}-tel`} type="tel" name="telefono" placeholder="Número de teléfono" autocomplete="tel" required />
+        </div>
+        <div class="field">
+          <label for={`${id}-email`}>Correo electrónico <span class="req">*</span></label>
+          <input id={`${id}-email`} type="email" name="email" placeholder="Correo electrónico" autocomplete="email" required />
+        </div>
+        <CursoField
+          id={`${id}-curso`}
+          dark={dark}
+          legend="¿En qué curso está tu hijo o hija?"
+          options={['2º de Bachillerato (Year 13)', '1º de Bachillerato (Year 12)', 'Otro']}
+        />
+        <div class="field full">
+          <label for={`${id}-msg`}>¿Qué pregunta importante te gustaría que resolviéramos? <small>(opcional)</small></label>
+          <textarea id={`${id}-msg`} name="mensaje" placeholder="Escribe aquí tu pregunta…" />
         </div>
       </div>
     )
@@ -123,11 +154,29 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
 
   <label class="consent">
     <input type="checkbox" name="privacidad" value="aceptada" required />
-    <span>He leído y acepto la <a href="/politica-de-privacidad/" target="_blank">política de privacidad</a>.</span>
+    {
+      form === 'webinar' ? (
+        <span>
+          He leído y acepto la <a href="/politica-de-privacidad/" target="_blank">política de privacidad</a>. Entiendo que el enlace del
+          webinar y la información previa se comparten en un grupo de WhatsApp y que, al unirme, los demás participantes podrán ver mi
+          número de teléfono.
+        </span>
+      ) : (
+        <span>He leído y acepto la <a href="/politica-de-privacidad/" target="_blank">política de privacidad</a>.</span>
+      )
+    }
   </label>
 
   <p class="form-status" data-status hidden role="status"></p>
-  <button type="submit" class:list={['btn', { 'btn-full': form !== 'contacto' }]}>{submitLabel}</button>
+  <button type="submit" class:list={['btn', { 'btn-full': form !== 'contacto' }]} disabled={form === 'webinar'}>{submitLabel}</button>
+
+  {
+    form === 'webinar' && (
+      <div class="lead-done" data-done role="status" aria-live="polite">
+        <slot name="done" />
+      </div>
+    )
+  }
 </form>
 
 <script>
@@ -175,8 +224,21 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
       }
     }
 
+    // Formularios con casilla bloqueante (webinar): el botón de envío no se activa hasta aceptar la casilla de privacidad
+    const consent = form.querySelector('input[name="privacidad"]');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const gate = Boolean(form.dataset.consentGate && consent && submitBtn);
+    const syncGate = () => {
+      if (gate) submitBtn.disabled = !consent.checked;
+    };
+    if (gate) {
+      consent.addEventListener('change', syncGate);
+      syncGate();
+    }
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (gate && !consent.checked) return;
       if (!form.reportValidity()) return;
       const status = form.querySelector('[data-status]');
       const btn = form.querySelector('button[type="submit"]');
@@ -213,6 +275,13 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
           page_path: location.pathname,
         });
         form.reset();
+        // Formularios con panel de confirmación (webinar): se sustituye el formulario por ese panel
+        const done = form.querySelector('[data-done]');
+        if (done) {
+          form.classList.add('is-done');
+          done.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          return;
+        }
         status.dataset.state = 'ok';
         status.textContent =
           form.getAttribute('name') === 'newsletter' ? T.subscribed : T.thanks;
@@ -223,6 +292,7 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
         status.hidden = false;
         btn.disabled = false;
         btn.textContent = label;
+        syncGate();
       }
     });
   });

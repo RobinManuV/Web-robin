@@ -1,0 +1,303 @@
+---
+import '../styles/pages/landing-webinar.css';
+// Landing del webinar para padres (sábado 21 de noviembre, 12:00 hora de Madrid).
+// NO se enlaza desde ninguna parte de la web, no sale en el sitemap, está en robots.txt y lleva noindex.
+// Solo existe en español (ver SOLO_ES en src/i18n/config.mjs).
+//
+// Tiene UN solo formulario: el registro en el webinar (campos: nombre, teléfono, email, curso y una pregunta
+// opcional). Al enviarlo, la propia página muestra el botón del grupo de WhatsApp y, además, el servidor manda
+// un correo con la fecha y el mismo enlace (netlify/lib/webinar.mjs). Los leads llegan con la etiqueta "webinar-padres".
+//
+// Fecha, hora y enlace del grupo: src/data/webinar.mjs. La cuenta atrás es real y se oculta sola al llegar la hora.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { WEBINAR } from '../data/webinar.mjs';
+import { CIFRAS } from '../data/site.js';
+
+const TAG = 'webinar-padres';
+
+const temario = [
+  { icon: 'cap', title: 'Universidades y grados', text: 'Qué se puede estudiar, dónde y cómo comparar las más de 15 universidades y los más de 300 grados.' },
+  { icon: 'doc', title: 'Cómo se aplica y cuándo', text: 'El proceso de admisión paso a paso y los plazos reales de Studielink, para que nada llegue tarde.' },
+  { icon: 'home', title: 'Alojamiento', text: 'Cómo funciona la vivienda para estudiantes internacionales y cómo llegar con casa asegurada.' },
+  { icon: 'coin', title: 'Costes y presupuesto', text: 'Qué gasto debe prever la familia para estudiar y vivir en Holanda.' },
+  { icon: 'globe', title: 'La llegada y la vida allí', text: 'Trámites, mudanza y el día a día de un estudiante en Holanda.' },
+  { icon: 'heart', title: 'El primer año', text: 'Cómo acompañar a tu hijo o hija durante el primer año y qué hacer si surgen problemas.' },
+];
+
+const beneficios = [
+  {
+    title: 'Opción a alojamiento asegurado',
+    text: 'Encontrar casa es lo que más preocupa a las familias. Quienes se registran en el webinar pueden optar a alojamiento asegurado.',
+    destacado: true,
+  },
+  {
+    title: 'Completa tranquilidad',
+    text: 'Sabrás qué pasos hay que dar, cuándo y con quién, para que tu hijo o hija estudie en Holanda sin sorpresas.',
+  },
+  {
+    title: 'Información valiosa antes del día',
+    text: 'En el grupo de WhatsApp compartimos durante las semanas previas todo lo importante, y ahí recibes el enlace del webinar.',
+  },
+  {
+    title: 'Tu pregunta, sobre la mesa',
+    text: 'Al registrarte puedes dejarnos la duda que más te preocupa para que la respondamos.',
+  },
+];
+
+const faqs = [
+  {
+    q: '¿Cómo recibo el enlace del webinar?',
+    a: `Lo enviamos por el grupo de WhatsApp el ${WEBINAR.diaEnlace}. Por eso es importante unirte al grupo al registrarte.`,
+  },
+  {
+    q: '¿Para qué sirve el grupo de WhatsApp?',
+    a: 'Es el canal donde compartimos el enlace del webinar y mucha información importante durante las semanas previas.',
+  },
+  {
+    q: '¿Mi hijo o hija tiene que asistir?',
+    a: 'Está pensado para padres y madres, que son quienes acompañan la decisión. Si tu hijo o hija quiere conectarse también, es bienvenido.',
+  },
+  {
+    q: '¿Quién da el webinar?',
+    a: 'Los fundadores de Project Robin, tres graduados de Maastricht University que ya han vivido el proceso. Nuestro lema es «de ex alumnos para futuros alumnos».',
+  },
+  {
+    q: '¿Puedo dejar una pregunta antes del webinar?',
+    a: 'Sí. El formulario tiene un campo opcional para tu pregunta más importante.',
+  },
+];
+---
+
+<Base
+  pageClass="page-wb"
+  title="Webinar para padres: estudiar en Holanda con tranquilidad | Project Robin"
+  description="Webinar en directo para padres con los fundadores de Project Robin: todo lo que necesitas saber para que tu hijo o hija estudie en Holanda, con opción a alojamiento asegurado."
+  noindex
+>
+  <!-- BARRA SUPERIOR -->
+  <div class="wb-top" data-wb-top>
+    <p>
+      <span class="wb-top-dot" aria-hidden="true"></span>
+      Webinar para padres · <strong>{WEBINAR.fechaTexto.replace(' de 2026', '')}, {WEBINAR.hora}</strong> ({WEBINAR.zona})
+      <span data-wb-days-wrap hidden> · faltan <strong data-wb-days>0</strong> días</span>
+    </p>
+    <a href="#registro">Reservar mi plaza →</a>
+  </div>
+
+  <!-- HERO + FORMULARIO -->
+  <section class="wb-hero">
+    <div class="wb-hero-inner">
+      <div class="wb-hero-text">
+        <p class="wb-pill">Webinar gratuito · En directo · Para padres y madres</p>
+        <h1 class="display-xl">
+          Que tu hijo estudie en <span class="wb-hl">Holanda.</span><br />
+          Con total tranquilidad.
+        </h1>
+        <p class="lead">
+          Los fundadores de Project Robin te cuentan todo lo que necesitas saber para que tu hijo o hija estudie en
+          Holanda, y cómo hacerlo con alojamiento asegurado.
+        </p>
+
+        <div class="wb-when">
+          <div class="wb-date" aria-label={`${WEBINAR.fechaTexto}, ${WEBINAR.hora} ${WEBINAR.zona}`}>
+            <span class="wb-date-dow">Sábado</span>
+            <b>21</b>
+            <span class="wb-date-mon">Noviembre</span>
+          </div>
+          <div class="wb-when-text">
+            <p class="wb-when-time">{WEBINAR.hora}<small> · {WEBINAR.zona}</small></p>
+            <div class="wb-digits" role="timer" aria-live="off" data-wb-countdown>
+              <div><b data-wb-d>--</b><span>días</span></div>
+              <div><b data-wb-h>--</b><span>horas</span></div>
+              <div><b data-wb-m>--</b><span>min</span></div>
+              <div><b data-wb-s>--</b><span>seg</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wb-card" id="registro">
+        <p class="wb-card-kicker">Plaza gratuita</p>
+        <h2 class="title">Regístrate en el webinar</h2>
+        <p class="wb-card-sub">Rellena tus datos y te damos acceso al grupo de WhatsApp donde enviamos el enlace.</p>
+        <LeadForm form="webinar" tag={TAG} submitLabel="Quiero mi plaza en el webinar">
+          <div slot="done" class="wb-done">
+            <p class="wb-done-kicker">¡Registro completado!</p>
+            <h3 class="title">Ya tienes tu plaza en el webinar</h3>
+            <p class="wb-done-when">{WEBINAR.fechaTexto} · {WEBINAR.hora} ({WEBINAR.zona})</p>
+            <p>
+              <strong>Último paso:</strong> únete al grupo de WhatsApp. Ahí enviamos el enlace del webinar el
+              {WEBINAR.diaEnlace} y compartimos información importante durante las semanas previas.
+            </p>
+            <a class="btn wb-btn-wa" href={WEBINAR.whatsapp} target="_blank" rel="noopener">Unirme al grupo de WhatsApp</a>
+            <p class="wb-done-note">
+              Puedes salir del grupo cuando quieras. También te hemos enviado un correo con la fecha y este mismo enlace.
+            </p>
+          </div>
+        </LeadForm>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIFRAS -->
+  <section class="wb-stats">
+    <dl class="wb-stats-grid">
+      {
+        CIFRAS.map((c) => (
+          <div>
+            <dt class="wb-stat-lbl">{c.label}</dt>
+            <dd class="wb-stat-num">{c.value}{c.suffix}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <!-- TEMARIO -->
+  <section class="wb-section">
+    <div class="wb-wrap">
+      <p class="eyebrow wb-eyebrow">Qué vas a saber</p>
+      <h2 class="display-md wb-title">Todo lo que necesitas saber para que tu hijo estudie en Holanda</h2>
+      <ul class="wb-topics">
+        {
+          temario.map((t) => (
+            <li>
+              <span class="wb-topic-icon" aria-hidden="true">
+                <Icon name={t.icon} size={28} />
+              </span>
+              <h3 class="title">{t.title}</h3>
+              <p>{t.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="btn-row btn-row--center">
+        <a class="btn wb-btn-big" href="#registro">Reservar mi plaza</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUÉ REGISTRARSE -->
+  <section class="wb-why">
+    <div class="wb-wrap">
+      <p class="eyebrow wb-eyebrow wb-eyebrow--light">Por qué registrarte</p>
+      <h2 class="display-md wb-title wb-title--light">Registrarte hoy tiene ventajas</h2>
+      <ul class="wb-benefits">
+        {
+          beneficios.map((b) => (
+            <li class:list={{ 'is-main': b.destacado }}>
+              <h3 class="title">{b.title}</h3>
+              <p>{b.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="btn-row btn-row--center wb-why-cta">
+        <a class="btn wb-btn-big wb-btn-xl wb-pulse" href="#registro">Reservar mi plaza en el webinar</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAZOS -->
+  <section class="wb-deadlines">
+    <div class="wb-wrap wb-wrap--narrow">
+      <p class="eyebrow wb-eyebrow">Los plazos no esperan</p>
+      <h2 class="display-md wb-title">Conviene empezar cuanto antes</h2>
+      <ul class="wb-dl">
+        <li>
+          <p class="wb-dl-date">15 enero</p>
+          <p>Cierre en Studielink de las carreras con cupo limitado (numerus fixus).</p>
+        </li>
+        <li>
+          <p class="wb-dl-date">1 mayo</p>
+          <p>Plazo general de aplicación para el resto de grados.</p>
+        </li>
+      </ul>
+      <p class="wb-source">
+        Plazos oficiales del gobierno holandés:
+        <a href="https://www.rijksoverheid.nl/onderwerpen/hoger-onderwijs/vraag-en-antwoord/deadline-aanmelden-opleiding-hogeschool-of-universiteit" target="_blank" rel="noopener">Rijksoverheid</a>.
+        Cada universidad puede tener plazos propios.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="wb-section wb-faq-sec">
+    <div class="wb-wrap wb-wrap--narrow">
+      <p class="eyebrow wb-eyebrow">Preguntas frecuentes</p>
+      <h2 class="display-md wb-title">Antes de registrarte</h2>
+      <div class="wb-faq">
+        {
+          faqs.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <section class="wb-final">
+    <div class="wb-wrap wb-wrap--narrow">
+      <h2 class="display-md">Tu hijo sueña con Holanda. Tú, con tener claro cómo hacerlo.</h2>
+      <p class="lead">{WEBINAR.fechaTexto} · {WEBINAR.hora} ({WEBINAR.zona})</p>
+      <a class="btn wb-btn-big wb-pulse" href="#registro">Reservar mi plaza en el webinar</a>
+    </div>
+  </section>
+
+  <!-- CTA FIJO EN MÓVIL -->
+  <div class="wb-sticky" data-wb-sticky>
+    <a class="btn wb-btn-big" href="#registro">Reservar mi plaza</a>
+  </div>
+
+  <script is:inline define:vars={{ FECHA: WEBINAR.fechaISO }}>
+    // Cuenta atrás hasta el inicio del webinar. Al llegar la hora se oculta sola.
+    (function () {
+      var target = new Date(FECHA).getTime();
+      var boxes = document.querySelectorAll('[data-wb-countdown]');
+      var daysWrap = document.querySelector('[data-wb-days-wrap]');
+      var pad = function (n) {
+        return String(n).padStart(2, '0');
+      };
+      function set(sel, v) {
+        document.querySelectorAll(sel).forEach(function (el) {
+          el.textContent = v;
+        });
+      }
+      if (!(target > Date.now())) {
+        boxes.forEach(function (el) {
+          el.hidden = true;
+        });
+        return;
+      }
+      if (daysWrap) daysWrap.hidden = false;
+      function tick() {
+        var diff = Math.max(0, target - Date.now());
+        var d = Math.floor(diff / 864e5);
+        set('[data-wb-d]', pad(d));
+        set('[data-wb-h]', pad(Math.floor((diff % 864e5) / 36e5)));
+        set('[data-wb-m]', pad(Math.floor((diff % 36e5) / 6e4)));
+        set('[data-wb-s]', pad(Math.floor((diff % 6e4) / 1e3)));
+        set('[data-wb-days]', String(d));
+        if (diff === 0) boxes.forEach(function (el) { el.hidden = true; });
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    // El botón fijo del móvil se esconde cuando ya se ve el formulario
+    (function () {
+      var bar = document.querySelector('[data-wb-sticky]');
+      var form = document.getElementById('registro');
+      if (!bar || !form || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(function (entries) {
+        bar.classList.toggle('is-hidden', entries[0].isIntersecting);
+      }, { threshold: 0.15 }).observe(form);
+    })();
+  </script>
+</Base>

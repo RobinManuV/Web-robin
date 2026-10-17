@@ -7,5 +7,6 @@ Disallow: /yuselico-studios/
 Disallow: /estudiaenholanda/
 Disallow: /veteaholanda/
 Disallow: /vaparaaholanda/
+Disallow: /webinar21-11/
 
 Sitemap: https://project-robin.com/sitemap-index.xml

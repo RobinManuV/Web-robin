@@ -5,7 +5,7 @@ description: "Información sobre el tratamiento de datos personales en Project R
 
 Privacidad
 
-**Última actualización: 02 de febrero de 2025**
+**Última actualización: 17 de octubre de 2026**
 
 Esta Política de Privacidad describe nuestras políticas y procedimientos sobre la recopilación, uso y divulgación de su información cuando utiliza el Servicio y le informa acerca de sus derechos de privacidad y de cómo la ley lo protege.
 
@@ -91,6 +91,10 @@ Podemos compartir su información personal en las siguientes situaciones:
 - **Con socios comerciales:** Podemos compartir su información con nuestros socios comerciales para ofrecerle ciertos productos, servicios o promociones.
 - **Con otros usuarios:** Cuando usted comparte información personal o interactúa de otro modo en áreas públicas con otros usuarios, dicha información puede ser vista por todos los usuarios y puede distribuirse públicamente.
 - **Con su consentimiento:** Podemos divulgar su información personal para cualquier otro propósito con su consentimiento.
+
+#### Grupos de WhatsApp de webinars y eventos
+
+Si se registra en un webinar o evento organizado por Project Robin, podremos invitarle a un grupo de WhatsApp creado para ese evento, en el que compartimos el enlace de acceso y la información previa. Al unirse al grupo, los demás participantes podrán ver su número de teléfono y su nombre de perfil. La participación en el grupo es voluntaria y puede abandonarlo en cualquier momento. WhatsApp es un servicio de un tercero (Meta), que trata los datos conforme a su propia política de privacidad.
 
 ---
 

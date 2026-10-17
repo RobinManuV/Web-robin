@@ -20,6 +20,11 @@
 .lead-form .btn {
   justify-self: start;
 }
+.lead-form .btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}
 .lead-form .btn-full {
   justify-self: stretch !important;
   width: 100%;
@@ -34,4 +39,15 @@
 }
 .lead-form .dark {
   color: var(--cream);
+}
+
+/* Panel de confirmación (formulario "webinar"): oculto hasta que se envía el registro */
+.lead-form .lead-done {
+  display: none;
+}
+.lead-form.is-done > *:not([data-done]) {
+  display: none;
+}
+.lead-form.is-done .lead-done {
+  display: grid;
 }

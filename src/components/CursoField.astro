@@ -6,14 +6,27 @@ import '../styles/components/curso-field.css';
 import GeoHide from './GeoHide.astro';
 import GeoOnly from './GeoOnly.astro';
 
-const { id = 'curso', dark = false } = Astro.props;
+// `options`: lista propia de cursos (una sola, sin variante por país). Si no se pasa, se usa la de siempre.
+const { id = 'curso', dark = false, legend = '¿En qué curso estás?', options = null } = Astro.props;
 const internacional = ['Y13 / Grade 12 (US)', 'Y12 / Grade 11 (US)', 'Otro'];
 const espana = ['2º de Bachillerato', '1º de Bachillerato', 'Otro'];
 ---
 
 <fieldset class:list={['curso-field', 'full', { dark }]}>
-  <legend>¿En qué curso estás? <span class="req">*</span></legend>
-  <GeoHide>
+  <legend>{legend} <span class="req">*</span></legend>
+  {
+    options && (
+      <div class="curso-options">
+        {options.map((c, i) => (
+          <label>
+            <input type="radio" name="curso" value={c} required={i === 0} id={i === 0 ? id : undefined} />
+            <span>{c}</span>
+          </label>
+        ))}
+      </div>
+    )
+  }
+  {!options && (<GeoHide>
     <div class="curso-options">
       {
         internacional.map((c, i) => (
@@ -24,8 +37,8 @@ const espana = ['2º de Bachillerato', '1º de Bachillerato', 'Otro'];
         ))
       }
     </div>
-  </GeoHide>
-  <GeoOnly>
+  </GeoHide>)}
+  {!options && (<GeoOnly>
     <div class="curso-options">
       {
         espana.map((c, i) => (
@@ -36,5 +49,5 @@ const espana = ['2º de Bachillerato', '1º de Bachillerato', 'Otro'];
         ))
       }
     </div>
-  </GeoOnly>
+  </GeoOnly>)}
 </fieldset>

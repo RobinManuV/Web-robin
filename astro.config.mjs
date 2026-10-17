@@ -17,6 +17,7 @@ export default defineConfig({
         !page.includes('/estudiaenholanda/') &&
         !page.includes('/veteaholanda/') &&
         !page.includes('/vaparaaholanda/') &&
+        !page.includes('/webinar21-11/') &&
         !/\/the-european-experience\/.+-2\/$/.test(page) && // duplicados: canonical a /universidades/<slug>/ // landing de campaña, solo con enlace directo
         (ESPANA_PUBLICADA || !ESPANA_RUTAS.some((r) => page.endsWith(r))),
     }),

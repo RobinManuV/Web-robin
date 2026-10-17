@@ -18,11 +18,13 @@ export const TRANSLATED_LANGS = ['en', 'pt', 'br'];
 // Lo que NO se traduce: blog (artículos, índice y categorías) y páginas legales.
 // Esas páginas existen solo en español y desde /en/ y /pt/ se enlazan en español.
 const LEGAL = ['/aviso-legal/', '/politica-de-cookies/', '/politica-de-privacidad/'];
+// Landings que existen solo en español (no se generan copias en /en/, /pt/ ni /br/)
+const SOLO_ES = ['/webinar21-11/'];
 export function isTranslatable(pathname) {
   const p = ensureSlash(stripLang(pathname));
   if (p === '/404/') return false;
   if (p === '/blog/' || p.startsWith('/blog/')) return false;
-  return !LEGAL.includes(p);
+  return !LEGAL.includes(p) && !SOLO_ES.includes(p);
 }
 
 export function ensureSlash(p) {
