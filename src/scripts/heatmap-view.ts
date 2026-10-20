@@ -10,8 +10,11 @@ type Click = { sel?: string; rx?: number; ry?: number; x?: number; y?: number; p
 type ScrollBand = { depth: number; pct: number }; // % de visitas que llegan a esa profundidad
 type Msg = { type: 'robin-heatmap'; mode: 'clicks' | 'scroll'; clicks?: Click[]; scroll?: ScrollBand[] };
 
-const ADMIN_ORIGIN = ((import.meta.env.PUBLIC_ADMIN_ORIGIN as string | undefined) || 'https://robin-admin-platform.netlify.app').replace(/\/+$/, '');
-const allowed = (origin: string) => !!ADMIN_ORIGIN && ADMIN_ORIGIN.split(',').map((o) => o.trim()).includes(origin);
+const ADMIN_ORIGINS = Array.from(new Set([
+  ...((import.meta.env.PUBLIC_ADMIN_ORIGIN as string | undefined) || 'https://robin-admin-platform.netlify.app').split(','),
+  'https://project-robin.com',
+].map((origin) => origin.trim().replace(/\/+$/, '')).filter(Boolean)));
+const allowed = (origin: string) => ADMIN_ORIGINS.includes(origin);
 
 let layer: HTMLDivElement | null = null;
 
@@ -21,9 +24,9 @@ function docSize() {
 }
 
 function reportSize() {
-  if (window.parent === window || !ADMIN_ORIGIN) return;
+  if (window.parent === window || !ADMIN_ORIGINS.length) return;
   const { w, h } = docSize();
-  for (const o of ADMIN_ORIGIN.split(',')) window.parent.postMessage({ type: 'robin-heatmap-size', w, h, path: location.pathname }, o.trim());
+  for (const origin of ADMIN_ORIGINS) window.parent.postMessage({ type: 'robin-heatmap-size', w, h, path: location.pathname }, origin);
 }
 
 function resetLayer() {

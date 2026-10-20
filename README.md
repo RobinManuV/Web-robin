@@ -171,7 +171,7 @@ Las fotos de Unsplash no se cogen a ciegas: Claude recibe las candidatas de cada
 ## Medición propia para el gestor (pestaña "Web" de Robin-Admin)
 
 - `src/scripts/analytics.ts`: mide páginas, origen, clics (para mapas de calor), scroll, tiempo activo, salida, vídeos, formularios (nunca lo escrito), velocidad y errores. **Solo si el visitante acepta las cookies de analítica**; deja de medir en cuanto las rechaza.
-- `src/scripts/heatmap-view.ts`: cuando el gestor abre una página con `?robin_heatmap=1`, la web pinta encima el mapa de calor que le envía el gestor (solo acepta mensajes de `PUBLIC_ADMIN_ORIGIN`).
+- `src/scripts/heatmap-view.ts`: cuando el gestor abre una página con `?robin_heatmap=1`, la web pinta encima el mapa de calor que le envía el gestor; acepta los orígenes de `PUBLIC_ADMIN_ORIGIN` y el dominio actual `https://project-robin.com`.
 - `netlify/lib/analytics-ping.mjs`: `lead.mjs` y `book.mjs` avisan al gestor de cada formulario o reserva enviados (anónimo: sin nombre, email ni teléfono) para saber qué formularios se usan más.
 - `netlify/functions/blog-estado.mjs`: estado de la máquina de blogs para el gestor (cabecera `x-robin-blog-secret` = `BLOG_SECRET`).
 
@@ -180,7 +180,7 @@ Variables de entorno de la web:
 | Variable | Valor |
 |---|---|
 | `PUBLIC_ANALYTICS_ENDPOINT` | opcional; por defecto `https://robin-admin-platform.netlify.app/api/web/collect` |
-| `PUBLIC_ADMIN_ORIGIN` | opcional; por defecto `https://robin-admin-platform.netlify.app` |
+| `PUBLIC_ADMIN_ORIGIN` | opcional; se admiten los orígenes indicados y también `https://project-robin.com` para el panel en el dominio actual |
 | `ANALYTICS_SERVER_SECRET` | igual que `WEB_ANALYTICS_SERVER_SECRET` en el gestor |
 
 ## España según el país del visitante
