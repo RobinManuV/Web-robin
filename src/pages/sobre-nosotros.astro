@@ -4,16 +4,28 @@ import Base from '../layouts/Base.astro';
 import YouTube from '../components/YouTube.astro';
 import { EQUIPO } from '../data/site.js';
 
-const fotos = [
-  '/wp-content/uploads/2026/05/d7ed3b562ab2781c4c0674a1da19ee84.webp',
-  '/wp-content/uploads/2026/05/438c8c8e556189a826ba8ff9eba1dafa.webp',
-  '/wp-content/uploads/2026/05/0f4f5067744817baf312cc3460fdbe03.webp',
+// Equipo (foto redonda + nombre + puesto). Sin `photo` se muestra un círculo con las iniciales:
+// para poner la foto, añade `photo: '/ruta/foto.webp'` a esa persona. Los apellidos de los
+// miembros que solo tienen nombre de pila se añaden en `name`.
+const FOTO_B = '/wp-content/uploads/2026/10/'; // segunda cara (pájaro) del efecto moneda
+const equipo = [
+  { name: EQUIPO[0].name, role: 'CEO', photo: `${FOTO_B}noel.webp`, linkedin: EQUIPO[0].linkedin, photoBack: `${FOTO_B}noel-pajaro.webp` },
+  { name: EQUIPO[1].name, role: 'COO & CMO', photo: `${FOTO_B}maria.webp`, linkedin: EQUIPO[1].linkedin, photoBack: `${FOTO_B}maria-pajaro.webp` },
+  { name: EQUIPO[2].name, role: 'CTO', photo: `${FOTO_B}manuel.webp`, linkedin: EQUIPO[2].linkedin, photoBack: `${FOTO_B}manuel-pajaro.webp` },
+  { name: 'Santiago Martín', role: 'Jefe de ingenieros', photo: `${FOTO_B}santiago.webp`, photoBack: `${FOTO_B}santiago-pajaro.webp` },
+  { name: 'Ignacio Diaz', role: 'Director del programa de Aeroespaciales', photo: `${FOTO_B}nacho.webp`, photoBack: `${FOTO_B}nacho-pajaro.webp` },
+  { name: 'Marc Eliers', role: 'Responsable territorial de Portugal', photo: `${FOTO_B}marc.webp`, photoBack: `${FOTO_B}marc-pajaro.webp` },
+  { name: 'Candela Cortés', role: 'Directora de Orientación y estrategia académica', photo: `${FOTO_B}candela.webp`, photoBack: `${FOTO_B}candela-pajaro.webp` },
+  {
+    name: 'Jaime Nales',
+    role: 'Encargado de acogida',
+    photo: `${FOTO_B}jaime-nales.webp`,
+    photoBack: `${FOTO_B}jaime-nales-pajaro.webp`,
+  },
+  { name: 'Graciela Gavira', role: 'Encargada de creación de contenido', photo: `${FOTO_B}graciela.webp`, photoBack: `${FOTO_B}graciela-pajaro.webp` },
+  { name: 'Myriam Leon', role: 'Responsable de ventas B2B', photo: `${FOTO_B}miriam.webp`, photoBack: `${FOTO_B}miriam-pajaro.webp` },
 ];
-const bios = [
-  'Graduado en Economía y Business en Maastricht University. Ex M&A en Deloitte.',
-  'Graduada en International Business en Maastricht University. Ex AlphaSights.',
-  'Graduado en Economía y Business en Maastricht. MIM @ ESCP. Ex Bloomberg.',
-];
+const iniciales = (n) => n.split(' ').slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 const prensa = [
   {
     medio: 'Intereconomía',
@@ -64,44 +76,76 @@ const schema = {
 
   <section class="container story">
     <div class="story-card">
-      <p class="eyebrow text-accent">Nuestra historia</p>
-      <h2 class="display-md">Hicimos este camino antes que tú</h2>
-      <p>
-        Hace unos años tomamos la mejor y más importante decisión de nuestras vidas: irnos a estudiar al extranjero, concretamente a los Países Bajos.
-      </p>
-      <p>
-        Por aquel entonces, sentimos la falta de una guía clara y cercana. Nosotros llegamos como pollos sin cabeza, sin residencia reservada y sin enterarnos de mucho. Aun así tuvimos los tres mejores años de nuestras vidas, y tanto nosotros como nuestras familias acabamos tan satisfechos que nuestros hermanos fueron detrás.
-      </p>
-      <p>
-        Así nació <strong class="text-accent">Project Robin</strong>, un hermano mayor para que ninguno de vosotros cometa los errores que cometimos nosotros y con el consejo y cercanía que nosotros hubiésemos necesitado.
-      </p>
-      <p>
-        Como un hermano mayor estamos aquí para guiaros, pero también para gestionarlo todo, aseguraros el alojamiento y resolver todas las dudas que se os puedan ocurrir desde el día uno hasta que ya estéis allí. Y así, no os tengáis que preocupar de nada salvo de estudiar y disfrutar al máximo de lo que serán los tres mejores años de vuestras vidas.
-      </p>
+      <div class="story-head">
+        <p class="eyebrow text-accent">Nuestra historia</p>
+        <h2 class="display-md">Hicimos este camino antes que tú</h2>
+      </div>
+      <div class="story-body">
+        <p>
+          Hace unos años tomamos la mejor y más importante decisión de nuestras vidas: irnos a estudiar al extranjero, concretamente a los Países Bajos.
+        </p>
+        <p>
+          Por aquel entonces, sentimos la falta de una guía clara y cercana. Nosotros llegamos como pollos sin cabeza, sin residencia reservada y sin enterarnos de mucho. Aun así tuvimos los tres mejores años de nuestras vidas, y tanto nosotros como nuestras familias acabamos tan satisfechos que nuestros hermanos fueron detrás.
+        </p>
+        <p>
+          Así nació <strong class="text-accent">Project Robin</strong>, un hermano mayor para que ninguno de vosotros cometa los errores que cometimos nosotros y con el consejo y cercanía que nosotros hubiésemos necesitado.
+        </p>
+        <p>
+          Como un hermano mayor estamos aquí para guiaros, pero también para gestionarlo todo, aseguraros el alojamiento y resolver todas las dudas que se os puedan ocurrir desde el día uno hasta que ya estéis allí. Y así, no os tengáis que preocupar de nada salvo de estudiar y disfrutar al máximo de lo que serán los tres mejores años de vuestras vidas.
+        </p>
+      </div>
     </div>
-    <div class="team">
-      <p class="eyebrow">El equipo fundador</p>
-      <h2 class="display-md">Tres Robins. Un objetivo.</h2>
-      <p class="text">Estudiamos fuera. Tropezamos con las mismas piedras que tropezarás tú. Por eso te las vamos a contar antes.</p>
-      <ul>
-        {
-          EQUIPO.map((m, i) => (
-            <li>
-              <img src={fotos[i]} alt={m.name} width="80" height="80" loading="lazy" />
-              <div>
-                <h3>
-                  <a href={m.linkedin} target="_blank" rel="noopener">
-                    {m.name}
-                  </a>
-                </h3>
-                <p class="role">{m.role}</p>
-                <p>{bios[i]}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+    <figure class="story-photo">
+      <img
+        src="/wp-content/uploads/2026/10/equipo-robin.webp"
+        alt="El equipo de Project Robin sentado en fila sobre una repisa, con las camisetas blancas de Robin, y una persona saludando a cámara"
+        width="1400"
+        height="1050"
+        loading="lazy"
+      />
+    </figure>
+  </section>
+
+  <section class="container crew">
+    <p class="eyebrow center">El equipo</p>
+    <h2 class="display-md center">Ponle cara al hermano mayor</h2>
+    <p class="text center">Entre todos lo gestionamos todo para que tú solo tengas que estudiar. Hacer la maleta sí es cosa tuya.</p>
+    <ul class="crew-grid">
+      {
+        equipo.map((m) => (
+          <li class="member">
+            <span class={`avatar${m.photo ? '' : ' avatar--ph'}${m.photoBack ? ' avatar--flip' : ''}`}>
+              {m.photoBack ? (
+                <span class="flip">
+                  {m.photo ? (
+                    <img class="face face--front" src={m.photo} alt={m.name} width="170" height="170" loading="lazy" />
+                  ) : (
+                    <span class="face face--front face--initials" aria-hidden="true">
+                      {iniciales(m.name)}
+                    </span>
+                  )}
+                  <img class="face face--back" src={m.photoBack} alt="" width="170" height="170" loading="lazy" />
+                </span>
+              ) : m.photo ? (
+                <img src={m.photo} alt={m.name} width="170" height="170" loading="lazy" />
+              ) : (
+                <span aria-hidden="true">{iniciales(m.name)}</span>
+              )}
+            </span>
+            <h3 class="m-name">
+              {m.linkedin ? (
+                <a href={m.linkedin} target="_blank" rel="noopener">
+                  {m.name}
+                </a>
+              ) : (
+                m.name
+              )}
+            </h3>
+            <p class="m-role">{m.role}</p>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <section class="press bg-cream">

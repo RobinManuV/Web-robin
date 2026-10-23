@@ -10,9 +10,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 36px;
-  padding-block: 60px;
-  align-items: start;
+  padding-block: 60px 20px;
+  align-items: center;
 }
+/* Historia a media pantalla; la foto del equipo ocupa la otra mitad */
 .page-sobre-nosotros .story-card {
   background: var(--navy);
   color: var(--cream);
@@ -22,50 +23,181 @@
   gap: 16px;
   font-size: 16px;
 }
-.page-sobre-nosotros .story-card .display-md {
-  color: var(--cream);
-}
-.page-sobre-nosotros .team ul {
-  list-style: none;
-  padding: 0;
-  margin: 24px 0 0;
+.page-sobre-nosotros .story-head {
   display: grid;
   gap: 14px;
 }
-.page-sobre-nosotros .team .display-md {
-  margin: 12px 0;
+.page-sobre-nosotros .story-card .display-md {
+  color: var(--cream);
+  text-wrap: balance;
 }
-.page-sobre-nosotros .team li {
+.page-sobre-nosotros .story-body {
   display: grid;
-  grid-template-columns: 64px 1fr;
   gap: 16px;
-  align-items: center;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(45, 58, 100, 0.08);
-  padding: 18px;
 }
-.page-sobre-nosotros .team img {
-  width: 64px;
-  height: 64px;
+.page-sobre-nosotros .story-body p {
+  margin: 0;
+}
+.page-sobre-nosotros .story-photo {
+  margin: 0;
+}
+.page-sobre-nosotros .story-photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(45, 58, 100, 0.12);
+}
+
+/* El equipo: foto redonda, nombre y puesto debajo */
+.page-sobre-nosotros .crew {
+  padding-block: 56px 80px;
+}
+.page-sobre-nosotros .crew .display-md {
+  margin: 12px 0 14px;
+}
+.page-sobre-nosotros .crew > .text {
+  max-width: 560px;
+  margin-inline: auto;
+}
+.page-sobre-nosotros .crew-grid {
+  --gap: clamp(20px, 3vw, 40px);
+  list-style: none;
+  padding: 0;
+  margin: 48px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 44px var(--gap);
+}
+.page-sobre-nosotros .member {
+  flex: 0 0 calc((100% - 4 * var(--gap)) / 5);
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  text-align: center;
+  gap: 4px;
+}
+.page-sobre-nosotros .avatar {
+  position: relative;
+  display: block;
+  width: min(100%, 170px);
+  aspect-ratio: 1;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: var(--peach);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+/* Aro naranja desplazado: se endereza al pasar el ratón */
+.page-sobre-nosotros .avatar::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  transform: rotate(-8deg) translate(5px, 3px);
+  opacity: 0.9;
+  transition: transform 0.35s ease;
+  pointer-events: none;
+}
+.page-sobre-nosotros .avatar img {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   object-fit: cover;
   object-position: top;
 }
-.page-sobre-nosotros .team h3 {
-  font-size: 22px;
+.page-sobre-nosotros .avatar--ph {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-din);
+  font-size: clamp(34px, 4vw, 46px);
+  letter-spacing: 0.04em;
+  color: var(--navy);
 }
-.page-sobre-nosotros .team h3 a {
+.page-sobre-nosotros .member:nth-child(3n + 1) .avatar--ph {
+  background: var(--peach);
+}
+.page-sobre-nosotros .member:nth-child(3n + 2) .avatar--ph {
+  background: var(--sky);
+}
+.page-sobre-nosotros .member:nth-child(3n) .avatar--ph {
+  background: var(--grey-card);
+}
+.page-sobre-nosotros .member:hover .avatar {
+  transform: translateY(-4px) rotate(2deg);
+}
+.page-sobre-nosotros .member:hover .avatar::after {
+  transform: rotate(0) translate(0, 0);
+}
+.page-sobre-nosotros .m-name {
+  font-size: 20px;
+  line-height: 1.15;
+}
+.page-sobre-nosotros .m-name a {
   text-decoration: none;
 }
-.page-sobre-nosotros .role {
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin: 2px 0 4px;
+.page-sobre-nosotros .m-name a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 4px;
 }
-.page-sobre-nosotros .team li p:last-child {
+.page-sobre-nosotros .m-role {
+  margin: 0;
+  max-width: 22ch;
   font-size: 15px;
+  line-height: 1.3;
+  opacity: 0.72;
+  text-wrap: balance;
+}
+/* Efecto moneda: foto de frente y, al pasar el ratón (o enfocar con teclado), se da la vuelta */
+.page-sobre-nosotros .avatar--flip {
+  perspective: 700px;
+}
+.page-sobre-nosotros .avatar--flip .flip {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+.page-sobre-nosotros .avatar--flip .face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.page-sobre-nosotros .avatar--flip .face--initials {
+  display: grid;
+  place-items: center;
+}
+.page-sobre-nosotros .avatar--flip .face--back {
+  transform: rotateY(180deg);
+  object-fit: contain;
+  object-position: center;
+  padding: 14%;
+  background: var(--peach);
+}
+.page-sobre-nosotros .member:hover .avatar--flip .flip,
+.page-sobre-nosotros .member:focus-within .avatar--flip .flip {
+  transform: rotateY(180deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-sobre-nosotros .avatar--flip .flip {
+    transition: none;
+  }
+  .page-sobre-nosotros .avatar,
+  .page-sobre-nosotros .avatar::after {
+    transition: none;
+  }
+  .page-sobre-nosotros .member:hover .avatar {
+    transform: none;
+  }
 }
 .page-sobre-nosotros .press {
   padding-block: 70px;
@@ -113,9 +245,21 @@
 .page-sobre-nosotros .world .text {
   max-width: 760px;
 }
+@media (max-width: 1100px) {
+  .page-sobre-nosotros .member {
+    flex-basis: calc((100% - 2 * var(--gap)) / 3);
+  }
+}
 @media (max-width: 900px) {
-  .page-sobre-nosotros .story,
   .page-sobre-nosotros .press-grid {
     grid-template-columns: 1fr;
+  }
+  .page-sobre-nosotros .story {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .page-sobre-nosotros .member {
+    flex-basis: calc((100% - var(--gap)) / 2);
   }
 }

@@ -4,6 +4,7 @@ import { FOOTER, CONTACT, SITE } from '../data/site.js';
 const columns = FOOTER.columns;
 const year = new Date().getFullYear();
 const path = Astro.url.pathname;
+const LANZADERA_URL = 'https://es.linkedin.com/posts/project-robin_nuestra-historia-con-lanzadera-comenz%C3%B3-hace-activity-7503725937792860160-93dX';
 ---
 
 <footer class="site-footer">
@@ -14,6 +15,12 @@ const path = Astro.url.pathname;
       </a>
       <p class="tagline">{FOOTER.tagline}</p>
       <p class="subtitle">{FOOTER.subtitle}</p>
+      <p class="backed">
+        <span>Impulsado por</span>
+        <a class="backed-logo" href={LANZADERA_URL} target="_blank" rel="noopener" aria-label="Lanzadera: nuestra historia con Lanzadera, en LinkedIn">
+          <img src="/wp-content/uploads/2026/10/lanzadera-logo.webp" alt="Lanzadera" width="1024" height="131" loading="lazy" />
+        </a>
+      </p>
     </div>
 
     {
