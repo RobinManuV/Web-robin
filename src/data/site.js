@@ -185,12 +185,6 @@ export const TESTIMONIOS = [
     text: 'Lo que más me impresionó al venir a estudiar a Maastricht fue cómo aquí te impulsan a ser independiente y a superar tus límites. La diversidad internacional te enriquece, y estar rodeada de personas así te desafía y motiva constantemente. Mi mentor dijo que estudiar fuera es como hacer un doble grado, y ahora veo que es así. Me impactó darme cuenta de que, muchas veces, me sentía la más “tonta” de la clase, pero eso me hizo comprender que solo así, en cualquier situación, encuentras el mayor potencial de crecimiento. Además, ver lo rápido que avanzas es increíble, tanto a nivel personal como profesional.',
   },
   {
-    name: 'Duco (Madrid)',
-    program: 'Economics and Business Economics, Groningen.',
-    photo: '/wp-content/uploads/2024/12/Testimonios-de-estudiar-en-HOlanda-project-robin-1-300x300.jpg',
-    text: 'Mi trabajo junto a mis estudios universitarios ha sido extremadamente gratificante. Aplicar la teoría en el campo de la economía empresarial me hace sentir mucho más cómodo en los nuevos cursos. Mientras planees bien tu tiempo para estudiar y para tus distintas ocupaciones, ¡la carga de trabajo es mucho menor de lo que esperas!',
-  },
-  {
     name: 'Candela (Madrid)',
     program: 'Economics and Business Economics, Maastricht.',
     photo: '/wp-content/uploads/2024/12/Testimonios-de-estudiar-en-HOlanda-project-robin-2-300x300.jpg',
@@ -201,10 +195,26 @@ export const TESTIMONIOS = [
 // Cifras de la home. Se escriben en el HTML (Google y las IAs las leen)
 // y la animación solo cuenta hasta ellas.
 export const CIFRAS = [
-  { value: 15, suffix: '+', label: 'Universidades a elegir' },
-  { value: 300, suffix: '+', label: 'Grados disponibles' },
-  { value: 98, suffix: '%', label: 'Alumnos aceptados' },
-  { value: 11, suffix: '', label: 'Ciudades NL' },
+  { value: 150, suffix: '+', label: 'Alumnos acompañados' },
+  { value: 30, suffix: '+', label: 'Universidades en Europa' },
+  { value: 2000, suffix: '+', label: 'Programas disponibles' },
+  { value: 99, suffix: '%', label: 'Alumnos admitidos', nota: true },
+];
+// Letra pequeña del asterisco de la cifra marcada con `nota`.
+export const CIFRAS_NOTA = '*El porcentaje de admitidos no incluye el curso de preparación de Aerospace Engineering de TU Delft.';
+
+// Partners de la sección "Nuestros partners" en /comunidad/ (cinturón de logos que se mueve solo).
+// Para añadir uno: sube el logo a public/fotos/partners/ y añade aquí su nombre, logo y web.
+// Si no tiene logo (logo: null), se muestra solo el nombre.
+export const PARTNERS = [
+  { name: 'CJP', logo: '/fotos/partners/cjp.svg', url: 'https://www.cjp.nl/' },
+  { name: 'Revolut', logo: '/fotos/partners/revolut.svg', url: 'https://www.revolut.com/' },
+  { name: 'The Social Hub', logo: '/fotos/partners/tsh.svg', url: 'https://www.thesocialhub.co/' },
+  { name: 'Linkmaas', logo: '/fotos/partners/linkmaas.webp', url: 'https://www.instagram.com/link.maas/' },
+  { name: 'The Circo', logo: '/fotos/partners/circo.webp', url: 'https://www.thecirco.nl/' },
+  { name: 'The Student Experience', logo: '/fotos/partners/tse.svg', url: 'https://studentexperience.com/locations/4/amsterdam-ndsm' },
+  { name: 'Scope Maastricht', logo: '/fotos/partners/scope.svg', url: 'https://www.scope-maastricht.nl/' },
+  { name: 'Hispania Groningen', logo: '/fotos/partners/hispania.webp', url: 'https://www.hispaniagroningen.com/' },
 ];
 
 // Vídeos cortos (YouTube Shorts) de la sección "Sin guión, sin filtro" en /comunidad/.

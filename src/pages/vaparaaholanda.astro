@@ -19,7 +19,7 @@ import Icon from '../components/Icon.astro';
 import LeadForm from '../components/LeadForm.astro';
 import BookingWidget from '../components/BookingWidget.astro';
 import YouTube from '../components/YouTube.astro';
-import { CIFRAS, CIUDADES, VIDEOS_TESTIMONIOS } from '../data/site.js';
+import { CIFRAS, CIFRAS_NOTA, CIUDADES, VIDEOS_TESTIMONIOS } from '../data/site.js';
 
 const TAG = 'vaparaaholanda-portugal';
 
@@ -51,7 +51,7 @@ const razones = [
     icon: 'cap',
     n: '02',
     title: 'Todas as universidades e cursos disponíveis',
-    text: 'Mais de 15 universidades e mais de 300 licenciaturas em 11 cidades. Não te limitamos a uma única opção: comparamos todas contigo.',
+    text: 'Mais de 30 universidades na Europa, todas as dos Países Baixos, e mais de 2000 programas. Não te limitamos a uma única opção: comparamos todas contigo.',
   },
   {
     icon: 'user',
@@ -196,11 +196,12 @@ const faqs = [
         CIFRAS.map((c) => (
           <div>
             <dt class="vh-stat-lbl">{c.label}</dt>
-            <dd class="vh-stat-num">{c.value}{c.suffix}</dd>
+            <dd class="vh-stat-num">{c.value}{c.suffix}{c.nota && <sup class="vh-stat-nota">*</sup>}</dd>
           </div>
         ))
       }
     </dl>
+    <p class="vh-stats-foot">{CIFRAS_NOTA}</p>
   </section>
 
   <!-- 4 MOTIVOS -->
@@ -259,9 +260,9 @@ const faqs = [
   <section class="vh-section vh-cities">
     <div class="vh-wrap">
       <p class="eyebrow vh-eyebrow">Todas as universidades. Todos os cursos.</p>
-      <h2 class="display-md vh-title">11 cidades. Tu escolhes, nós ajudamos-te a acertar.</h2>
+      <h2 class="display-md vh-title">Todas as universidades dos Países Baixos. Tu escolhes, nós ajudamos-te a acertar.</h2>
       <p class="lead vh-sub">
-        Mais de 15 universidades e mais de 300 licenciaturas. Se não sabes por onde começar, começamos contigo pelo teu
+        Mais de 30 universidades na Europa e mais de 2000 programas. Se não sabes por onde começar, começamos contigo pelo teu
         perfil, não pelo folheto de uma universidade.
       </p>
     </div>

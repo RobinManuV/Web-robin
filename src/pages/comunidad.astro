@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import BlogCard from '../components/BlogCard.astro';
 import YouTube from '../components/YouTube.astro';
-import { TESTIMONIOS, VIDEOS_TESTIMONIOS } from '../data/site.js';
+import { TESTIMONIOS, VIDEOS_TESTIMONIOS, PARTNERS } from '../data/site.js';
 import { PRODUCTOS } from '../data/tienda.js';
 
 const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) => b.data.date - a.data.date).slice(0, 6);
@@ -59,6 +59,38 @@ const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) =>
           <button type="button" class="shorts-arrow" data-next aria-label="Más vídeos">→</button>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section partners" id="partners">
+    <div class="container">
+      <p class="eyebrow center">Partners</p>
+      <h2 class="display-md center section-title">Nuestros partners para hacer tu experiencia inolvidable</h2>
+    </div>
+    <div class="partners-belt">
+      <div class="partners-track">
+        {
+          [0, 1].map((copy) => (
+            <ul class="partners-list" aria-hidden={copy === 1 ? 'true' : undefined}>
+              {PARTNERS.map((p) => (
+                <li>
+                  <a class="partner" href={p.url} target="_blank" rel="noopener" tabindex={copy === 1 ? -1 : undefined}>
+                    <span class="partner-logo">
+                      {p.logo ? <img src={p.logo} alt={copy === 1 ? '' : `Logo de ${p.name}`} loading="lazy" /> : <span class="partner-wordmark">{p.name}</span>}
+                    </span>
+                    <span class="partner-name">{p.name}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-cream">
+    <div class="container">
       <div class="t-grid">
         <div class="t-video">
           <YouTube url="https://youtu.be/-2wYugmzzTk" poster="/wp-content/uploads/2026/05/a6f1b0f7b8b6e609fb8387ac02dc8ff3.webp" title="Voces de nuestros Robins" />

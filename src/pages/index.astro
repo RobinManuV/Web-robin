@@ -8,7 +8,7 @@ import ContactSection from '../components/ContactSection.astro';
 import Icon from '../components/Icon.astro';
 import GeoHide from '../components/GeoHide.astro';
 import GeoOnly from '../components/GeoOnly.astro';
-import { EQUIPO, CIFRAS, ESPANA_PUBLICADA } from '../data/site.js';
+import { EQUIPO, CIFRAS, CIFRAS_NOTA, ESPANA_PUBLICADA } from '../data/site.js';
 
 const todosPaquetes = [
   {
@@ -91,10 +91,11 @@ const incluye = [
   { icon: 'coin', title: 'Ayudas económicas', text: 'Te explicamos las ayudas al estudiante del gobierno holandés y cómo solicitarlas.' },
 ];
 
+// Mismas fotos que en /sobre-nosotros/ (en el orden de EQUIPO: Noel, María, Manuel)
 const equipoFotos = [
-  '/wp-content/uploads/2026/05/d7ed3b562ab2781c4c0674a1da19ee84.webp',
-  '/wp-content/uploads/2026/05/438c8c8e556189a826ba8ff9eba1dafa.webp',
-  '/wp-content/uploads/2026/05/0f4f5067744817baf312cc3460fdbe03.webp',
+  '/wp-content/uploads/2026/10/noel.webp',
+  '/wp-content/uploads/2026/10/maria.webp',
+  '/wp-content/uploads/2026/10/manuel.webp',
 ];
 
 const schema = {
@@ -290,6 +291,7 @@ const schema = {
       <p class="eyebrow">Experiencia</p>
       <h2 class="display-md">Los números nos avalan</h2>
       <p class="lead">No solo se trata de estadísticas, se trata de historias de éxito, sueños cumplidos y metas alcanzadas.</p>
+      <p class="stats-note">Trabajamos con todas las universidades de Holanda.</p>
       <dl class="counters">
         {
           CIFRAS.map((c) => (
@@ -297,7 +299,7 @@ const schema = {
               <dt class="sr-only">{c.label}</dt>
               <dd>
                 <span class="num" data-count={c.value}>{c.value}</span>
-                {c.suffix}
+                {c.suffix}{c.nota && <sup class="nota">*</sup>}
               </dd>
               <dd class="lbl" aria-hidden="true">
                 {c.label}
@@ -306,6 +308,7 @@ const schema = {
           ))
         }
       </dl>
+      <p class="stats-foot">{CIFRAS_NOTA}</p>
     </div>
   </section>
 

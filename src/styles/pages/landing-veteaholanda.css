@@ -293,10 +293,23 @@
 }
 .page-vh .vh-stat-num {
   margin: 0;
-  font-size: clamp(40px, 5.4vw, 76px);
+  font-size: clamp(40px, 5vw, 64px);
   font-weight: 800;
   line-height: 1;
   color: var(--navy);
+}
+.page-vh .vh-stat-nota {
+  font-size: 0.45em;
+  vertical-align: super;
+}
+/* Letra pequeña del asterisco */
+.page-vh .vh-stats-foot {
+  max-width: 1000px;
+  margin: 18px auto 0;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.4;
+  opacity: 0.5;
 }
 .page-vh .vh-stat-lbl {
   font-size: clamp(14px, 1.3vw, 18px);

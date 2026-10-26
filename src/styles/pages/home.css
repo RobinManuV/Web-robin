@@ -578,6 +578,11 @@
 .page-home .stats-box .lead {
   max-width: 380px;
 }
+.page-home .stats-note {
+  margin: 0;
+  font-weight: 700;
+  color: var(--navy);
+}
 .page-home .counters {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -586,17 +591,33 @@
   background: var(--cream);
   padding: 30px 30px 40px;
   margin-inline: -48px;
-  margin-bottom: -60px;
+  margin-bottom: 0;
 }
 .page-home .counters dd {
   margin: 0;
 }
 .page-home .counters dd:first-of-type {
-  font-size: 46px;
+  font-size: clamp(32px, 2.9vw, 46px);
+  white-space: nowrap;
   font-weight: 700;
   line-height: 1;
   border-bottom: 2px solid var(--navy);
   padding-bottom: 10px;
+}
+.page-home .counters .nota {
+  font-size: 0.5em;
+  vertical-align: super;
+  margin-left: 1px;
+}
+/* Letra pequeña del asterisco: va pegada bajo las cifras, discreta */
+.page-home .stats-foot {
+  margin: -20px -48px -60px;
+  padding: 0 30px 14px;
+  background: var(--cream);
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--navy);
+  opacity: 0.55;
 }
 .page-home .counters .lbl {
   margin-top: 10px;
@@ -720,7 +741,11 @@
   .page-home .counters {
     grid-template-columns: repeat(2, 1fr);
     margin-inline: -20px;
-    margin-bottom: -50px;
+    margin-bottom: 0;
+  }
+  .page-home .stats-foot {
+    margin: -20px -20px -50px;
+    padding: 0 30px 14px;
   }
   .page-home .team {
     grid-template-columns: 1fr;

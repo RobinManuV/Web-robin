@@ -13,7 +13,7 @@ import Icon from '../components/Icon.astro';
 import LeadForm from '../components/LeadForm.astro';
 import BookingWidget from '../components/BookingWidget.astro';
 import YouTube from '../components/YouTube.astro';
-import { CIFRAS, CIUDADES, VIDEOS_TESTIMONIOS } from '../data/site.js';
+import { CIFRAS, CIFRAS_NOTA, CIUDADES, VIDEOS_TESTIMONIOS } from '../data/site.js';
 
 const TAG = 'veteaholanda';
 
@@ -45,7 +45,7 @@ const razones = [
     icon: 'cap',
     n: '02',
     title: 'Todas las universidades y carreras disponibles',
-    text: 'Más de 15 universidades y más de 300 grados en 11 ciudades. No te encasillamos en una sola opción: las comparamos todas contigo.',
+    text: 'Más de 30 universidades en Europa, todas las de Holanda, y más de 2000 programas. No te encasillamos en una sola opción: las comparamos todas contigo.',
   },
   {
     icon: 'user',
@@ -190,11 +190,12 @@ const faqs = [
         CIFRAS.map((c) => (
           <div>
             <dt class="vh-stat-lbl">{c.label}</dt>
-            <dd class="vh-stat-num">{c.value}{c.suffix}</dd>
+            <dd class="vh-stat-num">{c.value}{c.suffix}{c.nota && <sup class="vh-stat-nota">*</sup>}</dd>
           </div>
         ))
       }
     </dl>
+    <p class="vh-stats-foot">{CIFRAS_NOTA}</p>
   </section>
 
   <!-- 4 MOTIVOS -->
@@ -253,9 +254,9 @@ const faqs = [
   <section class="vh-section vh-cities">
     <div class="vh-wrap">
       <p class="eyebrow vh-eyebrow">Todas las universidades. Todas las carreras.</p>
-      <h2 class="display-md vh-title">11 ciudades. Tú eliges, nosotros te ayudamos a acertar.</h2>
+      <h2 class="display-md vh-title">Todas las universidades de Holanda. Tú eliges, nosotros te ayudamos a acertar.</h2>
       <p class="lead vh-sub">
-        Más de 15 universidades y más de 300 grados. Si no sabes por dónde empezar, empezamos contigo por tu perfil, no por
+        Más de 30 universidades en Europa y más de 2000 programas. Si no sabes por dónde empezar, empezamos contigo por tu perfil, no por
         el folleto de una universidad.
       </p>
     </div>

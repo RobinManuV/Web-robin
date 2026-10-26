@@ -31,7 +31,7 @@ export const PRODUCTOS = [
     short: 'Algodón orgánico 100%, logo en el pecho y print grande en la espalda.',
     description: [
       'La camiseta de la comunidad Robin. Blanca, de algodón orgánico 100%, con el logo de Robin en el pecho y "From Madrid to the world" al lado.',
-      'En la espalda, el print grande: ROBIN y "The real world is infinitely smaller than the one in our minds". Para el día a día en la uni, los partidos y cada vez que te pregunten de dónde eres.',
+      'En la espalda, el print grande: ROBIN y "The world is your campus". Para el día a día en la uni, los partidos y cada vez que te pregunten de dónde eres.',
     ],
     img: '/fotos/camiseta-robin.webp',
     gallery: [

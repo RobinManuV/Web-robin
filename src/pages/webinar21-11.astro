@@ -13,12 +13,12 @@ import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import LeadForm from '../components/LeadForm.astro';
 import { WEBINAR } from '../data/webinar.mjs';
-import { CIFRAS } from '../data/site.js';
+import { CIFRAS, CIFRAS_NOTA } from '../data/site.js';
 
 const TAG = 'webinar-padres';
 
 const temario = [
-  { icon: 'cap', title: 'Universidades y grados', text: 'Qué se puede estudiar, dónde y cómo comparar las más de 15 universidades y los más de 300 grados.' },
+  { icon: 'cap', title: 'Universidades y grados', text: 'Qué se puede estudiar, dónde y cómo comparar las más de 30 universidades y los más de 2000 programas.' },
   { icon: 'doc', title: 'Cómo se aplica y cuándo', text: 'El proceso de admisión paso a paso y los plazos reales de Studielink, para que nada llegue tarde.' },
   { icon: 'home', title: 'Alojamiento', text: 'Cómo funciona la vivienda para estudiantes internacionales y cómo llegar con casa asegurada.' },
   { icon: 'coin', title: 'Costes y presupuesto', text: 'Qué gasto debe prever la familia para estudiar y vivir en Holanda.' },
@@ -148,11 +148,12 @@ const faqs = [
         CIFRAS.map((c) => (
           <div>
             <dt class="wb-stat-lbl">{c.label}</dt>
-            <dd class="wb-stat-num">{c.value}{c.suffix}</dd>
+            <dd class="wb-stat-num">{c.value}{c.suffix}{c.nota && <sup class="wb-stat-nota">*</sup>}</dd>
           </div>
         ))
       }
     </dl>
+    <p class="wb-stats-foot">{CIFRAS_NOTA}</p>
   </section>
 
   <!-- TEMARIO -->
