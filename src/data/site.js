@@ -206,6 +206,7 @@ export const CIFRAS_NOTA = '*El porcentaje de admitidos no incluye el curso de p
 // Partners de la sección "Nuestros partners" en /comunidad/ (cinturón de logos que se mueve solo).
 // Para añadir uno: sube el logo a public/fotos/partners/ y añade aquí su nombre, logo y web.
 // Si no tiene logo (logo: null), se muestra solo el nombre.
+// Con `codigo`, antes de abrir su web sale un aviso con el código de descuento (texto en `aviso`).
 export const PARTNERS = [
   { name: 'CJP', logo: '/fotos/partners/cjp.svg', url: 'https://www.cjp.nl/' },
   { name: 'Revolut', logo: '/fotos/partners/revolut.svg', url: 'https://www.revolut.com/' },
@@ -215,6 +216,15 @@ export const PARTNERS = [
   { name: 'The Student Experience', logo: '/fotos/partners/tse.svg', url: 'https://studentexperience.com/locations/4/amsterdam-ndsm' },
   { name: 'Scope Maastricht', logo: '/fotos/partners/scope.svg', url: 'https://www.scope-maastricht.nl/' },
   { name: 'Hispania Groningen', logo: '/fotos/partners/hispania.webp', url: 'https://www.hispaniagroningen.com/' },
+  {
+    name: 'Swapfiets',
+    slug: 'swapfiets',
+    logo: '/fotos/partners/swapfiets.webp',
+    url: 'https://swapfiets.nl/en-NL/students',
+    codigo: 'ROBIN',
+    aviso: 'tienes 20 € adicionales de descuento.',
+  },
+  { name: 'Translayte', logo: '/fotos/partners/translayte.webp', url: 'https://translayte.com/certified-translations?ref=281516' },
 ];
 
 // Vídeos cortos (YouTube Shorts) de la sección "Sin guión, sin filtro" en /comunidad/.

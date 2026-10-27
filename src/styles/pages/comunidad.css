@@ -4,25 +4,35 @@
   margin-bottom: 0;
 }
 
-/* PARTNERS: cinturón de logos que avanza solo de derecha a izquierda.
-   La lista va duplicada y la pista se desplaza la mitad de su ancho para que el bucle no se note. */
+/* PARTNERS: cinturón de logos que avanza solo de derecha a izquierda (lo mueve el script de la página).
+   Es una franja con scroll horizontal: se puede arrastrar con el ratón o deslizar con el dedo.
+   La lista va duplicada para que el bucle no se note. */
 .page-comunidad .partners {
   overflow: hidden;
 }
 .page-comunidad .partners-belt {
   margin-top: 40px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  cursor: grab;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.page-comunidad .partners-belt::-webkit-scrollbar {
+  display: none;
+}
+.page-comunidad .partners-belt.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+.page-comunidad .partners-belt.is-dragging .partner {
+  pointer-events: none;
 }
 .page-comunidad .partners-track {
   display: flex;
   width: max-content;
-  animation: partners-scroll 40s linear infinite;
-}
-.page-comunidad .partners-belt:hover .partners-track,
-.page-comunidad .partners-belt:focus-within .partners-track {
-  animation-play-state: paused;
 }
 .page-comunidad .partners-list {
   list-style: none;
@@ -40,8 +50,10 @@
   align-items: center;
   gap: 14px;
   width: 190px;
+  padding-block: 4px 8px;
   text-decoration: none;
   color: var(--navy);
+  -webkit-user-drag: none;
 }
 .page-comunidad .partner-logo {
   height: 72px;
@@ -59,6 +71,7 @@
   filter: grayscale(1);
   opacity: 0.8;
   transition: filter 0.25s, opacity 0.25s;
+  -webkit-user-drag: none;
 }
 .page-comunidad .partner:hover .partner-logo img,
 .page-comunidad .partner:focus-visible .partner-logo img {
@@ -76,33 +89,6 @@
   font-weight: 600;
   text-align: center;
 }
-@keyframes partners-scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .page-comunidad .partners-track {
-    animation: none;
-    width: auto;
-    justify-content: center;
-  }
-  .page-comunidad .partners-list {
-    flex-wrap: wrap;
-    justify-content: center;
-    row-gap: 28px;
-  }
-  .page-comunidad .partners-list[aria-hidden='true'] {
-    display: none;
-  }
-  .page-comunidad .partners-belt {
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-}
 @media (max-width: 700px) {
   .page-comunidad .partners-list li {
     padding-inline: 14px;
@@ -118,6 +104,58 @@
     max-width: 130px;
   }
 }
+
+/* Aviso con código de descuento antes de ir a la web del partner */
+.page-comunidad .aviso {
+  width: min(440px, calc(100vw - 32px));
+  padding: 34px 28px 28px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--cream);
+  color: var(--navy);
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(45, 58, 100, 0.3);
+}
+.page-comunidad .aviso::backdrop {
+  background: rgba(45, 58, 100, 0.55);
+}
+.page-comunidad .aviso-title {
+  margin: 0 0 10px;
+  font-size: 30px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.page-comunidad .aviso-text {
+  margin: 0 0 24px;
+  font-size: 18px;
+  line-height: 1.45;
+}
+.page-comunidad .aviso-code {
+  display: inline-block;
+  padding: 1px 10px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--navy);
+  letter-spacing: 0.06em;
+}
+.page-comunidad .aviso-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.page-comunidad .aviso-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  border: 0;
+  background: none;
+  color: var(--navy);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
 .page-comunidad .shorts-track {
   list-style: none;
   margin: 0;

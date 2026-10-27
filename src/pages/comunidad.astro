@@ -67,16 +67,25 @@ const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) =>
       <p class="eyebrow center">Partners</p>
       <h2 class="display-md center section-title">Nuestros partners para hacer tu experiencia inolvidable</h2>
     </div>
-    <div class="partners-belt">
+    <!-- Se mueve solo; también se puede arrastrar con el ratón o deslizar con el dedo -->
+    <div class="partners-belt" data-belt>
       <div class="partners-track">
         {
           [0, 1].map((copy) => (
             <ul class="partners-list" aria-hidden={copy === 1 ? 'true' : undefined}>
               {PARTNERS.map((p) => (
                 <li>
-                  <a class="partner" href={p.url} target="_blank" rel="noopener" tabindex={copy === 1 ? -1 : undefined}>
+                  <a
+                    class="partner"
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener"
+                    tabindex={copy === 1 ? -1 : undefined}
+                    data-aviso={p.codigo ? p.slug : undefined}
+                    draggable="false"
+                  >
                     <span class="partner-logo">
-                      {p.logo ? <img src={p.logo} alt={copy === 1 ? '' : `Logo de ${p.name}`} loading="lazy" /> : <span class="partner-wordmark">{p.name}</span>}
+                      {p.logo ? <img src={p.logo} alt={copy === 1 ? '' : `Logo de ${p.name}`} loading="lazy" draggable="false" /> : <span class="partner-wordmark">{p.name}</span>}
                     </span>
                     <span class="partner-name">{p.name}</span>
                   </a>
@@ -87,6 +96,21 @@ const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) =>
         }
       </div>
     </div>
+    {
+      PARTNERS.filter((p) => p.codigo).map((p) => (
+        <dialog class="aviso" id={`aviso-${p.slug}`} aria-labelledby={`aviso-${p.slug}-t`}>
+          <button type="button" class="aviso-close" data-close aria-label="Cerrar">×</button>
+          <p class="aviso-title" id={`aviso-${p.slug}-t`}>¡Recuerda!</p>
+          <p class="aviso-text">
+            Con el código <strong class="aviso-code">{p.codigo}</strong> {p.aviso}
+          </p>
+          <div class="aviso-actions">
+            <button type="button" class="btn btn-outline" data-copy={p.codigo}>Copiar código</button>
+            <a class="btn" href={p.url} target="_blank" rel="noopener" data-close>Ir a {p.name}</a>
+          </div>
+        </dialog>
+      ))
+    }
   </section>
 
   <section class="section bg-cream">
@@ -147,6 +171,120 @@ const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) =>
 </Base>
 
 <script>
+  import { pick } from '../i18n/runtime.js';
+
+  // Cinturón de partners: avanza solo de derecha a izquierda y también se puede mover a mano
+  // (arrastrando con el ratón, con el trackpad o deslizando con el dedo). La lista va duplicada:
+  // al pasar la mitad se vuelve atrás exactamente una lista y el salto no se nota.
+  document.querySelectorAll('[data-belt]').forEach((belt) => {
+    const track = belt.firstElementChild;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SPEED = 40; // px por segundo
+    let pos = 0;
+    let last = performance.now();
+    let resumeAt = 0;
+    let hover = false;
+    let drag = null;
+    let moved = false;
+
+    const half = () => track.scrollWidth / 2;
+    const wrap = (x) => {
+      const h = half();
+      return h ? ((x % h) + h) % h : 0;
+    };
+    const setPos = (x) => {
+      pos = wrap(x);
+      belt.scrollLeft = pos;
+    };
+    const hold = (ms = 2500) => (resumeAt = performance.now() + ms);
+
+    const tick = (t) => {
+      const dt = Math.min(64, t - last);
+      last = t;
+      if (!reduce && !hover && !drag && t > resumeAt) setPos(pos + (SPEED * dt) / 1000);
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+
+    // Scroll del usuario (dedo, trackpad, rueda horizontal)
+    belt.addEventListener(
+      'scroll',
+      () => {
+        if (drag || Math.abs(belt.scrollLeft - pos) < 2) return;
+        hold();
+        const x = belt.scrollLeft;
+        if (x <= 0 || x >= half()) setPos(x);
+        else pos = x;
+      },
+      { passive: true },
+    );
+    belt.addEventListener('touchstart', () => hold(), { passive: true });
+
+    // Arrastrar con el ratón
+    belt.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && (hover = true));
+    belt.addEventListener('pointerleave', (e) => e.pointerType === 'mouse' && (hover = false));
+    belt.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      drag = { x: e.clientX, start: pos };
+      moved = false;
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x;
+      if (Math.abs(dx) > 4 && !moved) {
+        moved = true;
+        belt.classList.add('is-dragging');
+      }
+      if (moved) setPos(drag.start - dx);
+    });
+    window.addEventListener('pointerup', () => {
+      if (!drag) return;
+      drag = null;
+      belt.classList.remove('is-dragging');
+      hold(1500);
+    });
+    // Si se ha arrastrado, soltar no abre el enlace
+    belt.addEventListener(
+      'click',
+      (e) => {
+        if (moved) {
+          e.preventDefault();
+          e.stopPropagation();
+          moved = false;
+        }
+      },
+      true,
+    );
+  });
+
+  // Aviso antes de ir a un partner con código de descuento (p. ej. Swapfiets)
+  const txt = pick({
+    es: { copied: '¡Copiado!', copy: 'Copiar código' },
+    en: { copied: 'Copied!', copy: 'Copy code' },
+    pt: { copied: 'Copiado!', copy: 'Copiar código' },
+  });
+  document.querySelectorAll('[data-aviso]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const dlg = document.getElementById(`aviso-${a.dataset.aviso}`);
+      if (!dlg || typeof dlg.showModal !== 'function') return; // navegador antiguo: abre el enlace sin más
+      e.preventDefault();
+      dlg.showModal();
+    });
+  });
+  document.querySelectorAll('dialog.aviso').forEach((dlg) => {
+    dlg.addEventListener('click', (e) => {
+      if (e.target === dlg || e.target.closest('[data-close]')) dlg.close();
+    });
+    const copy = dlg.querySelector('[data-copy]');
+    copy?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(copy.dataset.copy);
+        copy.textContent = txt.copied;
+        setTimeout(() => (copy.textContent = txt.copy), 2000);
+      } catch {}
+    });
+  });
+
   // Carrusel de vídeos: se desliza con el dedo/trackpad y con las flechas
   document.querySelectorAll('[data-shorts]').forEach((root) => {
     const track = root.querySelector('[data-track]');
