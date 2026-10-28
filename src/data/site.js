@@ -220,7 +220,7 @@ export const PARTNERS = [
   { name: 'The Social Hub', logo: '/fotos/partners/tsh.svg', url: 'https://www.thesocialhub.co/' },
   { name: 'Linkmaas', logo: '/fotos/partners/linkmaas.webp', url: 'https://www.instagram.com/link.maas/' },
   { name: 'The Circo', logo: '/fotos/partners/circo.webp', url: 'https://www.thecirco.nl/' },
-  { name: 'The Student Experience', logo: '/fotos/partners/tse.svg', url: 'https://studentexperience.com/locations/4/amsterdam-ndsm' },
+  { name: 'Student Experience', logo: '/fotos/partners/tse.svg', url: 'https://studentexperience.com/locations/4/amsterdam-ndsm' },
   { name: 'Scope Maastricht', logo: '/fotos/partners/scope.svg', url: 'https://www.scope-maastricht.nl/' },
   { name: 'Hispania Groningen', logo: '/fotos/partners/hispania.webp', url: 'https://www.hispaniagroningen.com/' },
   {
