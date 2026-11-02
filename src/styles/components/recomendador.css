@@ -1,0 +1,57 @@
+/* Recomendador de carreras incrustado (src/components/Recomendador.astro) */
+
+.rbmt .rbmt-intro {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+/* "Robin" y "®" del nombre de la herramienta, en el naranja de la marca */
+.rbmt .rbmt-brand {
+  color: var(--accent);
+}
+
+.rbmt .rbmt-frame {
+  margin-top: 40px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--cream-2);
+  box-shadow: 0 24px 60px rgba(45, 58, 100, 0.18);
+}
+
+/* Altura inicial hasta que la app avisa de la suya (rbmt:height) */
+.rbmt iframe {
+  display: block;
+  width: 100%;
+  height: 820px;
+  border: 0;
+  transition: height 0.2s ease;
+}
+
+/* Botón de desplegar: solo en móvil */
+.rbmt .rbmt-toggle {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .rbmt .rbmt-toggle {
+    display: inline-flex;
+  }
+  .rbmt .rbmt-when-open,
+  .rbmt.is-open .rbmt-when-closed {
+    display: none;
+  }
+  .rbmt.is-open .rbmt-when-open {
+    display: inline;
+  }
+  .rbmt:not(.is-open) .rbmt-frame {
+    display: none;
+  }
+  .rbmt .rbmt-frame {
+    margin-top: 28px;
+    margin-inline: calc(var(--gutter) * -1);
+    border-radius: 0;
+  }
+  .rbmt iframe {
+    height: 900px;
+  }
+}

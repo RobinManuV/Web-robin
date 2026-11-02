@@ -2,6 +2,7 @@
 import '../../styles/pages/destinos.css';
 import Base from '../../layouts/Base.astro';
 import NewsletterMap from '../../components/NewsletterMap.astro';
+import Recomendador from '../../components/Recomendador.astro';
 import { DESTINOS as TODOS, LOGOS_HOLANDA } from '../../data/destinos.js';
 
 // Orden de las tarjetas: primero estas seis ciudades y luego el resto, en su orden habitual.
@@ -87,6 +88,8 @@ const schema = [
       </ul>
     </div>
   </section>
+
+  <Recomendador />
 
   <section class="cta-band" id="reserva-destinos">
     <p class="eyebrow">Tu próximo gran paso</p>

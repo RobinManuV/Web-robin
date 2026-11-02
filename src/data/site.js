@@ -43,6 +43,13 @@ export const SITE = {
   loginUrl: 'https://project-robin.com/login', // portal del alumno
 };
 
+// Recomendador de carreras (app aparte en Netlify). Se incrusta en la home y en /destinos/,
+// y los colegios entran a su panel desde /colegios/. Si cambia de URL, se cambia solo aquí.
+export const RECOMENDADOR = {
+  url: 'https://rbmt.netlify.app/',
+  adminUrl: 'https://rbmt.netlify.app/admin/',
+};
+
 export const CONTACT = {
   email: 'hello@project-robin.com',
   phone: '+34 711 55 70 29',

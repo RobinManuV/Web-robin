@@ -2214,5 +2214,14 @@
  "Y13 / Grade 12 (US)": "Y13 / Grade 12 (US)",
  "Ya": "Já",
  "Ya tienes la admisión. Ahora empieza lo que nadie te cuenta: encontrar casa, registrarte en el ayuntamiento y entender cómo funciona tu nueva ciudad. <strong>Con el Pack Llegada lo hacemos contigo.</strong>": "Já você tem a admissão. Agora começa o que ninguém te conta: encontrar casa, se registrar na câmara municipal e perceber como funciona a sua nova cidade. <strong>Com o Pack Chegada fazemo-lo com você.</strong>",
- "Zuyd Hogeschool": "Zuyd Hogeschool"
+ "Zuyd Hogeschool": "Zuyd Hogeschool",
+ "¿Qué carrera encaja contigo?": "Qual curso combina com você?",
+ "Responde 14 preguntas en unos 7 minutos y descubre las tres carreras que mejor encajan con tu perfil. Gratis.": "Responda 14 perguntas em cerca de 7 minutos e descubra os três cursos que mais combinam com o seu perfil. Grátis.",
+ "Accede al Recomendador": "Acesse o Recomendador",
+ "<a class=\"btn\" href=\"#formulario-colegios\">Contactar para mi colegio</a> <a class=\"btn btn-outline-light\" href=\"https://rbmt.netlify.app/admin/\" target=\"_blank\" rel=\"noopener\">Accede al Recomendador</a>": "<a class=\"btn\" href=\"#formulario-colegios\">Entrar em contato para a minha escola</a> <a class=\"btn btn-outline-light\" href=\"https://rbmt.netlify.app/admin/\" target=\"_blank\" rel=\"noopener\">Acesse o Recomendador</a>",
+ "Hacer el test gratis": "Fazer o teste grátis",
+ "Ocultar el test": "Esconder o teste",
+ "<span class=\"rbmt-when-closed\">Hacer el test gratis</span> <span class=\"rbmt-when-open\">Ocultar el test</span>": "<span class=\"rbmt-when-closed\">Fazer o teste grátis</span> <span class=\"rbmt-when-open\">Esconder o teste</span>",
+ "Robin Bachelor Matching Tool®": "Robin Bachelor Matching Tool®",
+ "<span class=\"rbmt-brand\">Robin</span> Bachelor Matching Tool<span class=\"rbmt-brand\">®</span>": "<span class=\"rbmt-brand\">Robin</span> Bachelor Matching Tool<span class=\"rbmt-brand\">®</span>"
 }

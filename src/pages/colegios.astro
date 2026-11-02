@@ -2,7 +2,7 @@
 import '../styles/pages/colegios.css';
 import Base from '../layouts/Base.astro';
 import LeadForm from '../components/LeadForm.astro';
-import { CONTACT } from '../data/site.js';
+import { CONTACT, RECOMENDADOR } from '../data/site.js';
 
 // Solo los colegios con nombre real. Los "Colegio 1, 2…" de la web antigua eran huecos de relleno.
 const colegios = [
@@ -48,7 +48,10 @@ const schema = {
           <li>Alineado con el Bachillerato (nacional, IB, A-Levels, Abitur).</li>
           <li>Sesiones para alumnos y para familias.</li>
         </ul>
-        <a class="btn" href="#formulario-colegios">Contactar para mi colegio</a>
+        <div class="btn-row">
+          <a class="btn" href="#formulario-colegios">Contactar para mi colegio</a>
+          <a class="btn btn-outline-light" href={RECOMENDADOR.adminUrl} target="_blank" rel="noopener">Accede al Recomendador</a>
+        </div>
       </div>
       <img class="hero-photo" src="/fotos/colegios-1.webp" alt="Charla de orientación universitaria de Robin en un aula de Bachillerato" width="1600" height="1200" />
     </div>

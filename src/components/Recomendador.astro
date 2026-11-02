@@ -1,0 +1,85 @@
+---
+import '../styles/components/recomendador.css';
+// Recomendador de carreras (Robin Airlines), incrustado con un iframe.
+// La app vive en su propio sitio de Netlify (RECOMENDADOR.url en src/data/site.js),
+// así sus llamadas a /api/match y /api/feedback no chocan con nuestra /api/ de reservas.
+// El iframe se ajusta solo a la altura que le manda la app con postMessage:
+//   { type: 'rbmt:height', height: <px> }  → cambia la altura del iframe
+//   { type: 'rbmt:scrollTop' }             → sube la vista al inicio del bloque
+import { RECOMENDADOR } from '../data/site.js';
+const { id = 'recomendador', bg = '' } = Astro.props;
+---
+
+<section class:list={['section', 'rbmt', bg]} id={id} data-rbmt>
+  <div class="container">
+    <div class="center stack stack--18 rbmt-intro">
+      <p class="eyebrow"><span class="rbmt-brand">Robin</span> Bachelor Matching Tool<span class="rbmt-brand">®</span></p>
+      <h2 class="display-md">¿Qué carrera encaja contigo?</h2>
+      <p class="lead">Responde 14 preguntas en unos 7 minutos y descubre las tres carreras que mejor encajan con tu perfil. Gratis.</p>
+      <!-- Solo en móvil: el recomendador va plegado y se carga al abrirlo -->
+      <button class="btn rbmt-toggle" type="button" aria-expanded="false" aria-controls={`${id}-app`} data-rbmt-toggle>
+        <span class="rbmt-when-closed">Hacer el test gratis</span>
+        <span class="rbmt-when-open">Ocultar el test</span>
+      </button>
+    </div>
+    <div class="rbmt-frame" id={`${id}-app`}>
+      <iframe
+        data-src={RECOMENDADOR.url}
+        title="Robin Bachelor Matching Tool®"
+        loading="lazy"
+        allow="clipboard-write"
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { lang } from '../i18n/runtime.js';
+
+  // Idiomas que entiende la app: es, en, pt-PT (el portugués de Brasil usa pt-PT)
+  const appLang = { es: 'es', en: 'en', pt: 'pt-PT', br: 'pt-PT' }[lang] || 'es';
+
+  // En móvil (≤ 700px, igual que en recomendador.css) el recomendador va plegado
+  const mobile = window.matchMedia('(max-width: 700px)');
+
+  document.querySelectorAll<HTMLElement>('[data-rbmt]').forEach((root) => {
+    const frame = root.querySelector('iframe');
+    const toggle = root.querySelector<HTMLButtonElement>('[data-rbmt-toggle]');
+    if (!frame?.dataset.src) return;
+    const url = new URL(frame.dataset.src);
+    url.searchParams.set('lang', appLang);
+    url.searchParams.set('embed', '1');
+
+    // El iframe solo se carga cuando se ve: siempre en ordenador, en móvil al abrirlo
+    const load = () => {
+      if (!frame.src) frame.src = url.toString();
+    };
+    const sync = () => {
+      if (!mobile.matches || root.classList.contains('is-open')) load();
+    };
+    toggle?.addEventListener('click', () => {
+      const open = root.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(open));
+      if (open) load();
+      else root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    mobile.addEventListener('change', sync);
+    sync();
+
+    window.addEventListener('message', (event) => {
+      if (event.origin !== url.origin || event.source !== frame.contentWindow) return;
+      const data = event.data || {};
+      if (data.type === 'rbmt:height' && Number(data.height) > 0) {
+        frame.style.height = `${Math.ceil(Number(data.height))}px`;
+      }
+      if (data.type === 'rbmt:scrollTop') {
+        const top = frame.getBoundingClientRect().top;
+        // Solo si el inicio del recomendador ha quedado fuera de la vista
+        if (top < 0 || top > window.innerHeight) {
+          const header = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 0;
+          window.scrollTo({ top: window.scrollY + top - header - 16, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+</script>
