@@ -624,6 +624,11 @@
   font-size: 16px;
 }
 
+/* PARTNERS (componente Partners.astro): va justo después del equipo, que ya deja su propio espacio */
+.page-home .partners {
+  padding-top: 0;
+}
+
 /* EQUIPO */
 .page-home .team {
   display: grid;
