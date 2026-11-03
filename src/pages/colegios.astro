@@ -21,6 +21,22 @@ const pasos = [
   { t: 'Tutorías', d: '1:1 con los alumnos interesados. Plan individual de candidatura.', img: '/fotos/colegios-2.webp', alt: 'Alumnas hablando con un mentor de Robin' },
   { t: 'Seguimiento', d: 'Reporte anual al colegio. Resultados medibles (admisiones, ciudades, becas).', img: '/fotos/colegios-4.webp', alt: 'Sesión de Robin con un grupo de alumnos' },
 ];
+// Carrusel "Así funciona el recomendador" (debajo de "Así trabajamos con tu colegio").
+// Resumen sencillo de la presentación «How the degree recommender works»: máximo 4 diapositivas.
+const recPasos = [
+  { t: 'Se registra', d: 'El alumno entra con sus datos y su colegio.' },
+  { t: 'Elige un área', d: 'Una de las siete grandes áreas de estudio.' },
+  { t: 'Responde', d: 'Su perfil académico, lo que le gusta y lo que quiere hacer en el futuro.' },
+  { t: 'Recibe sus grados', d: 'Tres recomendaciones personales de grados reales.' },
+];
+const recSenales = [
+  { t: 'Expediente académico', d: 'Sistema educativo, notas y asignaturas que cursa.' },
+  { t: 'Intereses', d: 'Área elegida, asignaturas favoritas y países que le atraen.' },
+  { t: 'Preferencias', d: 'Cómo le gusta aprender, ciudad, presupuesto y prioridades.' },
+  { t: 'Sus propias palabras', d: 'Qué quiere ser y qué espera de la universidad.' },
+];
+const recResultado = ['Grado y universidad', 'Porcentaje de compatibilidad', 'Por qué le encaja', 'Sus puntos fuertes', 'Enlace a la web oficial del grado'];
+
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -75,6 +91,75 @@ const schema = {
     </ol>
   </section>
 
+  <!-- RECOMENDADOR: cómo funciona (carrusel de 4 diapositivas) -->
+  <section class="section rec" id="recomendador">
+    <div class="container">
+      <p class="eyebrow center">Recomendador Robin</p>
+      <h2 class="display-md center section-title">Así funciona el recomendador</h2>
+      <div class="rec-carousel" data-rec aria-roledescription="carrusel" aria-label="Cómo funciona el recomendador">
+        <ol class="rec-track" data-rec-track>
+          <li class="rec-slide rec-slide--intro" aria-roledescription="diapositiva" aria-label="1 de 4">
+            <div class="rec-intro-text">
+              <p class="rec-kicker">Qué es</p>
+              <h3 class="rec-title">Menos dudas. Más claridad para cada alumno.</h3>
+              <p>Orientar a decenas de estudiantes requiere tiempo y una atención muy personalizada. El recomendador de Robin analiza el perfil académico, los intereses y las aspiraciones de cada alumno para identificar los grados universitarios que mejor encajan con él.</p>
+              <p>En pocos minutos, el orientador obtiene recomendaciones reales y explicadas que le permiten iniciar conversaciones más útiles, detectar nuevas posibilidades y acompañar cada decisión con mayor criterio.</p>
+            </div>
+            <img class="rec-plane" src="/fotos/recomendador-avion.webp" alt="" width="470" height="260" loading="lazy" />
+          </li>
+          <li class="rec-slide" aria-roledescription="diapositiva" aria-label="2 de 4">
+            <p class="rec-kicker">Cómo lo usa el alumno</p>
+            <h3 class="rec-title">Cuatro pasos, unos minutos</h3>
+            <ol class="rec-steps">
+              {
+                recPasos.map((p, i) => (
+                  <li>
+                    <span class:list={['rec-n', { 'is-last': i === recPasos.length - 1 }]}>{i + 1}</span>
+                    <strong>{p.t}</strong>
+                    <span>{p.d}</span>
+                  </li>
+                ))
+              }
+            </ol>
+            <p class="rec-note">Las preguntas se adaptan al área que elige cada alumno.</p>
+          </li>
+          <li class="rec-slide" aria-roledescription="diapositiva" aria-label="3 de 4">
+            <p class="rec-kicker">Qué tiene en cuenta</p>
+            <h3 class="rec-title">Todo el perfil del alumno, no solo sus notas</h3>
+            <ul class="rec-cards">
+              {
+                recSenales.map((s) => (
+                  <li>
+                    <strong>{s.t}</strong>
+                    <span>{s.d}</span>
+                  </li>
+                ))
+              }
+            </ul>
+            <p class="rec-note">Lo que escribe con sus palabras suma cuando aporta algo concreto, pero nunca sustituye al resto del perfil.</p>
+          </li>
+          <li class="rec-slide" aria-roledescription="diapositiva" aria-label="4 de 4">
+            <p class="rec-kicker">Qué obtenéis</p>
+            <h3 class="rec-title">Recomendaciones claras y explicadas</h3>
+            <p>Para cada grado recomendado, el alumno y el orientador ven:</p>
+            <ol class="rec-list">{recResultado.map((r) => <li>{r}</li>)}</ol>
+            <p class="rec-note">Solo recomienda grados que existen de verdad. Es una orientación, no una decisión de admisión: los requisitos dependen de cada grado.</p>
+          </li>
+        </ol>
+        <div class="rec-nav">
+          <button type="button" class="rec-arrow" data-rec-prev aria-label="Diapositiva anterior">←</button>
+          <div class="rec-dots" role="tablist">
+            {[1, 2, 3, 4].map((n) => <button type="button" class="rec-dot" data-rec-dot={n - 1} aria-label={`Ir a la diapositiva ${n}`} />)}
+          </div>
+          <button type="button" class="rec-arrow" data-rec-next aria-label="Diapositiva siguiente">→</button>
+        </div>
+      </div>
+      <p class="center rec-cta">
+        <a class="btn" href={RECOMENDADOR.colegiosUrl} target="_blank" rel="noopener">Solicitar acceso</a>
+      </p>
+    </div>
+  </section>
+
   <section class="section-sm bg-cream">
     <div class="container center">
       <p class="eyebrow">Colegios Robin</p>
@@ -106,4 +191,36 @@ const schema = {
     </div>
   </section>
 </Base>
+
+<script>
+  // Carrusel del recomendador: se desliza con el dedo/trackpad, con las flechas o con los puntos
+  document.querySelectorAll('[data-rec]').forEach((root) => {
+    const track = root.querySelector('[data-rec-track]');
+    const slides = [...track.children];
+    const dots = [...root.querySelectorAll('[data-rec-dot]')];
+    const prev = root.querySelector('[data-rec-prev]');
+    const next = root.querySelector('[data-rec-next]');
+    const current = () => Math.round(track.scrollLeft / track.clientWidth);
+    const go = (i) => track.scrollTo({ left: Math.max(0, Math.min(slides.length - 1, i)) * track.clientWidth, behavior: 'smooth' });
+    let idx = 0;
+    const update = () => {
+      const i = (idx = current());
+      dots.forEach((d, n) => d.setAttribute('aria-current', n === i ? 'true' : 'false'));
+      prev.disabled = i === 0;
+      next.disabled = i === slides.length - 1;
+      slides.forEach((s, n) => s.setAttribute('aria-hidden', n === i ? 'false' : 'true'));
+    };
+    prev.addEventListener('click', () => go(current() - 1));
+    next.addEventListener('click', () => go(current() + 1));
+    dots.forEach((d, n) => d.addEventListener('click', () => go(n)));
+    track.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+    // Si cambia el ancho (girar el móvil, redimensionar), se queda en la misma diapositiva
+    new ResizeObserver(() => track.scrollTo({ left: idx * track.clientWidth })).observe(track);
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') go(current() + 1);
+      if (e.key === 'ArrowLeft') go(current() - 1);
+    });
+    update();
+  });
+</script>
 

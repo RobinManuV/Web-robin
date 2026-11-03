@@ -143,3 +143,233 @@
 .page-colegios .section-title {
   margin: 14px 0 12px;
 }
+
+/* ---------- Recomendador: carrusel "Así funciona" ---------- */
+.page-colegios .rec-carousel {
+  margin-top: 44px;
+}
+.page-colegios .rec-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.page-colegios .rec-track::-webkit-scrollbar {
+  display: none;
+}
+.page-colegios .rec-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  box-sizing: border-box;
+  min-height: 420px;
+  padding: clamp(28px, 4vw, 56px);
+  background: var(--cream);
+  border: 1px solid rgba(45, 58, 100, 0.14);
+  border-radius: 20px;
+  color: var(--navy);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.page-colegios .rec-slide p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.55;
+  max-width: 760px;
+}
+.page-colegios .rec-kicker {
+  font-size: 14px !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+}
+.page-colegios .rec-title {
+  margin: 0 0 6px;
+  font-size: clamp(26px, 2.8vw, 38px);
+  font-weight: 700;
+  line-height: 1.1;
+}
+.page-colegios .rec-slide--intro {
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(24px, 4vw, 60px);
+}
+.page-colegios .rec-intro-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1 1 58%;
+}
+.page-colegios .rec-plane {
+  flex: 0 1 38%;
+  width: 38%;
+  height: auto;
+}
+/* Pasos del alumno */
+.page-colegios .rec-steps {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+.page-colegios .rec-steps li {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+.page-colegios .rec-steps strong {
+  font-size: 20px;
+}
+.page-colegios .rec-n {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--navy);
+  color: var(--cream);
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.page-colegios .rec-n.is-last {
+  background: var(--accent);
+  color: var(--navy);
+}
+/* Qué tiene en cuenta */
+.page-colegios .rec-cards {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.page-colegios .rec-cards li {
+  display: grid;
+  gap: 4px;
+  padding: 18px 20px;
+  background: #fff;
+  border: 1px solid rgba(45, 58, 100, 0.14);
+  border-radius: 14px;
+  font-size: 16px;
+  line-height: 1.45;
+}
+.page-colegios .rec-cards strong {
+  font-size: 18px;
+}
+.page-colegios .rec-note {
+  margin-top: auto !important;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: var(--sky);
+  font-size: 16px !important;
+  max-width: none !important;
+}
+/* Qué obtenéis */
+.page-colegios .rec-list {
+  list-style: none;
+  counter-reset: rec;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.page-colegios .rec-list li {
+  counter-increment: rec;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.page-colegios .rec-list li::before {
+  content: counter(rec, decimal-leading-zero);
+  flex: 0 0 auto;
+  width: 44px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--sky);
+  font-size: 14px;
+  font-weight: 700;
+}
+/* Navegación */
+.page-colegios .rec-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 22px;
+}
+.page-colegios .rec-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--navy);
+  background: var(--white, #fff);
+  color: var(--navy);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, opacity 0.2s;
+}
+.page-colegios .rec-arrow:hover:not(:disabled) {
+  background: var(--navy);
+  color: var(--cream);
+}
+.page-colegios .rec-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.page-colegios .rec-dots {
+  display: flex;
+  gap: 10px;
+}
+.page-colegios .rec-dot {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid var(--navy);
+  background: transparent;
+  cursor: pointer;
+}
+.page-colegios .rec-dot[aria-current='true'] {
+  background: var(--navy);
+}
+.page-colegios .rec-cta {
+  margin-top: 28px;
+}
+@media (max-width: 800px) {
+  .page-colegios .rec-slide--intro {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .page-colegios .rec-plane {
+    width: 48%;
+    align-self: center;
+  }
+  .page-colegios .rec-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .page-colegios .rec-cards {
+    grid-template-columns: 1fr;
+  }
+  .page-colegios .rec-slide p,
+  .page-colegios .rec-list li {
+    font-size: 16px;
+  }
+}

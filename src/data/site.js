@@ -48,6 +48,8 @@ export const SITE = {
 export const RECOMENDADOR = {
   url: 'https://rbmt.netlify.app/',
   adminUrl: 'https://rbmt.netlify.app/admin/',
+  // Solicitud de acceso para colegios (botón «Solicitar acceso» del carrusel de /colegios/)
+  colegiosUrl: 'https://rbmt.netlify.app/colegios/',
 };
 
 export const CONTACT = {
