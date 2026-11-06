@@ -139,7 +139,7 @@ const schema = {
               <div class="cab-board">
                 <div class="cab-board-text">
                   <p class="cab-kicker">01 · Embarque · Qué es</p>
-                  <h3 class="cab-title" data-flap>Una clase, una sesión y cada alumno con sus propios grados.</h3>
+                  <h3 class="cab-title">Una clase, una sesión y cada alumno con sus propios grados.</h3>
                   <p class="cab-p">Todos responden a la vez: sus notas, lo que les gusta y lo que quieren hacer en el futuro. En unos minutos, cada uno recibe los grados reales que mejor encajan con él, con el porqué explicado.</p>
                   <p class="cab-p">Y tú lo tienes todo <b>bajo control desde tu panel</b>: qué ha respondido cada alumno, qué busca y qué recomendaciones le han convencido y cuáles no. Así ves dónde acierta el recomendador y qué piensa cada uno.</p>
                 </div>
@@ -168,7 +168,7 @@ const schema = {
             <!-- 2 · RUTA: cómo lo usa el alumno -->
             <article class="cab-panel" data-panel aria-hidden="true">
               <p class="cab-kicker">02 · Ruta · Cómo lo usa el alumno</p>
-              <h3 class="cab-title" data-flap>Cuatro pasos, unos minutos</h3>
+              <h3 class="cab-title">Cuatro pasos, unos minutos</h3>
               <div class="cab-flight" data-flight>
                 <svg viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true">
                   <path class="cab-track" d={recRuta} />
@@ -194,7 +194,7 @@ const schema = {
             <!-- 3 · INSTRUMENTOS: qué tiene en cuenta -->
             <article class="cab-panel" data-panel aria-hidden="true">
               <p class="cab-kicker">03 · Instrumentos · Qué tiene en cuenta</p>
-              <h3 class="cab-title" data-flap>Todo el perfil del alumno, no solo sus notas</h3>
+              <h3 class="cab-title">Todo el perfil del alumno, no solo sus notas</h3>
               <ul class="cab-gauges">
                 {
                   recSenales.map((g) => (
@@ -218,7 +218,7 @@ const schema = {
             <!-- 4 · ATERRIZAJE: qué obtenéis -->
             <article class="cab-panel" data-panel aria-hidden="true">
               <p class="cab-kicker">04 · Aterrizaje · Qué obtenéis</p>
-              <h3 class="cab-title" data-flap>Recomendaciones claras y explicadas</h3>
+              <h3 class="cab-title">Recomendaciones claras y explicadas</h3>
               <div class="cab-arr">
                 <div class="cab-arrivals" role="table" aria-label="Lo que incluye cada recomendación">
                   <div class="cab-arr-h" role="row"><span role="columnheader">Nº</span><span role="columnheader">Llegadas · Cada grado incluye</span><span role="columnheader">Estado</span></div>
@@ -301,16 +301,19 @@ const schema = {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let i = 0;
 
-    // Letras que giran hasta quedarse quietas (split-flap)
-    const CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ0123456789';
+    // Letras que giran hasta quedarse quietas (split-flap), solo en el panel de llegadas (letra de ancho fijo,
+    // así no se mueve nada alrededor). Se actualiza cada ~50 ms, no en cada fotograma, para que no pese.
+    const CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const flap = (el, delay = 0) => {
       if (reduce) return;
       const final = el.dataset.final ?? (el.dataset.final = el.textContent);
       const start = performance.now() + delay;
-      const settle = [...final].map((_, k) => 120 + k * 22 + Math.random() * 160);
+      const settle = [...final].map((_, k) => 120 + k * 18 + Math.random() * 140);
+      let last = 0;
       const step = (t) => {
         const e = t - start;
-        if (e < 0) return requestAnimationFrame(step);
+        if (e < 0 || t - last < 50) return requestAnimationFrame(step);
+        last = t;
         let done = true;
         let out = '';
         for (let k = 0; k < final.length; k++) {
@@ -347,20 +350,25 @@ const schema = {
     flown.style.strokeDasharray = `${L}`;
     let flyRaf = 0;
     let flyP = 0;
+    // Tamaño de la ruta en pantalla: se lee solo al cambiar de tamaño, no en cada fotograma
+    let box = { w: 0, h: 0 };
+    const lit = wps.map(() => false);
     const placePlane = (p) => {
       flyP = p;
-      const r = svg.getBoundingClientRect();
-      if (!r.width) return;
+      if (!box.w) return;
       const pt = flown.getPointAtLength(L * p);
       const pt2 = flown.getPointAtLength(Math.min(L, L * p + 4));
-      const sx = r.width / 1000;
-      const sy = r.height / 120;
+      const sx = box.w / 1000;
+      const sy = box.h / 120;
       const ang = (Math.atan2((pt2.y - pt.y) * sy, (pt2.x - pt.x) * sx) * 180) / Math.PI;
-      plane.style.left = `${pt.x * sx}px`;
-      plane.style.top = `${pt.y * sy}px`;
-      plane.style.transform = `translate(-50%, -62%) rotate(${ang * 0.6}deg) scaleX(-1)`; // la imagen mira a la izquierda: se voltea para que vuele hacia la derecha
+      // Solo transform (sin left/top): el navegador no tiene que recolocar la página en cada fotograma.
+      // La imagen mira a la izquierda: scaleX(-1) la voltea para que vuele hacia la derecha.
+      plane.style.transform = `translate(${pt.x * sx}px, ${pt.y * sy}px) translate(-50%, -62%) rotate(${ang * 0.6}deg) scaleX(-1)`;
       flown.style.strokeDashoffset = `${L * (1 - p)}`;
-      wps.forEach((w, k) => w.classList.toggle('lit', p >= wpAt[k] - 0.001));
+      wps.forEach((w, k) => {
+        const on = p >= wpAt[k] - 0.001;
+        if (on !== lit[k]) w.classList.toggle('lit', (lit[k] = on));
+      });
     };
     const fly = () => {
       cancelAnimationFrame(flyRaf);
@@ -375,7 +383,10 @@ const schema = {
       placePlane(0);
       flyRaf = requestAnimationFrame(step);
     };
-    new ResizeObserver(() => placePlane(flyP)).observe(svg);
+    new ResizeObserver(([e]) => {
+      box = { w: e.contentRect.width, h: e.contentRect.height };
+      placePlane(flyP);
+    }).observe(svg);
 
     const go = (n) => {
       i = Math.max(0, Math.min(panels.length - 1, n));
@@ -392,8 +403,6 @@ const schema = {
       prev.disabled = i === 0;
       next.disabled = i === panels.length - 1;
       alt.style.width = `${(i / (panels.length - 1)) * 100}%`;
-      const title = panels[i].querySelector('[data-flap]');
-      if (title) flap(title, 120);
       setNeedles(i === 2);
       if (i === 1) fly();
       if (i === 3) panels[3].querySelectorAll('[data-flap-row]').forEach((el, k) => flap(el, 250 + k * 160));
