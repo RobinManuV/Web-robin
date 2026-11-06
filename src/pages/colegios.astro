@@ -23,21 +23,33 @@ const pasos = [
   { t: 'Tutorías', d: '1:1 con los alumnos interesados. Plan individual de candidatura.', img: '/fotos/colegios-2.webp', alt: 'Alumnas hablando con un mentor de Robin' },
   { t: 'Seguimiento', d: 'Reporte anual al colegio. Resultados medibles (admisiones, ciudades, becas).', img: '/fotos/colegios-4.webp', alt: 'Sesión de Robin con un grupo de alumnos' },
 ];
-// Carrusel "Así funciona el recomendador" (debajo de "Así trabajamos con tu colegio").
-// Resumen sencillo de la presentación «How the degree recommender works»: máximo 4 diapositivas.
+// Cabina "Así funciona el recomendador" (debajo de "Así trabajamos con tu colegio"): 4 fases con el
+// lenguaje visual del recomendador (Robin Airlines). Se resume la presentación «How the degree recommender works».
+const recFases = ['Embarque', 'Ruta', 'Instrumentos', 'Aterrizaje'];
 const recPasos = [
-  { t: 'Se registra', d: 'El alumno entra con sus datos y su colegio.' },
-  { t: 'Elige un área', d: 'Una de las siete grandes áreas de estudio.' },
-  { t: 'Responde', d: 'Su perfil académico, lo que le gusta y lo que quiere hacer en el futuro.' },
-  { t: 'Recibe sus grados', d: 'Tres recomendaciones personales de grados reales.' },
+  { code: 'CHK · 01', t: 'Check-in', d: 'El alumno entra con sus datos y su colegio.' },
+  { code: 'RTE · 02', t: 'Elige rumbo', d: 'Una de las siete grandes áreas de estudio.' },
+  { code: 'FLT · 03', t: 'En vuelo', d: 'Responde sobre su perfil académico, lo que le gusta y sus planes.' },
+  { code: 'LND · 04', t: 'Aterriza', d: 'Tres recomendaciones personales de grados reales.' },
 ];
+const recRuta = 'M 40 96 C 220 96, 260 40, 380 40 S 640 22, 700 30 S 860 80, 920 96';
+const recWaypoints = [[40, 96], [380, 40], [700, 30], [920, 96]];
+// Relojes de "Instrumentos" (decorativos: no muestran datos). Marcas calculadas aquí para no generarlas en el navegador.
+const recTicks = Array.from({ length: 21 }, (_, k) => {
+  const a = ((-225 + k * 13.5) * Math.PI) / 180;
+  const major = k % 5 === 0;
+  const r1 = major ? 50 : 55;
+  const f = (n) => Math.round(n * 10) / 10;
+  return { major, x1: f(75 + r1 * Math.cos(a)), y1: f(75 + r1 * Math.sin(a)), x2: f(75 + 61 * Math.cos(a)), y2: f(75 + 61 * Math.sin(a)) };
+});
+const recArc = `M ${(75 + 44 * Math.cos(-Math.PI / 4)).toFixed(1)} ${(75 + 44 * Math.sin(-Math.PI / 4)).toFixed(1)} A 44 44 0 0 1 ${(75 + 44 * Math.cos(Math.PI / 4)).toFixed(1)} ${(75 + 44 * Math.sin(Math.PI / 4)).toFixed(1)}`;
 const recSenales = [
-  { t: 'Expediente académico', d: 'Sistema educativo, notas y asignaturas que cursa.' },
-  { t: 'Intereses', d: 'Área elegida, asignaturas favoritas y países que le atraen.' },
-  { t: 'Preferencias', d: 'Cómo le gusta aprender, ciudad, presupuesto y prioridades.' },
-  { t: 'Sus propias palabras', d: 'Qué quiere ser y qué espera de la universidad.' },
+  { t: 'Expediente', d: 'Sistema educativo, notas y asignaturas que cursa.', to: 62 },
+  { t: 'Intereses', d: 'Área elegida, asignaturas favoritas y países que le atraen.', to: 88 },
+  { t: 'Preferencias', d: 'Cómo le gusta aprender, ciudad, presupuesto y prioridades.', to: 74 },
+  { t: 'Sus palabras', d: 'Qué quiere ser y qué espera de la universidad.', to: 104 },
 ];
-const recResultado = ['Grado y universidad', 'Porcentaje de compatibilidad', 'Por qué le encaja', 'Sus puntos fuertes', 'Enlace a la web oficial del grado'];
+const recResultado = ['Grado y universidad', '% de compatibilidad', 'Por qué le encaja', 'Sus puntos fuertes', 'Web oficial del grado'];
 
 const schema = {
   '@context': 'https://schema.org',
@@ -93,71 +105,150 @@ const schema = {
     </ol>
   </section>
 
-  <!-- RECOMENDADOR: cómo funciona (carrusel de 4 diapositivas) -->
+  <!-- RECOMENDADOR: cabina con 4 fases (embarque, ruta, instrumentos, aterrizaje) -->
   <section class="section rec" id="recomendador">
-    <div class="container">
-      <p class="eyebrow center">Recomendador Robin</p>
+    <div class="container rec-wrap">
+      <p class="eyebrow center">Recomendador Robin · RB 2027</p>
       <h2 class="display-md center section-title">Así funciona el recomendador</h2>
-      <div class="rec-carousel" data-rec aria-roledescription="carrusel" aria-label="Cómo funciona el recomendador">
-        <ol class="rec-track" data-rec-track>
-          <li class="rec-slide rec-slide--intro" aria-roledescription="diapositiva" aria-label="1 de 4">
-            <div class="rec-intro-text">
-              <p class="rec-kicker">Qué es</p>
-              <h3 class="rec-title">Una clase, una sesión y cada alumno con sus propios grados.</h3>
-              <p>Todos responden a la vez: sus notas, lo que les gusta y lo que quieren hacer en el futuro. En unos minutos, cada uno recibe los grados reales que mejor encajan con él, con el porqué explicado.</p>
-              <p>Y tú lo tienes todo bajo control desde tu panel: qué ha respondido cada alumno, qué busca y qué recomendaciones le han convencido y cuáles no. Así ves dónde acierta el recomendador y qué piensa cada uno.</p>
-            </div>
-            <img class="rec-plane" src="/fotos/recomendador-avion.webp" alt="" width="470" height="260" loading="lazy" />
-          </li>
-          <li class="rec-slide" aria-roledescription="diapositiva" aria-label="2 de 4">
-            <p class="rec-kicker">Cómo lo usa el alumno</p>
-            <h3 class="rec-title">Cuatro pasos, unos minutos</h3>
-            <ol class="rec-steps">
+
+      <div class="cab" data-cab>
+        <span class="cab-screw tl"></span><span class="cab-screw tr"></span><span class="cab-screw bl"></span><span class="cab-screw br"></span>
+        <div class="cab-screen">
+          <div class="cab-annun">
+            <span class="cab-id">Robin Airlines · <b>Panel de vuelo</b></span>
+            <ol class="cab-phases" aria-label="Fases">
               {
-                recPasos.map((p, i) => (
+                recFases.map((f, k) => (
                   <li>
-                    <span class:list={['rec-n', { 'is-last': i === recPasos.length - 1 }]}>{i + 1}</span>
-                    <strong>{p.t}</strong>
-                    <span>{p.d}</span>
+                    <button type="button" class="cab-phase" data-go={k}>
+                      <span class="cab-lamp" />
+                      <span class="cab-txt">{f}</span>
+                      <span class="cab-num">0{k + 1}</span>
+                    </button>
                   </li>
                 ))
               }
             </ol>
-            <p class="rec-note">Toda la clase lo hace a la vez, en la misma sesión. Las preguntas se adaptan al área que elige cada alumno.</p>
-          </li>
-          <li class="rec-slide" aria-roledescription="diapositiva" aria-label="3 de 4">
-            <p class="rec-kicker">Qué tiene en cuenta</p>
-            <h3 class="rec-title">Todo el perfil del alumno, no solo sus notas</h3>
-            <ul class="rec-cards">
-              {
-                recSenales.map((s) => (
-                  <li>
-                    <strong>{s.t}</strong>
-                    <span>{s.d}</span>
-                  </li>
-                ))
-              }
-            </ul>
-            <p class="rec-note">Lo que escribe con sus palabras suma cuando aporta algo concreto, pero nunca sustituye al resto del perfil.</p>
-          </li>
-          <li class="rec-slide" aria-roledescription="diapositiva" aria-label="4 de 4">
-            <p class="rec-kicker">Qué obtenéis</p>
-            <h3 class="rec-title">Recomendaciones claras y explicadas</h3>
-            <p>Para cada grado recomendado, el alumno y el orientador ven:</p>
-            <ol class="rec-list">{recResultado.map((r) => <li>{r}</li>)}</ol>
-            <p class="rec-note">Solo recomienda grados que existen de verdad. Es una orientación, no una decisión de admisión: los requisitos dependen de cada grado.</p>
-          </li>
-        </ol>
-        <div class="rec-nav">
-          <button type="button" class="rec-arrow" data-rec-prev aria-label="Diapositiva anterior">←</button>
-          <div class="rec-dots" role="tablist">
-            {[1, 2, 3, 4].map((n) => <button type="button" class="rec-dot" data-rec-dot={n - 1} aria-label={`Ir a la diapositiva ${n}`} />)}
+            <span class="cab-count">Fase <b data-count>1</b>/4</span>
           </div>
-          <button type="button" class="rec-arrow" data-rec-next aria-label="Diapositiva siguiente">→</button>
+
+          <div class="cab-stage" data-stage aria-live="polite">
+            <!-- 1 · EMBARQUE: qué es -->
+            <article class="cab-panel is-on" data-panel>
+              <div class="cab-board">
+                <div class="cab-board-text">
+                  <p class="cab-kicker">01 · Embarque · Qué es</p>
+                  <h3 class="cab-title" data-flap>Una clase, una sesión y cada alumno con sus propios grados.</h3>
+                  <p class="cab-p">Todos responden a la vez: sus notas, lo que les gusta y lo que quieren hacer en el futuro. En unos minutos, cada uno recibe los grados reales que mejor encajan con él, con el porqué explicado.</p>
+                  <p class="cab-p">Y tú lo tienes todo <b>bajo control desde tu panel</b>: qué ha respondido cada alumno, qué busca y qué recomendaciones le han convencido y cuáles no. Así ves dónde acierta el recomendador y qué piensa cada uno.</p>
+                </div>
+                <div class="cab-pass" aria-hidden="true">
+                  <div class="cab-pass-top"><b>ROBIN AIRLINES</b><span>Tarjeta de embarque de grupo</span></div>
+                  <div class="cab-pass-body">
+                    <div class="cab-route">
+                      <div><strong>CLASE</strong><small>Tu colegio</small></div>
+                      <div class="cab-dash"></div>
+                      <div class="cab-route-end"><strong>UNI</strong><small>Sus grados</small></div>
+                    </div>
+                    <div class="cab-fields">
+                      <div><span>Vuelo</span><b>RB 2027</b></div>
+                      <div><span>Pasajeros</span><b>Toda la clase</b></div>
+                      <div><span>Duración</span><b>Una sesión</b></div>
+                      <div><span>Destino</span><b>3 grados / alumno</b></div>
+                      <div><span>Comandante</span><b>Orientador</b></div>
+                      <div><span>Control</span><b>Tu panel</b></div>
+                    </div>
+                  </div>
+                  <div class="cab-pass-foot"><span class="cab-barcode"></span><small>Puerta R · Embarque en grupo</small></div>
+                </div>
+              </div>
+            </article>
+
+            <!-- 2 · RUTA: cómo lo usa el alumno -->
+            <article class="cab-panel" data-panel aria-hidden="true">
+              <p class="cab-kicker">02 · Ruta · Cómo lo usa el alumno</p>
+              <h3 class="cab-title" data-flap>Cuatro pasos, unos minutos</h3>
+              <div class="cab-flight" data-flight>
+                <svg viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true">
+                  <path class="cab-track" d={recRuta} />
+                  <path class="cab-flown" d={recRuta} data-flown />
+                  {recWaypoints.map(([x, y]) => <circle class="cab-wp" cx={x} cy={y} r="7" />)}
+                </svg>
+                <img class="cab-plane" src="/fotos/recomendador-avion.webp" alt="" width="470" height="260" loading="lazy" data-plane />
+              </div>
+              <ol class="cab-steps">
+                {
+                  recPasos.map((p) => (
+                    <li>
+                      <span class="cab-code">{p.code}</span>
+                      <b>{p.t}</b>
+                      <span>{p.d}</span>
+                    </li>
+                  ))
+                }
+              </ol>
+              <p class="cab-caution"><i>Grupo</i>Toda la clase lo hace a la vez, en la misma sesión. Las preguntas se adaptan al área que elige cada alumno.</p>
+            </article>
+
+            <!-- 3 · INSTRUMENTOS: qué tiene en cuenta -->
+            <article class="cab-panel" data-panel aria-hidden="true">
+              <p class="cab-kicker">03 · Instrumentos · Qué tiene en cuenta</p>
+              <h3 class="cab-title" data-flap>Todo el perfil del alumno, no solo sus notas</h3>
+              <ul class="cab-gauges">
+                {
+                  recSenales.map((g) => (
+                    <li class="cab-gauge">
+                      <svg viewBox="0 0 150 150" aria-hidden="true">
+                        <circle class="cab-face" cx="75" cy="75" r="66" />
+                        {recTicks.map((t) => <line class:list={['cab-tick', { major: t.major }]} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} />)}
+                        <path class="cab-arc" d={recArc} />
+                        <line class="cab-needle" x1="75" y1="75" x2="75" y2="22" data-needle={g.to} />
+                        <circle class="cab-hub" cx="75" cy="75" r="6" />
+                      </svg>
+                      <b>{g.t}</b>
+                      <span>{g.d}</span>
+                    </li>
+                  ))
+                }
+              </ul>
+              <p class="cab-caution"><i>Nota</i>Lo que escribe con sus palabras suma cuando aporta algo concreto, pero nunca sustituye al resto del perfil.</p>
+            </article>
+
+            <!-- 4 · ATERRIZAJE: qué obtenéis -->
+            <article class="cab-panel" data-panel aria-hidden="true">
+              <p class="cab-kicker">04 · Aterrizaje · Qué obtenéis</p>
+              <h3 class="cab-title" data-flap>Recomendaciones claras y explicadas</h3>
+              <div class="cab-arr">
+                <div class="cab-arrivals" role="table" aria-label="Lo que incluye cada recomendación">
+                  <div class="cab-arr-h" role="row"><span role="columnheader">Nº</span><span role="columnheader">Llegadas · Cada grado incluye</span><span role="columnheader">Estado</span></div>
+                  {
+                    recResultado.map((r, k) => (
+                      <div class="cab-arr-r" role="row">
+                        <span class="n" role="cell">0{k + 1}</span>
+                        <span role="cell" data-flap-row>{r}</span>
+                        <span class="st" role="cell">En panel</span>
+                      </div>
+                    ))
+                  }
+                </div>
+                <div class="cab-arr-side">
+                  <p class="cab-p">El alumno ve sus tres grados y marca si le convencen. Tú lo ves todo en tu panel, alumno por alumno.</p>
+                  <p class="cab-caution"><i>Aviso</i>Solo recomienda grados que existen de verdad. Es una orientación, no una decisión de admisión: los requisitos dependen de cada grado.</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="cab-controls">
+          <button type="button" class="cab-key" data-prev aria-label="Fase anterior">←</button>
+          <div class="cab-alt" aria-hidden="true"><div class="cab-alt-fill" data-alt></div></div>
+          <button type="button" class="cab-key" data-next aria-label="Fase siguiente">→</button>
         </div>
       </div>
+
       <p class="center rec-cta">
-        <a class="btn" href={RECOMENDADOR.colegiosUrl} target="_blank" rel="noopener">Solicitar acceso</a>
+        <a class="cab-cta" href={RECOMENDADOR.colegiosUrl} target="_blank" rel="noopener">Solicitar acceso <span aria-hidden="true">→</span></a>
       </p>
     </div>
   </section>
@@ -195,34 +286,134 @@ const schema = {
 </Base>
 
 <script>
-  // Carrusel del recomendador: se desliza con el dedo/trackpad, con las flechas o con los puntos
-  document.querySelectorAll('[data-rec]').forEach((root) => {
-    const track = root.querySelector('[data-rec-track]');
-    const slides = [...track.children];
-    const dots = [...root.querySelectorAll('[data-rec-dot]')];
-    const prev = root.querySelector('[data-rec-prev]');
-    const next = root.querySelector('[data-rec-next]');
-    const current = () => Math.round(track.scrollLeft / track.clientWidth);
-    const go = (i) => track.scrollTo({ left: Math.max(0, Math.min(slides.length - 1, i)) * track.clientWidth, behavior: 'smooth' });
-    let idx = 0;
-    const update = () => {
-      const i = (idx = current());
-      dots.forEach((d, n) => d.setAttribute('aria-current', n === i ? 'true' : 'false'));
-      prev.disabled = i === 0;
-      next.disabled = i === slides.length - 1;
-      slides.forEach((s, n) => s.setAttribute('aria-hidden', n === i ? 'false' : 'true'));
+  // Cabina del recomendador: 4 fases. Se cambia con las luces de fase, las flechas, el teclado o deslizando.
+  // Al entrar en cada fase: título tipo panel de aeropuerto, avioneta que recorre la ruta, agujas que se mueven
+  // y panel de llegadas. Sin animaciones si el usuario las tiene desactivadas.
+  document.querySelectorAll('[data-cab]').forEach((root) => {
+    const panels = [...root.querySelectorAll('[data-panel]')];
+    const btns = [...root.querySelectorAll('[data-go]')];
+    const prev = root.querySelector('[data-prev]');
+    const next = root.querySelector('[data-next]');
+    const alt = root.querySelector('[data-alt]');
+    const count = root.querySelector('[data-count]');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let i = 0;
+
+    // Letras que giran hasta quedarse quietas (split-flap)
+    const CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ0123456789';
+    const flap = (el, delay = 0) => {
+      if (reduce) return;
+      const final = el.dataset.final ?? (el.dataset.final = el.textContent);
+      const start = performance.now() + delay;
+      const settle = [...final].map((_, k) => 120 + k * 22 + Math.random() * 160);
+      const step = (t) => {
+        const e = t - start;
+        if (e < 0) return requestAnimationFrame(step);
+        let done = true;
+        let out = '';
+        for (let k = 0; k < final.length; k++) {
+          const c = final[k];
+          if (c === ' ' || e >= settle[k]) out += c;
+          else {
+            done = false;
+            out += CH[(Math.random() * CH.length) | 0];
+          }
+        }
+        el.textContent = out;
+        if (!done) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
     };
-    prev.addEventListener('click', () => go(current() - 1));
-    next.addEventListener('click', () => go(current() + 1));
-    dots.forEach((d, n) => d.addEventListener('click', () => go(n)));
-    track.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
-    // Si cambia el ancho (girar el móvil, redimensionar), se queda en la misma diapositiva
-    new ResizeObserver(() => track.scrollTo({ left: idx * track.clientWidth })).observe(track);
+
+    // Agujas de los relojes
+    const needles = [...root.querySelectorAll('[data-needle]')];
+    const setNeedles = (on) =>
+      needles.forEach((n, k) => {
+        n.style.transitionDelay = on ? `${k * 140}ms` : '0ms';
+        n.style.transform = `rotate(${on ? n.dataset.needle : -135}deg)`;
+      });
+    setNeedles(false);
+
+    // Avioneta sobre la ruta
+    const flight = root.querySelector('[data-flight]');
+    const svg = flight.querySelector('svg');
+    const flown = flight.querySelector('[data-flown]');
+    const plane = flight.querySelector('[data-plane]');
+    const wps = [...flight.querySelectorAll('.cab-wp')];
+    const wpAt = [0, 0.36, 0.7, 1];
+    const L = flown.getTotalLength();
+    flown.style.strokeDasharray = `${L}`;
+    let flyRaf = 0;
+    let flyP = 0;
+    const placePlane = (p) => {
+      flyP = p;
+      const r = svg.getBoundingClientRect();
+      if (!r.width) return;
+      const pt = flown.getPointAtLength(L * p);
+      const pt2 = flown.getPointAtLength(Math.min(L, L * p + 4));
+      const sx = r.width / 1000;
+      const sy = r.height / 120;
+      const ang = (Math.atan2((pt2.y - pt.y) * sy, (pt2.x - pt.x) * sx) * 180) / Math.PI;
+      plane.style.left = `${pt.x * sx}px`;
+      plane.style.top = `${pt.y * sy}px`;
+      plane.style.transform = `translate(-50%, -62%) rotate(${ang * 0.6}deg)`;
+      flown.style.strokeDashoffset = `${L * (1 - p)}`;
+      wps.forEach((w, k) => w.classList.toggle('lit', p >= wpAt[k] - 0.001));
+    };
+    const fly = () => {
+      cancelAnimationFrame(flyRaf);
+      if (reduce) return placePlane(1);
+      const s0 = performance.now();
+      const D = 4200;
+      const step = (t) => {
+        const x = Math.min(1, (t - s0) / D);
+        placePlane(0.5 - Math.cos(Math.PI * x) / 2);
+        if (x < 1) flyRaf = requestAnimationFrame(step);
+      };
+      placePlane(0);
+      flyRaf = requestAnimationFrame(step);
+    };
+    new ResizeObserver(() => placePlane(flyP)).observe(svg);
+
+    const go = (n) => {
+      i = Math.max(0, Math.min(panels.length - 1, n));
+      panels.forEach((p, k) => {
+        p.classList.toggle('is-on', k === i);
+        p.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+      });
+      btns.forEach((b, k) => {
+        if (k === i) b.setAttribute('aria-current', 'step');
+        else b.removeAttribute('aria-current');
+        b.classList.toggle('done', k < i);
+      });
+      count.textContent = String(i + 1);
+      prev.disabled = i === 0;
+      next.disabled = i === panels.length - 1;
+      alt.style.width = `${(i / (panels.length - 1)) * 100}%`;
+      const title = panels[i].querySelector('[data-flap]');
+      if (title) flap(title, 120);
+      setNeedles(i === 2);
+      if (i === 1) fly();
+      if (i === 3) panels[3].querySelectorAll('[data-flap-row]').forEach((el, k) => flap(el, 250 + k * 160));
+    };
+
+    prev.addEventListener('click', () => go(i - 1));
+    next.addEventListener('click', () => go(i + 1));
+    btns.forEach((b, k) => b.addEventListener('click', () => go(k)));
     root.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') go(current() + 1);
-      if (e.key === 'ArrowLeft') go(current() - 1);
+      if (e.key === 'ArrowRight') go(i + 1);
+      if (e.key === 'ArrowLeft') go(i - 1);
     });
-    update();
+    const stage = root.querySelector('[data-stage]');
+    let sx = null;
+    stage.addEventListener('touchstart', (e) => (sx = e.touches[0].clientX), { passive: true });
+    stage.addEventListener('touchend', (e) => {
+      if (sx == null) return;
+      const dx = e.changedTouches[0].clientX - sx;
+      sx = null;
+      if (Math.abs(dx) > 50) go(i + (dx < 0 ? 1 : -1));
+    });
+    go(0);
   });
 </script>
 
