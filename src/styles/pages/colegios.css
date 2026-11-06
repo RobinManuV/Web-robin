@@ -236,7 +236,7 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 16px;
-  padding: 12px clamp(16px, 2.4vw, 26px);
+  padding: 9px clamp(16px, 2.4vw, 26px);
   border-bottom: 1px solid var(--cab-line);
   background: rgba(255, 253, 248, 0.06);
   font: 600 12.5px/1 var(--cab-mono);
@@ -260,7 +260,7 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  padding: 9px 14px;
+  padding: 8px 14px;
   border-radius: 7px;
   border: 1px solid rgba(243, 238, 223, 0.32);
   background: rgba(255, 253, 248, 0.04);
@@ -336,8 +336,8 @@
 .page-colegios .cab-p {
   margin: 0;
   color: var(--cab-dim);
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 15.5px;
+  line-height: 1.45;
   max-width: 62ch;
 }
 .page-colegios .cab-p b { color: var(--cab-text); font-weight: 600; }
@@ -345,18 +345,18 @@
 /* 1 · Embarque */
 .page-colegios .cab-board {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: 1fr 1fr;
   gap: clamp(22px, 4vw, 56px);
   align-items: center;
 }
-.page-colegios .cab-board-text { display: grid; gap: 12px; min-width: 0; }
+.page-colegios .cab-board-text { display: grid; gap: 10px; min-width: 0; }
 .page-colegios .cab-pass {
   background: var(--cab-paper);
   color: var(--navy);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 24px 40px -20px rgba(0, 0, 0, 0.6);
-  transform: rotate(-2deg);
+  transform: rotate(-1.2deg);
 }
 .page-colegios .cab-pass-top {
   display: flex;
@@ -365,7 +365,7 @@
   gap: 10px;
   background: var(--navy);
   color: var(--cab-paper);
-  padding: 12px 16px;
+  padding: 9px 16px;
 }
 .page-colegios .cab-pass-top b { font-size: 15px; }
 .page-colegios .cab-pass-top span {
@@ -376,9 +376,9 @@
   text-align: right;
   max-width: 24ch;
 }
-.page-colegios .cab-pass-body { padding: 14px 16px; display: grid; gap: 12px; }
+.page-colegios .cab-pass-body { padding: 10px 16px; display: grid; gap: 8px; }
 .page-colegios .cab-route { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; }
-.page-colegios .cab-route strong { display: block; font-family: var(--font-din); font-size: 28px; line-height: 1; }
+.page-colegios .cab-route strong { display: block; font-family: var(--font-din); font-size: 24px; line-height: 1; }
 .page-colegios .cab-route small { display: block; font-size: 11px; opacity: 0.75; }
 .page-colegios .cab-route-end { text-align: right; }
 .page-colegios .cab-dash { border-top: 2px dashed rgba(45, 58, 100, 0.3); position: relative; }
@@ -390,7 +390,7 @@
   transform: translateX(-50%);
   font-size: 18px;
 }
-.page-colegios .cab-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
+.page-colegios .cab-fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 12px; }
 .page-colegios .cab-fields span {
   display: block;
   font: 600 9.5px/1 var(--cab-mono);
@@ -402,14 +402,14 @@
 .page-colegios .cab-fields b { font: 600 13px/1.25 var(--cab-mono); }
 .page-colegios .cab-pass-foot {
   border-top: 2px dashed rgba(45, 58, 100, 0.25);
-  padding: 10px 16px;
+  padding: 7px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
 }
 .page-colegios .cab-barcode {
-  height: 28px;
+  height: 20px;
   flex: 1;
   max-width: 170px;
   background: repeating-linear-gradient(90deg, var(--navy) 0 2px, transparent 2px 4px, var(--navy) 4px 5px, transparent 5px 8px, var(--navy) 8px 11px, transparent 11px 12px);
@@ -425,7 +425,7 @@
 
 /* 2 · Ruta */
 .page-colegios .cab-flight { position: relative; margin-top: 4px; }
-.page-colegios .cab-flight svg { display: block; width: 100%; height: clamp(48px, 5.5vw, 76px); overflow: visible; }
+.page-colegios .cab-flight svg { display: block; width: 100%; height: clamp(40px, 4.4vw, 60px); overflow: visible; }
 .page-colegios .cab-track { stroke: rgba(243, 238, 223, 0.25); stroke-width: 2; stroke-dasharray: 6 8; fill: none; }
 .page-colegios .cab-flown { stroke: var(--cab-amber); stroke-width: 3; fill: none; stroke-linecap: round; }
 .page-colegios .cab-wp { fill: var(--cab-night); stroke: rgba(243, 238, 223, 0.45); stroke-width: 2; }
@@ -466,14 +466,14 @@
   gap: 12px;
   align-items: flex-start;
   margin: 0;
-  padding: 12px 14px;
+  padding: 9px 14px;
   border: 1px solid rgba(254, 181, 70, 0.45);
   border-radius: 10px;
   background: rgba(254, 181, 70, 0.08);
   color: var(--cab-text);
-  font-size: 15px;
-  line-height: 1.5;
-  max-width: 78ch;
+  font-size: 14.5px;
+  line-height: 1.45;
+  max-width: 96ch;
 }
 .page-colegios .cab-caution i {
   flex: 0 0 auto;
@@ -497,7 +497,7 @@
   gap: 18px;
 }
 .page-colegios .cab-gauge { display: grid; justify-items: center; align-content: start; text-align: center; gap: 6px; }
-.page-colegios .cab-gauge svg { width: min(100px, 100%); height: auto; }
+.page-colegios .cab-gauge svg { width: min(84px, 100%); height: auto; }
 .page-colegios .cab-gauge > span { color: var(--cab-dim); font-size: 14.5px; line-height: 1.45; max-width: 30ch; }
 .page-colegios .cab-face { fill: #0f1e3d; stroke: rgba(243, 238, 223, 0.25); stroke-width: 2; }
 .page-colegios .cab-tick { stroke: rgba(243, 238, 223, 0.55); stroke-width: 2; }
@@ -534,7 +534,7 @@
   grid-template-columns: 34px 1fr auto;
   gap: 12px;
   align-items: center;
-  padding: 9px 14px;
+  padding: 7px 14px;
 }
 .page-colegios .cab-arr-h {
   font-size: 10px;
@@ -571,11 +571,11 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 14px;
-  padding: 12px 4px 2px;
+  padding: 10px 4px 0;
 }
 .page-colegios .cab-key {
-  width: 52px;
-  height: 46px;
+  width: 50px;
+  height: 40px;
   border: 0;
   border-radius: 12px;
   display: grid;
