@@ -300,9 +300,9 @@
 }
 .page-colegios .cab-panel {
   grid-area: 1 / 1;
-  padding: clamp(18px, 2.4vw, 30px) clamp(18px, 3vw, 40px);
+  padding: clamp(16px, 1.8vw, 22px) clamp(18px, 3vw, 40px);
   display: grid;
-  gap: 16px;
+  gap: 14px;
   align-content: center;
   opacity: 0;
   visibility: hidden;
@@ -331,7 +331,7 @@
   line-height: 1;
   color: var(--cab-text);
   text-wrap: balance;
-  max-width: 22ch;
+  max-width: 48ch;
 }
 .page-colegios .cab-p {
   margin: 0;
@@ -424,8 +424,8 @@
 }
 
 /* 2 · Ruta */
-.page-colegios .cab-flight { position: relative; margin-top: 4px; max-height: 110px; }
-.page-colegios .cab-flight svg { display: block; width: 100%; height: auto; overflow: visible; }
+.page-colegios .cab-flight { position: relative; margin-top: 4px; }
+.page-colegios .cab-flight svg { display: block; width: 100%; height: clamp(48px, 5.5vw, 76px); overflow: visible; }
 .page-colegios .cab-track { stroke: rgba(243, 238, 223, 0.25); stroke-width: 2; stroke-dasharray: 6 8; fill: none; }
 .page-colegios .cab-flown { stroke: var(--cab-amber); stroke-width: 3; fill: none; stroke-linecap: round; }
 .page-colegios .cab-wp { fill: var(--cab-night); stroke: rgba(243, 238, 223, 0.45); stroke-width: 2; }
@@ -448,7 +448,7 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
 }
-.page-colegios .cab-steps li { display: grid; gap: 6px; align-content: start; }
+.page-colegios .cab-steps li { display: grid; gap: 5px; align-content: start; }
 .page-colegios .cab-code { font: 600 11px/1 var(--cab-mono); letter-spacing: 0.16em; color: var(--cab-amber); }
 .page-colegios .cab-steps b,
 .page-colegios .cab-gauge b {
@@ -496,9 +496,9 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
 }
-.page-colegios .cab-gauge { display: grid; justify-items: center; align-content: start; text-align: center; gap: 8px; }
-.page-colegios .cab-gauge svg { width: min(116px, 100%); height: auto; }
-.page-colegios .cab-gauge > span { color: var(--cab-dim); font-size: 14.5px; line-height: 1.5; max-width: 24ch; }
+.page-colegios .cab-gauge { display: grid; justify-items: center; align-content: start; text-align: center; gap: 6px; }
+.page-colegios .cab-gauge svg { width: min(100px, 100%); height: auto; }
+.page-colegios .cab-gauge > span { color: var(--cab-dim); font-size: 14.5px; line-height: 1.45; max-width: 30ch; }
 .page-colegios .cab-face { fill: #0f1e3d; stroke: rgba(243, 238, 223, 0.25); stroke-width: 2; }
 .page-colegios .cab-tick { stroke: rgba(243, 238, 223, 0.55); stroke-width: 2; }
 .page-colegios .cab-tick.major { stroke: var(--cab-text); stroke-width: 3; }
