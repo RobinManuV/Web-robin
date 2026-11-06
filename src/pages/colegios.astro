@@ -358,7 +358,7 @@ const schema = {
       const ang = (Math.atan2((pt2.y - pt.y) * sy, (pt2.x - pt.x) * sx) * 180) / Math.PI;
       plane.style.left = `${pt.x * sx}px`;
       plane.style.top = `${pt.y * sy}px`;
-      plane.style.transform = `translate(-50%, -62%) rotate(${ang * 0.6}deg)`;
+      plane.style.transform = `translate(-50%, -62%) rotate(${ang * 0.6}deg) scaleX(-1)`; // la imagen mira a la izquierda: se voltea para que vuele hacia la derecha
       flown.style.strokeDashoffset = `${L * (1 - p)}`;
       wps.forEach((w, k) => w.classList.toggle('lit', p >= wpAt[k] - 0.001));
     };

@@ -153,8 +153,8 @@
   --cab-amber: #feb546;
   --cab-amber-ink: #875800;
   --cab-paper: #fffdf8;
-  --cab-text: #f3eedf;
-  --cab-dim: rgba(243, 238, 223, 0.66);
+  --cab-text: #ffffff;
+  --cab-dim: #ffffff;
   --cab-line: rgba(251, 247, 236, 0.16);
   --cab-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --cab-ease: cubic-bezier(0.22, 0.7, 0.2, 1);
@@ -436,7 +436,7 @@
   height: auto;
   left: 0;
   top: 0;
-  transform: translate(-50%, -62%);
+  transform: translate(-50%, -62%) scaleX(-1);
   pointer-events: none;
   filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.35));
 }
