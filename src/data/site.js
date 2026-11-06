@@ -234,6 +234,7 @@ export const PARTNERS = [
     aviso: 'tienes 20 € adicionales de descuento.',
   },
   { name: 'Translayte', logo: '/fotos/partners/translayte.webp', url: 'https://translayte.com/certified-translations?ref=281516' },
+  { name: 'British Council', logo: '/fotos/partners/british-council.svg', url: 'https://www.britishcouncil.es/' },
 ];
 
 // Vídeos cortos (YouTube Shorts) de la sección "Sin guión, sin filtro" en /comunidad/.
