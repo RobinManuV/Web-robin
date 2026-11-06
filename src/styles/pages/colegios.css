@@ -309,6 +309,10 @@
   transform: translateY(14px);
   transition: opacity 0.5s var(--cab-ease), transform 0.6s var(--cab-ease), visibility 0s 0.6s;
 }
+.page-colegios .cab-panel:not(.is-on) {
+  position: absolute;
+  inset: 0 0 auto;
+}
 .page-colegios .cab-panel.is-on {
   opacity: 1;
   visibility: visible;
@@ -688,20 +692,59 @@
 @media (max-width: 900px) {
   .page-colegios .cab-annun { grid-template-columns: 1fr auto; }
   .page-colegios .cab-phases { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; flex-wrap: wrap; }
-  .page-colegios .cab-board,
   .page-colegios .cab-arr { grid-template-columns: 1fr; }
-  .page-colegios .cab-pass { max-width: 360px; transform: rotate(-1deg); }
+  .page-colegios .cab-fields { grid-template-columns: 1fr 1fr; }
   .page-colegios .cab-gauges,
   .page-colegios .cab-steps { grid-template-columns: repeat(2, 1fr); }
 }
+@media (max-width: 700px) {
+  .page-colegios .cab-board { grid-template-columns: 1fr; }
+  .page-colegios .cab-pass { max-width: 380px; }
+}
+/* Móvil: cabina compacta para que cada fase quepa en la pantalla */
 @media (max-width: 560px) {
-  .page-colegios .cab-notch { font-size: 11px; letter-spacing: 0.12em; padding: 9px 14px 9px 12px; }
+  .page-colegios .rec { padding-block: 36px 44px; }
+  .page-colegios .cab { margin-top: 30px; padding: 8px; border-radius: 20px; }
+  .page-colegios .cab-screen { border-radius: 14px; }
+  .page-colegios .cab-screw { display: none; }
+  .page-colegios .cab-notch { font-size: 10.5px; letter-spacing: 0.12em; padding: 8px 14px 8px 12px; gap: 8px; }
+  .page-colegios .cab-notch-lamp { width: 8px; height: 8px; }
+  /* barra de fases en una sola fila */
+  .page-colegios .cab-annun { grid-template-columns: 1fr auto; gap: 10px; padding: 8px 12px; font-size: 11px; }
   .page-colegios .cab-id { display: none; }
-  .page-colegios .cab-phase { padding: 7px 9px; }
+  .page-colegios .cab-phases { grid-column: auto; grid-row: auto; flex-wrap: nowrap; gap: 6px; }
+  .page-colegios .cab-phase { padding: 7px 9px; font-size: 11px; gap: 6px; }
   .page-colegios .cab-txt { display: none; }
   .page-colegios .cab-num { display: inline; }
-  .page-colegios .cab-p { font-size: 16px; }
-  .page-colegios .cab-steps { grid-template-columns: 1fr; gap: 14px; }
+  .page-colegios .cab-panel { padding: 14px 14px 16px; gap: 11px; }
+  .page-colegios .cab-kicker { font-size: 10px; letter-spacing: 0.14em; }
+  .page-colegios .cab-title { font-size: 22px; }
+  .page-colegios .cab-p { font-size: 14.5px; line-height: 1.45; }
+  /* 1 · la tarjeta de embarque es decorativa: en móvil se oculta para no alargar la fase */
+  .page-colegios .cab-pass { display: none; }
+  /* 2 · pasos en dos columnas */
+  .page-colegios .cab-flight svg { height: 40px; }
+  .page-colegios .cab-plane { width: 52px; }
+  .page-colegios .cab-steps { grid-template-columns: 1fr 1fr; gap: 12px 14px; }
+  .page-colegios .cab-steps b,
+  .page-colegios .cab-gauge b { font-size: 16px; }
+  .page-colegios .cab-code { font-size: 10px; }
+  .page-colegios .cab-steps li > span:last-child { font-size: 13.5px; line-height: 1.4; }
+  /* 3 · relojes más pequeños */
+  .page-colegios .cab-gauges { gap: 12px; }
+  .page-colegios .cab-gauge svg { width: 58px; }
+  .page-colegios .cab-gauge > span { font-size: 13px; line-height: 1.4; }
+  /* 4 · panel de llegadas compacto */
+  .page-colegios .cab-arr-h,
+  .page-colegios .cab-arr-r { grid-template-columns: 24px 1fr auto; gap: 8px; padding: 7px 10px; }
+  .page-colegios .cab-arr-r { font-size: 12px; letter-spacing: 0.02em; }
+  .page-colegios .cab-arr-r .st { font-size: 9px; padding: 3px 5px; }
+  .page-colegios .cab-arr-h { font-size: 9px; }
+  .page-colegios .cab-arr-side .cab-p { font-size: 14px; }
+  .page-colegios .cab-caution { font-size: 13.5px; padding: 8px 10px; gap: 8px; }
+  .page-colegios .cab-caution i { font-size: 9.5px; }
+  .page-colegios .cab-controls { padding-top: 8px; }
+  .page-colegios .cab-key { width: 46px; height: 40px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .page-colegios .cab-panel,
