@@ -148,8 +148,8 @@
 .page-colegios .rec {
   --cab-night: #14264b;
   --cab-night-2: #1b3160;
-  --cab-bezel: #d9d0ba;
-  --cab-bezel-2: #c7bda3;
+  --cab-bezel: #ece6d7;
+  --cab-bezel-2: #e0d8c5;
   --cab-amber: #feb546;
   --cab-amber-ink: #875800;
   --cab-paper: #fffdf8;
@@ -158,6 +158,9 @@
   --cab-line: rgba(251, 247, 236, 0.16);
   --cab-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --cab-ease: cubic-bezier(0.22, 0.7, 0.2, 1);
+}
+.page-colegios .rec {
+  padding-block: clamp(40px, 5vw, 72px);
 }
 .page-colegios .rec-wrap {
   display: grid;
@@ -170,10 +173,10 @@
 }
 .page-colegios .cab {
   position: relative;
-  margin-top: 36px;
-  border-radius: 28px;
-  padding: clamp(10px, 1.6vw, 18px);
-  background: linear-gradient(180deg, #e6dec9, var(--cab-bezel) 40%, var(--cab-bezel-2));
+  margin-top: 40px;
+  border-radius: 26px;
+  padding: clamp(10px, 1.4vw, 16px);
+  background: linear-gradient(180deg, #f6f2e7, var(--cab-bezel) 45%, var(--cab-bezel-2));
   box-shadow: 0 1px 0 #fff inset, 0 -2px 0 rgba(0, 0, 0, 0.08) inset, 0 30px 60px -30px rgba(20, 38, 75, 0.45);
 }
 .page-colegios .cab-screw {
@@ -181,7 +184,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #f4efe2, #a99e82 70%);
+  background: radial-gradient(circle at 35% 35%, #fbf8f0, #b9af96 70%);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
 }
 .page-colegios .cab-screw::after {
@@ -233,15 +236,16 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 16px;
-  padding: 14px clamp(16px, 2.4vw, 28px);
+  padding: 12px clamp(16px, 2.4vw, 26px);
   border-bottom: 1px solid var(--cab-line);
-  font: 500 11px/1 var(--cab-mono);
+  background: rgba(255, 253, 248, 0.06);
+  font: 600 12.5px/1 var(--cab-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--cab-dim);
+  color: var(--cab-text);
 }
 .page-colegios .cab-id b {
-  color: var(--cab-text);
+  color: var(--cab-amber);
   font-weight: 600;
 }
 .page-colegios .cab-phases {
@@ -255,31 +259,32 @@
 .page-colegios .cab-phase {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 12px;
-  border-radius: 6px;
-  border: 1px solid var(--cab-line);
-  background: transparent;
-  color: var(--cab-dim);
-  font: 600 11px/1 var(--cab-mono);
+  gap: 9px;
+  padding: 9px 14px;
+  border-radius: 7px;
+  border: 1px solid rgba(243, 238, 223, 0.32);
+  background: rgba(255, 253, 248, 0.04);
+  color: var(--cab-text);
+  font: 600 12.5px/1 var(--cab-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   cursor: pointer;
   transition: color 0.3s, border-color 0.3s, background 0.3s;
 }
-.page-colegios .cab-phase:hover { color: var(--cab-text); }
+.page-colegios .cab-phase:hover { border-color: var(--cab-amber); }
 .page-colegios .cab-phase:focus-visible { outline: 2px solid var(--cab-amber); outline-offset: 2px; }
 .page-colegios .cab-lamp {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: rgba(243, 238, 223, 0.22);
+  background: rgba(243, 238, 223, 0.35);
   transition: background 0.3s, box-shadow 0.3s;
 }
 .page-colegios .cab-phase[aria-current='step'] {
   color: var(--cab-night);
   background: var(--cab-amber);
   border-color: var(--cab-amber);
+  box-shadow: 0 0 16px rgba(254, 181, 70, 0.45);
 }
 .page-colegios .cab-phase[aria-current='step'] .cab-lamp { background: var(--cab-night); }
 .page-colegios .cab-phase.done .cab-lamp { background: var(--cab-amber); box-shadow: 0 0 8px var(--cab-amber); }
@@ -295,9 +300,9 @@
 }
 .page-colegios .cab-panel {
   grid-area: 1 / 1;
-  padding: clamp(22px, 3.4vw, 44px) clamp(18px, 3.4vw, 48px);
+  padding: clamp(18px, 2.4vw, 30px) clamp(18px, 3vw, 40px);
   display: grid;
-  gap: 22px;
+  gap: 16px;
   align-content: center;
   opacity: 0;
   visibility: hidden;
@@ -322,7 +327,7 @@
   font-family: var(--font-din);
   font-weight: 700;
   text-transform: uppercase;
-  font-size: clamp(28px, 3.4vw, 44px);
+  font-size: clamp(24px, 2.6vw, 34px);
   line-height: 1;
   color: var(--cab-text);
   text-wrap: balance;
@@ -331,9 +336,9 @@
 .page-colegios .cab-p {
   margin: 0;
   color: var(--cab-dim);
-  font-size: 17px;
-  line-height: 1.55;
-  max-width: 60ch;
+  font-size: 16px;
+  line-height: 1.5;
+  max-width: 62ch;
 }
 .page-colegios .cab-p b { color: var(--cab-text); font-weight: 600; }
 
@@ -344,7 +349,7 @@
   gap: clamp(22px, 4vw, 56px);
   align-items: center;
 }
-.page-colegios .cab-board-text { display: grid; gap: 16px; min-width: 0; }
+.page-colegios .cab-board-text { display: grid; gap: 12px; min-width: 0; }
 .page-colegios .cab-pass {
   background: var(--cab-paper);
   color: var(--navy);
@@ -369,11 +374,11 @@
   text-transform: uppercase;
   color: var(--cab-amber);
   text-align: right;
-  max-width: 20ch;
+  max-width: 24ch;
 }
-.page-colegios .cab-pass-body { padding: 16px; display: grid; gap: 14px; }
+.page-colegios .cab-pass-body { padding: 14px 16px; display: grid; gap: 12px; }
 .page-colegios .cab-route { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; }
-.page-colegios .cab-route strong { display: block; font-family: var(--font-din); font-size: 34px; line-height: 1; }
+.page-colegios .cab-route strong { display: block; font-family: var(--font-din); font-size: 28px; line-height: 1; }
 .page-colegios .cab-route small { display: block; font-size: 11px; opacity: 0.75; }
 .page-colegios .cab-route-end { text-align: right; }
 .page-colegios .cab-dash { border-top: 2px dashed rgba(45, 58, 100, 0.3); position: relative; }
@@ -385,7 +390,7 @@
   transform: translateX(-50%);
   font-size: 18px;
 }
-.page-colegios .cab-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; }
+.page-colegios .cab-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; }
 .page-colegios .cab-fields span {
   display: block;
   font: 600 9.5px/1 var(--cab-mono);
@@ -394,17 +399,17 @@
   opacity: 0.7;
   margin-bottom: 4px;
 }
-.page-colegios .cab-fields b { font: 600 14px/1.25 var(--cab-mono); }
+.page-colegios .cab-fields b { font: 600 13px/1.25 var(--cab-mono); }
 .page-colegios .cab-pass-foot {
   border-top: 2px dashed rgba(45, 58, 100, 0.25);
-  padding: 12px 16px;
+  padding: 10px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
 }
 .page-colegios .cab-barcode {
-  height: 34px;
+  height: 28px;
   flex: 1;
   max-width: 170px;
   background: repeating-linear-gradient(90deg, var(--navy) 0 2px, transparent 2px 4px, var(--navy) 4px 5px, transparent 5px 8px, var(--navy) 8px 11px, transparent 11px 12px);
@@ -419,7 +424,7 @@
 }
 
 /* 2 · Ruta */
-.page-colegios .cab-flight { position: relative; margin-top: 8px; }
+.page-colegios .cab-flight { position: relative; margin-top: 4px; max-height: 110px; }
 .page-colegios .cab-flight svg { display: block; width: 100%; height: auto; overflow: visible; }
 .page-colegios .cab-track { stroke: rgba(243, 238, 223, 0.25); stroke-width: 2; stroke-dasharray: 6 8; fill: none; }
 .page-colegios .cab-flown { stroke: var(--cab-amber); stroke-width: 3; fill: none; stroke-linecap: round; }
@@ -448,7 +453,7 @@
 .page-colegios .cab-steps b,
 .page-colegios .cab-gauge b {
   font-family: var(--font-din);
-  font-size: 22px;
+  font-size: 19px;
   text-transform: uppercase;
   line-height: 1;
   color: var(--cab-text);
@@ -492,7 +497,7 @@
   gap: 18px;
 }
 .page-colegios .cab-gauge { display: grid; justify-items: center; align-content: start; text-align: center; gap: 8px; }
-.page-colegios .cab-gauge svg { width: min(150px, 100%); height: auto; }
+.page-colegios .cab-gauge svg { width: min(116px, 100%); height: auto; }
 .page-colegios .cab-gauge > span { color: var(--cab-dim); font-size: 14.5px; line-height: 1.5; max-width: 24ch; }
 .page-colegios .cab-face { fill: #0f1e3d; stroke: rgba(243, 238, 223, 0.25); stroke-width: 2; }
 .page-colegios .cab-tick { stroke: rgba(243, 238, 223, 0.55); stroke-width: 2; }
@@ -529,7 +534,7 @@
   grid-template-columns: 34px 1fr auto;
   gap: 12px;
   align-items: center;
-  padding: 10px 14px;
+  padding: 9px 14px;
 }
 .page-colegios .cab-arr-h {
   font-size: 10px;
@@ -566,26 +571,27 @@
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 14px;
-  padding: 14px 6px 4px;
+  padding: 12px 4px 2px;
 }
 .page-colegios .cab-key {
-  width: 46px;
+  width: 52px;
   height: 46px;
   border: 0;
   border-radius: 12px;
   display: grid;
   place-items: center;
-  color: var(--navy);
-  background: linear-gradient(180deg, #fbf7ec, #e2d9c3);
-  box-shadow: 0 2px 0 #a99e82, 0 1px 0 #fff inset;
-  font: 600 18px/1 var(--font);
+  color: var(--cab-amber);
+  background: linear-gradient(180deg, #2a3d6e, var(--cab-night));
+  box-shadow: 0 3px 0 #0b1530, 0 1px 0 rgba(255, 255, 255, 0.18) inset;
+  font: 700 22px/1 var(--font);
   cursor: pointer;
   transition: transform 0.1s;
 }
-.page-colegios .cab-key:active { transform: translateY(2px); box-shadow: 0 0 0 #a99e82, 0 1px 0 #fff inset; }
+.page-colegios .cab-key:hover:not(:disabled) { color: var(--cab-paper); }
+.page-colegios .cab-key:active { transform: translateY(2px); box-shadow: 0 1px 0 #0b1530, 0 1px 0 rgba(255, 255, 255, 0.18) inset; }
 .page-colegios .cab-key:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
-.page-colegios .cab-key:disabled { opacity: 0.45; cursor: default; }
-.page-colegios .cab-alt { position: relative; height: 8px; border-radius: 99px; background: rgba(45, 58, 100, 0.15); }
+.page-colegios .cab-key:disabled { opacity: 0.35; cursor: default; }
+.page-colegios .cab-alt { position: relative; height: 8px; border-radius: 99px; background: rgba(45, 58, 100, 0.14); }
 .page-colegios .cab-alt-fill {
   position: absolute;
   inset: 0 auto 0 0;
@@ -605,7 +611,64 @@
 }
 
 /* CTA */
-.page-colegios .rec-cta { margin: 28px 0 0; }
+.page-colegios .rec-cta {
+  margin: 24px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px 20px;
+}
+.page-colegios .rec-cta-note {
+  font: 500 12.5px/1.4 var(--cab-mono);
+  letter-spacing: 0.04em;
+  color: var(--navy);
+  opacity: 0.75;
+}
+
+/* Notch luminoso «Solicita tu acceso» (encima del marco, como una señal de cabina encendida) */
+.page-colegios .cab-notch {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -58%);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 22px 10px 18px;
+  border-radius: 14px;
+  background: var(--cab-night);
+  border: 2px solid var(--cab-bezel-2);
+  color: var(--cab-amber);
+  font: 600 13px/1 var(--cab-mono);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  text-shadow: 0 0 8px rgba(254, 181, 70, 0.85), 0 0 18px rgba(254, 181, 70, 0.45);
+  box-shadow: 0 0 0 4px rgba(254, 181, 70, 0.12), 0 0 26px rgba(254, 181, 70, 0.4), 0 10px 20px -8px rgba(20, 38, 75, 0.6);
+  animation: cab-glow 2.4s ease-in-out infinite;
+  transition: transform 0.2s var(--cab-ease), color 0.2s;
+}
+.page-colegios .cab-notch:hover { color: #ffd38a; transform: translate(-50%, -62%); }
+.page-colegios .cab-notch:focus-visible { outline: 3px solid var(--cab-amber); outline-offset: 3px; }
+.page-colegios .cab-notch-lamp {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cab-amber);
+  box-shadow: 0 0 10px var(--cab-amber), 0 0 20px rgba(254, 181, 70, 0.7);
+  animation: cab-blink 1.2s steps(2, jump-none) infinite;
+}
+@keyframes cab-glow {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(254, 181, 70, 0.12), 0 0 22px rgba(254, 181, 70, 0.35), 0 10px 20px -8px rgba(20, 38, 75, 0.6); }
+  50% { box-shadow: 0 0 0 6px rgba(254, 181, 70, 0.2), 0 0 38px rgba(254, 181, 70, 0.6), 0 10px 20px -8px rgba(20, 38, 75, 0.6); }
+}
+@keyframes cab-blink {
+  0% { opacity: 1; }
+  100% { opacity: 0.35; }
+}
 .page-colegios .cab-cta {
   display: inline-flex;
   align-items: center;
@@ -632,6 +695,7 @@
   .page-colegios .cab-steps { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 560px) {
+  .page-colegios .cab-notch { font-size: 11px; letter-spacing: 0.12em; padding: 9px 14px 9px 12px; }
   .page-colegios .cab-id { display: none; }
   .page-colegios .cab-phase { padding: 7px 9px; }
   .page-colegios .cab-txt { display: none; }
@@ -644,4 +708,6 @@
   .page-colegios .cab-panel.is-on,
   .page-colegios .cab-needle,
   .page-colegios .cab-alt-fill { transition: none; }
+  .page-colegios .cab-notch,
+  .page-colegios .cab-notch-lamp { animation: none; }
 }
