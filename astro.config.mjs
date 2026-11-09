@@ -16,6 +16,7 @@ export default defineConfig({
         !page.includes('/yuselico-studios/') &&
         !page.includes('/estudiaenholanda/') &&
         !page.includes('/veteaholanda/') &&
+        !page.includes('/telefonorojo/') &&
         !page.includes('/vaparaaholanda/') &&
         !page.includes('/webinar21-11/') &&
         !/\/the-european-experience\/.+-2\/$/.test(page) && // duplicados: canonical a /universidades/<slug>/ // landing de campaña, solo con enlace directo

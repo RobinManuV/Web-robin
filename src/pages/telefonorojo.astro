@@ -1,0 +1,443 @@
+---
+import '../styles/pages/landing-telefonorojo.css';
+// Landing de campaña "Teléfono rojo".
+// Como /veteaholanda/: NO se enlaza desde ninguna parte de la web, no sale en el sitemap,
+// está en robots.txt y lleva noindex. Solo se llega con el enlace directo /telefonorojo/.
+// Los leads llegan con la etiqueta "telefonorojo".
+//
+// El teléfono es una secuencia de fotogramas que se pinta en un <canvas>: mientras no haces
+// scroll suena (fotogramas 00–06 en bucle) y al bajar se descuelga (07–21), fundiendo cada
+// fotograma con el siguiente para que vaya fluido. Después, de dentro del teléfono salen las
+// ventajas. El guion de la animación está en el <script> del final.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import LeadForm from '../components/LeadForm.astro';
+
+const TAG = 'telefonorojo';
+const IMG = '/wp-content/uploads/2026/11/';
+// Fotogramas del teléfono (22 imágenes, en dos tamaños: 900 px y 560 px de ancho).
+// 00–06: el teléfono sonando (vuelve al 00) · 07–21: el auricular se descuelga.
+const FRAMES = `${IMG}telefono-rojo/telefono-rojo-`;
+
+const ventajas = [
+  {
+    icon: 'home',
+    title: 'Alojamiento asegurado',
+    text: 'Desde el principio tienes, como mínimo, una opción de alojamiento asegurada. Llegas con casa, no con una lista de anuncios.',
+    short: 'Llegas con casa, no con una lista de anuncios.',
+    destacada: true,
+  },
+  {
+    icon: 'doc',
+    title: 'Toda la gestión, hecha',
+    text: 'Carta de motivación, documentos, plazos y Studielink. Lo preparamos contigo y lo revisamos todo antes de enviarlo.',
+    short: 'Cartas, documentos, plazos y Studielink. Todo revisado.',
+  },
+  {
+    icon: 'compass',
+    title: 'Elegimos contigo, no por ti',
+    text: 'Analizamos tu perfil, tus notas y tu presupuesto, y te damos una lista corta de carreras que encajan contigo.',
+    short: 'Una lista corta de carreras que encajan contigo.',
+  },
+  {
+    icon: 'people',
+    title: 'Gente que ya lo vivió',
+    text: 'Estudiamos en Holanda antes que tú. Y no desaparecemos cuando te admiten: seguimos contigo en tu primer año.',
+    short: 'Estudiamos allí y seguimos contigo en tu primer año.',
+  },
+];
+
+// Mismos textos que el Método Robin de la home
+const pasos = [
+  {
+    tab: 'Elige',
+    img: '/wp-content/uploads/2026/06/RobinTelescopio.webp',
+    title: 'Elegimos contigo, no por ti',
+    text: 'Analizamos tu perfil, tus notas y tu presupuesto, y te damos una lista corta de universidades que encajan contigo. Requisitos, costes y salidas encima de la mesa desde el primer día.',
+  },
+  {
+    tab: 'Aplica',
+    img: '/wp-content/uploads/2026/06/Robin-Carpetas.webp',
+    title: 'Tu aplicación, sin sustos',
+    text: 'Carta de motivación, documentos, plazos y plataformas como Studielink. Preparamos tu perfil contigo y lo revisamos todo antes de enviarlo para que no se escape nada.',
+  },
+  {
+    tab: 'Aterriza',
+    img: '/wp-content/uploads/2026/06/RobinHouse.webp',
+    badge: 'Housing garantizado',
+    title: 'Tu casa, asegurada',
+    text: 'Encontrar piso siendo estudiante internacional en Holanda es un deporte extremo. Lo sabemos porque lo vivimos. Por eso, desde el principio, te garantizamos como mínimo una opción de alojamiento asegurada, y te ayudamos con la mudanza para que llegues con todo organizado.',
+  },
+  {
+    tab: 'Despega',
+    img: '/wp-content/uploads/2026/06/RobinGraduated.webp',
+    title: 'Seguimos contigo cuando llegas',
+    text: 'No desaparecemos cuando te admiten. Te acompañamos en los últimos pasos, resolvemos tus dudas y te asesoramos con las ayudas al estudiante para que empieces tu nueva etapa con confianza.',
+  },
+];
+---
+
+<Base
+  pageClass="page-tr"
+  title="Descuelga tu futuro en Holanda | Project Robin"
+  description="Estudia en Holanda con alojamiento asegurado y toda la gestión hecha. Déjanos tus datos y te devolvemos la llamada."
+  image={`${IMG}telefono-rojo-base.webp`}
+  noindex
+>
+  <!-- 1 · EL TELÉFONO (escena fija mientras haces scroll) -->
+  <section class="tr-scroll" data-tr aria-label="Descuelga tu futuro en Holanda">
+    <div class="tr-sticky">
+      <div class="tr-title" data-tr-title>
+        <h1 class="display tr-h1">Descuelga tu futuro <span class="tr-hl">en Holanda</span></h1>
+        <p class="lead tr-sub">Elegimos carrera contigo, gestionamos tu aplicación y llegas con casa. Tú solo tienes que coger el teléfono.</p>
+      </div>
+
+      <div class="tr-grid" data-tr-grid>
+        {
+          ventajas.map((v, i) => (
+            <article class:list={['tr-card', `tr-card--${i + 1}`, { 'tr-card--hl': v.destacada }]} data-tr-card>
+              <span class="tr-card-icon">
+                <Icon name={v.icon} size={26} />
+              </span>
+              <h2 class="tr-card-title">{v.title}</h2>
+              <p class="tr-card-text">
+                <span class="tr-long">{v.text}</span>
+                <span class="tr-short">{v.short}</span>
+              </p>
+            </article>
+          ))
+        }
+
+        <div class="tr-phone-slot" data-tr-slot>
+          <div class="tr-phone" data-tr-phone>
+            <span class="tr-shadow" aria-hidden="true"></span>
+            <img
+              class="tr-frame"
+              src={`${FRAMES}900-00.webp`}
+              srcset={`${FRAMES}560-00.webp 560w, ${FRAMES}900-00.webp 900w`}
+              sizes="(max-width: 900px) 60vw, 40vw"
+              alt="Teléfono rojo de disco, de los de toda la vida"
+              width="898"
+              height="881"
+              fetchpriority="high"
+              data-tr-img
+            />
+            <canvas class="tr-frame tr-canvas" width="898" height="881" aria-hidden="true" data-tr-canvas></canvas>
+            <span class="tr-ring tr-ring--l" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="tr-ring tr-ring--r" aria-hidden="true"><i></i><i></i><i></i></span>
+            <div class="tr-chat" aria-hidden="true">
+              <p class="tr-bubble tr-bubble--you" data-tr-b1>¿Hija?</p>
+              <p class="tr-bubble tr-bubble--them" data-tr-b2>¡Mamá! Venirme a Holanda ha sido la mejor decisión de mi vida. ¡Estoy encantada!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a class="btn tr-cta" href="#formulario" data-tr-cta tabindex="-1">Reservar ahora</a>
+
+      <p class="tr-hint" data-tr-hint aria-hidden="true">
+        <span>Desliza para descolgar</span>
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 5v14m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </p>
+    </div>
+  </section>
+
+  <!-- 2 · MÉTODO ROBIN -->
+  <section class="tr-metodo" data-tr-metodo>
+    <div class="container">
+      <div class="tr-head center">
+        <p class="eyebrow">Método Robin</p>
+        <h2 class="display-md">Cuatro pasos. Una sola llamada.</h2>
+        <p class="lead">Sin falsas promesas. Un proceso claro, transparente y probado. Paso a paso</p>
+      </div>
+      <div class="tr-steps-wrap">
+        <ol class="tr-steps">
+          {
+            pasos.map((p, i) => (
+              <li class="tr-step" data-tr-step>
+                <span class="tr-step-art">
+                  <img src={p.img} alt="" width="220" height="220" loading="lazy" />
+                </span>
+                <p class="tr-step-kicker">
+                  {i + 1} · {p.tab}
+                  {p.badge && <span class="tr-badge">{p.badge}</span>}
+                </p>
+                <h3 class="tr-step-title">{p.title}</h3>
+                <p class="tr-step-text">{p.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+      <p class="center tr-metodo-cta">
+        <a class="btn" href="#formulario">Quiero que me llaméis</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 3 · FORMULARIO -->
+  <section class="tr-final" id="formulario">
+    <div class="container tr-final-grid">
+      <div class="tr-final-copy">
+        <p class="eyebrow text-accent">Te devolvemos la llamada</p>
+        <h2 class="display-md">Tú pon el número. Nosotros llamamos.</h2>
+        <p class="lead">Déjanos tus datos y te contactamos para conocer tu caso. La primera llamada es gratuita, dura 30 minutos y no te compromete a nada.</p>
+        <ul class="tr-ticks">
+          <li>Te respondemos en menos de 24 horas laborables.</li>
+          <li>Hablas con gente que ya estudió en Holanda.</li>
+          <li>Sin compromiso y sin letra pequeña.</li>
+        </ul>
+      </div>
+      <div class="tr-form-card">
+        <LeadForm form="contacto" tag={TAG} servicio="Asesoramiento Completo" submitLabel="Quiero que me llaméis" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // ---------- Guion de la animación ----------
+  // p = progreso del scroll dentro de la escena (0 → 1). Se suaviza con un "lerp" en cada frame
+  // para que el movimiento sea fluido aunque la rueda del ratón vaya a saltos.
+  const root = document.querySelector('[data-tr]');
+  if (root) {
+    const $ = (s) => root.querySelector(s);
+    const title = $('[data-tr-title]');
+    const hint = $('[data-tr-hint]');
+    const cta = $('[data-tr-cta]');
+    const slot = $('[data-tr-slot]');
+    const phone = $('[data-tr-phone]');
+    const img = $('[data-tr-img]');
+    const canvas = $('[data-tr-canvas]');
+    const ctx = canvas.getContext('2d');
+    const b1 = $('[data-tr-b1]');
+    const b2 = $('[data-tr-b2]');
+    const cards = [...root.querySelectorAll('[data-tr-card]')];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+    const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+    const seg = (p, a, b) => clamp((p - a) / (b - a));
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+    const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+    // ----- Fotogramas -----
+    const RING = [0, 1, 2, 3, 4, 5]; // el teléfono vibra
+    const LIFT_FROM = 7; // 07 → 21: se descuelga
+    const LIFT_TO = 21;
+    const base = img.currentSrc ? img.currentSrc : img.src;
+    const size = (slot.clientWidth || 400) * (devicePixelRatio || 1) > 620 ? 900 : 560;
+    const urlFor = (i) => base.replace(/-(560|900)-\d\d\.webp.*$/, `-${size}-${String(i).padStart(2, '0')}.webp`);
+    const frames = [];
+    let loaded = 0;
+    let ready = false;
+    for (let i = 0; i <= LIFT_TO; i++) {
+      const im = new Image();
+      im.decoding = 'async';
+      im.onload = () => {
+        loaded++;
+        if (loaded === LIFT_TO + 1) {
+          ready = true;
+          canvas.width = im.naturalWidth;
+          canvas.height = im.naturalHeight;
+          canvas.classList.add('is-on');
+          img.classList.add('is-off');
+          draw(lastFrame, true);
+        }
+      };
+      frames[i] = im;
+    }
+    // primero el que se ve, luego el resto
+    frames[0].src = urlFor(0);
+    const loadRest = () => frames.forEach((im, i) => i && (im.src = urlFor(i)));
+    if (document.readyState === 'complete') loadRest();
+    else addEventListener('load', loadRest, { once: true });
+
+    // Pinta un fotograma "decimal": mezcla el anterior con el siguiente para que no vaya a saltos
+    let lastFrame = 0;
+    const draw = (f, force) => {
+      if (!ready) {
+        lastFrame = f;
+        return;
+      }
+      if (!force && Math.abs(f - lastFrame) < 0.004) return;
+      lastFrame = f;
+      const i = Math.floor(f);
+      const k = f - i;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.globalAlpha = 1;
+      ctx.drawImage(frames[i], 0, 0, canvas.width, canvas.height);
+      if (k > 0.01 && frames[i + 1]) {
+        ctx.globalAlpha = k;
+        ctx.drawImage(frames[i + 1], 0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1;
+      }
+    };
+
+    // Timbre: rin-rin (dos ráfagas) y pausa, mientras no se haya empezado a bajar
+    let ringing = false;
+    let ringRaf = 0;
+    let ringT0 = 0;
+    const ringTick = (t) => {
+      if (!ringing) {
+        ringRaf = 0;
+        return;
+      }
+      const ms = (t - ringT0) % 1900;
+      const step = 45; // ms por fotograma
+      const burst = RING.length * step * 2; // cada ráfaga: ida y vuelta por los fotogramas
+      let f = 0;
+      const inBurst = (o) => ms >= o && ms < o + burst;
+      const o = inBurst(0) ? 0 : inBurst(burst + 120) ? burst + 120 : -1;
+      if (o >= 0) {
+        const n = Math.floor((ms - o) / step) % (RING.length * 2);
+        f = RING[n < RING.length ? n : RING.length * 2 - 1 - n];
+      }
+      draw(f, true);
+      ringRaf = requestAnimationFrame(ringTick);
+    };
+    const setRinging = (on) => {
+      if (reduce.matches) on = false;
+      root.classList.toggle('is-ringing', on);
+      if (on === ringing) return;
+      ringing = on;
+      if (on) {
+        ringT0 = performance.now();
+        if (!ringRaf) ringRaf = requestAnimationFrame(ringTick);
+      }
+    };
+
+    let geo = null;
+
+    // Medidas: dónde empieza el teléfono (centrado bajo el título) y dónde va cada tarjeta
+    const measure = () => {
+      const st = root.querySelector('.tr-sticky').getBoundingClientRect();
+      cards.forEach((c) => (c.style.transform = 'none'));
+      const ph = slot.getBoundingClientRect();
+      const tt = title.getBoundingClientRect();
+      const hintH = hint.offsetHeight + 34; // la pista "Desliza para descolgar" va abajo del todo
+      const free = st.bottom - hintH - tt.bottom; // hueco entre el título y la pista
+      const startCy = tt.bottom + free * 0.52;
+      const narrow = innerWidth <= 900;
+      const fitW = (st.width * 0.92) / ph.width; // que nunca se salga por los lados
+      const startScale = clamp(Math.min((free * 0.9) / ph.height, fitW), 0.6, 1.5);
+      const midScale = clamp(Math.min(((st.height - 40) * 0.7) / ph.height, fitW, narrow ? 1.15 : 1.3), 0.6, 1.3);
+      const phCx = ph.left + ph.width / 2;
+      const phCy = ph.top + ph.height / 2;
+      geo = {
+        start: { y: startCy - phCy, x: st.left + st.width / 2 - phCx, s: startScale },
+        mid: { y: st.top + st.height * (narrow ? 0.47 : 0.52) - phCy, x: st.left + st.width / 2 - phCx, s: midScale },
+        cards: cards.map((c) => {
+          const r = c.getBoundingClientRect();
+          return { dx: phCx - (r.left + r.width / 2), dy: phCy - (r.top + r.height / 2) };
+        }),
+      };
+    };
+
+    const apply = (p) => {
+      if (!geo) measure();
+      setRinging(p < 0.012);
+
+      // Título y pista
+      const tOut = easeInOut(seg(p, 0.02, 0.2));
+      title.style.opacity = String(1 - tOut);
+      title.style.transform = `translate3d(0, ${-60 * tOut}px, 0)`;
+      hint.style.opacity = String(1 - seg(p, 0, 0.06));
+
+      // Teléfono: bajo el título → centro → su hueco entre las tarjetas
+      const toMid = easeInOut(seg(p, 0.03, 0.3));
+      const toEnd = easeInOut(seg(p, 0.48, 0.66));
+      const g = geo;
+      const x = lerp(lerp(g.start.x, g.mid.x, toMid), 0, toEnd);
+      const y = lerp(lerp(g.start.y, g.mid.y, toMid), 0, toEnd);
+      const s = lerp(lerp(g.start.s, g.mid.s, toMid), 1, toEnd);
+      phone.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${s})`;
+
+      // Auricular: recorre los fotogramas del descuelgue
+      if (!ringing) {
+        const lift = easeInOut(seg(p, 0.03, 0.3));
+        draw(lift > 0 ? LIFT_FROM - 1 + lift * (LIFT_TO - LIFT_FROM + 1) : 0);
+      }
+
+      // Conversación
+      const s1 = easeOut(seg(p, 0.2, 0.27)) * (1 - seg(p, 0.46, 0.52));
+      const s2 = easeOut(seg(p, 0.3, 0.37)) * (1 - seg(p, 0.48, 0.54));
+      b1.style.opacity = String(s1);
+      b1.style.transform = `translate3d(0, ${(1 - s1) * 14}px, 0) scale(${0.85 + 0.15 * s1})`;
+      b2.style.opacity = String(s2);
+      b2.style.transform = `translate3d(0, ${(1 - s2) * 14}px, 0) scale(${0.85 + 0.15 * s2})`;
+
+      // Botón "Reservar ahora": aparece cuando termina la animación
+      const c1 = easeOut(seg(p, 0.86, 0.95));
+      cta.style.opacity = String(c1);
+      cta.style.transform = `translate3d(-50%, ${(1 - c1) * 24}px, 0)`;
+      const on = c1 > 0.5;
+      cta.classList.toggle('is-on', on);
+      cta.tabIndex = on ? 0 : -1;
+
+      // Ventajas: salen de dentro del teléfono, una detrás de otra
+      cards.forEach((c, i) => {
+        const e = easeOut(seg(p, 0.52 + i * 0.07, 0.72 + i * 0.07));
+        const o = g.cards[i];
+        const rot = (i % 2 ? 1 : -1) * 14 * (1 - e);
+        c.style.opacity = String(clamp(e * 1.6));
+        c.style.transform = `translate3d(${o.dx * (1 - e)}px, ${o.dy * (1 - e)}px, 0) scale(${0.2 + 0.8 * e}) rotate(${rot}deg)`;
+      });
+    };
+
+    // Bucle suave: solo corre mientras hay movimiento
+    let target = 0,
+      cur = 0,
+      raf = 0;
+    const readScroll = () => {
+      const r = root.getBoundingClientRect();
+      const sticky = root.querySelector('.tr-sticky');
+      const top = parseFloat(getComputedStyle(sticky).top) || 0; // la escena se queda fija bajo la cabecera
+      const total = root.offsetHeight - sticky.offsetHeight;
+      target = clamp((top - r.top) / Math.max(1, total));
+    };
+    const tick = () => {
+      cur += (target - cur) * 0.085;
+      if (Math.abs(target - cur) < 0.0004) cur = target;
+      apply(cur);
+      raf = cur === target ? 0 : requestAnimationFrame(tick);
+    };
+    const kick = () => {
+      readScroll();
+      if (reduce.matches) {
+        cur = target;
+        apply(cur);
+        return;
+      }
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+
+    const init = () => {
+      geo = null;
+      measure();
+      readScroll();
+      cur = target;
+      apply(cur);
+    };
+    addEventListener('scroll', kick, { passive: true });
+    addEventListener('resize', init);
+    img.complete || img.addEventListener('load', init, { once: true });
+    init();
+  }
+
+  // ---------- Método Robin: cada paso aparece al llegar a él ----------
+  const steps = document.querySelectorAll('[data-tr-step]');
+  if (steps.length) {
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-on');
+            io.unobserve(e.target);
+          }
+        }),
+      { rootMargin: '0px 0px -15% 0px' }
+    );
+    steps.forEach((s) => io.observe(s));
+  }
+</script>

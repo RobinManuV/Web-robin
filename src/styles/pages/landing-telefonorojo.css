@@ -1,0 +1,623 @@
+/* Landing "Teléfono rojo" — todo va dentro de .page-tr (clase del <main>) */
+
+.page-tr {
+  --tr-red: #b3242a;
+  --tr-red-dark: #7d1418;
+  --tr-bg: var(--peach);
+  overflow-x: clip;
+}
+
+/* ---------- 1 · Escena del teléfono ---------- */
+
+.page-tr .tr-scroll {
+  position: relative;
+  height: 430vh;
+  background: var(--tr-bg);
+}
+.page-tr .tr-sticky {
+  position: sticky;
+  top: var(--header-h);
+  height: calc(100svh - var(--header-h));
+  overflow: hidden;
+  display: grid;
+  padding: 0 var(--gutter);
+}
+/* fondo: un punto de luz cálido detrás del teléfono */
+.page-tr .tr-sticky::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 55% at 50% 58%, rgba(255, 255, 255, 0.75), transparent 70%),
+    radial-gradient(40% 35% at 50% 62%, rgba(236, 179, 79, 0.18), transparent 70%);
+  pointer-events: none;
+}
+
+.page-tr .tr-title {
+  position: absolute;
+  inset: clamp(18px, 4vh, 44px) var(--gutter) auto;
+  z-index: 3;
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: clamp(10px, 1.6vh, 18px);
+  will-change: transform, opacity;
+}
+.page-tr .tr-h1 {
+  margin: 0;
+  max-width: 18ch;
+  font-size: clamp(40px, 5.4vw, 80px);
+  text-wrap: balance;
+}
+.page-tr .tr-hl {
+  color: var(--tr-red);
+}
+.page-tr .tr-sub {
+  margin: 0;
+  max-width: 34ch;
+  text-wrap: balance;
+}
+
+/* Rejilla final: ventajas alrededor del teléfono */
+.page-tr .tr-grid {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1280px);
+  margin: auto;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 1.25fr) minmax(0, 1fr);
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    'c1 ph c2'
+    'c3 ph c4';
+  align-items: center;
+  gap: clamp(16px, 3vh, 34px) clamp(18px, 3vw, 48px);
+  padding-block: clamp(20px, 4vh, 48px) calc(clamp(16px, 3.4vh, 34px) + 72px);
+}
+.page-tr .tr-card--1 {
+  grid-area: c1;
+  align-self: end;
+}
+.page-tr .tr-card--2 {
+  grid-area: c2;
+  align-self: end;
+}
+.page-tr .tr-card--3 {
+  grid-area: c3;
+  align-self: start;
+}
+.page-tr .tr-card--4 {
+  grid-area: c4;
+  align-self: start;
+}
+.page-tr .tr-phone-slot {
+  grid-area: ph;
+  position: relative;
+  justify-self: center;
+  /* cabe siempre en alto, también en portátiles con poca pantalla */
+  width: min(100%, calc((100svh - var(--header-h)) * 0.62 * 898 / 881));
+  aspect-ratio: 898 / 881;
+  align-self: center;
+}
+
+/* Tarjetas de ventajas */
+.page-tr .tr-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: clamp(18px, 2vw, 26px);
+  box-shadow: 0 14px 40px rgba(45, 58, 100, 0.12);
+  display: grid;
+  gap: 8px;
+  opacity: 0;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+.page-tr .tr-card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--sky);
+  color: var(--navy);
+}
+.page-tr .tr-card-title {
+  margin: 4px 0 0;
+  font-size: clamp(19px, 1.6vw, 24px);
+  line-height: 1.1;
+  font-weight: 700;
+}
+.page-tr .tr-card-text {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+.page-tr .tr-card--hl {
+  background: var(--navy);
+  color: var(--cream);
+}
+.page-tr .tr-card--hl .tr-card-icon {
+  background: var(--accent);
+  color: var(--navy);
+}
+.page-tr .tr-card--hl .tr-card-text {
+  opacity: 0.9;
+}
+
+.page-tr .tr-short {
+  display: none;
+}
+
+/* El teléfono: capas apiladas en el mismo encuadre */
+.page-tr .tr-phone {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 55%;
+  will-change: transform;
+}
+.page-tr .tr-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+/* el canvas aparece cuando están cargados todos los fotogramas; hasta entonces se ve la imagen */
+.page-tr .tr-canvas {
+  opacity: 0;
+}
+.page-tr .tr-canvas.is-on {
+  opacity: 1;
+}
+.page-tr .tr-frame.is-off {
+  visibility: hidden;
+}
+.page-tr .tr-shadow {
+  position: absolute;
+  left: 4%;
+  right: 6%;
+  bottom: 1%;
+  height: 12%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(70, 20, 20, 0.32), transparent);
+  filter: blur(6px);
+}
+/* Suena: los fotogramas vibran (JS) y salen ondas a los lados */
+.page-tr .tr-ring {
+  position: absolute;
+  top: 16%;
+  width: 14%;
+  aspect-ratio: 1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.page-tr .tr-ring--l {
+  left: -9%;
+}
+.page-tr .tr-ring--r {
+  right: -9%;
+  top: 18%;
+  transform: scaleX(-1);
+}
+.page-tr .tr-ring i {
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--tr-red);
+  border-color: transparent transparent transparent var(--tr-red);
+  border-radius: 50%;
+  opacity: 0;
+  animation: tr-wave 1.8s ease-out infinite;
+}
+.page-tr .tr-ring i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.page-tr .tr-ring i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes tr-wave {
+  0% {
+    transform: scale(0.4) translateX(20%);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.9;
+  }
+  34%,
+  100% {
+    transform: scale(1.15) translateX(-12%);
+    opacity: 0;
+  }
+}
+.page-tr .tr-scroll.is-ringing .tr-ring {
+  opacity: 1;
+}
+
+/* Bocadillos de la conversación */
+.page-tr .tr-chat {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.page-tr .tr-bubble {
+  position: absolute;
+  margin: 0;
+  padding: 12px 18px;
+  border-radius: 20px;
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.25;
+  font-weight: 600;
+  opacity: 0;
+  will-change: transform, opacity;
+  box-shadow: 0 10px 26px rgba(45, 58, 100, 0.14);
+}
+.page-tr .tr-bubble--you {
+  right: 100%;
+  top: 6%;
+  margin-right: 1%;
+  background: #fff;
+  color: var(--navy);
+  border-bottom-right-radius: 6px;
+  white-space: nowrap;
+}
+.page-tr .tr-bubble--them {
+  left: 100%;
+  top: 34%;
+  margin-left: 0;
+  width: max-content;
+  max-width: 260px;
+  background: var(--navy);
+  color: var(--cream);
+  border-bottom-left-radius: 6px;
+}
+
+/* Botón al terminar la animación (sustituye a la pista de abajo) */
+.page-tr .tr-cta {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(16px, 3.4vh, 34px);
+  z-index: 4;
+  opacity: 0;
+  transform: translate3d(-50%, 24px, 0);
+  pointer-events: none;
+  box-shadow: 0 12px 30px rgba(45, 58, 100, 0.18);
+  will-change: transform, opacity;
+}
+.page-tr .tr-cta.is-on {
+  pointer-events: auto;
+}
+.page-tr .tr-hint {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(12px, 3vh, 28px);
+  transform: translateX(-50%);
+  z-index: 3;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--tr-red-dark);
+}
+.page-tr .tr-hint svg {
+  animation: tr-bob 1.4s ease-in-out infinite;
+}
+@keyframes tr-bob {
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+/* ---------- 2 · Método Robin ---------- */
+
+.page-tr .tr-metodo {
+  padding-block: clamp(70px, 10vw, 120px);
+  background: var(--cream);
+}
+.page-tr .tr-head {
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  max-width: 820px;
+  margin: 0 auto;
+}
+.page-tr .tr-head .display-md,
+.page-tr .tr-head .lead {
+  margin: 0;
+}
+.page-tr .tr-steps-wrap {
+  position: relative;
+  margin-top: clamp(40px, 6vw, 70px);
+}
+.page-tr .tr-steps {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 34px);
+}
+.page-tr .tr-step {
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  text-align: center;
+  gap: 10px;
+  opacity: 0.35;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.page-tr .tr-step.is-on {
+  opacity: 1;
+  transform: none;
+}
+.page-tr .tr-step-art {
+  position: relative;
+  width: clamp(120px, 12vw, 170px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--peach);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 6px var(--cream);
+  margin-bottom: 8px;
+}
+.page-tr .tr-step-art img {
+  width: 78%;
+  height: auto;
+}
+.page-tr .tr-step.is-on .tr-step-art {
+  animation: tr-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes tr-pop {
+  0% {
+    transform: scale(0.85);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.page-tr .tr-step-kicker {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tr-red);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 10px;
+  align-items: center;
+}
+.page-tr .tr-badge {
+  background: var(--accent);
+  color: var(--navy);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.page-tr .tr-step-title {
+  margin: 0;
+  font-size: clamp(20px, 1.7vw, 24px);
+  line-height: 1.15;
+}
+.page-tr .tr-step-text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.45;
+  opacity: 0.85;
+}
+.page-tr .tr-metodo-cta {
+  margin: clamp(40px, 5vw, 60px) 0 0;
+}
+
+/* ---------- 3 · Formulario ---------- */
+
+.page-tr .tr-final {
+  background: var(--navy);
+  color: var(--cream);
+  padding-block: clamp(70px, 9vw, 110px);
+  scroll-margin-top: calc(var(--header-h) - 10px);
+}
+.page-tr .tr-final-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: clamp(30px, 5vw, 80px);
+  align-items: center;
+}
+.page-tr .tr-final-copy {
+  display: grid;
+  gap: 18px;
+}
+.page-tr .tr-final-copy .display-md,
+.page-tr .tr-final-copy .lead,
+.page-tr .tr-final-copy .eyebrow {
+  margin: 0;
+}
+.page-tr .tr-ticks {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.page-tr .tr-ticks li {
+  position: relative;
+  padding-left: 32px;
+}
+.page-tr .tr-ticks li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 12 4 4 8-8' fill='none' stroke='%232d3a64' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 14px no-repeat;
+}
+.page-tr .tr-form-card {
+  background: #fff;
+  color: var(--navy);
+  border-radius: 20px;
+  padding: clamp(22px, 3vw, 36px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1100px) {
+  .page-tr .tr-card-text {
+    font-size: 14.5px;
+  }
+  .page-tr .tr-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 1.1fr) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .page-tr .tr-scroll {
+    height: 400vh;
+  }
+  .page-tr .tr-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      'ph ph'
+      'c1 c2'
+      'c3 c4';
+    align-content: center;
+    gap: 12px;
+    padding-block: 12px calc(clamp(16px, 3.4vh, 34px) + 64px);
+  }
+  .page-tr .tr-card--1,
+  .page-tr .tr-card--2,
+  .page-tr .tr-card--3,
+  .page-tr .tr-card--4 {
+    align-self: stretch;
+  }
+  .page-tr .tr-phone-slot {
+    width: min(52%, 300px);
+    justify-self: center;
+    margin: 0 0 4px;
+  }
+  .page-tr .tr-card {
+    padding: 14px;
+    gap: 6px;
+    border-radius: 14px;
+  }
+  .page-tr .tr-card-icon {
+    width: 34px;
+    height: 34px;
+  }
+  .page-tr .tr-card-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  .page-tr .tr-card-title {
+    font-size: 16px;
+    margin: 0;
+  }
+  .page-tr .tr-card-text {
+    font-size: 13px;
+    line-height: 1.35;
+  }
+  .page-tr .tr-long {
+    display: none;
+  }
+  .page-tr .tr-short {
+    display: inline;
+  }
+  /* en móvil la conversación va encima del teléfono */
+  .page-tr .tr-bubble {
+    font-size: 14px;
+    padding: 9px 14px;
+  }
+  /* en móvil: un bocadillo encima del teléfono y otro debajo */
+  .page-tr .tr-bubble--you {
+    left: 0;
+    right: 0;
+    top: -31%;
+    width: max-content;
+    margin: 0 auto;
+  }
+  .page-tr .tr-bubble--them {
+    left: -26%;
+    right: -26%;
+    top: 103%;
+    margin: 0;
+    width: auto;
+    max-width: none;
+    text-align: center;
+  }
+  .page-tr .tr-steps {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  /* en móvil el dibujo va a la izquierda y el cable baja por esa columna, sin cruzar el texto */
+  .page-tr .tr-step {
+    grid-template-columns: 84px 1fr;
+    column-gap: 18px;
+    row-gap: 6px;
+    justify-items: start;
+    text-align: left;
+  }
+  .page-tr .tr-step-art {
+    grid-row: 1 / span 3;
+    width: 84px;
+    margin: 0;
+  }
+  .page-tr .tr-step-kicker {
+    justify-content: flex-start;
+  }
+  .page-tr .tr-final-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .page-tr .tr-card-text {
+    font-size: 12.5px;
+  }
+}
+
+/* Pantallas bajas (portátiles pequeños): tarjetas más compactas */
+@media (min-width: 901px) and (max-height: 760px) {
+  .page-tr .tr-card {
+    padding: 16px 18px;
+  }
+  .page-tr .tr-card-text {
+    font-size: 14px;
+  }
+  .page-tr .tr-card-icon {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-tr .tr-ring i,
+  .page-tr .tr-hint svg {
+    animation: none;
+  }
+  .page-tr .tr-step {
+    transition: none;
+  }
+}
