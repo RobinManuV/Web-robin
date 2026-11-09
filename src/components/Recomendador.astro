@@ -66,13 +66,22 @@ const { id = 'recomendador', bg = '' } = Astro.props;
     mobile.addEventListener('change', sync);
     sync();
 
+    // Solo se recoloca la página cuando el usuario ya está usando el recomendador (ha hecho clic
+    // dentro). Al cargar, el iframe también pide "scrollTop" y eso hacía bajar la página sola.
+    let engaged = false;
+    window.addEventListener('blur', () => {
+      setTimeout(() => {
+        if (document.activeElement === frame) engaged = true;
+      }, 0);
+    });
+
     window.addEventListener('message', (event) => {
       if (event.origin !== url.origin || event.source !== frame.contentWindow) return;
       const data = event.data || {};
       if (data.type === 'rbmt:height' && Number(data.height) > 0) {
         frame.style.height = `${Math.ceil(Number(data.height))}px`;
       }
-      if (data.type === 'rbmt:scrollTop') {
+      if (data.type === 'rbmt:scrollTop' && engaged) {
         const top = frame.getBoundingClientRect().top;
         // Solo si el inicio del recomendador ha quedado fuera de la vista
         if (top < 0 || top > window.innerHeight) {
