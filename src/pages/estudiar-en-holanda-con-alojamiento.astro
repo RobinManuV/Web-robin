@@ -1,0 +1,349 @@
+---
+import '../styles/pages/landing-casa-robin.css';
+// Landing "Casa Robin": una casa holandesa de cuyas ventanas van saliendo los Robins al hacer scroll.
+// Cada Robin trae un bocadillo con una ventaja; la última (alojamiento asegurado) va destacada.
+// A diferencia de /telefonorojo/, esta página SÍ es indexable: sale en el sitemap y no está en robots.txt.
+// Solo existe en español (ver SOLO_ES en src/i18n/config.mjs). Los leads llegan con la etiqueta "casarobin".
+//
+// La casa es una secuencia de 71 fotogramas (WebP recortados de "fotogramas casa/web_640") que se pinta
+// en un <canvas>. Cada Robin ocupa 10 fotogramas seguidos: el 1º del 00 al 10, el 2º del 10 al 20…
+// El guion de la animación está en el <script> del final.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import LeadForm from '../components/LeadForm.astro';
+
+const TAG = 'casarobin';
+const IMG = '/wp-content/uploads/2026/11/casa-robin/';
+const FRAMES = `${IMG}casa-robin-`;
+const TOTAL_FRAMES = 71;
+
+// Ventajas, en el orden en que salen los Robins (ver LEEME de "fotogramas casa").
+// side: lado de la casa por el que sale el bocadillo · x / y: punto de la ventana (en % de la casa)
+const ventajas = [
+  {
+    ventana: 'Ático',
+    side: 'top',
+    title: 'Contigo de principio a fin',
+    text: 'De elegir carrera a tu primer año allí. No desaparecemos cuando te admiten.',
+  },
+  {
+    ventana: 'Superior izquierda',
+    side: 'l',
+    title: 'Elegimos contigo, no por ti',
+    text: 'Tu perfil, tus notas y tu presupuesto. Una lista corta de carreras que encajan contigo.',
+  },
+  {
+    ventana: 'Superior derecha',
+    side: 'r',
+    title: 'Todas las universidades',
+    text: 'Todas las de Holanda y más de 2.000 programas. Las comparamos contigo, sin casarnos con ninguna.',
+  },
+  {
+    ventana: 'Intermedia derecha',
+    side: 'r',
+    title: 'Tu aplicación, hecha',
+    text: 'Carta de motivación, documentos, plazos y Studielink. Todo revisado antes de enviarlo.',
+  },
+  {
+    ventana: 'Intermedia izquierda',
+    side: 'l',
+    title: 'Gente que ya lo vivió',
+    text: 'Estudiamos en Holanda antes que tú. Sabemos lo que preguntas porque lo preguntamos nosotros.',
+  },
+  {
+    ventana: 'Inferior izquierda',
+    side: 'l',
+    title: 'Ayudas, sin letra pequeña',
+    text: 'Te explicamos las ayudas al estudiante del gobierno holandés y cómo pedirlas.',
+  },
+  {
+    ventana: 'Inferior derecha',
+    side: 'r',
+    title: 'Y con alojamiento asegurado desde el día 1',
+    text: 'Desde el principio del proceso tienes, como mínimo, una opción de alojamiento asegurada. Llegas con casa.',
+    destacada: true,
+  },
+];
+---
+
+<Base
+  pageClass="page-cr"
+  title="Estudiar en Holanda con alojamiento asegurado | Project Robin"
+  description="Estudia en Holanda con acompañamiento de principio a fin: elección de carrera, aplicación, ayudas y alojamiento asegurado desde el día 1. Cuéntanos tu caso y te llamamos."
+  image={`${IMG}casa-robin-og.jpg`}
+>
+  <!-- 1 · LA CASA (escena fija mientras haces scroll) -->
+  <section class="cr-scroll" data-cr data-frames={TOTAL_FRAMES} aria-labelledby="cr-h1">
+    <div class="cr-sticky">
+      <div class="cr-title" data-cr-title>
+        <h1 class="display cr-h1" id="cr-h1">Estudia en Holanda y <span class="cr-hl">llega con casa</span></h1>
+        <p class="lead cr-sub">Siete Robins, siete razones para hacerlo con nosotros. Baja y ve abriendo ventanas.</p>
+      </div>
+
+      <div class="cr-stage">
+        <div class="cr-house-slot" data-cr-slot>
+          <div class="cr-house" data-cr-house>
+            <span class="cr-shadow" aria-hidden="true"></span>
+            <img
+              class="cr-frame"
+              src={`${FRAMES}00.webp`}
+              alt="Casa holandesa de ladrillo con siete Robins asomándose a sus ventanas"
+              width="289"
+              height="622"
+              fetchpriority="high"
+              data-cr-img
+            />
+            <canvas class="cr-frame cr-canvas" width="289" height="622" aria-hidden="true" data-cr-canvas></canvas>
+
+            <ul class="cr-bubbles" aria-label="Por qué estudiar en Holanda con Project Robin">
+              {
+                ventajas.map((v, i) => (
+                  <li class:list={['cr-b', `cr-b--${v.side}`, `cr-b--${i + 1}`, { 'cr-b--hl': v.destacada }]} data-cr-b>
+                    <div class="cr-b-in" data-cr-b-in>
+                      {v.destacada && (
+                        <span class="cr-b-icon" aria-hidden="true">
+                          <Icon name="home" size={22} />
+                        </span>
+                      )}
+                      <p class="cr-b-title">{v.title}</p>
+                      <p class="cr-b-text">{v.text}</p>
+                    </div>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <a class="btn cr-cta" href="#formulario" data-cr-cta tabindex="-1">Quiero hablar con un Robin</a>
+
+      <p class="cr-hint" data-cr-hint aria-hidden="true">
+        <span>Desliza para abrir las ventanas</span>
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 5v14m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </p>
+    </div>
+  </section>
+
+  <!-- 2 · FORMULARIO -->
+  <section class="cr-final" id="formulario">
+    <div class="container cr-final-grid">
+      <div class="cr-final-copy">
+        <div class="cr-flock" aria-hidden="true">
+          {[1, 2, 3, 4, 5, 6, 7].map((n) => <img src={`${IMG}pajaro-${n}.webp`} alt="" width="64" height="64" loading="lazy" />)}
+        </div>
+        <p class="eyebrow text-accent">Hablemos</p>
+        <h2 class="display-md">Cuéntanos tu caso. Te llamamos nosotros.</h2>
+        <p class="lead">Déjanos tus datos y te contactamos. La primera llamada es gratuita, dura 30 minutos y no te compromete a nada.</p>
+        <ul class="cr-ticks">
+          <li>Te respondemos en menos de 24 horas laborables.</li>
+          <li>Hablas con gente que ya estudió en Holanda.</li>
+          <li>Sin compromiso y sin letra pequeña.</li>
+        </ul>
+      </div>
+      <div class="cr-form-card">
+        <LeadForm form="contacto" tag={TAG} servicio="Asesoramiento Completo" submitLabel="Quiero que me llaméis" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // ---------- Guion de la animación ----------
+  // p = progreso del scroll dentro de la escena (0 → 1), suavizado con un "lerp" en cada frame.
+  //   0.00–0.16  el título se va y la casa crece hasta su sitio
+  //   0.15–0.87  salen los 7 Robins, uno detrás de otro; cada uno trae su bocadillo
+  //   0.89–0.96  aparece el botón que baja al formulario
+  const root = document.querySelector('[data-cr]');
+  if (root) {
+    const $ = (s) => root.querySelector(s);
+    const title = $('[data-cr-title]');
+    const hint = $('[data-cr-hint]');
+    const cta = $('[data-cr-cta]');
+    const slot = $('[data-cr-slot]');
+    const house = $('[data-cr-house]');
+    const img = $('[data-cr-img]');
+    const canvas = $('[data-cr-canvas]');
+    const ctx = canvas.getContext('2d');
+    const bubbles = [...root.querySelectorAll('[data-cr-b]')];
+    const inner = bubbles.map((b) => b.querySelector('[data-cr-b-in]'));
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    const N = Number(root.dataset.frames) || 71;
+    const PER_BIRD = 10; // fotogramas por Robin
+
+    const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+    const seg = (p, a, b) => clamp((p - a) / (b - a));
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+    const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const easeBack = (t) => 1 + 2.2 * Math.pow(t - 1, 3) + 1.2 * Math.pow(t - 1, 2);
+
+    root.classList.add('is-js');
+
+    // ----- Fotogramas: se cargan en orden (los primeros son los primeros que se ven) -----
+    const base = img.currentSrc || img.src;
+    const urlFor = (i) => base.replace(/-\d\d\.webp.*$/, `-${String(i).padStart(2, '0')}.webp`);
+    const frames = [];
+    const ok = new Array(N).fill(false);
+    let started = false;
+    const kickLoad = () => {
+      // 4 cargas en paralelo para que lleguen rápido sin saturar
+      const lanes = 4;
+      const chunk = Math.ceil(N / lanes);
+      for (let l = 0; l < lanes; l++) {
+        const from = l * chunk;
+        const to = Math.min(N, from + chunk);
+        const next = (i) => {
+          if (i >= to) return;
+          const im = new Image();
+          im.decoding = 'async';
+          im.onload = () => {
+            ok[i] = true;
+            if (i === 0 && !started) {
+              canvas.width = im.naturalWidth;
+              canvas.height = im.naturalHeight;
+              canvas.classList.add('is-on');
+              img.classList.add('is-off');
+              started = true;
+            }
+            draw(lastFrame, true);
+            next(i + 1);
+          };
+          im.onerror = () => next(i + 1);
+          im.src = urlFor(i);
+          frames[i] = im;
+        };
+        next(from);
+      }
+    };
+    if (document.readyState === 'complete') kickLoad();
+    else addEventListener('load', kickLoad, { once: true });
+
+    // El fotograma cargado más cercano por debajo (si aún no ha llegado el que toca)
+    const nearest = (i) => {
+      for (let k = i; k >= 0; k--) if (ok[k]) return k;
+      return -1;
+    };
+
+    // Pinta un fotograma "decimal": funde el anterior con el siguiente para que vaya fluido
+    let lastFrame = 0;
+    const draw = (f, force) => {
+      if (!started) {
+        lastFrame = f;
+        return;
+      }
+      if (!force && Math.abs(f - lastFrame) < 0.004) return;
+      lastFrame = f;
+      const i = Math.floor(f);
+      const k = f - i;
+      const a = nearest(i);
+      if (a < 0) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.globalAlpha = 1;
+      ctx.drawImage(frames[a], 0, 0, canvas.width, canvas.height);
+      if (a === i && k > 0.01 && ok[i + 1]) {
+        ctx.globalAlpha = k;
+        ctx.drawImage(frames[i + 1], 0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1;
+      }
+    };
+
+    // ----- Medidas: dónde empieza la casa (bajo el título) -----
+    let geo = null;
+    const measure = () => {
+      const st = root.querySelector('.cr-sticky').getBoundingClientRect();
+      const ph = slot.getBoundingClientRect();
+      const tt = title.getBoundingClientRect();
+      const hintH = hint.offsetHeight + 30;
+      const free = st.bottom - hintH - tt.bottom; // hueco entre el título y la pista
+      const startS = clamp((free * 0.94) / ph.height, 0.3, 1);
+      const startCy = tt.bottom + free / 2;
+      geo = { y: startCy - (ph.top + ph.height / 2), s: startS };
+    };
+
+    // Ventanas de tiempo de cada Robin
+    const B0 = 0.15;
+    const B1 = 0.87;
+    const L = (B1 - B0) / bubbles.length;
+
+    const apply = (p) => {
+      if (!geo) measure();
+
+      // Título y pista
+      const tOut = easeInOut(seg(p, 0.01, 0.13));
+      title.style.opacity = String(1 - tOut);
+      title.style.transform = `translate3d(0, ${-50 * tOut}px, 0)`;
+      title.style.visibility = tOut > 0.99 ? 'hidden' : '';
+      hint.style.opacity = String(1 - seg(p, 0, 0.05));
+
+      // Casa: de debajo del título a su sitio
+      const toEnd = easeInOut(seg(p, 0.02, 0.16));
+      house.style.transform = `translate3d(0, ${lerp(geo.y, 0, toEnd)}px, 0) scale(${lerp(geo.s, 1, toEnd)})`;
+
+      // Robins + bocadillos
+      let f = 0;
+      bubbles.forEach((b, i) => {
+        const s0 = B0 + i * L;
+        const bird = easeInOut(seg(p, s0, s0 + L * 0.62));
+        if (bird > 0) f = i * PER_BIRD + bird * PER_BIRD;
+        const t = seg(p, s0 + L * 0.42, s0 + L * 0.92);
+        const e = easeBack(t);
+        const el = inner[i];
+        const dir = b.classList.contains('cr-b--l') || b.classList.contains('cr-b--top') ? 1 : -1;
+        el.style.opacity = String(clamp(t * 2.2));
+        el.style.transform = t >= 1 ? 'none' : `translate3d(${dir * 26 * (1 - t)}px, ${10 * (1 - t)}px, 0) scale(${0.35 + 0.65 * e})`;
+        b.classList.toggle('is-on', t > 0.5);
+      });
+      draw(Math.min(f, N - 1));
+
+      // Al terminar: el bocadillo del alojamiento late y aparece el botón
+      root.classList.toggle('is-done', p > 0.88);
+      const c1 = easeOut(seg(p, 0.89, 0.96));
+      cta.style.opacity = String(c1);
+      cta.style.transform = `translate3d(-50%, ${(1 - c1) * 24}px, 0)`;
+      const on = c1 > 0.5;
+      cta.classList.toggle('is-on', on);
+      cta.tabIndex = on ? 0 : -1;
+    };
+
+    // Bucle suave: solo corre mientras hay movimiento
+    let target = 0;
+    let cur = 0;
+    let raf = 0;
+    const sticky = root.querySelector('.cr-sticky');
+    const readScroll = () => {
+      const r = root.getBoundingClientRect();
+      const top = parseFloat(getComputedStyle(sticky).top) || 0;
+      const total = root.offsetHeight - sticky.offsetHeight;
+      target = clamp((top - r.top) / Math.max(1, total));
+    };
+    const tick = () => {
+      cur += (target - cur) * 0.09;
+      if (Math.abs(target - cur) < 0.0004) cur = target;
+      apply(cur);
+      raf = cur === target ? 0 : requestAnimationFrame(tick);
+    };
+    const kick = () => {
+      readScroll();
+      if (reduce.matches) {
+        cur = target;
+        apply(cur);
+        return;
+      }
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+
+    const init = () => {
+      house.style.transform = 'none';
+      geo = null;
+      measure();
+      readScroll();
+      cur = target;
+      apply(cur);
+    };
+    addEventListener('scroll', kick, { passive: true });
+    addEventListener('resize', init);
+    img.complete || img.addEventListener('load', init, { once: true });
+    init();
+  }
+</script>

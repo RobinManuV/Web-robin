@@ -19,7 +19,7 @@ export const TRANSLATED_LANGS = ['en', 'pt', 'br'];
 // Esas páginas existen solo en español y desde /en/ y /pt/ se enlazan en español.
 const LEGAL = ['/aviso-legal/', '/politica-de-cookies/', '/politica-de-privacidad/'];
 // Landings que existen solo en español (no se generan copias en /en/, /pt/ ni /br/)
-const SOLO_ES = ['/webinar21-11/'];
+const SOLO_ES = ['/webinar21-11/', '/estudiar-en-holanda-con-alojamiento/'];
 export function isTranslatable(pathname) {
   const p = ensureSlash(stripLang(pathname));
   if (p === '/404/') return false;
