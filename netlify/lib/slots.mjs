@@ -8,6 +8,8 @@
 //   BOOKING_MIN_NOTICE_HOURS  antelación mínima para reservar (12)
 //   BOOKING_DAYS_AHEAD        días que se muestran (14)
 //   BOOKING_BUFFER_MINUTES    margen libre antes/después de otras reuniones (0)
+//   BOOKING_BLOCKED_DATES     días sin llamadas gratuitas, separados por comas (AAAA-MM-DD)
+//                             si no se define, se usan los de DEFAULT_BLOCKED_DATES
 
 export const TZ = 'Europe/Madrid';
 
@@ -19,6 +21,15 @@ const DEFAULT_SCHEDULE = {
   4: [['17:00', '21:00']],
   5: [['17:00', '21:00']],
 };
+
+// Días bloqueados (sin llamadas gratuitas), en fecha de Madrid
+const DEFAULT_BLOCKED_DATES = ['2026-11-17'];
+
+function blockedDates() {
+  const raw = process.env.BOOKING_BLOCKED_DATES;
+  const list = raw ? raw.split(',') : DEFAULT_BLOCKED_DATES;
+  return new Set(list.map((d) => d.trim()).filter(Boolean));
+}
 
 export function config() {
   let schedule = DEFAULT_SCHEDULE;
@@ -67,12 +78,15 @@ export function madridToDate(y, m, d, h, min) {
 // Todos los huecos teóricos del horario (sin mirar calendarios)
 export function candidateSlots(now = new Date()) {
   const { schedule, slotMin, noticeH, daysAhead } = config();
+  const blocked = blockedDates();
   const earliest = now.getTime() + noticeH * 3600e3;
   const slots = [];
   const today = madridParts(now);
   for (let i = 0; i <= daysAhead; i++) {
     const noon = madridToDate(today.y, today.m, today.d, 12, 0);
     const day = madridParts(new Date(noon.getTime() + i * 86400e3));
+    const ymd = `${day.y}-${String(day.m).padStart(2, '0')}-${String(day.d).padStart(2, '0')}`;
+    if (blocked.has(ymd)) continue;
     const ranges = schedule[day.wd] || schedule[String(day.wd)] || [];
     for (const [from, to] of ranges) {
       const [fh, fm] = from.split(':').map(Number);
