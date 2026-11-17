@@ -1,0 +1,284 @@
+/* Landing de la feria Unitour Lisboa — todo va dentro de .page-ut (clase del <main>) */
+
+.page-ut .ut-wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---------- Hero + formulario ---------- */
+.page-ut .ut-hero {
+  background: var(--navy);
+  color: var(--cream-text);
+  padding: clamp(28px, 5vw, 72px) var(--gutter) clamp(40px, 6vw, 88px);
+}
+.page-ut .ut-hero-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 520px);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+}
+.page-ut .ut-pill {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+.page-ut .ut-title {
+  font-family: var(--font-din);
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 0.98;
+  font-size: clamp(38px, 5.4vw, 74px);
+}
+.page-ut .ut-hl {
+  display: block;
+  color: var(--accent);
+}
+.page-ut .ut-lead {
+  margin-top: 20px;
+  font-size: clamp(17px, 1.6vw, 20px);
+  font-weight: 400;
+  line-height: 1.45;
+  max-width: 34ch;
+}
+.page-ut .ut-checks {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  font-weight: 600;
+}
+.page-ut .ut-checks li {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.page-ut .ut-checks li::before {
+  content: '';
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232d3a64' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E")
+    center / 13px no-repeat;
+}
+
+/* Tarjeta del formulario */
+.page-ut .ut-card {
+  background: var(--white);
+  color: var(--navy);
+  border-radius: var(--radius-lg);
+  padding: clamp(22px, 3vw, 36px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+.page-ut .ut-card-title {
+  font-family: var(--font-din);
+  text-transform: uppercase;
+  font-size: clamp(24px, 2.4vw, 30px);
+  line-height: 1.05;
+}
+.page-ut .ut-card-sub {
+  margin: 6px 0 20px;
+  font-size: 15px;
+  font-weight: 400;
+  opacity: 0.8;
+}
+.page-ut .ut-card .btn {
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 18px;
+  padding-block: 15px;
+}
+
+/* ---------- Ventajas ---------- */
+.page-ut .ut-why {
+  background: var(--cream-2);
+  padding-block: clamp(52px, 7vw, 96px);
+}
+.page-ut .ut-eyebrow {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  margin-bottom: 12px;
+}
+.page-ut .ut-h2 {
+  font-family: var(--font-din);
+  text-transform: uppercase;
+  text-align: center;
+  font-size: clamp(28px, 3.6vw, 46px);
+  line-height: 1.02;
+  max-width: 22ch;
+  margin: 0 auto clamp(30px, 4vw, 48px);
+}
+.page-ut .ut-h2--left {
+  text-align: left;
+  margin: 0 0 8px;
+  max-width: none;
+}
+.page-ut .ut-benefits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 2vw, 22px);
+}
+.page-ut .ut-benefits li {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 24px 22px;
+  border: 1px solid var(--grey-card);
+}
+.page-ut .ut-benefits li.is-main {
+  background: var(--navy);
+  color: var(--cream-text);
+  border-color: var(--navy);
+}
+.page-ut .ut-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: var(--sky);
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+.page-ut .is-main .ut-icon {
+  background: var(--accent);
+}
+.page-ut .ut-benefits h3 {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.page-ut .ut-benefits p {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+/* Cifras */
+.page-ut .ut-stats {
+  margin: clamp(34px, 5vw, 56px) 0 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  text-align: center;
+}
+.page-ut .ut-stats div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+}
+.page-ut .ut-stats dd {
+  margin: 0;
+  font-family: var(--font-din);
+  font-size: clamp(36px, 4.4vw, 58px);
+  line-height: 1;
+  color: var(--navy);
+}
+.page-ut .ut-stats sup {
+  font-size: 0.45em;
+}
+.page-ut .ut-stats dt {
+  font-size: 15px;
+  font-weight: 600;
+}
+.page-ut .ut-stats-foot {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+/* ---------- Contacto directo ---------- */
+.page-ut .ut-contact {
+  padding-block: clamp(44px, 6vw, 72px);
+}
+.page-ut .ut-contact-inner {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr auto;
+  gap: 24px 40px;
+  align-items: center;
+}
+.page-ut .ut-contact-inner p {
+  font-weight: 400;
+}
+.page-ut .ut-contact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.page-ut .ut-contact-list span {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-dark);
+}
+.page-ut .ut-contact-list a {
+  font-weight: 700;
+  text-decoration: none;
+}
+.page-ut .ut-contact-list a:hover {
+  text-decoration: underline;
+}
+.page-ut .ut-btn {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .page-ut .ut-benefits {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 900px) {
+  .page-ut .ut-hero-inner {
+    grid-template-columns: 1fr;
+  }
+  .page-ut .ut-lead {
+    max-width: none;
+  }
+  /* En móvil el formulario va justo después del titular: las ventajas rápidas, debajo */
+  .page-ut .ut-checks {
+    display: none;
+  }
+  .page-ut .ut-contact-inner {
+    grid-template-columns: 1fr;
+  }
+  .page-ut .ut-btn {
+    justify-self: start;
+  }
+}
+@media (max-width: 640px) {
+  .page-ut .ut-benefits,
+  .page-ut .ut-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+  .page-ut .ut-benefits {
+    grid-template-columns: 1fr;
+  }
+}

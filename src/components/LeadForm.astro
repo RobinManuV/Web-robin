@@ -9,8 +9,10 @@ import CursoField from './CursoField.astro';
 // Netlify guarda el envío, avisa por email y una función lo manda a Notion.
 //
 // Props:
-//   form: 'contacto' | 'colegios' | 'newsletter' | 'webinar'
+//   form: 'contacto' | 'colegios' | 'newsletter' | 'webinar' | 'feria'
 //   (webinar: registro en el webinar para padres; al enviarse muestra el contenido del slot "done")
+//   (feria: contacto de alumnos que nos conocen en una feria/evento, con colegio y curso.
+//    Sus textos están ya en INGLÉS porque solo se usa en landings nativas en inglés, p. ej. /unitourlisboa/)
 //   tag:  etiqueta del origen (se puede sobrescribir con ?origen= en la URL)
 //   allowUrlTag: si true, usa ?origen= de la URL (página de contacto)
 //   servicio: valor preseleccionado del desplegable Servicio
@@ -107,6 +109,39 @@ const SERVICIOS = ['Asesoramiento Completo', 'Aeroespaciales Delft', 'Pack Llega
         <div class="field full">
           <label for={`${id}-msg`}>¿Qué pregunta importante te gustaría que resolviéramos? <small>(opcional)</small></label>
           <textarea id={`${id}-msg`} name="mensaje" placeholder="Escribe aquí tu pregunta…" />
+        </div>
+      </div>
+    )
+  }
+
+  {
+    form === 'feria' && (
+      <div class="form-grid">
+        <div class="field full">
+          <label for={`${id}-name`}>Full name <span class="req">*</span></label>
+          <input id={`${id}-name`} name="nombre" placeholder="Your name" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label for={`${id}-email`}>Email <span class="req">*</span></label>
+          <input id={`${id}-email`} type="email" name="email" placeholder="you@email.com" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for={`${id}-tel`}>Phone <span class="req">*</span></label>
+          <input id={`${id}-tel`} type="tel" name="telefono" placeholder="+351 …" autocomplete="tel" required />
+        </div>
+        <div class="field full">
+          <label for={`${id}-col`}>School <span class="req">*</span></label>
+          <input id={`${id}-col`} name="colegio" placeholder="Name of your school" autocomplete="organization" required />
+        </div>
+        <CursoField
+          id={`${id}-curso`}
+          dark={dark}
+          legend="Which year are you in?"
+          options={['Year 13 / IB DP2 / 12.º ano', 'Year 12 / IB DP1 / 11.º ano', 'Other']}
+        />
+        <div class="field full">
+          <label for={`${id}-msg`}>Anything you'd like to ask us? <small>(optional)</small></label>
+          <textarea id={`${id}-msg`} name="mensaje" placeholder="What you'd like to study, where, your doubts…" />
         </div>
       </div>
     )

@@ -19,6 +19,7 @@ export default defineConfig({
         !page.includes('/telefonorojo/') &&
         !page.includes('/vaparaaholanda/') &&
         !page.includes('/webinar21-11/') &&
+        !page.includes('/unitourlisboa/') &&
         !/\/the-european-experience\/.+-2\/$/.test(page) && // duplicados: canonical a /universidades/<slug>/ // landing de campaña, solo con enlace directo
         (ESPANA_PUBLICADA || !ESPANA_RUTAS.some((r) => page.endsWith(r))),
     }),

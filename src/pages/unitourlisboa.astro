@@ -1,0 +1,139 @@
+---
+import '../styles/pages/landing-unitour.css';
+// Landing de la feria Unitour Lisboa: la abren los alumnos desde el enlace/QR que damos en el stand.
+// NO se enlaza desde ninguna parte de la web, no sale en el sitemap, está en robots.txt y lleva noindex.
+//
+// IDIOMA: el texto de esta página ya está escrito en INGLÉS. Lo compartido (cabecera, pie, banner de cookies,
+// casilla de privacidad) sale en español del build y lo traduce scripts/i18n.mjs con el diccionario en
+// (ver NATIVE en ese script). No se generan copias en /en/, /pt/ ni /br/.
+//
+// LO PRINCIPAL ES EL FORMULARIO (form="feria" en LeadForm.astro): nombre, email, teléfono, colegio, curso y
+// una pregunta opcional. Los leads llegan con la etiqueta TAG; como contiene "portugal", el servidor
+// (netlify/lib/lang.mjs → paisDeTag) los marca como PORTUGAL en Notion y en el CRM.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { CONTACT } from '../data/site.js';
+
+const TAG = 'unitour-lisboa-portugal';
+
+const ventajas = [
+  {
+    icon: 'home',
+    title: 'Guaranteed housing',
+    text: 'Finding a room as an international student is an extreme sport. From day one you get at least one secured accommodation option.',
+    destacado: true,
+  },
+  {
+    icon: 'cap',
+    title: 'Every university, every programme',
+    text: '30+ universities across Europe and 2,000+ programmes. We compare all of them with you, not just a few.',
+  },
+  {
+    icon: 'user',
+    title: 'Advice from people who did it',
+    text: 'We studied abroad ourselves. We know your questions because we asked them too.',
+  },
+  {
+    icon: 'people',
+    title: 'With you from start to finish',
+    text: 'Choosing, applying, moving and your first year. We don’t disappear once you’re admitted.',
+  },
+];
+
+const cifras = [
+  { value: '150+', label: 'Students supported' },
+  { value: '30+', label: 'Universities in Europe' },
+  { value: '2,000+', label: 'Programmes available' },
+  { value: '99%', label: 'Students admitted', nota: true },
+];
+---
+
+<Base
+  pageClass="page-ut"
+  title="Unitour Lisboa: study in Europe with Project Robin"
+  description="Met Project Robin at Unitour Lisboa? Leave your details and we’ll get back to you with honest answers about studying in Europe: universities, costs, deadlines and housing."
+  noindex
+>
+  <!-- HERO + FORMULARIO -->
+  <section class="ut-hero">
+    <div class="ut-hero-inner">
+      <div class="ut-hero-text">
+        <p class="ut-pill">Unitour Lisboa · Project Robin</p>
+        <h1 class="ut-title">Nice to meet you. <span class="ut-hl">Let’s keep talking.</span></h1>
+        <p class="ut-lead">
+          Leave your details and we’ll get back to you within 24 working hours. No sugarcoating: universities,
+          costs, deadlines and housing, explained clearly.
+        </p>
+        <ul class="ut-checks" aria-label="What you get">
+          <li>Free first consultation</li>
+          <li>A shortlist that fits your profile</li>
+          <li>Guaranteed housing option</li>
+        </ul>
+      </div>
+
+      <div class="ut-card" id="contact">
+        <h2 class="ut-card-title">Get your free consultation</h2>
+        <p class="ut-card-sub">Takes less than a minute.</p>
+        <LeadForm form="feria" tag={TAG} submitLabel="Send my details" />
+      </div>
+    </div>
+  </section>
+
+  <!-- VENTAJAS -->
+  <section class="ut-why">
+    <div class="ut-wrap">
+      <p class="ut-eyebrow">Why Robin</p>
+      <h2 class="ut-h2">The world is your campus. We make it a real plan.</h2>
+      <ul class="ut-benefits">
+        {
+          ventajas.map((v) => (
+            <li class:list={{ 'is-main': v.destacado }}>
+              <span class="ut-icon" aria-hidden="true">
+                <Icon name={v.icon} size={26} />
+              </span>
+              <h3>{v.title}</h3>
+              <p>{v.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <dl class="ut-stats">
+        {
+          cifras.map((c) => (
+            <div>
+              <dt>{c.label}</dt>
+              <dd>
+                {c.value}
+                {c.nota && <sup>*</sup>}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="ut-stats-foot">*Admission rate excludes the TU Delft Aerospace Engineering preparation course.</p>
+    </div>
+  </section>
+
+  <!-- CONTACTO DIRECTO -->
+  <section class="ut-contact">
+    <div class="ut-wrap ut-contact-inner">
+      <div>
+        <h2 class="ut-h2 ut-h2--left">Rather talk right now?</h2>
+        <p>Write or call us. Real people answer.</p>
+      </div>
+      <ul class="ut-contact-list">
+        <li>
+          <span>Email</span>
+          <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+        </li>
+        <li>
+          <span>Phone</span>
+          <a href={`tel:${CONTACT.phone.replace(/\s/g, '')}`}>{CONTACT.phone}</a>
+        </li>
+      </ul>
+      <a class="btn ut-btn" href="#contact">Fill in the form</a>
+    </div>
+  </section>
+</Base>

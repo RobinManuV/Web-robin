@@ -20,10 +20,13 @@ const DIST = 'dist';
 const SITE = 'https://project-robin.com';
 const DICT_DIR = 'src/i18n';
 
-// Páginas escritas directamente en portugués de Portugal (landings de campaña para Portugal).
-// Viven en la raíz, sin copias en /en/, /pt/ ni /br/: su texto propio ya está en portugués y solo se
-// traduce lo compartido (cabecera, pie, formularios, banner de cookies) con el diccionario pt.
-const NATIVE_PT = ['/vaparaaholanda/'];
+// Páginas escritas directamente en otro idioma (landings de campaña): ruta → idioma.
+// Viven en la raíz, sin copias en /en/, /pt/ ni /br/: su texto propio ya está en ese idioma y solo se
+// traduce lo compartido (cabecera, pie, formularios, banner de cookies) con el diccionario de ese idioma.
+const NATIVE = {
+  '/vaparaaholanda/': 'pt', // portugués de Portugal
+  '/unitourlisboa/': 'en', // inglés (feria Unitour Lisboa)
+};
 
 const readJson = (f, fallback) => (existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : fallback);
 const dictOf = (lang) => readJson(path.join(DICT_DIR, `${lang}.json`), {});
@@ -39,7 +42,7 @@ function spanishRoutes() {
     .map((f) => '/' + path.relative(DIST, path.dirname(f)).split(path.sep).join('/'))
     .map((r) => (r === '/.' || r === '/' ? '/' : ensureSlash(r)))
     .filter((r) => !/^\/(en|pt|br)(\/|$)/.test(r))
-    .filter((r) => !NATIVE_PT.includes(r))
+    .filter((r) => !(r in NATIVE))
     .sort();
 }
 const fileOf = (route, lang) => path.join(DIST, lang && lang !== 'es' ? lang : '', route, 'index.html');
@@ -60,7 +63,7 @@ function rewriteHref(value, lang, routes) {
 }
 
 // ---------- una página traducida ----------
-// `native`: página escrita en ese idioma que vive en la raíz (NATIVE_PT): conserva su URL y su `pagina`.
+// `native`: página escrita en ese idioma que vive en la raíz (NATIVE): conserva su URL y su `pagina`.
 function localize(html, lang, route, routes, native = false) {
   const L = LANGS[lang];
   let out = html.replace(/<html lang="es"/, `<html lang="${L.htmlLang}"`);
@@ -152,11 +155,11 @@ function build() {
     }
     writeFileSync(fileOf(route), addHreflang(es, route)); // el español solo gana los hreflang
   }
-  // Páginas nativas en portugués: se traduce solo lo compartido; las frases propias (que no están en el
+  // Páginas nativas (portugués, inglés…): se traduce solo lo compartido; las frases propias (que no están en el
   // diccionario) se dejan tal cual, así que aquí no se avisa de "frases sin traducir".
-  for (const route of NATIVE_PT.filter((r) => existsSync(fileOf(r)))) {
-    const t = translate(readFileSync(fileOf(route), 'utf8'), dicts.pt, { inLanguage: LANGS.pt.htmlLang });
-    writeFileSync(fileOf(route), localize(t.html, 'pt', route, routes, true));
+  for (const [route, lang] of Object.entries(NATIVE).filter(([r]) => existsSync(fileOf(r)))) {
+    const t = translate(readFileSync(fileOf(route), 'utf8'), dicts[lang], { inLanguage: LANGS[lang].htmlLang });
+    writeFileSync(fileOf(route), localize(t.html, lang, route, routes, true));
     pages++;
   }
   const urls = writeSitemap(routes);
