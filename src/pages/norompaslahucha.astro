@@ -1,0 +1,487 @@
+---
+import '../styles/pages/landing-hucha.css';
+// Landing "No rompas la hucha" (/norompaslahucha/): ayudas para estudiantes en Holanda.
+// Arriba, una hucha de Robin que se rompe al hacer scroll (animación corta) y suelta las ayudas como monedas.
+// Debajo, las ayudas explicadas (tarjetas desplegables), un "¿cuáles me tocan?" de 3 preguntas y la ruta de trámites.
+// El formulario está siempre a mano: en escritorio va fijo a la derecha del contenido; en móvil hay una barra
+// fija abajo que lleva a él. Los leads llegan con la etiqueta "hucha". Solo existe en español (SOLO_ES).
+//
+// Fuente de los datos: guía "Trabajar y pedir ayudas en Países Bajos" de Robin Community (octubre 2026).
+// Si cambian las cifras (horas, ingresos, alquiler máximo…), se cambian en el array `ayudas` de aquí abajo.
+import Base from '../layouts/Base.astro';
+import LeadForm from '../components/LeadForm.astro';
+
+const TAG = 'hucha';
+const IMG = '/wp-content/uploads/2026/11/hucha/';
+const TOTAL_FRAMES = 57;
+
+// Iconos (SVG en línea, trazo)
+const ICON = {
+  cap: '<path d="M2 9.5 12 5l10 4.5-10 4.5L2 9.5Z"/><path d="M6 11.5V16c0 1.4 2.7 3 6 3s6-1.6 6-3v-4.5"/><path d="M22 9.5V15"/>',
+  tren: '<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M9 21l1.5-4M15 21l-1.5-4"/><circle cx="9" cy="14" r=".6"/><circle cx="15" cy="14" r=".6"/>',
+  salud: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"/><path d="M12 9v5M9.5 11.5h5"/>',
+  casa: '<path d="M4 11 12 4l8 7"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/>',
+  doc: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 12h5M10 16h5"/>',
+};
+
+const ayudas = [
+  {
+    id: 'duo',
+    icon: ICON.cap,
+    chip: 'Beca DUO',
+    title: 'Beca DUO',
+    badge: 'Si trabajas',
+    short: 'Una beca mensual para tus estudios. Puede convertirse en ayuda definitiva si terminas la carrera dentro del plazo de DUO.',
+    puntos: [
+      'Para estudiantes de la UE, la vía habitual es trabajar: al menos 32 horas al mes (unas 8 a la semana).',
+      'También vale cobrar un mínimo neto: 173 € al mes si tienes menos de 21 años, o 700,75 € con 21 o más.',
+      'Son dos becas: la básica y la complementaria, que depende de los ingresos de tus padres.',
+      'DUO revisa nóminas, extractos y horas reales, a veces meses después. Guarda todo cada mes.',
+    ],
+  },
+  {
+    id: 'transporte',
+    icon: ICON.tren,
+    chip: 'Transporte',
+    title: 'Transporte estudiantil',
+    badge: 'Va con DUO',
+    short: 'Transporte público entre semana o en fin de semana, cargado en tu OV-chipkaart personal.',
+    puntos: [
+      'Se pide junto a la beca de DUO, así que tiene las mismas condiciones de trabajo.',
+      'Igual que la beca, puede convertirse en ayuda definitiva si terminas a tiempo.',
+      'No se activa solo: tienes que vincular tu tarjeta. Una anónima no sirve.',
+      'Si pierdes el derecho y lo sigues usando, DUO puede reclamarte su valor.',
+    ],
+  },
+  {
+    id: 'zorgtoeslag',
+    icon: ICON.salud,
+    chip: 'Zorgtoeslag',
+    title: 'Zorgtoeslag',
+    badge: 'Seguro médico',
+    short: 'Una ayuda mensual para pagar el seguro médico holandés, obligatorio desde tu primer día de trabajo.',
+    puntos: [
+      'Necesitas tener 18 años o más y una póliza básica holandesa activa.',
+      'Tus ingresos no pueden pasar de 40.857 € al año (si no tienes pareja fiscal).',
+      'Se pide en Mijn Toeslagen con tu DigiD.',
+      'Calcula tu ingreso del año con un poco de margen: si te quedas corto, toca devolver.',
+    ],
+  },
+  {
+    id: 'huurtoeslag',
+    icon: ICON.casa,
+    chip: 'Huurtoeslag',
+    title: 'Huurtoeslag',
+    badge: 'No hace falta trabajar',
+    short: 'Ayuda para pagar el alquiler si vives en una vivienda independiente.',
+    puntos: [
+      'Entrada, cocina, váter y ducha propios, contrato de alquiler y estar empadronado allí.',
+      'Una habitación con cocina o baño compartidos normalmente no cuenta.',
+      'Desde 2026 se calcula sobre un alquiler básico de hasta 932,93 € (498,20 € si tienes menos de 21).',
+      'Antes de pedirla, haz la simulación en Mijn Toeslagen.',
+    ],
+  },
+  {
+    id: 'impuestos',
+    icon: ICON.doc,
+    chip: 'Impuestos de vuelta',
+    title: 'Devolución de impuestos',
+    badge: 'Si trabajas',
+    short: 'Si trabajas solo una parte del año, puede que te hayan retenido de más. Se recupera con la declaración.',
+    puntos: [
+      'Pide la loonheffingskorting en tu trabajo principal, y solo en uno.',
+      'Guarda la jaaropgaaf (el resumen anual) de cada empleador.',
+      'Se declara al año siguiente en Mijn Belastingdienst, con tu DigiD.',
+    ],
+  },
+];
+
+const preguntas = [
+  { id: 'trabajo', q: '¿Vas a trabajar al menos 32 horas al mes?', hint: 'Unas 8 horas a la semana.' },
+  { id: 'edad', q: '¿Tienes 18 años o más?' },
+  { id: 'casa', q: '¿Vivirás en un estudio con cocina, baño y entrada propios?', hint: 'No una habitación compartida.' },
+];
+
+const ruta = [
+  ['Empadrónate', 'Y consigue tu BSN.'],
+  ['Activa tu DigiD', 'Tu llave para DUO y Toeslagen.'],
+  ['Cuenta bancaria', 'A tu nombre, no de tus padres.'],
+  ['Contrato y nómina', 'Guarda nómina y extracto cada mes.'],
+  ['Seguro médico', 'Desde tu primer día de trabajo.'],
+  ['Zorgtoeslag', 'Con el seguro ya activo.'],
+  ['Beca DUO', 'Contrato, nómina y extracto en un solo envío.'],
+  ['Alquiler e impuestos', 'Huurtoeslag y declaración anual.'],
+];
+---
+
+<Base
+  pageClass="page-hu"
+  title="Ayudas para estudiar en Holanda: beca DUO, zorgtoeslag y más | Project Robin"
+  description="No rompas la hucha: estudia en Holanda con Robin y consigue las ayudas. Beca DUO, transporte, zorgtoeslag, huurtoeslag y devolución de impuestos, explicadas fácil."
+  image={`${IMG}hucha-og.jpg`}
+>
+  <!-- 1 · LA HUCHA (animación corta ligada al scroll) -->
+  <section class="hu-scroll" data-hu data-frames={TOTAL_FRAMES} aria-labelledby="hu-h1">
+    <div class="hu-sticky">
+      <header class="hu-title">
+        <h1 class="display hu-h1" id="hu-h1">
+          No rompas la hucha
+          <span class="hu-h1-sub">Vete a Holanda con Robin y consigue todas las ayudas</span>
+        </h1>
+      </header>
+
+      <div class="hu-stage">
+        <div class="hu-pig">
+          <picture>
+            <source media="(max-width: 760px)" srcset={`${IMG}hucha-m-00.webp`} />
+            <img
+              class="hu-frame"
+              src={`${IMG}hucha-00.webp`}
+              alt="Hucha rosa de Robin que se rompe y deja caer monedas de oro"
+              width="800"
+              height="533"
+              fetchpriority="high"
+              data-hu-img
+            />
+          </picture>
+          <canvas class="hu-frame hu-canvas" width="800" height="533" aria-hidden="true" data-hu-canvas></canvas>
+        </div>
+      </div>
+
+      <ul class="hu-coins" aria-label="Ayudas que puedes conseguir">
+        {
+          ayudas.map((a) => (
+            <li data-hu-coin>
+              <a href={`#ayuda-${a.id}`} class="hu-coin" data-open={a.id}>
+                <span class="hu-coin-dot" aria-hidden="true">€</span>
+                {a.chip}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="hu-actions">
+        <a class="btn hu-cta" href="#formulario">Quiero mis ayudas</a>
+        <p class="hu-hint" data-hu-hint aria-hidden="true">
+          <span>Baja y rompe la hucha</span>
+          <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 5v14m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · AYUDAS + FORMULARIO AL LADO -->
+  <section class="hu-body">
+    <div class="container hu-grid">
+      <div class="hu-main">
+        <!-- Ayudas -->
+        <div class="hu-block" id="ayudas">
+          <p class="eyebrow text-accent">Las ayudas</p>
+          <h2 class="display-md hu-h2">Cinco ayudas que pueden ser para ti</h2>
+          <p class="lead hu-lead">Holanda ayuda a sus estudiantes, también a los que vienen de España. Toca cada una para ver qué necesitas.</p>
+
+          <div class="hu-cards">
+            {
+              ayudas.map((a, i) => (
+                <details class="hu-card" id={`ayuda-${a.id}`} open={i === 0} data-hu-card>
+                  <summary>
+                    <span class="hu-card-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={a.icon} />
+                    </span>
+                    <span class="hu-card-head">
+                      <span class="hu-card-title">{a.title}</span>
+                      <span class="hu-card-badge">{a.badge}</span>
+                    </span>
+                    <span class="hu-card-more" aria-hidden="true" />
+                  </summary>
+                  <div class="hu-card-body">
+                    <p class="hu-card-short">{a.short}</p>
+                    <ul>
+                      {a.puntos.map((p) => (
+                        <li>{p}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </details>
+              ))
+            }
+          </div>
+        </div>
+
+        <!-- ¿Cuáles me tocan? -->
+        <div class="hu-block hu-quiz" id="cuales" data-hu-quiz>
+          <p class="eyebrow text-accent">En 10 segundos</p>
+          <h2 class="display-md hu-h2">¿Cuáles te pueden tocar?</h2>
+          <div class="hu-quiz-grid">
+            <ol class="hu-qs">
+              {
+                preguntas.map((p) => (
+                  <li class="hu-q">
+                    <p class="hu-q-text">
+                      {p.q}
+                      {p.hint && <span class="hu-q-hint">{p.hint}</span>}
+                    </p>
+                    <div class="hu-q-opts" role="radiogroup" aria-label={p.q}>
+                      <label>
+                        <input type="radio" name={`hu-${p.id}`} value="si" data-q={p.id} />
+                        <span>Sí</span>
+                      </label>
+                      <label>
+                        <input type="radio" name={`hu-${p.id}`} value="no" data-q={p.id} />
+                        <span>No</span>
+                      </label>
+                    </div>
+                  </li>
+                ))
+              }
+            </ol>
+            <div class="hu-result" aria-live="polite">
+              <p class="hu-result-count" data-hu-count>Responde y te decimos cuáles podrías pedir.</p>
+              <ul class="hu-result-list">
+                {
+                  ayudas.map((a) => (
+                    <li data-hu-res={a.id}>
+                      <span class="hu-tick" aria-hidden="true" />
+                      {a.title}
+                    </li>
+                  ))
+                }
+              </ul>
+              <p class="hu-result-tip" data-hu-tip hidden>
+                Sin trabajo, la beca DUO normalmente queda fuera para estudiantes de la UE. Con unas 8 horas a la semana se abre la puerta.
+              </p>
+              <a class="btn hu-result-cta" href="#formulario">Ayudadme a pedirlas</a>
+            </div>
+          </div>
+          <p class="hu-note">Orientativo. Cada ayuda depende también de tus ingresos, tu patrimonio y tu situación; lo revisamos contigo.</p>
+        </div>
+
+        <!-- Ruta -->
+        <div class="hu-block" id="ruta">
+          <p class="eyebrow text-accent">El orden importa</p>
+          <h2 class="display-md hu-h2">La ruta, en 8 pasos</h2>
+          <p class="lead hu-lead">Si te saltas uno, el siguiente se atasca. Nosotros te llevamos paso a paso.</p>
+          <ol class="hu-steps">
+            {
+              ruta.map(([t, d], i) => (
+                <li>
+                  <span class="hu-step-n">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="hu-step-t">{t}</span>
+                  <span class="hu-step-d">{d}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+
+      <!-- Formulario: fijo a la derecha en escritorio -->
+      <aside class="hu-side" id="formulario" aria-labelledby="hu-form-title">
+        <div class="hu-form-card">
+          <h2 class="hu-form-title" id="hu-form-title">Te ayudamos a pedirlas</h2>
+          <p class="hu-form-lead">Déjanos tus datos y te llamamos. La primera llamada es gratuita y sin compromiso.</p>
+          <LeadForm form="contacto" tag={TAG} servicio="Asesoramiento Completo" submitLabel="Quiero mis ayudas" />
+        </div>
+      </aside>
+    </div>
+    <p class="container hu-source">
+      Información orientativa basada en DUO, Belastingdienst y Toeslagen, actualizada en octubre de 2026. Las condiciones pueden cambiar.
+    </p>
+  </section>
+
+  <!-- Barra fija en móvil: el formulario siempre a un toque -->
+  <div class="hu-bar" data-hu-bar>
+    <a class="btn" href="#formulario">Quiero mis ayudas</a>
+  </div>
+</Base>
+
+<script>
+  // ---------- Hucha ligada al scroll ----------
+  // p = progreso del scroll dentro de la escena (0 → 1). La animación es corta: la hucha se rompe en
+  // ~1,3 pantallas de scroll y las monedas con las ayudas aparecen al final.
+  const root = document.querySelector('[data-hu]');
+  if (root) {
+    const $ = (s) => root.querySelector(s);
+    const img = $('[data-hu-img]');
+    const canvas = $('[data-hu-canvas]');
+    const ctx = canvas.getContext('2d');
+    const hint = $('[data-hu-hint]');
+    const coins = [...root.querySelectorAll('[data-hu-coin]')];
+    const sticky = $('.hu-sticky');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    const N = Number(root.dataset.frames) || 57;
+
+    const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+    const seg = (p, a, b) => clamp((p - a) / (b - a));
+    const easeBack = (t) => 1 + 2.4 * Math.pow(t - 1, 3) + 1.4 * Math.pow(t - 1, 2);
+
+    root.classList.add('is-js');
+
+    // Fotogramas: móvil usa la versión ligera
+    const mobile = matchMedia('(max-width: 760px)').matches;
+    const urlFor = (i) => `/wp-content/uploads/2026/11/hucha/hucha${mobile ? '-m' : ''}-${String(i).padStart(2, '0')}.webp`;
+    const frames = [];
+    const ok = new Array(N).fill(false);
+    let started = false;
+    let lastFrame = -1;
+
+    const draw = (f, force) => {
+      if (!started) return;
+      if (!force && Math.abs(f - lastFrame) < 0.004) return;
+      lastFrame = f;
+      const i = Math.floor(f);
+      const k = f - i;
+      let a = i;
+      while (a >= 0 && !ok[a]) a--;
+      if (a < 0) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.globalAlpha = 1;
+      ctx.drawImage(frames[a], 0, 0, canvas.width, canvas.height);
+      if (a === i && k > 0.01 && ok[i + 1]) {
+        ctx.globalAlpha = k;
+        ctx.drawImage(frames[i + 1], 0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1;
+      }
+    };
+
+    const load = () => {
+      const lanes = 4;
+      const chunk = Math.ceil(N / lanes);
+      for (let l = 0; l < lanes; l++) {
+        const to = Math.min(N, (l + 1) * chunk);
+        const next = (i) => {
+          if (i >= to) return;
+          const im = new Image();
+          im.decoding = 'async';
+          im.onload = () => {
+            ok[i] = true;
+            if (i === 0) {
+              canvas.width = im.naturalWidth;
+              canvas.height = im.naturalHeight;
+              canvas.classList.add('is-on');
+              img.classList.add('is-off');
+              started = true;
+            }
+            draw(Math.max(0, lastFrame), true);
+            next(i + 1);
+          };
+          im.onerror = () => next(i + 1);
+          im.src = urlFor(i);
+          frames[i] = im;
+        };
+        next(l * chunk);
+      }
+    };
+    if (document.readyState === 'complete') load();
+    else addEventListener('load', load, { once: true });
+
+    const apply = (p) => {
+      hint.style.opacity = String(1 - seg(p, 0, 0.08));
+      draw(seg(p, 0.02, 0.8) * (N - 1));
+      // Las monedas (ayudas) saltan una detrás de otra cuando caen las monedas de la hucha
+      coins.forEach((c, i) => {
+        const t = seg(p, 0.5 + i * 0.07, 0.62 + i * 0.07);
+        const e = easeBack(t);
+        c.style.opacity = String(clamp(t * 2));
+        c.style.transform = t >= 1 ? 'none' : `translate3d(0, ${(1 - t) * 26}px, 0) scale(${0.4 + 0.6 * e})`;
+      });
+      root.classList.toggle('is-done', p > 0.92);
+    };
+
+    let target = 0;
+    let cur = 0;
+    let raf = 0;
+    const readScroll = () => {
+      const r = root.getBoundingClientRect();
+      const top = parseFloat(getComputedStyle(sticky).top) || 0;
+      const total = root.offsetHeight - sticky.offsetHeight;
+      target = clamp((top - r.top) / Math.max(1, total));
+    };
+    const tick = () => {
+      cur += (target - cur) * 0.12;
+      if (Math.abs(target - cur) < 0.0005) cur = target;
+      apply(cur);
+      raf = cur === target ? 0 : requestAnimationFrame(tick);
+    };
+    const kick = () => {
+      readScroll();
+      if (reduce.matches) {
+        cur = target;
+        apply(cur);
+        return;
+      }
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+    addEventListener('scroll', kick, { passive: true });
+    addEventListener('resize', kick);
+    readScroll();
+    cur = target;
+    apply(cur);
+  }
+
+  // ---------- Tarjetas: al tocar una moneda de arriba se abre su ayuda ----------
+  document.querySelectorAll('.page-hu [data-open]').forEach((a) => {
+    a.addEventListener('click', () => {
+      const card = document.getElementById(`ayuda-${a.dataset.open}`);
+      if (card) card.open = true;
+    });
+  });
+
+  // ---------- ¿Cuáles te pueden tocar? ----------
+  const quiz = document.querySelector('[data-hu-quiz]');
+  if (quiz) {
+    const count = quiz.querySelector('[data-hu-count]');
+    const tip = quiz.querySelector('[data-hu-tip]');
+    const items = [...quiz.querySelectorAll('[data-hu-res]')];
+    const update = () => {
+      const val = (id) => quiz.querySelector(`input[data-q="${id}"]:checked`)?.value;
+      const trabajo = val('trabajo');
+      const edad = val('edad');
+      const casa = val('casa');
+      if (!trabajo && !edad && !casa) return;
+      const yes = {
+        duo: trabajo === 'si',
+        transporte: trabajo === 'si',
+        impuestos: trabajo === 'si',
+        // el seguro holandés es obligatorio al trabajar; con él se pide la zorgtoeslag (18+)
+        zorgtoeslag: trabajo === 'si' && edad === 'si',
+        huurtoeslag: casa === 'si',
+      };
+      let n = 0;
+      items.forEach((li) => {
+        const on = !!yes[li.dataset.huRes];
+        li.classList.toggle('is-on', on);
+        if (on) n++;
+      });
+      quiz.classList.add('has-result');
+      count.innerHTML = n
+        ? `Podrías pedir <strong>${n} de ${items.length}</strong> ayudas`
+        : 'Con estas respuestas, ninguna de momento. Hablemos: casi siempre hay forma.';
+      tip.hidden = trabajo !== 'no';
+    };
+    quiz.addEventListener('change', update);
+  }
+
+  // ---------- Formulario: mensaje ya escrito y barra fija en móvil ----------
+  const form = document.querySelector('.page-hu #formulario');
+  if (form) {
+    const msg = form.querySelector('textarea');
+    if (msg && !msg.value) msg.value = 'Hola, quiero información sobre las ayudas para estudiar en Holanda.';
+    const bar = document.querySelector('[data-hu-bar]');
+    const hero = document.querySelector('[data-hu]');
+    if (bar && hero) {
+      // visible cuando ya has dejado atrás la hucha (que tiene su propio botón) y el formulario no está en pantalla
+      const sync = () => {
+        const h = hero.getBoundingClientRect();
+        const f = form.getBoundingClientRect();
+        const pastHero = h.bottom < innerHeight * 0.6;
+        const formOnScreen = f.top < innerHeight && f.bottom > 0;
+        bar.classList.toggle('is-on', pastHero && !formOnScreen);
+      };
+      addEventListener('scroll', sync, { passive: true });
+      addEventListener('resize', sync);
+      sync();
+    }
+  }
+</script>
