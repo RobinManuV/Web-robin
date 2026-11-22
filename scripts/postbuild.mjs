@@ -39,6 +39,10 @@ lines.push(
   '/servicios/erasmus/        /servicios/            301',
   '/servicios/erasmus         /servicios/            301',
   '',
+  '# Landing de la hucha: también funciona con la errata "norampas"',
+  '/norampaslahucha     /norompaslahucha/      301',
+  '/norampaslahucha/    /norompaslahucha/      301',
+  '',
 );
 
 // España sin publicar: se borran sus páginas del build y redirigen a la home (302 temporal).
