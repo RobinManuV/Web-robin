@@ -1,0 +1,353 @@
+---
+import '../styles/pages/landing-junior.css';
+// Landing de campaña de ROBIN JUNIOR (programa para alumnos de 1º de Bachillerato).
+// NO se enlaza desde ninguna parte de la web, no sale en el sitemap, está en robots.txt y lleva noindex.
+// Solo existe en español (ver SOLO_ES en src/i18n/config.mjs).
+//
+// Público: el alumno de 1º de Bach (se le habla de tú). Quien paga son los padres, así que hay
+// un bloque corto «Para tus padres» con el precio y lo que incluye, sin letra pequeña.
+// URL: /robin-junior-retarwebinar21-11/ (retargeting del webinar del 21 de noviembre).
+// Objetivo ÚNICO: que reserven la llamada informativa gratuita (reservador con la etiqueta "robin-junior-retarwebinar21-11").
+// Base con `minimal`: solo logo; el menú de Robin aparece únicamente al pulsar el logo.
+//
+// Contenido sacado del PDF «Robin Junior» (8 sesiones de octubre a junio, 1.499 €, −10% si sigue en 2º).
+// Si cambia el programa o el precio, se cambia en las constantes de abajo.
+import Base from '../layouts/Base.astro';
+import BookingWidget from '../components/BookingWidget.astro';
+import { CONTACT } from '../data/site.js';
+
+const TAG = 'robin-junior-retarwebinar21-11';
+const PRECIO = '1.499 €';
+const DESCUENTO = '−10%';
+
+// En el reservador todos los alumnos son de 1º, así que va marcado por defecto
+const CURSOS = ['1º de Bachillerato', 'Otro curso'];
+
+const marquee = [
+  '8 sesiones',
+  'De octubre a junio',
+  'Test de compatibilidad con IA',
+  'Mentorías con exalumnos',
+  'Summer school en Países Bajos',
+  'Jornadas de puertas abiertas',
+  'Rumbo al C1 de inglés',
+];
+
+const sesiones = [
+  {
+    n: '1',
+    kicker: 'Octubre · Sesión 1',
+    title: 'Diagnóstico',
+    text: 'Conocemos tu perfil y te explicamos cómo funciona Países Bajos.',
+    chip: '🧠 Test de compatibilidad con IA',
+  },
+  {
+    n: '2',
+    kicker: 'Sesión 2',
+    title: 'Tus resultados',
+    text: 'Las carreras y universidades más compatibles contigo. Tú eliges tus 3 favoritas.',
+  },
+  {
+    n: '3-5',
+    kicker: '3 sesiones',
+    title: 'Mentorías con exalumnos',
+    text: 'Una por cada carrera favorita: te lo cuenta alguien que ya la ha vivido.',
+    destacado: true,
+  },
+  {
+    n: '6-7',
+    kicker: '2 sesiones',
+    title: 'Sesiones grupales',
+    text: 'Con mentores profesionales, junto a otros estudiantes.',
+  },
+  {
+    n: '8',
+    kicker: 'Clase de inglés',
+    title: 'Diagnóstico con nuestra profe',
+    text: 'Tu primer paso hacia el C1 que te abrirá las puertas.',
+  },
+];
+
+const extras = [
+  {
+    emoji: '☀️',
+    title: 'Summer school en Países Bajos',
+    text: 'Entre 1º y 2º, en la universidad de tus sueños. Suma puntos en tu solicitud.',
+    badge: 'Te lo gestionamos',
+  },
+  {
+    emoji: '🏛️',
+    title: 'Jornadas de puertas abiertas',
+    text: 'Visita la universidad y la carrera antes de decidir.',
+    badge: 'Te lo organizamos',
+  },
+  {
+    emoji: '📚',
+    title: 'Apoyo para la PAU',
+    text: 'Preparación en 1º y 2º de Bachillerato.',
+    badge: 'Opcional',
+    opcional: true,
+  },
+];
+
+const padres = [
+  { k: 'Precio cerrado', v: `${PRECIO} por el programa completo de 1º.` },
+  { k: 'Duración', v: '8 sesiones, de octubre a junio.' },
+  { k: 'Si sigue en 2º', v: `${DESCUENTO} en el programa de 2º de Bachillerato.` },
+  { k: 'Summer school y PAU', v: 'Os explicamos en la llamada qué incluye cada uno y si tiene coste aparte. El apoyo para la PAU es opcional.' },
+];
+
+const faqs = [
+  {
+    q: '¿Es pronto para pensar en la universidad en 1º?',
+    a: 'Es justo el momento. En 2º se juntan la PAU, las notas que cuentan y los plazos de aplicación. Si llegas con tus carreras elegidas y tu solicitud reforzada, 2º es solo ejecutar.',
+  },
+  {
+    q: 'No tengo ni idea de qué quiero estudiar. ¿Me sirve?',
+    a: 'Para eso está. Empezamos con un diagnóstico y un test de compatibilidad, y en la segunda sesión ya tienes las carreras y universidades que mejor encajan contigo.',
+  },
+  {
+    q: '¿Quiénes son los mentores?',
+    a: 'Exalumnos que ya han estudiado la carrera que te interesa. Tienes una mentoría por cada una de tus 3 favoritas, para que te lo cuente alguien que lo ha vivido de verdad.',
+  },
+  {
+    q: '¿Por qué hay una clase de inglés?',
+    a: 'Porque el nivel de inglés es lo que más puertas abre (o cierra) para estudiar fuera. Nuestra profe te hace un diagnóstico para que sepas dónde estás y cuánto te falta para el C1.',
+  },
+  {
+    q: '¿Qué pasa cuando llegue a 2º?',
+    a: `Puedes seguir con Robin en 2º de Bachillerato con un ${DESCUENTO} de descuento, para que te acompañemos en la aplicación.`,
+  },
+  {
+    q: '¿Cuánto cuesta la llamada? ¿Tienen que estar mis padres?',
+    a: 'La llamada es gratis y sin compromiso: 30 minutos, online. Lo ideal es que os conectéis juntos, así resolvemos tus dudas y las suyas a la vez.',
+  },
+];
+
+const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
+---
+
+<Base
+  pageClass="page-rj"
+  title="Robin Junior: orientación universitaria desde 1º de Bachillerato | Project Robin"
+  description="Robin Junior: 8 sesiones de octubre a junio para pasar de «no sé qué estudiar» a tener un plan. Test de compatibilidad, mentorías con exalumnos, summer school en Países Bajos y más."
+  image="/fotos/junior/robin-junior-hero.webp"
+  noindex
+  minimal
+>
+  <!-- HERO -->
+  <section class="rj-hero">
+    <span class="rj-hero-blob" aria-hidden="true"></span>
+    <div class="rj-hero-inner">
+      <div class="rj-hero-text">
+        <p class="rj-pill">Nuevo · 1º de Bachillerato</p>
+        <h1 class="display-xl">Robin <span class="rj-hl">Junior</span></h1>
+        <p class="lead">
+          Maximiza tus oportunidades de entrar en la <strong class="rj-hl">carrera de tus sueños</strong>.
+        </p>
+        <p class="rj-hero-sub">Orientación académica desde 1º, para llegar a 2º con las ideas claras.</p>
+        <ul class="rj-chips">
+          <li><strong>Oct → Jun</strong> acompañamiento</li>
+          <li><strong>8</strong> sesiones</li>
+          <li><strong>Países Bajos</strong></li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn rj-btn-big rj-pulse" href="#reserva">Pide tu llamada gratis</a>
+          <a class="rj-link" href="#programa">Ver el programa ↓</a>
+        </div>
+      </div>
+      <div class="rj-hero-art">
+        <span class="rj-sun" aria-hidden="true"></span>
+        <img
+          src="/fotos/junior/robin-junior-hero.webp"
+          alt="Dos estudiantes de Robin con la sudadera del programa"
+          width="900"
+          height="1200"
+          fetchpriority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="rj-marquee-clip">
+    <div class="rj-marquee" aria-label="Lo que incluye Robin Junior">
+      <ul class="rj-marquee-track">
+        {marquee.map((m) => <li>{m}</li>)}
+        {marquee.map((m) => <li aria-hidden="true">{m}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  <!-- POR QUÉ EN 1º -->
+  <section class="rj-section rj-why">
+    <div class="rj-wrap rj-wrap--mid">
+      <p class="eyebrow rj-eyebrow">Sin rodeos</p>
+      <h2 class="display-md rj-title">2º de Bach no es el momento de decidir</h2>
+      <div class="rj-why-grid">
+        <div class="rj-why-card is-bad">
+          <p class="rj-why-label">Si empiezas en 2º</p>
+          <p>La PAU, las notas que cuentan y los plazos de aplicación llegan a la vez. Eliges carrera con prisas y con lo que te ha contado un amigo.</p>
+        </div>
+        <div class="rj-why-card is-good">
+          <p class="rj-why-label">Si empiezas en 1º</p>
+          <p>Llegas a 2º sabiendo qué quieres estudiar y dónde, has hablado con gente que ya lo estudia y tu solicitud ya tiene puntos extra.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMA -->
+  <section class="rj-section rj-plan" id="programa">
+    <div class="rj-wrap rj-wrap--mid">
+      <p class="eyebrow rj-eyebrow">Tu año con Robin</p>
+      <h2 class="display-md rj-title">
+        De «no sé qué estudiar»<br />a <span class="rj-hl-dark">tener un plan</span>
+      </h2>
+      <p class="rj-plan-sub">8 sesiones · de octubre a junio</p>
+      <ol class="rj-timeline">
+        {
+          sesiones.map((s) => (
+            <li class:list={['rj-step', { 'is-main': s.destacado }]}>
+              <span class="rj-step-n" aria-hidden="true">{s.n}</span>
+              <div class="rj-step-card">
+                <p class="rj-step-kicker">{s.kicker}</p>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+                {s.chip && <span class="rj-step-chip">{s.chip}</span>}
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="btn-row btn-row--center">
+        <a class="btn btn-navy rj-btn-big" href="#reserva">Quiero mi plan</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOTO -->
+  <figure class="rj-band">
+    <img src="/fotos/junior/robin-junior-bicis.webp" alt="Estudiantes en bici por una calle de Países Bajos" width="1600" height="1200" loading="lazy" />
+  </figure>
+
+  <!-- Y ADEMÁS -->
+  <section class="rj-section rj-extras">
+    <div class="rj-wrap rj-wrap--mid">
+      <p class="rj-tag">Y además</p>
+      <h2 class="display-md rj-extras-title">Todo lo que suma <span class="rj-hl">a tu solicitud</span></h2>
+      <ul class="rj-extras-list">
+        {
+          extras.map((e) => (
+            <li class="rj-extra">
+              <div>
+                <h3>
+                  <span aria-hidden="true">{e.emoji}</span> {e.title}
+                </h3>
+                <p>{e.text}</p>
+              </div>
+              <span class:list={['rj-badge', { 'is-soft': e.opcional }]}>{e.badge}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <!-- PRECIO -->
+      <div class="rj-price">
+        <div>
+          <p class="rj-price-kicker">Robin Junior · Programa completo</p>
+          <p class="rj-price-num">{PRECIO}</p>
+          <p class="rj-price-note">{DESCUENTO} si sigues con Robin en 2º de Bachillerato</p>
+        </div>
+        <span class="rj-price-badge" aria-hidden="true">{DESCUENTO}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PADRES + RESERVA -->
+  <section class="rj-section rj-book-sec">
+    <div class="rj-wrap rj-book-grid">
+      <div class="rj-parents">
+        <p class="rj-tag rj-tag--navy">Para tus padres</p>
+        <h2 class="title">Las cuentas claras desde el principio</h2>
+        <p>Enséñales esto. Sabemos que la decisión también es suya, así que aquí va lo que necesitan saber:</p>
+        <dl class="rj-parents-list">
+          {
+            padres.map((p) => (
+              <div>
+                <dt>{p.k}</dt>
+                <dd>{p.v}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <p class="rj-parents-foot">Y la llamada informativa es gratis y sin compromiso: os conectáis juntos y os lo explicamos todo.</p>
+      </div>
+
+      <div class="rj-card" id="reserva">
+        <p class="rj-card-kicker">Gratis · 30 min · Online</p>
+        <h2 class="title">Pide tu llamada informativa</h2>
+        <p class="rj-card-sub">Elige día y hora. Te llega al momento la invitación con el enlace de Google Meet. Si pueden, que se conecten también tus padres.</p>
+        <BookingWidget
+          tag={TAG}
+          compact
+          cursoOptions={CURSOS}
+          cursoSelected={CURSOS[0]}
+          submitLabel="Confirmar mi llamada gratis"
+        >
+          <p slot="fallback" class="b-fallback rj-fallback">
+            ¿Ningún horario te encaja? Llámanos al <a href={telHref}>{CONTACT.phone}</a> o escríbenos a
+            <a href={`mailto:${CONTACT.email}?subject=Robin%20Junior`}>{CONTACT.email}</a> y te buscamos hueco.
+          </p>
+        </BookingWidget>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="rj-section rj-faq-sec">
+    <div class="rj-wrap rj-wrap--narrow">
+      <p class="eyebrow rj-eyebrow">Preguntas frecuentes</p>
+      <h2 class="display-md rj-title">Lo que nos suelen preguntar</h2>
+      <div class="rj-faq">
+        {
+          faqs.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <section class="rj-final">
+    <div class="rj-final-inner">
+      <h2 class="display-md">Empieza en 1º,<br /><span class="rj-hl">llega a 2º con ventaja</span></h2>
+      <p class="lead">{DESCUENTO} para continuar en 2º de Bach. Pide tu llamada informativa sin compromiso.</p>
+      <a class="btn rj-btn-big rj-btn-xl rj-pulse" href="#reserva">Pedir mi llamada gratis</a>
+    </div>
+  </section>
+
+  <!-- CTA FIJO EN MÓVIL -->
+  <div class="rj-sticky" data-rj-sticky>
+    <a class="btn rj-btn-big" href="#reserva">Pide tu llamada gratis</a>
+  </div>
+
+  <script is:inline>
+    // El botón fijo del móvil se esconde cuando ya se ve el reservador
+    (function () {
+      var bar = document.querySelector('[data-rj-sticky]');
+      var card = document.getElementById('reserva');
+      if (!bar || !card || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(
+        function (entries) {
+          bar.classList.toggle('is-hidden', entries[0].isIntersecting);
+        },
+        { threshold: 0.05 }
+      ).observe(card);
+    })();
+  </script>
+</Base>

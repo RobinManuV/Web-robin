@@ -20,6 +20,7 @@ export default defineConfig({
         !page.includes('/vaparaaholanda/') &&
         !page.includes('/webinar21-11/') &&
         !page.includes('/retarwebinar21-11/') &&
+        !page.includes('/robin-junior-retarwebinar21-11/') &&
         !page.includes('/unitourlisboa/') &&
         !/\/the-european-experience\/.+-2\/$/.test(page) && // duplicados: canonical a /universidades/<slug>/ // landing de campaña, solo con enlace directo
         (ESPANA_PUBLICADA || !ESPANA_RUTAS.some((r) => page.endsWith(r))),

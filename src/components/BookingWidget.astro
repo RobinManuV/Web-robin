@@ -7,7 +7,8 @@ import CursoField from './CursoField.astro';
 // `extra` (opcional, p. ej. /retarwebinar21-11/): añade sistema educativo e intereses, y usa
 // `cursoOptions` / `cursoLegend` como lista propia de cursos. Sin `extra` el formulario es el de siempre.
 // Slot "fallback": sustituye el «¿Ningún horario te encaja? Escríbenos» (p. ej., para no sacar de la página).
-const { tag = 'general', compact = false, extra = false, cursoOptions = null, cursoLegend = undefined, submitLabel = 'Confirmar reserva' } = Astro.props;
+// `cursoSelected` (opcional): curso marcado por defecto dentro de `cursoOptions` (p. ej. /robin-junior-retarwebinar21-11/).
+const { tag = 'general', compact = false, extra = false, cursoOptions = null, cursoLegend = undefined, cursoSelected = null, submitLabel = 'Confirmar reserva' } = Astro.props;
 const EDUCACION = ['Bachillerato', 'IB', 'A-levels', 'Liceo', 'Otros'];
 const INTERESES = [
   'Business y Economía',
@@ -52,7 +53,7 @@ const INTERESES = [
       <input id={`bk-phone-${tag}`} name="phone" type="tel" autocomplete="tel" required />
     </div>
     {extra && <CursoField id={`bk-edu-${tag}`} name="educacion" legend="¿Qué tipo de educación está cursando?" options={EDUCACION} />}
-    <CursoField id={`bk-curso-${tag}`} options={cursoOptions} legend={cursoLegend} />
+    <CursoField id={`bk-curso-${tag}`} options={cursoOptions} legend={cursoLegend} selected={cursoSelected} />
     {
       extra && (
         <fieldset class="curso-field full b-interests" data-interests>
