@@ -23,6 +23,7 @@ export async function saveCrmLead(lead) {
     lead.cargo && `Cargo: ${clean(lead.cargo, 160)}`,
   ].filter(Boolean).join('\n\n');
   const now = new Date().toISOString();
+  let retargeting = isRetargetingReservation(lead);
   const row = {
     name: clean(lead.name, 240) || clean(lead.email, 320) || clean(lead.phone, 80) || 'Lead web',
     email: clean(lead.email, 320).toLowerCase() || null,
@@ -55,21 +56,42 @@ export async function saveCrmLead(lead) {
   const headers = { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' };
   const endpoint = `${baseUrl}/rest/v1/${encodeURIComponent(table)}`;
   let existing = null;
-  const identity = emailFilter(lead.email) || phoneFilter(lead.phone);
-  if (identity) {
+  const identities = (retargeting ? [emailFilter(lead.email), phoneFilter(lead.phone)] : [emailFilter(lead.email) || phoneFilter(lead.phone)]).filter(Boolean);
+  for (const identity of identities) {
     const lookup = new URLSearchParams({ select: 'id,source_payload', limit: '1', ...identity });
     const found = await fetch(`${endpoint}?${lookup}`, { headers });
     if (!found.ok) throw new Error(`Supabase lookup ${found.status}: ${await found.text()}`);
     existing = (await found.json())[0] || null;
+    if (existing) break;
   }
-  if (existing) {
+  retargeting ||= lead.form === 'reserva' && existing?.source_payload?.reactivation_30d?.campaign_id === 'holanda-inactive-30d-v1';
+  if (retargeting) {
+    const reservation = { ...row.source_payload, email: row.email, received_at: now };
+    row.source_payload = {
+      ...(existing?.source_payload || row.source_payload),
+      retargeting_reservation: reservation,
+      ...(!existing ? { exclude_from_acquisition: true } : {}),
+    };
+  } else if (existing) {
     row.source_payload = { ...(existing.source_payload || {}), ...row.source_payload };
   }
+  // Reactivation must not reset acquisition, stage or advisor on an existing lead.
+  const fields = retargeting && existing ? { source_payload: row.source_payload, source_updated_at: now } : row;
   const response = existing
-    ? await fetch(`${endpoint}?id=eq.${encodeURIComponent(existing.id)}`, { method: 'PATCH', headers, body: JSON.stringify(row) })
-    : await fetch(endpoint, { method: 'POST', headers, body: JSON.stringify(row) });
+    ? await fetch(`${endpoint}?id=eq.${encodeURIComponent(existing.id)}`, { method: 'PATCH', headers, body: JSON.stringify(fields) })
+    : await fetch(endpoint, { method: 'POST', headers, body: JSON.stringify(fields) });
   if (!response.ok) throw new Error(`Supabase ${response.status}: ${await response.text()}`);
   return { saved: true, updated: Boolean(existing) };
+}
+
+function isRetargetingReservation(lead) {
+  if (clean(lead.form, 80).toLowerCase() !== 'reserva') return false;
+  try {
+    const url = new URL(lead.page, 'https://project-robin.com');
+    return ['http:', 'https:'].includes(url.protocol)
+      && ['project-robin.com', 'www.project-robin.com'].includes(url.hostname)
+      && url.pathname.replace(/\/+$/, '').toLowerCase() === '/retarwebinar21-11';
+  } catch (_) { return false; }
 }
 
 function emailFilter(value) {

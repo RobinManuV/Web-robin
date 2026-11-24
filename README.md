@@ -51,6 +51,8 @@ Cada formulario manda un campo `tag` con el origen del lead, que se guarda en No
 
 Además, cada envío lanza el evento `lead_submit` (con `lead_tag`) y cada reserva el evento `booking_confirmed` en el `dataLayer`, para usarlos como conversiones en Google Tag Manager.
 
+Las nuevas reservas de `/retarwebinar21-11/` guardan `source_payload.retargeting_reservation` en CRM para la pestaña Reservas → Retargeting del gestor. Si ya existe el contacto por email o teléfono, se añade la reserva conservando su captación, fecha, asesor y fase. Una ficha nueva lleva `exclude_from_acquisition: true` para no contar otra captación. No se reclasifican reservas anteriores; las llamadas e invitaciones mantienen su flujo habitual. Verificación del guardado: `node --test test/crm-lead.test.mjs`.
+
 ## Reservas con Google Calendar
 
 El reservador (`src/components/BookingWidget.astro`) usa dos funciones:
