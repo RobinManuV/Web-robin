@@ -132,7 +132,6 @@ const faqs = [
   },
 ];
 
-const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
 ---
 
 <Base
@@ -307,7 +306,7 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
           submitLabel="Confirmar mi llamada gratuita"
         >
           <p slot="fallback" class="b-fallback rj-fallback">
-            ¿Ningún horario os encaja? Llámanos al <a href={telHref}>{CONTACT.phone}</a> o escríbenos a
+            ¿Ningún horario os encaja? Escríbenos a
             <a href={`mailto:${CONTACT.email}?subject=Robin%20Junior`}>{CONTACT.email}</a> y te buscamos hueco.
           </p>
         </BookingWidget>
