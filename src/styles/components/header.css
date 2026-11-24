@@ -226,3 +226,22 @@
     justify-self: start;
   }
 }
+
+/* ---------- Cabecera plegada (landings sin salida): solo el logo ----------
+   El menú, los botones y la hamburguesa solo aparecen al pulsar el logo (.is-revealed).
+   No es fija: se va al hacer scroll y deja sitio a la barra propia de la landing. */
+.site-header.is-collapsed {
+  position: relative;
+}
+.site-header.is-collapsed:not(.is-revealed) .nav,
+.site-header.is-collapsed:not(.is-revealed) .ctas,
+.site-header.is-collapsed:not(.is-revealed) .burger {
+  display: none;
+}
+.site-header button.logo {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 6px;
+}

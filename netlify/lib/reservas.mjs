@@ -25,6 +25,8 @@ function filas(r) {
     ['Email', r.email],
     ['Teléfono', r.phone],
     ['Curso', r.curso],
+    ['Sistema educativo', r.educacion],
+    ['Intereses', r.intereses],
     ['Con', r.host],
     ['País', paisDeTag(r.tag)],
     ['Origen', r.tag],

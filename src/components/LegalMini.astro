@@ -1,0 +1,16 @@
+---
+// Pie mínimo para landings "sin salida" (Base con `minimal`): solo lo legal obligatorio
+// (aviso legal, privacidad y cookies) y el botón de preferencias de cookies.
+import '../styles/components/legal-mini.css';
+const year = new Date().getFullYear();
+---
+
+<footer class="legal-mini">
+  <p>© {year} Project Robin</p>
+  <nav aria-label="Información legal">
+    <a href="/aviso-legal/" target="_blank" rel="noopener">Aviso legal</a>
+    <a href="/politica-de-privacidad/" target="_blank" rel="noopener">Privacidad</a>
+    <a href="/politica-de-cookies/" target="_blank" rel="noopener">Cookies</a>
+    <button type="button" data-open-cookies>Preferencias de cookies</button>
+  </nav>
+</footer>

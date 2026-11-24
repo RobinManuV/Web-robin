@@ -9,6 +9,7 @@ Disallow: /veteaholanda/
 Disallow: /telefonorojo/
 Disallow: /vaparaaholanda/
 Disallow: /webinar21-11/
+Disallow: /retarwebinar21-11/
 Disallow: /unitourlisboa/
 
 Sitemap: https://project-robin.com/sitemap-index.xml

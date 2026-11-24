@@ -4,6 +4,7 @@
 // Columnas que rellena (tal cual se llaman hoy en Notion):
 //   Nombre · Email · Phone · Contact date · comentario primer contacto ·
 //   TIPO · Meeting · responsable · colegio · Origen web
+// Sistema educativo e intereses (si llegan) van escritos en el comentario.
 // "Origen web" guarda la etiqueta de la página/landing (general, pack-llegada,
 // colegios, holanda-maastricht…). Si la columna no existe, se crea el lead igual
 // y la etiqueta queda escrita en el comentario.
@@ -51,6 +52,8 @@ export async function createLead(lead) {
     lead.form && `Formulario: ${lead.form}`,
     lead.servicio && `Servicio: ${lead.servicio}`,
     lead.curso && `Curso: ${lead.curso}`,
+    lead.educacion && `Sistema educativo: ${lead.educacion}`,
+    lead.intereses && `Intereses: ${lead.intereses}`,
     lead.cargo && `Cargo: ${lead.cargo}`,
     lead.page && `Página: ${lead.page}`,
     `Idioma: ${LANG_NAMES[normLang(lead.lang)]}`,

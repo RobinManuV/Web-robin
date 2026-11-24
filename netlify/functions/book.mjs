@@ -36,6 +36,9 @@ export default async (req) => {
   const phone = clean(body.phone, 40);
   const message = clean(body.message, 2000);
   const curso = clean(body.curso, 60);
+  // Opcionales (los envía, p. ej., /retarwebinar21-11/): sistema educativo y áreas de interés
+  const educacion = clean(body.educacion, 60);
+  const intereses = clean(body.intereses, 400);
   const tag = clean(body.tag || 'general', 80);
   const page = clean(body.page, 200);
   const lang = normLang(body.lang);
@@ -67,7 +70,7 @@ export default async (req) => {
       start: startDate,
       end: endDate,
       attendee: { email, name },
-      ...invitacion(lang, { name, phone, email, curso, tag, page, message }),
+      ...invitacion(lang, { name, phone, email, curso, educacion, intereses, tag, page, message }),
     });
   } catch (err) {
     console.error('[book] Error creando el evento:', err?.response?.data || err);
@@ -80,7 +83,7 @@ export default async (req) => {
   // La reserva ya está confirmada; guardar el lead en CRM sin convertir un
   // fallo secundario del CRM en una reserva fallida ni provocar otra invitación.
   try {
-    await saveCrmLead({ name, email, phone, message, curso, tag, page, form: 'reserva', servicio: 'Consulta gratuita', lang });
+    await saveCrmLead({ name, email, phone, message, curso, educacion, intereses, tag, page, form: 'reserva', servicio: 'Consulta gratuita', lang });
   } catch (err) {
     console.error('[book] CRM:', err.message);
   }
@@ -88,7 +91,7 @@ export default async (req) => {
   // Notion no debe bloquear la reserva: si falla, queda en el log
   try {
     await createLead({
-      name, email, phone, message, curso, tag, page,
+      name, email, phone, message, curso, educacion, intereses, tag, page,
       form: 'reserva',
       lang,
       host: host.name,
@@ -101,7 +104,7 @@ export default async (req) => {
 
   // Aviso inmediato al equipo y programación del recordatorio de 2 h antes
   try {
-    await registrarReserva({ name, email, phone, curso, message, tag, lang, host: host.name, start: slot.start, meetingLink });
+    await registrarReserva({ name, email, phone, curso, educacion, intereses, message, tag, lang, host: host.name, start: slot.start, meetingLink });
   } catch (err) {
     console.error('[book] Avisos:', err.message);
   }

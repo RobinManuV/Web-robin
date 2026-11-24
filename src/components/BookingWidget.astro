@@ -4,7 +4,21 @@ import CursoField from './CursoField.astro';
 // Reservador de citas conectado a Google Calendar (Noel, María y Manuel).
 // Muestra solo huecos libres reales y crea el evento con Google Meet.
 // `tag` identifica desde qué página se reserva (llega a Notion y a GTM).
-const { tag = 'general', compact = false } = Astro.props;
+// `extra` (opcional, p. ej. /retarwebinar21-11/): añade sistema educativo e intereses, y usa
+// `cursoOptions` / `cursoLegend` como lista propia de cursos. Sin `extra` el formulario es el de siempre.
+// Slot "fallback": sustituye el «¿Ningún horario te encaja? Escríbenos» (p. ej., para no sacar de la página).
+const { tag = 'general', compact = false, extra = false, cursoOptions = null, cursoLegend = undefined, submitLabel = 'Confirmar reserva' } = Astro.props;
+const EDUCACION = ['Bachillerato', 'IB', 'A-levels', 'Liceo', 'Otros'];
+const INTERESES = [
+  'Business y Economía',
+  'Ingeniería y Tecnología',
+  'Derecho y Relaciones Internacionales',
+  'Psicología y Salud',
+  'Ciencias',
+  'Diseño, Arte y Comunicación',
+  'Ciencias Sociales',
+  'Aún no lo tiene claro',
+];
 ---
 
 <div class:list={['booking', { compact }]} data-booking data-tag={tag}>
@@ -18,7 +32,7 @@ const { tag = 'general', compact = false } = Astro.props;
       {Array.from({ length: 5 }).map(() => <li class="slot skeleton" aria-hidden="true"><span></span><span></span></li>)}
     </ul>
     <button type="button" class="more" data-more hidden>Ver más horarios</button>
-    <p class="b-fallback">¿Ningún horario te encaja? <a href={`/contacto/?origen=${tag}`}>Escríbenos</a></p>
+    <slot name="fallback"><p class="b-fallback">¿Ningún horario te encaja? <a href={`/contacto/?origen=${tag}`}>Escríbenos</a></p></slot>
   </div>
 
   <!-- Paso 2: datos -->
@@ -37,7 +51,31 @@ const { tag = 'general', compact = false } = Astro.props;
       <label for={`bk-phone-${tag}`}>Teléfono <span class="req">*</span></label>
       <input id={`bk-phone-${tag}`} name="phone" type="tel" autocomplete="tel" required />
     </div>
-    <CursoField id={`bk-curso-${tag}`} />
+    {extra && <CursoField id={`bk-edu-${tag}`} name="educacion" legend="¿Qué tipo de educación está cursando?" options={EDUCACION} />}
+    <CursoField id={`bk-curso-${tag}`} options={cursoOptions} legend={cursoLegend} />
+    {
+      extra && (
+        <fieldset class="curso-field full b-interests" data-interests>
+          <legend>¿Qué le interesa estudiar? <span class="req">*</span> <small>(puedes marcar varias)</small></legend>
+          <div class="curso-options">
+            {INTERESES.map((c) => (
+              <label>
+                <input type="checkbox" name="interes" value={c} />
+                <span>{c}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )
+    }
+    {
+      extra && (
+        <div class="field">
+          <label for={`bk-int-${tag}`}>¿Alguna carrera, universidad o ciudad en mente? <small>(opcional)</small></label>
+          <input id={`bk-int-${tag}`} name="interes_texto" maxlength="200" placeholder="Ej.: International Business en Maastricht" />
+        </div>
+      )
+    }
     <div class="field">
       <label for={`bk-msg-${tag}`}>¿Algo que debamos saber? <small>(opcional)</small></label>
       <textarea id={`bk-msg-${tag}`} name="message" rows="3" placeholder="Carrera que te interesa, dudas…"></textarea>
@@ -48,7 +86,7 @@ const { tag = 'general', compact = false } = Astro.props;
       <span>He leído y acepto la <a href="/politica-de-privacidad/" target="_blank">política de privacidad</a>.</span>
     </label>
     <p class="form-status" data-status hidden></p>
-    <button type="submit" class="btn full" data-submit>Confirmar reserva</button>
+    <button type="submit" class="btn full" data-submit>{submitLabel}</button>
   </form>
 
   <!-- Paso 3: confirmación -->
@@ -71,6 +109,7 @@ const { tag = 'general', compact = false } = Astro.props;
       fail: 'No hemos podido confirmar la reserva. Inténtalo de nuevo o escríbenos a hello@project-robin.com.',
       agenda: 'No hemos podido cargar la agenda. Escríbenos y te proponemos un horario.',
       see: (day, time, host) => `Te esperamos el ${day} a las ${time}${host ? ` con ${host}` : ''}.`,
+      interests: 'Marca al menos un área de interés (o «Aún no lo tiene claro»).',
     },
     en: {
       empty: 'There are no free slots in the next two weeks. Write to us and we will find one for you.',
@@ -213,7 +252,23 @@ const { tag = 'general', compact = false } = Astro.props;
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!form.reportValidity()) return;
-      const data = Object.fromEntries(new FormData(form));
+      const fd = new FormData(form);
+      const data = Object.fromEntries(fd);
+      // Intereses (solo con `extra`): al menos uno marcado; se envían juntos en un texto
+      const interestsBox = form.querySelector('[data-interests]');
+      if (interestsBox) {
+        const marcados = fd.getAll('interes');
+        if (!marcados.length) {
+          status.hidden = false;
+          status.dataset.state = 'error';
+          status.textContent = T.interests || 'Select at least one area of interest.';
+          interestsBox.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          return;
+        }
+        data.intereses = [...marcados, fd.get('interes_texto')].map((v) => String(v || '').trim()).filter(Boolean).join(' · ');
+        delete data.interes;
+        delete data.interes_texto;
+      }
       const btn = $('[data-submit]');
       const submitLabel = btn.textContent;
       btn.disabled = true;

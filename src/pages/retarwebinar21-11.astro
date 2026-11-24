@@ -1,0 +1,561 @@
+---
+import '../styles/pages/landing-retarwebinar.css';
+// Landing de retargeting para las familias del webinar de padres del 21 de noviembre.
+// NO se enlaza desde ninguna parte de la web, no sale en el sitemap, está en robots.txt y lleva noindex.
+// Solo existe en español (ver SOLO_ES en src/i18n/config.mjs).
+//
+// Objetivo ÚNICO: que reserven la llamada gratuita. Por eso es una página "sin salida":
+//  - Base con `minimal`: solo se ve el logo; el menú de Robin aparece únicamente al pulsar el logo.
+//  - Sin pie: solo una línea legal mínima (se abre en otra pestaña).
+//  - El reservador no manda a /contacto/: si no hay hueco, se ofrece teléfono y email.
+// El reservador pide, además de los datos de siempre, sistema educativo, curso e intereses.
+// Las reservas llegan con la etiqueta "retarwebinar21-11".
+//
+// URGENCIA: la cuenta atrás es REAL y apunta al 15 de enero (cierre en Studielink de las carreras con
+// cupo limitado). Si se pasa esa fecha, salta sola al 1 de mayo; cuando pasan los dos, se oculta.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import BookingWidget from '../components/BookingWidget.astro';
+import YouTube from '../components/YouTube.astro';
+import { CIFRAS, CIFRAS_NOTA, CONTACT, EQUIPO, VIDEOS_TESTIMONIOS } from '../data/site.js';
+
+const TAG = 'retarwebinar21-11';
+
+// Plazos oficiales (Rijksoverheid / Studielink). Hora límite: final del día en Madrid.
+const PLAZOS = [
+  { id: 'enero', fecha: '2027-01-15T23:59:59+01:00', corto: '15 de enero', texto: 'el cierre de las carreras con cupo limitado' },
+  { id: 'mayo', fecha: '2027-05-01T23:59:59+02:00', corto: '1 de mayo', texto: 'el cierre general de aplicaciones' },
+];
+
+// Cursos genéricos: valen para cualquier sistema educativo
+const CURSOS = ['Último curso (2º Bach, IB2, Year 13…)', 'Penúltimo curso (1º Bach, IB1, Year 12…)', 'Ya terminó el colegio', 'Otro'];
+
+const marquee = [
+  'Alojamiento asegurado',
+  'Todas las universidades',
+  '+2000 programas',
+  'Asesoramiento 100% personalizado',
+  'De ex alumnos para futuros alumnos',
+  'Gestión total de la aplicación',
+  'Contigo durante el primer año',
+];
+
+const llamada = [
+  { title: 'Las opciones que encajan con su perfil', text: 'Carreras y universidades que tienen sentido para sus notas, sus intereses y vuestro presupuesto.' },
+  { title: 'Sus plazos exactos', text: 'Si su carrera cierra el 15 de enero, lo sabrás en la llamada. Y qué tiene que estar listo antes.' },
+  { title: 'Un presupuesto realista', text: 'Matrícula, alojamiento y vida en la ciudad. Números claros, sin letra pequeña.' },
+  { title: 'Cómo aseguramos el alojamiento', text: 'Lo que más preocupa a las familias, explicado paso a paso para vuestro caso.' },
+  { title: 'Los próximos pasos, con fecha', text: 'Un plan claro para no ir con prisas en enero ni dejar nada al azar.' },
+];
+
+const ventajas = [
+  {
+    icon: 'home',
+    title: 'Alojamiento asegurado desde el minuto 1',
+    text: 'Encontrar casa siendo estudiante internacional en Holanda es lo más difícil de todo el proceso. Con Robin, desde el principio tiene como mínimo una opción de alojamiento asegurada.',
+    destacado: true,
+  },
+  {
+    icon: 'cap',
+    title: 'Todas las universidades. Todas las carreras.',
+    text: 'Más de 30 universidades en Europa, todas las de Holanda y más de 2000 programas. No le encasillamos en una opción: las comparamos todas.',
+  },
+  {
+    icon: 'user',
+    title: 'Asesoramiento 100% personalizado',
+    text: 'Cada alumno es distinto, así que no hay plantillas. Su perfil, sus notas, su sistema educativo y vuestro presupuesto marcan el plan.',
+  },
+  {
+    icon: 'doc',
+    title: 'Su aplicación, gestionada de principio a fin',
+    text: 'Carta de motivación, documentos, plazos y Studielink. Lo preparamos con él o ella y lo revisamos todo antes de enviarlo.',
+  },
+  {
+    icon: 'people',
+    title: 'De ex alumnos para futuros alumnos',
+    text: 'Os asesora gente que ha estudiado en Holanda viniendo de España. Sabemos lo que preguntáis porque lo preguntamos nosotros.',
+  },
+  {
+    icon: 'heart',
+    title: 'No desaparecemos tras la admisión',
+    text: 'Mudanza, trámites, llegada y apoyo durante todo su primer año, con acceso a la comunidad Robin.',
+  },
+];
+
+const comparativa = [
+  { tema: 'Elegir carrera', solos: 'Folletos, foros y opiniones sueltas', robin: 'Opciones que encajan con su perfil, comparadas una a una' },
+  { tema: 'Plazos', solos: 'Descubrirlos tarde, cuando ya han cerrado', robin: 'Calendario con fechas desde el primer día' },
+  { tema: 'Aplicación', solos: 'Carta y documentos sin que nadie los revise', robin: 'Todo preparado y revisado antes de enviarlo' },
+  { tema: 'Alojamiento', solos: 'Buscar piso a distancia, listas de espera y anuncios dudosos', robin: 'Como mínimo una opción asegurada desde el principio' },
+  { tema: 'Llegada', solos: 'Trámites y sorpresas el primer mes', robin: 'Llega con todo organizado' },
+  { tema: 'Primer año', solos: 'Solo ante cualquier problema', robin: 'Seguimos a su lado durante todo el curso' },
+];
+
+const pasos = [
+  { img: '/wp-content/uploads/2026/06/RobinTelescopio.webp', tab: 'Elige', title: 'Elegimos a su medida', text: 'Perfil, notas y presupuesto encima de la mesa para llegar a una lista corta de carreras y universidades.' },
+  { img: '/wp-content/uploads/2026/06/Robin-Carpetas.webp', tab: 'Aplica', title: 'Aplicación gestionada al 100%', text: 'Carta de motivación, documentos, plazos y Studielink, revisados antes de enviar.' },
+  { img: '/wp-content/uploads/2026/06/RobinHouse.webp', tab: 'Aterriza', title: 'Logística resuelta', text: 'Alojamiento asegurado, mudanza, trámites y contacto previo con estudiantes de su ciudad.' },
+  { img: '/wp-content/uploads/2026/06/RobinGraduated.webp', tab: 'Despega', title: 'A su lado el primer año', text: 'Resolvemos dudas durante el primer año y tiene acceso a la comunidad Robin.' },
+];
+
+const fotosEquipo = {
+  'Noel Cortés': '/wp-content/uploads/2026/10/noel.webp',
+  'María Gavira': '/wp-content/uploads/2026/10/maria.webp',
+  'Manuel Fernández': '/wp-content/uploads/2026/10/manuel.webp',
+};
+
+const faqs = [
+  {
+    q: '¿Cuánto cuesta la llamada?',
+    a: 'Nada. Es la primera consulta gratuita: 30 minutos, online, en el horario que elijas.',
+  },
+  {
+    q: '¿Tiene que estar mi hijo o hija en la llamada?',
+    a: 'Es lo ideal: conectaos los dos si podéis. Así hablamos de sus intereses de primera mano y vosotros resolvéis las dudas prácticas.',
+  },
+  {
+    q: 'Hace IB, A-levels, Liceo u otro sistema. ¿Nos sirve?',
+    a: 'Sí. Acompañamos a alumnos de Bachillerato, IB, A-levels, Liceo y otros sistemas. Cada uno tiene sus requisitos de acceso y en la llamada os decimos cuáles aplican a vuestro caso.',
+  },
+  {
+    q: 'Todavía no sabe qué quiere estudiar. ¿Es pronto para llamar?',
+    a: 'Al revés: es justo donde empezamos. Partimos de su perfil y sus intereses para llegar a pocas opciones con requisitos, costes y salidas reales.',
+  },
+  {
+    q: '¿Por qué tanta prisa con el 15 de enero?',
+    a: 'Porque ese día cierra en Studielink el plazo de las carreras con cupo limitado (numerus fixus) y, pasada esa fecha, no se puede aplicar a ellas. El resto de grados tiene de plazo general el 1 de mayo, pero el alojamiento escasea y cuanto antes se empieza, más opciones hay.',
+  },
+  {
+    q: '¿Tenemos que decidir algo en la llamada?',
+    a: 'No. Os lleváis información clara y un plan con fechas. La decisión es vuestra.',
+  },
+];
+
+const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
+---
+
+<Base
+  pageClass="page-rw"
+  title="Reserva tu llamada gratuita antes del 15 de enero | Project Robin"
+  description="Para las familias del webinar: en 30 minutos aterrizamos el plan de tu hijo o hija para estudiar en Holanda. Carrera, plazos y alojamiento asegurado. Llamada gratuita."
+  noindex
+  minimal
+>
+  <!-- BARRA DE URGENCIA (fija) -->
+  <div class="rw-top" data-rw-top>
+    <p>
+      <span class="rw-top-dot" aria-hidden="true"></span>
+      Plazo <strong data-cd-text="corto">15 de enero</strong>
+      <span class="rw-top-clock" data-cd-inline hidden>
+        · quedan <strong><span data-cd-days>0</span> días</strong>
+        <span class="rw-top-hms" aria-hidden="true"><span data-cd-h>--</span>:<span data-cd-m>--</span>:<span data-cd-s>--</span></span>
+      </span>
+    </p>
+    <a href="#reserva">Reservar mi llamada gratis →</a>
+  </div>
+
+  <!-- HERO + RESERVA -->
+  <section class="rw-hero">
+    <div class="rw-hero-inner">
+      <div class="rw-hero-text">
+        <p class="rw-pill">Para las familias del webinar del 21 de noviembre</p>
+        <h1 class="display-xl">
+          Ya tienes la información.<br />
+          <span class="rw-hl">Ahora, el plan.</span>
+        </h1>
+        <p class="lead">
+          En 30 minutos aterrizamos todo lo que viste en el webinar en el caso de tu hijo o hija: qué estudiar, dónde, con
+          qué plazos y con casa asegurada. Gratis y con quienes ya lo han vivido.
+        </p>
+        <ul class="rw-micro">
+          <li>Llamada gratuita</li>
+          <li>30 minutos</li>
+          <li>Online</li>
+          <li>Con el equipo del webinar</li>
+        </ul>
+
+        <div class="rw-clock" aria-label="Cuenta atrás hasta el próximo plazo de aplicación">
+          <p class="rw-clock-title">Faltan para el <span data-cd-text="corto">15 de enero</span></p>
+          <div class="rw-digits" role="timer" aria-live="off" data-countdown>
+            <div><b data-cd-d>--</b><span>días</span></div>
+            <div><b data-cd-h>--</b><span>horas</span></div>
+            <div><b data-cd-m>--</b><span>min</span></div>
+            <div><b data-cd-s>--</b><span>seg</span></div>
+          </div>
+          <p class="rw-clock-note">
+            Es <span data-cd-pre>el cierre de las carreras con cupo limitado</span> en Studielink. Pasada esa fecha, no se
+            puede aplicar a ellas.
+          </p>
+        </div>
+      </div>
+
+      <div class="rw-card" id="reserva">
+        <p class="rw-card-kicker">Gratis · 30 min · Online</p>
+        <h2 class="title">Reserva tu llamada</h2>
+        <p class="rw-card-sub">Elige día y hora. Te llega al momento la invitación con el enlace de Google Meet.</p>
+        <BookingWidget tag={TAG} compact extra cursoOptions={CURSOS} cursoLegend="¿En qué curso está?" submitLabel="Confirmar mi llamada gratuita">
+          <p slot="fallback" class="b-fallback rw-fallback">
+            ¿Ningún horario os encaja? Llámanos al <a href={telHref}>{CONTACT.phone}</a> o escríbenos a
+            <a href={`mailto:${CONTACT.email}?subject=Llamada%20webinar%2021-11`}>{CONTACT.email}</a> y te buscamos hueco.
+          </p>
+        </BookingWidget>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="rw-marquee-clip">
+    <div class="rw-marquee" aria-label="Lo que incluye Project Robin">
+      <ul class="rw-marquee-track">
+        {marquee.map((m) => <li>{m}</li>)}
+        {marquee.map((m) => <li aria-hidden="true">{m}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUÉ OS LLEVÁIS DE LA LLAMADA -->
+  <section class="rw-section">
+    <div class="rw-wrap">
+      <p class="eyebrow rw-eyebrow">30 minutos que ahorran meses</p>
+      <h2 class="display-md rw-title">Lo que os lleváis de la llamada</h2>
+      <ol class="rw-gets">
+        {
+          llamada.map((l, i) => (
+            <li>
+              <span class="rw-gets-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{l.title}</h3>
+              <p>{l.text}</p>
+            </li>
+          ))
+        }
+        <li class="rw-gets-cta">
+          <p>Y todas las dudas que te quedaron del webinar.</p>
+          <a class="btn rw-btn-big rw-pulse" href="#reserva">Quiero mi llamada</a>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- VENTAJAS ROBIN -->
+  <section class="rw-section rw-adv-sec">
+    <div class="rw-wrap">
+      <p class="eyebrow rw-eyebrow">Por qué Robin</p>
+      <h2 class="display-md rw-title">Seis motivos para hacerlo con nosotros</h2>
+      <ol class="rw-adv">
+        {
+          ventajas.map((v, i) => (
+            <li class:list={['rw-adv-item', { 'is-main': v.destacado }]}>
+              <span class="rw-adv-icon" aria-hidden="true">
+                <Icon name={v.icon} size={34} />
+              </span>
+              <span class="rw-adv-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="title">{v.title}</h3>
+              <p>{v.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="btn-row btn-row--center">
+        <a class="btn rw-btn-big rw-pulse" href="#reserva">Quiero que nos asesoréis</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIFRAS -->
+  <section class="rw-stats">
+    <dl class="rw-stats-grid">
+      {
+        CIFRAS.map((c) => (
+          <div>
+            <dt class="rw-stat-lbl">{c.label}</dt>
+            <dd class="rw-stat-num">{c.value}{c.suffix}{c.nota && <sup class="rw-stat-nota">*</sup>}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <p class="rw-stats-foot">{CIFRAS_NOTA}</p>
+  </section>
+
+  <!-- COMPARATIVA -->
+  <section class="rw-section">
+    <div class="rw-wrap rw-wrap--mid">
+      <p class="eyebrow rw-eyebrow">Sin rodeos</p>
+      <h2 class="display-md rw-title">Hacerlo por vuestra cuenta o hacerlo con Robin</h2>
+      <div class="rw-vs" role="table" aria-label="Comparativa: por vuestra cuenta o con Robin">
+        <div class="rw-vs-head" role="row">
+          <span role="columnheader"><span class="sr-only">Tema</span></span>
+          <span role="columnheader" class="rw-vs-solo">Por vuestra cuenta</span>
+          <span role="columnheader" class="rw-vs-robin">Con Robin</span>
+        </div>
+        {
+          comparativa.map((c) => (
+            <div class="rw-vs-row" role="row">
+              <span role="rowheader" class="rw-vs-tema">{c.tema}</span>
+              <span role="cell" class="rw-vs-solo"><span class="rw-x" aria-hidden="true">✕</span>{c.solos}</span>
+              <span role="cell" class="rw-vs-robin"><span class="rw-ok" aria-hidden="true">✓</span>{c.robin}</span>
+            </div>
+          ))
+        }
+      </div>
+      <div class="btn-row btn-row--center">
+        <a class="btn btn-navy rw-btn-big" href="#reserva">Lo queremos hacer con Robin</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALOJAMIENTO -->
+  <section class="rw-housing">
+    <div class="rw-housing-inner">
+      <div class="rw-housing-art">
+        <img src="/wp-content/uploads/2026/06/RobinHouse.webp" alt="" width="520" height="520" loading="lazy" />
+        <span class="rw-stamp" aria-hidden="true">Alojamiento<br />asegurado</span>
+      </div>
+      <div class="rw-housing-copy">
+        <p class="eyebrow">Lo que más preocupa a las familias</p>
+        <h2 class="display-md">Llega con casa. No con una lista de anuncios.</h2>
+        <p class="lead">
+          Conseguir alojamiento siendo estudiante internacional en Holanda es de lo más difícil de todo el proceso. Lo
+          sabemos porque lo vivimos. Por eso, con Robin, no se deja al azar.
+        </p>
+        <ul class="check-list">
+          <li>Como mínimo una opción de alojamiento asegurada desde el principio del proceso</li>
+          <li>Ayuda para preparar la mudanza</li>
+          <li>Contacto previo con estudiantes de su ciudad</li>
+          <li>Todo listo desde el primer día, para que lo único que le preocupe sea su primera clase</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-navy rw-btn-big" href="#reserva">Quiero su alojamiento asegurado</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="rw-section rw-steps-sec">
+    <div class="rw-wrap">
+      <p class="eyebrow rw-eyebrow">Como un hermano mayor</p>
+      <h2 class="display-md rw-title">Del «¿y si se va?» a su primera clase</h2>
+      <ol class="rw-steps">
+        {
+          pasos.map((p, i) => (
+            <li class="rw-step">
+              <img src={p.img} alt="" width="220" height="220" loading="lazy" />
+              <p class="rw-step-n">Paso {i + 1} · {p.tab}</p>
+              <h3 class="title">{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <div class="btn-row btn-row--center">
+        <a class="btn rw-btn-big" href="#reserva">Empezar por la llamada</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPO -->
+  <section class="rw-section rw-team-sec">
+    <div class="rw-wrap">
+      <p class="eyebrow rw-eyebrow">Las mismas caras del webinar</p>
+      <h2 class="display-md rw-title">Hablarás con quienes ya lo han vivido</h2>
+      <ul class="rw-team">
+        {
+          EQUIPO.map((m) => (
+            <li>
+              {fotosEquipo[m.name] && <img src={fotosEquipo[m.name]} alt={m.name} width="320" height="320" loading="lazy" />}
+              <h3 class="title">{m.name}</h3>
+              <p class="rw-team-role">{m.role}</p>
+              <p>{m.bio}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="rw-motto">«De ex alumnos para futuros alumnos»</p>
+      <div class="btn-row btn-row--center">
+        <a class="btn rw-btn-big rw-pulse" href="#reserva">Reservar con el equipo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section class="rw-testi">
+    <div class="rw-testi-grid">
+      <div class="rw-testi-copy">
+        <p class="eyebrow">Lo que dicen nuestros Robins</p>
+        <h2 class="display-md">Historias reales, sin filtros.</h2>
+        <p>Estudiantes que ya están en Holanda cuentan cómo es de verdad. Sin guion.</p>
+        <a class="btn rw-btn-big" href="#reserva">Quiero que sea el siguiente</a>
+      </div>
+      <div class="rw-videos">
+        <button type="button" class="rw-vid-arrow is-prev" aria-label="Vídeo anterior" data-rw-prev>‹</button>
+        <ul class="rw-vid-track" data-rw-track>
+          {
+            VIDEOS_TESTIMONIOS.map((u, i) => (
+              <li class="rw-vid">
+                <YouTube url={u} ratio="9 / 16" title={`Vídeo testimonio de un Robin (${i + 1})`} />
+              </li>
+            ))
+          }
+        </ul>
+        <button type="button" class="rw-vid-arrow is-next" aria-label="Vídeo siguiente" data-rw-next>›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAZOS -->
+  <section class="rw-deadlines">
+    <div class="rw-wrap">
+      <p class="eyebrow rw-eyebrow">El reloj ya corre</p>
+      <h2 class="display-md rw-title">Esto tiene fecha. Y la fecha es real.</h2>
+      <div class="rw-digits rw-digits--lg" role="timer" aria-live="off" data-countdown>
+        <div><b data-cd-d>--</b><span>días</span></div>
+        <div><b data-cd-h>--</b><span>horas</span></div>
+        <div><b data-cd-m>--</b><span>min</span></div>
+        <div><b data-cd-s>--</b><span>seg</span></div>
+      </div>
+      <p class="rw-count-caption">
+        para <span data-cd-pre>el cierre de las carreras con cupo limitado</span>: <strong data-cd-text="corto">15 de enero</strong>
+      </p>
+      <ul class="rw-dl-cards">
+        <li>
+          <p class="rw-dl-date">15 enero</p>
+          <h3 class="title">Carreras con cupo limitado</h3>
+          <p>Fecha límite en Studielink para las carreras con numerus fixus. Pasada esa fecha, no se puede aplicar a ellas.</p>
+        </li>
+        <li>
+          <p class="rw-dl-date">1 mayo</p>
+          <h3 class="title">Resto de grados</h3>
+          <p>Fecha límite general. Después algunos programas aún aceptan solicitudes, pero sin garantías.</p>
+        </li>
+        <li>
+          <p class="rw-dl-date">Ya</p>
+          <h3 class="title">Alojamiento</h3>
+          <p>La vivienda para estudiantes en Holanda escasea. Cuanto antes se empieza, más opciones hay.</p>
+        </li>
+      </ul>
+      <div class="btn-row btn-row--center">
+        <a class="btn btn-navy rw-btn-big" href="#reserva">No queremos llegar tarde</a>
+      </div>
+      <p class="rw-source">
+        Plazos oficiales del gobierno holandés:
+        <a href="https://www.rijksoverheid.nl/onderwerpen/hoger-onderwijs/vraag-en-antwoord/deadline-aanmelden-opleiding-hogeschool-of-universiteit" target="_blank" rel="noopener">Rijksoverheid</a>.
+        Cada universidad puede tener plazos propios: en la llamada os decimos los de su carrera.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="rw-section rw-faq-sec">
+    <div class="rw-wrap rw-wrap--narrow">
+      <p class="eyebrow rw-eyebrow">Preguntas frecuentes</p>
+      <h2 class="display-md rw-title">Antes de reservar</h2>
+      <div class="rw-faq">
+        {
+          faqs.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+      <div class="btn-row btn-row--center rw-faq-cta">
+        <a class="btn rw-btn-big" href="#reserva">Resolverlo en la llamada</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <section class="rw-final">
+    <div class="rw-wrap rw-wrap--narrow">
+      <p class="eyebrow rw-eyebrow">Último empujón</p>
+      <h2 class="display-md">Enero llega antes de lo que parece.</h2>
+      <p class="lead rw-final-clock" data-cd-inline hidden>
+        Quedan <strong data-cd-days>0</strong> días para <span data-cd-pre>el cierre de las carreras con cupo limitado</span>
+        (<span data-cd-text="corto">15 de enero</span>).
+      </p>
+      <p class="lead">Treinta minutos hoy. Un plan claro para tu hijo o hija mañana.</p>
+      <a class="btn rw-btn-big rw-btn-xl rw-pulse" href="#reserva">Reservar mi llamada gratuita</a>
+      <ul class="rw-micro rw-micro--center">
+        <li>Gratis</li>
+        <li>30 minutos</li>
+        <li>Online</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA FIJO EN MÓVIL -->
+  <div class="rw-sticky" data-rw-sticky>
+    <a class="btn rw-btn-big" href="#reserva">Reservar mi llamada gratis</a>
+  </div>
+
+  <script is:inline define:vars={{ PLAZOS }}>
+    // Cuenta atrás hasta el siguiente plazo oficial que aún no ha pasado (15 de enero; después, 1 de mayo).
+    (function () {
+      var now = Date.now();
+      var plazo = PLAZOS.find(function (p) {
+        return new Date(p.fecha).getTime() > now;
+      });
+      if (!plazo) {
+        // Ya han pasado todos los plazos: se oculta lo que depende de ellos
+        document.querySelectorAll('[data-countdown], .rw-clock').forEach(function (el) {
+          el.hidden = true;
+        });
+        var top = document.querySelector('[data-rw-top] p');
+        if (top) top.hidden = true;
+        return;
+      }
+      var target = new Date(plazo.fecha).getTime();
+      document.querySelectorAll('[data-cd-text="corto"]').forEach(function (el) {
+        el.textContent = plazo.corto;
+      });
+      document.querySelectorAll('[data-cd-pre]').forEach(function (el) {
+        el.textContent = plazo.texto;
+      });
+      document.querySelectorAll('[data-cd-inline]').forEach(function (el) {
+        el.hidden = false;
+      });
+      var pad = function (n) {
+        return String(n).padStart(2, '0');
+      };
+      function set(sel, v) {
+        document.querySelectorAll(sel).forEach(function (el) {
+          el.textContent = v;
+        });
+      }
+      function tick() {
+        var diff = Math.max(0, target - Date.now());
+        var d = Math.floor(diff / 864e5);
+        set('[data-cd-d]', pad(d));
+        set('[data-cd-h]', pad(Math.floor((diff % 864e5) / 36e5)));
+        set('[data-cd-m]', pad(Math.floor((diff % 36e5) / 6e4)));
+        set('[data-cd-s]', pad(Math.floor((diff % 6e4) / 1e3)));
+        set('[data-cd-days]', String(d));
+        if (diff === 0) location.reload();
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    // Carrusel horizontal de vídeos
+    (function () {
+      var track = document.querySelector('[data-rw-track]');
+      if (!track) return;
+      var step = function (dir) {
+        track.scrollBy({ left: dir * track.clientWidth * 0.85, behavior: 'smooth' });
+      };
+      document.querySelector('[data-rw-prev]').addEventListener('click', function () { step(-1); });
+      document.querySelector('[data-rw-next]').addEventListener('click', function () { step(1); });
+    })();
+
+    // El botón fijo del móvil se esconde cuando ya se ve el reservador
+    (function () {
+      var bar = document.querySelector('[data-rw-sticky]');
+      var card = document.getElementById('reserva');
+      if (!bar || !card || !('IntersectionObserver' in window)) return;
+      new IntersectionObserver(function (entries) {
+        bar.classList.toggle('is-hidden', entries[0].isIntersecting);
+      }, { threshold: 0.05 }).observe(card);
+    })();
+  </script>
+</Base>

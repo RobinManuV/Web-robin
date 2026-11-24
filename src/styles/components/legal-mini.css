@@ -1,0 +1,29 @@
+/* Componente LegalMini.astro — pie mínimo de las landings "sin salida" */
+
+.legal-mini {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px 18px;
+  padding: 18px var(--gutter) 22px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--navy);
+  opacity: 0.7;
+}
+.legal-mini nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+}
+.legal-mini a,
+.legal-mini button {
+  color: inherit;
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

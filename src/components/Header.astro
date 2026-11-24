@@ -3,6 +3,9 @@ import '../styles/components/header.css';
 import { NAV, SITE } from '../data/site.js';
 import GeoHide from './GeoHide.astro';
 import LangSwitch from './LangSwitch.astro';
+// `collapsed` (landings sin salida, p. ej. /retarwebinar21-11/): solo se ve el logo. El menú, los botones
+// y la hamburguesa aparecen únicamente al pulsar el logo (que en ese modo no lleva a la home).
+const { collapsed = false } = Astro.props;
 const path = Astro.url.pathname;
 const isActive = (item) =>
   path === item.href ||
@@ -10,11 +13,19 @@ const isActive = (item) =>
   (item.children || []).some((c) => path.startsWith(c.href));
 ---
 
-<header class="site-header" data-header>
+<header class:list={['site-header', { 'is-collapsed': collapsed }]} data-header>
   <div class="bar">
-    <a class="logo" href="/" aria-label="Project Robin, inicio">
-      <img src={SITE.logo} alt="Project Robin" width="80" height="40" />
-    </a>
+    {
+      collapsed ? (
+        <button class="logo" type="button" aria-label="Project Robin: ver menú" aria-controls="main-navigation" aria-expanded="false" data-logo-toggle>
+          <img src={SITE.logo} alt="Project Robin" width="80" height="40" />
+        </button>
+      ) : (
+        <a class="logo" href="/" aria-label="Project Robin, inicio">
+          <img src={SITE.logo} alt="Project Robin" width="80" height="40" />
+        </a>
+      )
+    }
 
     <nav class="nav" id="main-navigation" aria-label="Menú principal" data-nav>
       <ul class="menu">
@@ -85,12 +96,20 @@ const isActive = (item) =>
   });
   const header = document.querySelector('[data-header]');
   const burger = header?.querySelector('[data-burger]');
+  // Cabecera plegada (landings sin salida): el logo muestra u oculta el menú
+  const logoToggle = header?.querySelector('[data-logo-toggle]');
+  const setRevealed = (on) => {
+    if (!header || !logoToggle) return;
+    header.classList.toggle('is-revealed', on);
+    logoToggle.setAttribute('aria-expanded', String(on));
+  };
   const closeMenu = () => {
     if (!header || !burger) return;
     header.classList.remove('is-open');
     burger.setAttribute('aria-expanded', 'false');
     burger.setAttribute('aria-label', T.open);
     document.body.style.overflow = '';
+    setRevealed(false);
   };
   const toggleMenu = () => {
     if (!header || !burger) return;
@@ -98,8 +117,14 @@ const isActive = (item) =>
     burger.setAttribute('aria-expanded', String(open));
     burger.setAttribute('aria-label', open ? T.close : T.open);
     document.body.style.overflow = open ? 'hidden' : '';
+    if (!open) setRevealed(false);
   };
   burger?.addEventListener('click', toggleMenu);
+  logoToggle?.addEventListener('click', () => {
+    if (header?.classList.contains('is-revealed')) return closeMenu();
+    setRevealed(true);
+    if (window.innerWidth <= 1024) toggleMenu(); // en móvil se abre directamente el panel del menú
+  });
   header?.querySelectorAll('.sub-toggle').forEach((btn) => {
     btn.addEventListener('click', () => {
       const li = btn.closest('.item');

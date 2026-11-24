@@ -17,6 +17,8 @@ export async function saveCrmLead(lead) {
     paisDeTag(lead.tag) && `País: ${paisDeTag(lead.tag)}`,
     `Idioma: ${LANG_NAMES[normLang(lead.lang)]}`,
     lead.curso && `Curso: ${clean(lead.curso, 60)}`,
+    lead.educacion && `Sistema educativo: ${clean(lead.educacion, 60)}`,
+    lead.intereses && `Intereses: ${clean(lead.intereses, 400)}`,
     lead.colegio && `Colegio: ${clean(lead.colegio, 200)}`,
     lead.cargo && `Cargo: ${clean(lead.cargo, 160)}`,
   ].filter(Boolean).join('\n\n');
@@ -38,6 +40,8 @@ export async function saveCrmLead(lead) {
       country: paisDeTag(lead.tag) || null,
       service: clean(lead.servicio, 120) || null,
       course: clean(lead.curso, 60) || null,
+      education_system: clean(lead.educacion, 60) || null,
+      interests: clean(lead.intereses, 400) || null,
       school: clean(lead.colegio, 200) || null,
       role: clean(lead.cargo, 160) || null,
       utm_source: clean(lead.utm_source, 160) || null,

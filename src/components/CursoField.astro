@@ -7,7 +7,8 @@ import GeoHide from './GeoHide.astro';
 import GeoOnly from './GeoOnly.astro';
 
 // `options`: lista propia de cursos (una sola, sin variante por país). Si no se pasa, se usa la de siempre.
-const { id = 'curso', dark = false, legend = '¿En qué curso estás?', options = null } = Astro.props;
+// `name`: nombre del campo (por defecto "curso"); permite reutilizar los botones para otra pregunta de una sola respuesta.
+const { id = 'curso', name = 'curso', dark = false, legend = '¿En qué curso estás?', options = null } = Astro.props;
 const internacional = ['Y13 / Grade 12 (US)', 'Y12 / Grade 11 (US)', 'Otro'];
 const espana = ['2º de Bachillerato', '1º de Bachillerato', 'Otro'];
 ---
@@ -19,7 +20,7 @@ const espana = ['2º de Bachillerato', '1º de Bachillerato', 'Otro'];
       <div class="curso-options">
         {options.map((c, i) => (
           <label>
-            <input type="radio" name="curso" value={c} required={i === 0} id={i === 0 ? id : undefined} />
+            <input type="radio" name={name} value={c} required={i === 0} id={i === 0 ? id : undefined} />
             <span>{c}</span>
           </label>
         ))}
@@ -31,7 +32,7 @@ const espana = ['2º de Bachillerato', '1º de Bachillerato', 'Otro'];
       {
         internacional.map((c, i) => (
           <label>
-            <input type="radio" name="curso" value={c} required={i === 0} id={i === 0 ? id : undefined} />
+            <input type="radio" name={name} value={c} required={i === 0} id={i === 0 ? id : undefined} />
             <span>{c}</span>
           </label>
         ))
@@ -43,7 +44,7 @@ const espana = ['2º de Bachillerato', '1º de Bachillerato', 'Otro'];
       {
         espana.map((c, i) => (
           <label>
-            <input type="radio" name="curso" value={c} required={i === 0} id={i === 0 ? id : undefined} />
+            <input type="radio" name={name} value={c} required={i === 0} id={i === 0 ? id : undefined} />
             <span>{c}</span>
           </label>
         ))
