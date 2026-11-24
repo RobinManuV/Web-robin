@@ -1,16 +1,18 @@
 ---
 import '../styles/pages/landing-junior.css';
 // Landing de campaña de ROBIN JUNIOR (programa para alumnos de 1º de Bachillerato).
+// URL: /robin-junior-retarwebinar21-11/ — retargeting para las FAMILIAS del webinar de padres del 21 de noviembre.
 // NO se enlaza desde ninguna parte de la web, no sale en el sitemap, está en robots.txt y lleva noindex.
 // Solo existe en español (ver SOLO_ES en src/i18n/config.mjs).
 //
-// Público: el alumno de 1º de Bach (se le habla de tú). Quien paga son los padres, así que hay
-// un bloque corto «Para tus padres» con el precio y lo que incluye, sin letra pequeña.
-// URL: /robin-junior-retarwebinar21-11/ (retargeting del webinar del 21 de noviembre).
+// Público: los padres (se les habla de tú / vosotros y del alumno como «tu hijo o hija»).
+// Como piden números claros, hay un bloque «Lo que incluye y lo que no» sin letra pequeña.
 // Objetivo ÚNICO: que reserven la llamada informativa gratuita (reservador con la etiqueta "robin-junior-retarwebinar21-11").
 // Base con `minimal`: solo logo; el menú de Robin aparece únicamente al pulsar el logo.
 //
-// Contenido sacado del PDF «Robin Junior» (8 sesiones de octubre a junio, 1.499 €, −10% si sigue en 2º).
+// Contenido sacado del PDF «Robin Junior» (8 sesiones online de octubre a junio, 1.499 €, −10% si sigue en 2º).
+// Incluido: las 8 sesiones (la de inglés es solo la sesión de evaluación de nivel).
+// Aparte: summer school, apoyo para la PAU y clases de inglés posteriores.
 // Si cambia el programa o el precio, se cambia en las constantes de abajo.
 import Base from '../layouts/Base.astro';
 import BookingWidget from '../components/BookingWidget.astro';
@@ -20,17 +22,17 @@ const TAG = 'robin-junior-retarwebinar21-11';
 const PRECIO = '1.499 €';
 const DESCUENTO = '−10%';
 
-// En el reservador todos los alumnos son de 1º, así que va marcado por defecto
+// Todos los alumnos son de 1º, así que va marcado por defecto en el reservador
 const CURSOS = ['1º de Bachillerato', 'Otro curso'];
 
 const marquee = [
-  '8 sesiones',
+  '8 sesiones online',
   'De octubre a junio',
   'Test de compatibilidad con IA',
   'Mentorías con exalumnos',
   'Summer school en Países Bajos',
   'Jornadas de puertas abiertas',
-  'Rumbo al C1 de inglés',
+  'Diagnóstico de inglés',
 ];
 
 const sesiones = [
@@ -38,20 +40,20 @@ const sesiones = [
     n: '1',
     kicker: 'Octubre · Sesión 1',
     title: 'Diagnóstico',
-    text: 'Conocemos tu perfil y te explicamos cómo funciona Países Bajos.',
+    text: 'Conocemos su perfil y le explicamos cómo funciona Países Bajos.',
     chip: '🧠 Test de compatibilidad con IA',
   },
   {
     n: '2',
     kicker: 'Sesión 2',
-    title: 'Tus resultados',
-    text: 'Las carreras y universidades más compatibles contigo. Tú eliges tus 3 favoritas.',
+    title: 'Sus resultados',
+    text: 'Las carreras y universidades más compatibles con él o ella. Elige sus 3 favoritas.',
   },
   {
     n: '3-5',
     kicker: '3 sesiones',
     title: 'Mentorías con exalumnos',
-    text: 'Una por cada carrera favorita: te lo cuenta alguien que ya la ha vivido.',
+    text: 'Una por cada carrera favorita: se lo cuenta alguien que ya la ha vivido.',
     destacado: true,
   },
   {
@@ -62,9 +64,9 @@ const sesiones = [
   },
   {
     n: '8',
-    kicker: 'Clase de inglés',
+    kicker: 'Inglés · sesión de evaluación',
     title: 'Diagnóstico con nuestra profe',
-    text: 'Tu primer paso hacia el C1 que te abrirá las puertas.',
+    text: 'Evaluamos su nivel de inglés: el primer paso hacia el C1 que le abrirá las puertas.',
   },
 ];
 
@@ -72,14 +74,15 @@ const extras = [
   {
     emoji: '☀️',
     title: 'Summer school en Países Bajos',
-    text: 'Entre 1º y 2º, en la universidad de tus sueños. Suma puntos en tu solicitud.',
-    badge: 'Te lo gestionamos',
+    text: 'Entre 1º y 2º, en la universidad de sus sueños. Suma puntos en su solicitud.',
+    badge: 'Os lo gestionamos',
+    aparte: true,
   },
   {
     emoji: '🏛️',
     title: 'Jornadas de puertas abiertas',
     text: 'Visita la universidad y la carrera antes de decidir.',
-    badge: 'Te lo organizamos',
+    badge: 'Os lo organizamos',
   },
   {
     emoji: '📚',
@@ -87,40 +90,45 @@ const extras = [
     text: 'Preparación en 1º y 2º de Bachillerato.',
     badge: 'Opcional',
     opcional: true,
+    aparte: true,
   },
 ];
 
-const padres = [
-  { k: 'Precio cerrado', v: `${PRECIO} por el programa completo de 1º.` },
-  { k: 'Duración', v: '8 sesiones, de octubre a junio.' },
+const cuentas = [
+  { k: 'Precio', v: `${PRECIO}, programa completo de 1º de Bachillerato.` },
+  { k: 'Incluye', v: '8 sesiones online de octubre a junio. La de inglés es la sesión de evaluación de nivel.' },
+  { k: 'Se paga aparte', v: 'La summer school, el apoyo para la PAU (opcional) y las clases de inglés, si después las quiere.' },
   { k: 'Si sigue en 2º', v: `${DESCUENTO} en el programa de 2º de Bachillerato.` },
-  { k: 'Summer school y PAU', v: 'Os explicamos en la llamada qué incluye cada uno y si tiene coste aparte. El apoyo para la PAU es opcional.' },
 ];
 
 const faqs = [
   {
-    q: '¿Es pronto para pensar en la universidad en 1º?',
-    a: 'Es justo el momento. En 2º se juntan la PAU, las notas que cuentan y los plazos de aplicación. Si llegas con tus carreras elegidas y tu solicitud reforzada, 2º es solo ejecutar.',
+    q: '¿No es pronto para pensar en la universidad en 1º?',
+    a: 'Es justo el momento. En 2º se juntan la PAU, las notas que cuentan y los plazos de aplicación. Si llega con sus carreras elegidas y su solicitud reforzada, 2º es solo ejecutar.',
   },
   {
-    q: 'No tengo ni idea de qué quiero estudiar. ¿Me sirve?',
-    a: 'Para eso está. Empezamos con un diagnóstico y un test de compatibilidad, y en la segunda sesión ya tienes las carreras y universidades que mejor encajan contigo.',
+    q: 'Todavía no sabe qué quiere estudiar. ¿Le sirve?',
+    a: 'Para eso está. Empezamos con un diagnóstico y un test de compatibilidad, y en la segunda sesión ya tiene las carreras y universidades que mejor encajan con él o ella.',
+  },
+  {
+    q: '¿Las sesiones son online?',
+    a: 'Sí, todas. Se conecta desde casa, así que encaja con el horario del colegio y no hay desplazamientos.',
+  },
+  {
+    q: '¿Qué incluye exactamente el precio?',
+    a: `Las 8 sesiones del programa por ${PRECIO}. La sesión de inglés es una evaluación de su nivel con nuestra profe. La summer school, el apoyo para la PAU y las clases de inglés posteriores se pagan aparte.`,
   },
   {
     q: '¿Quiénes son los mentores?',
-    a: 'Exalumnos que ya han estudiado la carrera que te interesa. Tienes una mentoría por cada una de tus 3 favoritas, para que te lo cuente alguien que lo ha vivido de verdad.',
+    a: 'Exalumnos que ya han estudiado la carrera que le interesa. Tiene una mentoría por cada una de sus 3 favoritas, para que se lo cuente alguien que lo ha vivido de verdad.',
   },
   {
-    q: '¿Por qué hay una clase de inglés?',
-    a: 'Porque el nivel de inglés es lo que más puertas abre (o cierra) para estudiar fuera. Nuestra profe te hace un diagnóstico para que sepas dónde estás y cuánto te falta para el C1.',
+    q: '¿Y cuando llegue a 2º?',
+    a: `Puede seguir con Robin en 2º de Bachillerato con un ${DESCUENTO} de descuento, y le acompañamos en la aplicación.`,
   },
   {
-    q: '¿Qué pasa cuando llegue a 2º?',
-    a: `Puedes seguir con Robin en 2º de Bachillerato con un ${DESCUENTO} de descuento, para que te acompañemos en la aplicación.`,
-  },
-  {
-    q: '¿Cuánto cuesta la llamada? ¿Tienen que estar mis padres?',
-    a: 'La llamada es gratis y sin compromiso: 30 minutos, online. Lo ideal es que os conectéis juntos, así resolvemos tus dudas y las suyas a la vez.',
+    q: '¿Cuánto cuesta la llamada? ¿Tiene que estar mi hijo o hija?',
+    a: 'La llamada es gratis y sin compromiso: 30 minutos, online. Lo ideal es que os conectéis juntos, así resolvemos vuestras dudas y las suyas a la vez.',
   },
 ];
 
@@ -129,8 +137,8 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
 
 <Base
   pageClass="page-rj"
-  title="Robin Junior: orientación universitaria desde 1º de Bachillerato | Project Robin"
-  description="Robin Junior: 8 sesiones de octubre a junio para pasar de «no sé qué estudiar» a tener un plan. Test de compatibilidad, mentorías con exalumnos, summer school en Países Bajos y más."
+  title="Robin Junior: que tu hijo o hija llegue a 2º de Bach con un plan | Project Robin"
+  description="Para las familias del webinar: Robin Junior son 8 sesiones online de octubre a junio para que tu hijo o hija de 1º de Bachillerato pase de «no sé qué estudiar» a tener un plan. 1.499 €."
   image="/fotos/junior/robin-junior-hero.webp"
   noindex
   minimal
@@ -141,18 +149,19 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
     <div class="rj-hero-inner">
       <div class="rj-hero-text">
         <p class="rj-pill">Nuevo · 1º de Bachillerato</p>
+        <p class="rj-hero-for">Para las familias del webinar del 21 de noviembre</p>
         <h1 class="display-xl">Robin <span class="rj-hl">Junior</span></h1>
         <p class="lead">
-          Maximiza tus oportunidades de entrar en la <strong class="rj-hl">carrera de tus sueños</strong>.
+          Maximiza las oportunidades de tu hijo o hija de entrar en la <strong class="rj-hl">carrera de sus sueños</strong>.
         </p>
-        <p class="rj-hero-sub">Orientación académica desde 1º, para llegar a 2º con las ideas claras.</p>
+        <p class="rj-hero-sub">Orientación académica desde 1º, para que llegue a 2º con las ideas claras.</p>
         <ul class="rj-chips">
           <li><strong>Oct → Jun</strong> acompañamiento</li>
-          <li><strong>8</strong> sesiones</li>
+          <li><strong>8</strong> sesiones online</li>
           <li><strong>Países Bajos</strong></li>
         </ul>
         <div class="btn-row">
-          <a class="btn rj-btn-big rj-pulse" href="#reserva">Pide tu llamada gratis</a>
+          <a class="btn rj-btn-big rj-pulse" href="#reserva">Reservar llamada gratuita</a>
           <a class="rj-link" href="#programa">Ver el programa ↓</a>
         </div>
       </div>
@@ -186,12 +195,12 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
       <h2 class="display-md rj-title">2º de Bach no es el momento de decidir</h2>
       <div class="rj-why-grid">
         <div class="rj-why-card is-bad">
-          <p class="rj-why-label">Si empiezas en 2º</p>
-          <p>La PAU, las notas que cuentan y los plazos de aplicación llegan a la vez. Eliges carrera con prisas y con lo que te ha contado un amigo.</p>
+          <p class="rj-why-label">Si empieza en 2º</p>
+          <p>La PAU, las notas que cuentan y los plazos de aplicación llegan a la vez. Elige carrera con prisas y con lo que le ha contado un amigo.</p>
         </div>
         <div class="rj-why-card is-good">
-          <p class="rj-why-label">Si empiezas en 1º</p>
-          <p>Llegas a 2º sabiendo qué quieres estudiar y dónde, has hablado con gente que ya lo estudia y tu solicitud ya tiene puntos extra.</p>
+          <p class="rj-why-label">Si empieza en 1º</p>
+          <p>Llega a 2º sabiendo qué quiere estudiar y dónde, ha hablado con gente que ya lo estudia y su solicitud ya tiene puntos extra.</p>
         </div>
       </div>
     </div>
@@ -200,11 +209,11 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
   <!-- PROGRAMA -->
   <section class="rj-section rj-plan" id="programa">
     <div class="rj-wrap rj-wrap--mid">
-      <p class="eyebrow rj-eyebrow">Tu año con Robin</p>
+      <p class="eyebrow rj-eyebrow">Su año con Robin</p>
       <h2 class="display-md rj-title">
         De «no sé qué estudiar»<br />a <span class="rj-hl-dark">tener un plan</span>
       </h2>
-      <p class="rj-plan-sub">8 sesiones · de octubre a junio</p>
+      <p class="rj-plan-sub">8 sesiones online · de octubre a junio</p>
       <ol class="rj-timeline">
         {
           sesiones.map((s) => (
@@ -221,7 +230,7 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
         }
       </ol>
       <div class="btn-row btn-row--center">
-        <a class="btn btn-navy rj-btn-big" href="#reserva">Quiero mi plan</a>
+        <a class="btn btn-navy rj-btn-big" href="#reserva">Quiero un plan para mi hijo o hija</a>
       </div>
     </div>
   </section>
@@ -235,7 +244,7 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
   <section class="rj-section rj-extras">
     <div class="rj-wrap rj-wrap--mid">
       <p class="rj-tag">Y además</p>
-      <h2 class="display-md rj-extras-title">Todo lo que suma <span class="rj-hl">a tu solicitud</span></h2>
+      <h2 class="display-md rj-extras-title">Todo lo que suma <span class="rj-hl">a su solicitud</span></h2>
       <ul class="rj-extras-list">
         {
           extras.map((e) => (
@@ -245,6 +254,7 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
                   <span aria-hidden="true">{e.emoji}</span> {e.title}
                 </h3>
                 <p>{e.text}</p>
+                {e.aparte && <p class="rj-extra-note">Se paga aparte</p>}
               </div>
               <span class:list={['rj-badge', { 'is-soft': e.opcional }]}>{e.badge}</span>
             </li>
@@ -257,23 +267,23 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
         <div>
           <p class="rj-price-kicker">Robin Junior · Programa completo</p>
           <p class="rj-price-num">{PRECIO}</p>
-          <p class="rj-price-note">{DESCUENTO} si sigues con Robin en 2º de Bachillerato</p>
+          <p class="rj-price-note">{DESCUENTO} si sigue con Robin en 2º de Bachillerato</p>
         </div>
         <span class="rj-price-badge" aria-hidden="true">{DESCUENTO}</span>
       </div>
     </div>
   </section>
 
-  <!-- PADRES + RESERVA -->
+  <!-- CUENTAS CLARAS + RESERVA -->
   <section class="rj-section rj-book-sec">
     <div class="rj-wrap rj-book-grid">
       <div class="rj-parents">
-        <p class="rj-tag rj-tag--navy">Para tus padres</p>
-        <h2 class="title">Las cuentas claras desde el principio</h2>
-        <p>Enséñales esto. Sabemos que la decisión también es suya, así que aquí va lo que necesitan saber:</p>
+        <p class="rj-tag rj-tag--navy">Sin letra pequeña</p>
+        <h2 class="title">Lo que incluye y lo que no</h2>
+        <p>Antes de decidir, los números claros:</p>
         <dl class="rj-parents-list">
           {
-            padres.map((p) => (
+            cuentas.map((p) => (
               <div>
                 <dt>{p.k}</dt>
                 <dd>{p.v}</dd>
@@ -281,22 +291,23 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
             ))
           }
         </dl>
-        <p class="rj-parents-foot">Y la llamada informativa es gratis y sin compromiso: os conectáis juntos y os lo explicamos todo.</p>
+        <p class="rj-parents-foot">¿Más dudas? Las resolvemos en la llamada informativa: gratis y sin compromiso.</p>
       </div>
 
       <div class="rj-card" id="reserva">
         <p class="rj-card-kicker">Gratis · 30 min · Online</p>
-        <h2 class="title">Pide tu llamada informativa</h2>
-        <p class="rj-card-sub">Elige día y hora. Te llega al momento la invitación con el enlace de Google Meet. Si pueden, que se conecten también tus padres.</p>
+        <h2 class="title">Reserva tu llamada informativa</h2>
+        <p class="rj-card-sub">Elige día y hora. Te llega al momento la invitación con el enlace de Google Meet. Lo ideal es que os conectéis juntos, tú y tu hijo o hija.</p>
         <BookingWidget
           tag={TAG}
           compact
           cursoOptions={CURSOS}
           cursoSelected={CURSOS[0]}
-          submitLabel="Confirmar mi llamada gratis"
+          cursoLegend="¿En qué curso está?"
+          submitLabel="Confirmar mi llamada gratuita"
         >
           <p slot="fallback" class="b-fallback rj-fallback">
-            ¿Ningún horario te encaja? Llámanos al <a href={telHref}>{CONTACT.phone}</a> o escríbenos a
+            ¿Ningún horario os encaja? Llámanos al <a href={telHref}>{CONTACT.phone}</a> o escríbenos a
             <a href={`mailto:${CONTACT.email}?subject=Robin%20Junior`}>{CONTACT.email}</a> y te buscamos hueco.
           </p>
         </BookingWidget>
@@ -308,7 +319,7 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
   <section class="rj-section rj-faq-sec">
     <div class="rj-wrap rj-wrap--narrow">
       <p class="eyebrow rj-eyebrow">Preguntas frecuentes</p>
-      <h2 class="display-md rj-title">Lo que nos suelen preguntar</h2>
+      <h2 class="display-md rj-title">Lo que nos preguntan las familias</h2>
       <div class="rj-faq">
         {
           faqs.map((f) => (
@@ -325,15 +336,15 @@ const telHref = `tel:${CONTACT.phone.replace(/\s/g, '')}`;
   <!-- CIERRE -->
   <section class="rj-final">
     <div class="rj-final-inner">
-      <h2 class="display-md">Empieza en 1º,<br /><span class="rj-hl">llega a 2º con ventaja</span></h2>
+      <h2 class="display-md">Que empiece en 1º<br /><span class="rj-hl">y llegue a 2º con ventaja</span></h2>
       <p class="lead">{DESCUENTO} para continuar en 2º de Bach. Pide tu llamada informativa sin compromiso.</p>
-      <a class="btn rj-btn-big rj-btn-xl rj-pulse" href="#reserva">Pedir mi llamada gratis</a>
+      <a class="btn rj-btn-big rj-btn-xl rj-pulse" href="#reserva">Reservar mi llamada gratuita</a>
     </div>
   </section>
 
   <!-- CTA FIJO EN MÓVIL -->
   <div class="rj-sticky" data-rj-sticky>
-    <a class="btn rj-btn-big" href="#reserva">Pide tu llamada gratis</a>
+    <a class="btn rj-btn-big" href="#reserva">Reservar llamada gratuita</a>
   </div>
 
   <script is:inline>

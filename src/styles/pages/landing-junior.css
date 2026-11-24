@@ -125,6 +125,13 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+.page-rj .rj-hero-for {
+  margin-top: -8px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+}
 .page-rj .rj-hero h1 {
   color: var(--cream-text);
   font-size: clamp(54px, 7.4vw, 116px);
@@ -432,6 +439,14 @@
 .page-rj .rj-extra p {
   font-size: 17px;
   line-height: 1.4;
+}
+.page-rj .rj-extra .rj-extra-note {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
 }
 .page-rj .rj-badge {
   flex: none;
