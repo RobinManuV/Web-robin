@@ -9,34 +9,82 @@ import { SERVICIOS } from '../../data/servicios.js';
   title="Servicios para estudiar en Holanda | Project Robin"
   description="Conoce los servicios de Project Robin para elegir universidad, gestionar la admisión, encontrar alojamiento y preparar tu llegada a Holanda."
 >
-  <section class="container packs-wrap">
-    <p class="eyebrow center">Servicios</p>
-    <h1 class="display center">Nuestros paquetes</h1>
-    <p class="lead center">Nos adaptamos a ti para que estudiar en los Países Bajos sea simple</p>
-
-    <div class="packs">
-      {
-        SERVICIOS.map((s) => (
-          <article class:list={['pack', { popular: s.popular }]}>
-            {s.popular && <p class="badge">Más popular</p>}
-            <h2>{s.name}</h2>
-            <ul class="tick-list">
-              {s.card.bullets.map((b) => (
-                <li>{b}</li>
-              ))}
-            </ul>
-            <p class="small">{s.card.text}</p>
-            <a class="btn btn-navy btn-sm" href={`/servicios/${s.slug}/`}>
-              Ver más
-            </a>
-          </article>
-        ))
-      }
+  <!-- HERO -->
+  <section class="svs-hero">
+    <div class="svs-hero-inner container">
+      <div class="svs-hero-text">
+        <p class="eyebrow text-accent">Servicios</p>
+        <h1 class="display-xl svs-title">Tú decides cuánto hacemos por ti</h1>
+        <p class="lead svs-lead">
+          Desde una llamada de 90 minutos hasta acompañarte de la primera duda al primer día de clase. Sin letra pequeña y con gente que ya lo ha vivido.
+        </p>
+        <div class="btn-row">
+          <a class="btn" href="#elige">¿Cuál es el mío?</a>
+          <a class="btn btn-outline-light" href="#reserva">Reserva tu consulta gratis</a>
+        </div>
+      </div>
+      <img class="svs-hero-bird" src="/wp-content/uploads/2026/10/robin-alas-abiertas.webp" alt="" width="640" height="506" />
     </div>
   </section>
 
-  <div class="bg-sky">
-    <ContactSection tag="servicios" />
-  </div>
-</Base>
+  <!-- PAQUETES -->
+  <section class="section bg-cream">
+    <div class="container">
+      <div class="center stack stack--18">
+        <p class="eyebrow">Nuestros servicios</p>
+        <h2 class="display">Elige tu servicio</h2>
+        <p class="lead svs-sub">Cuatro formas de trabajar con Robin. El mismo equipo detrás de todas.</p>
+      </div>
+      <div class="svs-packs">
+        {
+          SERVICIOS.map((s) => (
+            <article class:list={['svs-pack', { popular: s.popular }]} id={`pack-${s.slug}`}>
+              {s.popular && <p class="svs-badge">Más popular</p>}
+              <div class="svs-pack-art">
+                <img src={s.img} alt="" width="200" height="200" loading="lazy" />
+              </div>
+              <h3>{s.name}</h3>
+              <ul class="tick-list">
+                {s.card.bullets.map((b) => (
+                  <li>{b}</li>
+                ))}
+              </ul>
+              <p class="svs-pack-text">{s.card.text}</p>
+              <a class="btn btn-sm" href={`/servicios/${s.slug}/`}>
+                Ver el servicio
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
+  <!-- ¿CUÁL ES EL TUYO? -->
+  <section class="section" id="elige">
+    <div class="container svs-pick">
+      <div class="svs-pick-head stack stack--20">
+        <p class="eyebrow">Sin rodeos</p>
+        <h2 class="display-md">¿Cuál es el tuyo?</h2>
+        <p class="lead">Busca la frase que más se parece a tu situación. Si ninguna encaja, lo vemos juntos en la consulta gratuita.</p>
+        <a class="btn btn-outline" href="#reserva">Lo vemos juntos</a>
+      </div>
+      <ul class="svs-pick-list">
+        {
+          SERVICIOS.map((s) => (
+            <li>
+              <a href={`/servicios/${s.slug}/`}>
+                <span class="svs-quote">“{s.situacion}”</span>
+                <span class="svs-arrow" aria-hidden="true">→</span>
+                <span class="svs-answer">{s.name}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+
+  <ContactSection tag="servicios" />
+</Base>

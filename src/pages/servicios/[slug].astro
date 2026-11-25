@@ -3,13 +3,15 @@ import '../../styles/pages/servicio.css';
 import Base from '../../layouts/Base.astro';
 import Icon from '../../components/Icon.astro';
 import ContactSection from '../../components/ContactSection.astro';
-import { SERVICIOS, COMO_FUNCIONA } from '../../data/servicios.js';
+import { SERVICIOS, servicioPorSlug } from '../../data/servicios.js';
 
 export function getStaticPaths() {
   return SERVICIOS.filter((s) => !s.custom).map((s) => ({ params: { slug: s.slug }, props: { s } }));
 }
 const { s } = Astro.props;
 const contactHref = `/contacto/?origen=${s.tag}&servicio=${encodeURIComponent(s.servicio)}`;
+const otros = SERVICIOS.filter((o) => o.slug !== s.slug);
+const conIlustracion = s.pasos.every((p) => p.img);
 
 const schema = [
   {
@@ -35,55 +37,163 @@ const schema = [
 ---
 
 <Base pageClass="page-servicio" title={s.seoTitle} description={s.seoDesc} schema={schema}>
-  <section class="top container">
-    <div class="top-text">
-      <p class="eyebrow">Servicio</p>
-      <h1 class="display-md">{s.heading}</h1>
-      {s.intro.map((p) => <p class="text" set:html={p} />)}
-      <a class="btn" href={contactHref}>Contáctanos</a>
+  <!-- HERO -->
+  <section class="sv-hero">
+    <div class="sv-hero-inner container">
+      <div class="sv-hero-text">
+        <nav class="sv-crumbs" aria-label="Migas de pan">
+          <a href="/servicios/">Servicios</a> <span aria-hidden="true">/</span> <span>{s.name}</span>
+        </nav>
+        <p class="eyebrow text-accent">{s.hero.eyebrow}</p>
+        <h1 class="display-xl sv-title">{s.hero.title}</h1>
+        <p class="lead sv-lead">{s.hero.lead}</p>
+        <ul class="sv-chips">
+          {s.hero.chips.map((c) => <li>{c}</li>)}
+        </ul>
+        <div class="btn-row">
+          <a class="btn" href="#reserva">Reserva tu consulta gratis</a>
+          <a class="btn btn-outline-light" href={contactHref}>Escríbenos</a>
+        </div>
+      </div>
+      <div class="sv-hero-art" aria-hidden="true">
+        <img src={s.img} alt="" width="420" height="420" />
+      </div>
     </div>
-    <ul class="features">
-      {
-        s.features.map((f) => (
-          <li>
-            <span class="f-icon">
-              <Icon name={f.icon} size={30} />
-            </span>
-            <div>
-              <h2>{f.title}</h2>
-              <p>{f.text}</p>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
   </section>
 
-  <section class="how">
-    <div class="how-inner container">
-      <img src="/wp-content/uploads/2024/12/img1.png" alt="" loading="lazy" width="554" height="600" />
-      <div>
-        <p class="eyebrow">¿Cómo funciona?</p>
-        <h2 class="display-md how-title">Da tus primeros pasos hacia un futuro brillante</h2>
-        <ol class="how-steps">
-          {
-            COMO_FUNCIONA.map((c, i) => (
-              <li>
-                <span class="n">
-                  <Icon name={['user', 'cal', 'compass'][i]} size={26} />
-                </span>
-                <div>
-                  <h3>{c.title}</h3>
-                  <p>{c.text}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ol>
+  <!-- PARA QUIÉN ES -->
+  <section class="section sv-fit">
+    <div class="container">
+      <div class="center stack stack--18 sv-head">
+        <p class="eyebrow">Sin rodeos</p>
+        <h2 class="display-md">¿Es para ti?</h2>
       </div>
+      <div class="sv-fit-grid">
+        <div class="sv-fit-card sv-fit-yes">
+          <h3>Es para ti si…</h3>
+          <ul class="check-list">
+            {s.paraTi.si.map((t) => <li>{t}</li>)}
+          </ul>
+        </div>
+        <div class="sv-fit-card sv-fit-no">
+          <h3>Mejor otro servicio si…</h3>
+          <ul class="sv-alt-list">
+            {
+              s.paraTi.no.map((n) => {
+                const alt = servicioPorSlug(n.slug);
+                return (
+                  <li>
+                    <p>{n.text}</p>
+                    <a href={`/servicios/${alt.slug}/`}>
+                      Mira {alt.name} <span aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ INCLUYE -->
+  <section class="section bg-cream" id="incluye">
+    <div class="container sv-inc">
+      <div class="sv-inc-head stack stack--20">
+        <p class="eyebrow">Qué incluye</p>
+        <h2 class="display-md">{s.incluye.title}</h2>
+        <p class="lead">{s.incluye.lead}</p>
+        <a class="btn" href="#reserva">Reserva tu consulta</a>
+      </div>
+      <ul class={`sv-inc-grid sv-inc-grid--${s.incluye.items.length}`}>
+        {
+          s.incluye.items.map((it, i) => (
+            <li class:list={['inc', { highlight: it.highlight }]} style={`--d:${i * 90}ms`} data-reveal>
+              <span class="inc-icon">
+                <Icon name={it.icon} size={30} />
+              </span>
+              <h3>{it.title}</h3>
+              <p>{it.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="section">
+    <div class="container">
+      <div class="center stack stack--18 sv-head">
+        <p class="eyebrow">Cómo funciona</p>
+        <h2 class="display-md">{s.pasosTitle}</h2>
+        <p class="lead">{s.pasosLead}</p>
+      </div>
+      <ol class:list={['sv-steps', { 'sv-steps--art': conIlustracion }]}>
+        {
+          s.pasos.map((p, i) => (
+            <li>
+              {conIlustracion ? (
+                <span class="sv-step-art">
+                  <img src={p.img} alt="" loading="lazy" width="160" height="160" />
+                </span>
+              ) : (
+                <span class="sv-step-n">{i + 1}</span>
+              )}
+              <p class="sv-step-k">Paso {i + 1}</p>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+
+  <!-- OTROS SERVICIOS -->
+  <section class="section sv-more">
+    <div class="container">
+      <div class="center stack stack--18 sv-head">
+        <p class="eyebrow">Otros servicios</p>
+        <h2 class="display-md">¿Buscas otra cosa?</h2>
+      </div>
+      <ul class="sv-more-grid">
+        {
+          otros.map((o) => (
+            <li>
+              <a class="sv-more-card" href={`/servicios/${o.slug}/`}>
+                <span class="sv-more-art">
+                  <img src={o.img} alt="" loading="lazy" width="96" height="96" />
+                </span>
+                <span class="sv-more-txt">
+                  <span class="sv-more-name">{o.name}</span>
+                  <span class="sv-more-sit">{o.situacion}</span>
+                </span>
+                <span class="sv-more-go" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
   <ContactSection tag={s.tag} />
 </Base>
 
+<script>
+  // Aparición suave de las tarjetas de "Qué incluye"
+  const rev = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        rev.unobserve(e.target);
+      });
+    },
+    { threshold: 0.2 },
+  );
+  document.querySelectorAll('.page-servicio [data-reveal]').forEach((el) => rev.observe(el));
+</script>

@@ -1,70 +1,214 @@
-/* Listado de servicios — todo va dentro de .page-servicios (clase del <main>) */
+/* Listado de servicios — todo va dentro de .page-servicios (clase del <main>)
+   Mismo lenguaje visual que la home: caja azul redondeada, tarjetas con pestaña "Más popular". */
 
-.page-servicios .packs-wrap {
-  padding-block: 60px 90px;
+/* ---------- HERO ---------- */
+.page-servicios .svs-hero {
+  margin-inline: clamp(10px, 1.6vw, 24px);
+  background: var(--navy);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  overflow: hidden;
 }
-.page-servicios .display {
-  margin: 14px 0 12px;
-}
-.page-servicios .packs {
+.page-servicios .svs-hero-inner {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 28px;
-  margin-top: 70px;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+  align-items: center;
+  gap: clamp(30px, 4vw, 70px);
+  min-height: 520px;
+  padding-block: 70px 80px;
+}
+.page-servicios .svs-title {
+  color: var(--cream-text);
+  font-size: clamp(44px, 5.2vw, 82px);
+  margin: 14px 0 22px;
+  max-width: 14ch;
+}
+.page-servicios .svs-lead {
+  color: var(--cream-text);
+  max-width: 620px;
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.35;
+  margin-bottom: 28px;
+}
+.page-servicios .svs-hero .btn {
+  font-size: 16px;
+  padding: 10px 20px;
+}
+.page-servicios .svs-hero-bird {
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.25));
+}
+
+/* ---------- PAQUETES ---------- */
+.page-servicios .svs-sub {
+  max-width: 640px;
+  margin-inline: auto;
+}
+.page-servicios .svs-packs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  margin: 100px auto 0;
+  max-width: 1340px;
   align-items: stretch;
 }
-.page-servicios .pack {
+.page-servicios .svs-pack {
   position: relative;
-  background: #dde2f1;
+  background: var(--grey);
   border: 2px solid var(--navy);
   border-radius: 16px;
-  padding: 90px 28px 34px;
+  padding: 30px 26px 30px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 18px;
 }
-.page-servicios .badge {
+.page-servicios .svs-pack.popular {
+  background: var(--white);
+  box-shadow: 0 22px 50px rgba(45, 58, 100, 0.16);
+}
+.page-servicios .svs-badge {
   position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
+  top: -50px;
+  left: 26px;
+  right: 26px;
   background: var(--navy);
   color: var(--cream);
+  border-radius: 12px 12px 0 0;
   text-align: center;
-  padding: 14px;
-  border-radius: 16px 16px 0 0;
+  padding: 14px 10px 16px;
   font-size: 15px;
   font-weight: 700;
   text-transform: uppercase;
-  transform: translateY(-40px);
+  letter-spacing: 0.02em;
 }
-.page-servicios .pack h2 {
+.page-servicios .svs-pack-art {
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  background: var(--sky);
+  display: grid;
+  place-items: center;
+  align-self: center;
+}
+.page-servicios .svs-pack.popular .svs-pack-art {
+  background: var(--peach);
+}
+.page-servicios .svs-pack-art img {
+  width: 72%;
+}
+.page-servicios .svs-pack h3 {
   text-align: center;
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 25px;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.05;
+  min-height: 2.1em;
+  display: grid;
+  place-items: center;
 }
-.page-servicios .pack .tick-list {
+.page-servicios .svs-pack .tick-list {
   font-size: 16px;
   font-weight: 700;
 }
-.page-servicios .pack .small {
+.page-servicios .svs-pack-text {
+  font-size: 16px;
+  line-height: 1.45;
   flex: 1;
 }
-.page-servicios .pack .btn {
+.page-servicios .svs-pack .btn {
   align-self: center;
 }
+
+/* ---------- ¿CUÁL ES EL TUYO? ---------- */
+.page-servicios .svs-pick {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.3fr);
+  gap: clamp(36px, 6vw, 90px);
+  align-items: center;
+  max-width: 1240px;
+}
+.page-servicios .svs-pick-head .lead {
+  max-width: 440px;
+}
+.page-servicios .svs-pick-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+.page-servicios .svs-pick-list a {
+  display: grid;
+  grid-template-columns: 1fr auto 236px;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 28px;
+  border-radius: 18px;
+  background: var(--peach);
+  text-decoration: none;
+  transition: background 0.25s, color 0.25s, transform 0.25s;
+}
+.page-servicios .svs-pick-list a:hover {
+  background: var(--navy);
+  color: var(--cream);
+  transform: translateX(6px);
+}
+.page-servicios .svs-quote {
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 600;
+  line-height: 1.25;
+}
+.page-servicios .svs-arrow {
+  font-size: 24px;
+  color: var(--accent);
+}
+.page-servicios .svs-answer {
+  justify-self: start;
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+/* ---------- Responsive ---------- */
 @media (max-width: 1200px) {
-  .page-servicios .packs {
+  .page-servicios .svs-packs {
     grid-template-columns: repeat(2, minmax(0, 420px));
     justify-content: center;
-    row-gap: 70px;
+    row-gap: 40px;
   }
 }
-@media (max-width: 950px) {
-  .page-servicios .packs {
+@media (max-width: 900px) {
+  .page-servicios .svs-hero-inner {
     grid-template-columns: 1fr;
-    max-width: 460px;
-    margin-inline: auto;
-    gap: 70px;
+    min-height: 0;
+    padding-block: 36px 56px;
+  }
+  .page-servicios .svs-hero-bird {
+    order: -1;
+    max-width: 200px;
+  }
+  .page-servicios .svs-pick {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .page-servicios .svs-pick-list a {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .page-servicios .svs-arrow {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .page-servicios .svs-packs {
+    grid-template-columns: minmax(0, 440px);
+    margin-top: 80px;
   }
 }
